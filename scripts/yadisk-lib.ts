@@ -34,7 +34,7 @@ export function enforceSizeCap(args: {
   }
 }
 
-export async function fetchJson(url: string, opts: RequestInit = {}): Promise<any> {
+export async function fetchJson<T = unknown>(url: string, opts: RequestInit = {}): Promise<T> {
   const res = await fetch(url, opts);
   const text = await res.text();
   if (!res.ok) {
@@ -47,6 +47,5 @@ export async function fetchJson(url: string, opts: RequestInit = {}): Promise<an
     }
     throw new Error(message);
   }
-  return JSON.parse(text);
+  return JSON.parse(text) as T;
 }
-

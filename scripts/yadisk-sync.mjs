@@ -64,8 +64,10 @@ async function main() {
   }
 
   const fileMeta = await resolveFileMeta(meta);
-  const reportedSize = Number(fileMeta.size || 0);
-  enforceSizeCap({ reportedSize, maxBytes });
+  const reportedSizeRaw = Number(fileMeta.size);
+  if (Number.isFinite(reportedSizeRaw) && reportedSizeRaw >= 0) {
+    enforceSizeCap({ reportedSize: reportedSizeRaw, maxBytes });
+  }
   const filePath = fileMeta.path; // path within the public disk
   const name = sanitizeFilename(destFilename || fileMeta.name || 'downloaded-file');
 
