@@ -4,31 +4,11 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { envArg, fetchJson, sanitizeFilename, enforceSizeCap } from './yadisk-lib.ts';
 
-function getArg(name, def = undefined) {
-  const flag = `--${name}`;
-  const idx = process.argv.indexOf(flag);
-  if (idx !== -1 && idx + 1 < process.argv.length) return process.argv[idx + 1];
-  const envKeyUnderscore = name.toUpperCase().replace(/-/g, '_');
-  const envKeyDash = name.toUpperCase().replace(/_/g, '-');
-  return process.env[envKeyUnderscore] ?? process.env[envKeyDash] ?? def;
-}
+const getArg = (name, def = undefined) => envArg(process.argv, process.env, name, def);
 
-async function fetchJson(url, opts = {}) {
-  const res = await fetch(url, opts);
-  const text = await res.text();
-  if (!res.ok) {
-    let message = `HTTP ${res.status} for ${url}`;
-    try {
-      const json = JSON.parse(text);
-      message += `\n${JSON.stringify(json)}`;
-    } catch {
-      message += `\n${text}`;
-    }
-    throw new Error(message);
-  }
-  return JSON.parse(text);
-}
+// fetchJson imported from library
 
 async function ensureDir(dir) {
   await fs.promises.mkdir(dir, { recursive: true });
@@ -50,6 +30,8 @@ async function main() {
   const targetName = getArg('target-name'); // optional, pick a file by name from a folder share
   const destPath = getArg('dest-path', 'yadisk'); // directory to write into
   const destFilename = getArg('dest-filename'); // optional, override filename
+  const maxBytesArg = getArg('max-bytes'); // optional, cap max file size in bytes
+  const maxBytes = maxBytesArg ? Number(maxBytesArg) : 10 * 1024 * 1024; // default 10MB
   const verbose = getArg('verbose', 'false') === 'true';
 
   const apiBase = 'https://cloud-api.yandex.net/v1/disk/public/resources';
@@ -82,8 +64,10 @@ async function main() {
   }
 
   const fileMeta = await resolveFileMeta(meta);
+  const reportedSize = Number(fileMeta.size || 0);
+  enforceSizeCap({ reportedSize, maxBytes });
   const filePath = fileMeta.path; // path within the public disk
-  const name = destFilename || fileMeta.name || 'downloaded-file';
+  const name = sanitizeFilename(destFilename || fileMeta.name || 'downloaded-file');
 
   // Get the actual download link
   const dlQ = new URLSearchParams({ public_key: publicUrl, path: filePath });
@@ -96,6 +80,7 @@ async function main() {
   const fileRes = await fetch(dl.href);
   if (!fileRes.ok) throw new Error(`Failed to download file: HTTP ${fileRes.status}`);
   const bytes = await fileRes.arrayBuffer();
+  enforceSizeCap({ downloadedBytes: bytes.byteLength, maxBytes });
 
   const outFile = path.join(destPath, name);
   await writeFileBytes(outFile, bytes);

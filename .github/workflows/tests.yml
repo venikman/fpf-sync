@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  bun-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
+        with:
+          bun-version: 'latest'
+      - name: Guard: no .only/.skip in tests
+        run: |
+          set -euo pipefail
+          if grep -RInE "^\s*(it|describe|test)\.(only|skip)\s*\(" tests; then
+            echo "Error: .only/.skip found in tests" >&2
+            exit 1
+          fi
+      - name: Run tests
+        run: bun test

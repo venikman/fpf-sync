@@ -30,6 +30,12 @@ Configure via repository Variables (Settings → Variables → Actions) or use t
 
 Downloaded files are saved under `yadisk/`. The workflow uses `peter-evans/create-pull-request` to open/update PRs only when changes are detected.
 
+Security & limits:
+- Actions are pinned to specific commit SHAs to reduce supply‑chain risk.
+- Writes only under `yadisk/**` and uses minimal token permissions.
+- Filenames are sanitized to prevent path traversal.
+- Default max file size is 10MB (override via `YANDEX_MAX_BYTES`).
+
 Run locally (Bun):
 
 ```bash
@@ -41,6 +47,7 @@ bun scripts/yadisk-sync.mjs \
   # --target-name "file.ext" \
   --dest-path "yadisk" \
   # --dest-filename "desired-name.ext"
+  # --max-bytes 10485760
 ```
 
 Notes:
