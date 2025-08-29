@@ -37,6 +37,9 @@ jobs:
         with:
           bun-version: 'latest'
 
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
       - name: Download from Yandex Disk
         run: |
           bun scripts/yadisk-sync.mjs --max-bytes "${{ vars.YANDEX_MAX_BYTES || '10485760' }}"

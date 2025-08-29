@@ -5,8 +5,9 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
+
+    // JS/TS handling
+    "allowJs": false,
 
     // Bundler mode
     "moduleResolution": "bundler",
@@ -22,6 +23,11 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "noPropertyAccessFromIndexSignature": false,
+
+    // Bun types
+    "types": ["bun-types"]
+  },
+  "include": ["**/*.ts", "**/*.mts", "**/*.cts"],
+  "exclude": ["node_modules", "dist", "out", "coverage", "yadisk"]
 }
