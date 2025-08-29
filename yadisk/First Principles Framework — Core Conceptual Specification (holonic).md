@@ -11983,7 +11983,7 @@ where `Φ` is the context’s monotone penalty (lower CL ⇒ larger penalty). Mu
  
  **Assurance tuple.** For a claim `c` at time `t`, KD‑CAL exports `Assurance(c,t) = ⟨F*, G*, R*⟩` computed under Γ_epist folds with decay applied. Mapping to `AssuranceLevel ∈ {L0,L1,L2}` is policy‑based on thresholds `{τ_F, τ_R}` and coverage tests on `G*`.
 
-**ProofKernel (F‑mode, normative).** When formal proofs are used, declare `ProofKernel ∈ {Classical‑LOG, Constructive‑LOG, Univalent‑LOG}`. **Formal proof bindings do not decay**; only **Tool Assurance (TA)** for the checker/toolchain is tracked/decayed separately (see §5 and B.3.4). **Declaring a `ProofKernel` implies `FormalityMode = M‑3` for any claims that rely on it (E.11); such claims MUST satisfy the F‑mode gates in §18.1.**
+**ProofKernel (F‑mode, normative).** When formal proofs are used, declare `ProofKernel ∈ {Classical‑LOG, Constructive‑LOG, Univalent‑LOG}`. **Formal proof bindings do not decay**; only **Typing assurance (TA)**. **Declaring a `ProofKernel` implies `FormalityMode = M‑3` for any claims that rely on it (E.11); such claims MUST satisfy the F‑mode gates in §18.1.**
  
 ### 4.3 Decay functions & Epistemic‑Debt ledger (normative)
 
