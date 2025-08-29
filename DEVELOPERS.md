@@ -64,7 +64,7 @@ Workflow: `.github/workflows/yadisk-sync.yml` (scheduled and manual dispatch).
   - `YANDEX_DEST_FILENAME` (optional): override saved filename
   - `YANDEX_MAX_BYTES` (optional): max size in bytes (default 10MB)
 
-These map to env vars read by the script: `PUBLIC_URL`, `PUBLIC_PATH`, `TARGET_NAME`, `DEST_PATH`, `DEST_FILENAME`.
+These map to env vars read by the script: `PUBLIC_URL`, `PUBLIC_PATH`, `TARGET_NAME`, `DEST_PATH`, `DEST_FILENAME`, `MAX_BYTES`.
 
 ## Security hardening (implemented)
 

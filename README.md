@@ -62,4 +62,4 @@ What the PR does:
 **Notes**
 - Scheduling is best‑effort by GitHub; runs may be slightly delayed.
 - Basic safety is built in: filenames are cleaned, and large files are blocked by a size limit.
- - If something doesn’t look right, contact a maintainer. Technical troubleshooting lives in `DEVELOPERS.md`.
+- If something doesn’t look right, contact a maintainer. Technical troubleshooting lives in `DEVELOPERS.md`.

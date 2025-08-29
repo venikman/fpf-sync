@@ -49,4 +49,8 @@ describe('enforceSizeCap', () => {
   it('does not throw when within cap', () => {
     expect(() => enforceSizeCap({ reportedSize: 9, downloadedBytes: 9, maxBytes: 10 })).not.toThrow();
   });
+
+  it('does not throw when cap is disabled (maxBytes: 0)', () => {
+    expect(() => enforceSizeCap({ reportedSize: 100, downloadedBytes: 100, maxBytes: 0 })).not.toThrow();
+  });
 });

@@ -31,7 +31,8 @@ async function main() {
   const destPath = getArg('dest-path', 'yadisk'); // directory to write into
   const destFilename = getArg('dest-filename'); // optional, override filename
   const maxBytesArg = getArg('max-bytes'); // optional, cap max file size in bytes
-  const maxBytes = maxBytesArg ? Number(maxBytesArg) : 10 * 1024 * 1024; // default 10MB
+  const parsedMax = maxBytesArg != null ? parseInt(String(maxBytesArg), 10) : NaN;
+  const maxBytes = Number.isFinite(parsedMax) && parsedMax >= 0 ? parsedMax : 10_485_760; // default 10MB
   const verbose = getArg('verbose', 'false') === 'true';
 
   const apiBase = 'https://cloud-api.yandex.net/v1/disk/public/resources';

@@ -15,9 +15,9 @@ export function envArg(
   const flag = `--${name}`;
   const idx = argv.indexOf(flag);
   if (idx !== -1 && idx + 1 < argv.length) return argv[idx + 1];
-  const envKeyUnderscore = name.toUpperCase().replace(/-/g, '_');
-  const envKeyDash = name.toUpperCase().replace(/_/g, '-');
-  return env[envKeyUnderscore] ?? env[envKeyDash] ?? def;
+  // Use underscore format for env vars (PUBLIC_URL, MAX_BYTES, etc.)
+  const envKey = name.toUpperCase().replace(/-/g, '_');
+  return env[envKey] ?? def;
 }
 
 export function enforceSizeCap(args: {
@@ -36,16 +36,16 @@ export function enforceSizeCap(args: {
 
 export async function fetchJson<T = unknown>(url: string, opts: RequestInit = {}): Promise<T> {
   const res = await fetch(url, opts);
-  const text = await res.text();
-  if (!res.ok) {
-    let message = `HTTP ${res.status} for ${url}`;
-    try {
-      const json = JSON.parse(text);
-      message += `\n${JSON.stringify(json)}`;
-    } catch {
-      message += `\n${text}`;
-    }
-    throw new Error(message);
+  if (res.ok) {
+    return res.json() as Promise<T>;
   }
-  return JSON.parse(text) as T;
+  const text = await res.text();
+  let message = `HTTP ${res.status} for ${url}`;
+  try {
+    const json = JSON.parse(text);
+    message += `\n${JSON.stringify(json, null, 2)}`;
+  } catch {
+    message += `\n${text}`;
+  }
+  throw new Error(message);
 }
