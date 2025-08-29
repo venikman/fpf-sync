@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "bun: test",
+      "type": "shell",
+      "command": "bun test",
+      // Uses system PATH; configure Bun path in User settings if needed
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
