@@ -1,7 +1,7 @@
 export function sanitizeFilename(n: string | undefined): string {
   const base = (n ?? 'downloaded-file').toString();
   const justName = base.split(/[\\/]/).pop() ?? 'downloaded-file';
-  const cleaned = justName.replace(/[\\\/:*?"<>|]/g, '_');
+  const cleaned = justName.replace(/[\\/:*?"<>|]/g, '_');
   const safe = cleaned.replace(/^\.+$/, '_');
   return safe || 'downloaded-file';
 }
