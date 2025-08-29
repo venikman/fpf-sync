@@ -1,0 +1,48 @@
+name: Sync Yandex Disk to PR
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # every 30 minutes
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  # Configure via repository Variables (Settings → Variables → Actions)
+  # or Secrets. Fallback to the provided public link.
+  PUBLIC_URL: ${{ vars.YANDEX_PUBLIC_URL || secrets.YANDEX_PUBLIC_URL || 'https://disk.yandex.ru/d/N2xaJZWo-hhFYw' }}
+  PUBLIC_PATH: ${{ vars.YANDEX_PUBLIC_PATH }}
+  TARGET_NAME: ${{ vars.YANDEX_TARGET_NAME }}
+  DEST_PATH: yadisk
+  DEST_FILENAME: ${{ vars.YANDEX_DEST_FILENAME }}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 'latest'
+
+      - name: Download from Yandex Disk
+        run: |
+          bun scripts/yadisk-sync.mjs
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore(sync): Yandex Disk update'
+          title: 'Sync: Yandex Disk update'
+          body: |
+            Automated sync from Yandex Disk public share.
+            - Source: ${{ env.PUBLIC_URL }} ${{ env.PUBLIC_PATH && format('(path: {0})', env.PUBLIC_PATH) }}
+          branch: sync/yadisk
+          delete-branch: true
+          add-paths: |
+            yadisk/**
