@@ -26,7 +26,7 @@ export function enforceSizeCap(args: {
   maxBytes: number;
 }) {
   const { reportedSize = 0, downloadedBytes = 0, maxBytes } = args;
-  if (maxBytes > 0 && reportedSize > 0 && reportedSize > maxBytes) {
+  if (maxBytes > 0 && reportedSize > maxBytes) {
     throw new Error(`Remote file too large: ${reportedSize} bytes exceeds cap ${maxBytes}`);
   }
   if (maxBytes > 0 && downloadedBytes > maxBytes) {
