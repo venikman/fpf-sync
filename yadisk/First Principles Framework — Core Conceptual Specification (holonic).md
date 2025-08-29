@@ -689,7 +689,7 @@ To prevent a common category error, **Domain** and **U.BoundedContext** are **no
 | **Relationship** | One domain can have **many** valid perspectives. | A bounded context **hosts** one such perspective (Glossary, Invariants, local Role taxonomy, Bridges). |
 
 **Normative anchor (didactic form):**  
-The `context` field in any `U.RoleAssignment` **MUST** reference a **U.BoundedContext**, **never** a broad domain label.  
+The `context` field in any `U.RoleAssigning` **MUST** reference a **U.BoundedContext**, **never** a broad domain label.  
 *Think “specific room” (e.g., `Hospital.OR_2025`), not “the whole building” (e.g., “Healthcare”).*
 
 **Manager’s one‑liner:** A **Domain** is the *territory*; a **Bounded Context** is a *purpose‑made map* of that territory.
@@ -721,7 +721,7 @@ A `U.BoundedContext` is a composite holon defined by the following key component
 
 *   **As a `U.Holon`:** A `U.BoundedContext` is itself a holon. It has a **boundary** (the semantic line between what's inside and outside its model), **parts** (its `Glossary`, `Invariants`, etc.), and can be part of a larger whole (a context can be nested within another, more general context).
 
-*   **As the Anchor for `U.RoleAssignment`:** The `context` field of a `U.RoleAssignment` **MUST** reference a valid `U.BoundedContext`. This ensures that every role assignment is explicitly anchored to a well-defined semantic frame.
+*   **As the Anchor for `U.RoleAssigning`:** The `context` field of a `U.RoleAssigning` **MUST** reference a valid `U.BoundedContext`. This ensures that every role assignment is explicitly anchored to a well-defined semantic frame.
 
 *   **As the Scope for `U.Objective`:** A `U.Objective` (from Norm-CAL) is often defined relative to a context. The goal of "maximize velocity" is meaningful within the context of an `AgileSprint`, but might be meaningless or even counterproductive in a `ResearchDiscovery` context.
 
@@ -749,7 +749,7 @@ To ensure `U.BoundedContext` is used consistently and rigorously, the following 
 | **CC-A1.1.2 (Role Localization)**| Every `U.Role` **MUST** be defined within the `Roles` taxonomy of at least one `U.BoundedContext`. A "global" role is forbidden. | Ensures that roles are never context-free. Prevents ambiguity by forcing every role to be anchored to a specific semantic frame. |
 | **CC-A1.1.3 (Invariant Scope)** | An `Invariant` defined within a context **MUST** only apply to holons and processes operating *within* that context. | Prevents the leakage of local rules into the global space, which is critical for modularity and managing complexity. |
 | **CC-A1.1.4 (Bridge Explicitness)** | Any interaction or mapping between two `U.BoundedContext`s **MUST** be modeled as an explicit `Bridge` artifact. | Forbids "backdoor" or implicit communication between contexts. Makes all inter-context dependencies visible and auditable. |
-| **CC-A1.1.5 (CRA Anchor)** | Every `U.RoleAssignment` **MUST** reference exactly one `U.BoundedContext` in its `context` field. | Guarantees that every role assignment is unambiguous and its meaning is fully determined by a single, authoritative context. |
+| **CC-A1.1.5 (CRA Anchor)** | Every `U.RoleAssigning` **MUST** reference exactly one `U.BoundedContext` in its `context` field. | Guarantees that every role assignment is unambiguous and its meaning is fully determined by a single, authoritative context. |
 
 #### 7 · Consequences
 
@@ -820,17 +820,17 @@ Without an explicit role calculus:
 
 ---
 
-### Solution 
+### Solution — Contextual Role‑Binding (CRA)
 
 We elevate **Role** to a first‑class, *context‑indexed* concept and make the **binding** between a holon and a role explicit.
 
 #### S‑level definitions (normative)
 
 * **`U.Role`** — a **context‑bound** capability/obligation schema that a holon **may enact** for a time interval. A role has **no parts** and **no resource deltas** of its own. *(A7 guard)*
-* **`U.RoleAssignment`** — a first‑class object recording that a holon enacts a role **in** a bounded context, optionally with authority, justification, and provenance:
+* **`U.RoleAssigning` (CRA)** — a first‑class object recording that a holon enacts a role **in** a bounded context, optionally with authority, justification, and provenance:
 
 ```
-U.RoleAssignment {
+U.RoleAssigning {
   holder        : U.Holon,
   role          : U.Role,
   context       : U.BoundedContext,
@@ -843,7 +843,7 @@ U.RoleAssignment {
 
 Short form (readable): `Holon#Role:Context [@Interval]`.
 
-> **Why a first‑class binding?** It keeps identity (holon), function (role), context (semantics), and time (run‑window) separate yet linked, preventing the substance/function conflation identified above. The early `playsRoleOf(Holon, Role, span)` relation in the draft is subsumed by `U.RoleAssignment` and extended with **Context** (and optional governance fields).
+> **Why a first‑class binding?** It keeps identity (holon), function (role), context (semantics), and time (run‑window) separate yet linked, preventing the substance/function conflation identified above. The early `playsRoleOf(Holon, Role, span)` relation in the draft is subsumed by `U.RoleAssigning` and extended with **Context** (and optional governance fields).
 
 #### Temporal & behavioural alignment
 
@@ -985,7 +985,7 @@ A **set** `{Alice, Bob, 3.14}` has no behaviour; a **team** is a **system** with
 **Status.** Definitional pattern \[D], kernel‑level.
 **Builds on.** A.1 **Holonic Foundation**, A.1.1 **`U.BoundedContext`**, A.2 **Role Taxonomy**.
 **Coordinates with.** A.13 **Agential Role & Agency Spectrum**, A.15 **Role–Method–Work Alignment**, E.10.1 **D.CTX (Context discipline)**, E.10.D2 **Strict Distinction**.
-**Lexical discipline.** *Context* ≡ `U.BoundedContext` (E.10.1). *Appointment* is **colloquial only** and **MUST NOT** appear in normative clauses. Canonical term: **Role Assignment**.
+**Lexical discipline.** *Context* ≡ `U.BoundedContext` (E.10.1). *assignment* is **colloquial only** and **MUST NOT** appear in normative clauses. Canonical term: **Role Assignment**.
 
 ---
 
@@ -1048,8 +1048,8 @@ RoleAssignment ::= 〈holder: U.Holon, role: U.Role, context: U.BoundedContext, 
     *(Contexts may refine eligibility, but cannot weaken these families.)*
 * **RA‑4 (Window discipline).** If `window` is present, enactments (below) **MUST** occur within it; if absent, interpret as “open‑ended from assignment time”.
 * **RA‑5 (Separation).** A RoleAssignment confers **the capacity/authorization to act** (or the status to be recognised), but it is **not behaviour** (no Work implied), **not capability** (intrinsic ability lives elsewhere), and **not structure** (may never appear in a BoM).
- 
-  Never use "appointment" as a synonym to "assignment".
+  
+  Never use "appoinment" as a synonym to "assignment".
 
 **Didactic read.** Think **badge** (*who wears which mask, where, when*). The rules for the mask live **in the room** (Context).
 
@@ -1823,7 +1823,7 @@ A **Service** is an **external promise**. It relies on capability but is not ide
 
 ## 17 · Relations
 
-* **Builds on:** A.1 Holonic Foundation; A.1.1 `U.BoundedContext`; A.2 Role; A.2.1 `U.RoleAssignment`.
+* **Builds on:** A.1 Holonic Foundation; A.1.1 `U.BoundedContext`; A.2 Role; A.2.1 `U.RoleAssigning`.
 * **Coordinates with:** A.3 (Transformation & role masks); A.15 (Role–Method–Work Alignment).
 * **Constrains:** Step design: thresholds belong on steps; BoM/PBS must stay structural.
 * **Informs:** `U.Service` \[D] (external promises derive from capabilities); `U.Dynamics` \[D] (models used as evidence or predictors); Γ/aggregation (capability of composites is stated at the whole).
@@ -1966,7 +1966,7 @@ The popular service diagrams (provider ↔ access ↔ use ↔ capability/activit
 Every Service **MUST** be declared **inside** a `U.BoundedContext`. Names and meaning are **local**; cross‑context reuse requires a Bridge (`U.Alignment`).
 
 **CC‑A2.3‑3 (Role kinds, not people/systems).**
-`providerRole` and (if used) `consumerRole` **MUST** be **role kinds** (see A.2). Actual performers at run‑time are `U.RoleAssignment`s.
+`providerRole` and (if used) `consumerRole` **MUST** be **role kinds** (see A.2). Actual performers at run‑time are `U.RoleAssigning`s.
 
 **CC‑A2.3‑4 (Acceptance).**
 `acceptanceSpec` **MUST** be present and **MUST** define how delivered `U.Work` is judged (pass/fail/graded) against declared targets (SLO/SLA‑like).
@@ -2047,7 +2047,7 @@ Aggregation across time uses `Γ_time` policies (union vs convex hull) chosen by
   Services are not structural parts. Keep PBS/SBS clean.
 
 * **“Hard‑code people into the service.”**
-  Name **role kinds** in `U.Service`; run‑time performers are `U.RoleAssignment`s.
+  Name **role kinds** in `U.Service`; run‑time performers are `U.RoleAssigning`s.
 
 ---
 
@@ -2064,7 +2064,7 @@ Aggregation across time uses `Γ_time` policies (union vs convex hull) chosen by
 
 ## 11 · Relations
 
-* **Builds on:** A.1.1 `U.BoundedContext`; A.2 `U.Role`; A.2.1 `U.RoleAssignment`; A.2.2 `U.Capability`.
+* **Builds on:** A.1.1 `U.BoundedContext`; A.2 `U.Role`; A.2.1 `U.RoleAssigning`; A.2.2 `U.Capability`.
 * **Coordinates with:** A.3.1 `U.Method`; A.3.2 `U.MethodDescription`; A.15.1 `U.Work`; A.15.2 `U.WorkPlan`.
 * **Constrained by lexical rules:** **E.10 L‑SERV** (service disambiguation); also **L‑FUNC**, **L‑PROC**, **L‑SCHED**, **L‑ACT**.
 * **Informs:** Reporting/assurance patterns (service KPIs, SLA dashboards); catalog/exposure patterns in domain contexts.
@@ -2082,7 +2082,7 @@ Aggregation across time uses `Γ_time` policies (union vs convex hull) chosen by
 
 ## A.2.4 — `U.EvidenceRole` \[D]
 
-> *This pattern defines how a knowledge artefact (“episteme”) serves as **evidence** for a specific claim or theory **inside a bounded context**. It is a **non‑behavioural** role enacted via `U.RoleAssignment`; the binding **must** declare the **target claim**, the **claim‑scope**, and a **timespan of relevance**. Evidence is a classificatory status of an episteme; it is not an action and it is not an assignment of an actor.*
+> *This pattern defines how a knowledge artefact (“episteme”) serves as **evidence** for a specific claim or theory **inside a bounded context**. It is a **non‑behavioural** role enacted via `U.RoleAssigning`; the binding **must** declare the **target claim**, the **claim‑scope**, and a **timespan of relevance**. Evidence is a classificatory status of an episteme; it is not an action and it is not an assignment of an actor.*
 
 ### 1 · Context and intent
 
@@ -2118,7 +2118,7 @@ FPF separates **what exists** (holons and their kinds) from **what acts** (syste
 The target claim, its applicability scope, polarity, weighting model, and other normative facets are **properties of the `U.EvidenceRole` definition itself** *within that bounded context*.
 
 **How it is enacted.**
-The role is enacted by a standard `U.RoleAssignment` that connects:
+The role is enacted by a standard `U.RoleAssigning` that connects:
 
 ```
 RoleAssigning {
@@ -2130,7 +2130,7 @@ RoleAssigning {
 ```
 
 The **normative properties** of the role (e.g., `claimRef`, `claimScope`, `polarity`, `weightModelRef`) are set in the **role’s definition** in the given `U.BoundedContext`, not in the binding.
-`U.RoleAssignment` carries only the linkage between a concrete episteme and a role already defined and attributed in that context.
+`U.RoleAssigning` carries only the linkage between a concrete episteme and a role already defined and attributed in that context.
 
 > **Non-behavioural guard.** The holder is an episteme; any actions that produced it are `U.Work` performed by systems. Evidence classifies an artefact’s evidential status; it does not itself enact behaviour.
 
@@ -2180,22 +2180,22 @@ The **normative properties** of the role (e.g., `claimRef`, `claimScope`, `polar
 
 | If you are talking about…               | Use in FPF                                                    | Why                                                                   |
 | --------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------- |
-| **Who acted and consumed resources**    | `U.System` with `U.RoleAssignment` performing `U.Work`           | Only systems act; work records resource deltas.                       |
+| **Who acted and consumed resources**    | `U.System` with `U.RoleAssigning` performing `U.Work`           | Only systems act; work records resource deltas.                       |
 | **What was promised to a consumer**     | `U.Service` (promise with access and acceptance)              | A promise is not evidence; it is judged from work.                    |
 | **How work should be done or invoked**  | `U.Method` / `U.MethodDescription`                                   | Recipes and interfaces are not evidence.                              |
-| **What counts as evidence for a claim** | `U.Episteme` holding `U.EvidenceRole` via `U.RoleAssignment`     | Evidence is a status of an artefact relative to a claim in a context. |
+| **What counts as evidence for a claim** | `U.Episteme` holding `U.EvidenceRole` via `U.RoleAssigning`     | Evidence is a status of an artefact relative to a claim in a context. |
 | **Moving meaning across contexts**      | An explicit bridge/alignment pattern in the receiving context | Role meanings are context‑local by design.                            |
 
 ### 7 · Core invariants (concept level)
 
-1. 1. **Holder type.** `U.EvidenceRole` is held by a **`U.Episteme`** only; never by a system, work, method, or service.  # [M‑0]
+1. **Holder type.** `U.EvidenceRole` is held by a **`U.Episteme`** only; never by a system, work, method, or service.
 2. **Context anchor.** Every binding **must** name a `U.BoundedContext`; meaning is local and does not propagate implicitly.
 3. **Target claim.** Every binding **must** reference a resolvable claim or theory statement and declare **polarity** `{supports | refutes | constrains | neutral}`.
 4. **Claim‑scope.** Every binding **must** declare an applicability scope; for the axiomatic line this can be the theory’s domain.
-5. **Timespan.** Every binding **must** declare a relevance interval. Axiomatic roles may be open‑ended **for a fixed theory version**; experimental roles require finite or refreshable windows.  **Gating:** narrative only at **M‑0**; explicit `timespan` & `decayClass` at **M‑2**; version fence & `proofChecks` at **F‑***.  # [M/F]
+5. **Timespan.** Every binding **must** declare a relevance interval. Axiomatic roles may be open‑ended **for a fixed theory version**; experimental roles require finite or refreshable windows.
 6. **Non‑self‑evidence.** The provenance of experimental bindings **must** trace to external `U.Work` performed by systems under roles; an episteme cannot “evidence itself.”
 7. **No mixing of planes.** Do not mix design‑time proof artefacts and run‑time traces in one provenance chain; relate them via separate bindings if needed.
-8. +8. **No role mereology.** Roles have **no parts**; refine by **specialisation** only. This prevents confusing “sub‑role” with “subsystem”.   **Profile note:** The constraint is universal (applies to **all profiles**).  # [all]
+8. **No role mereology.** Roles have **no parts**; refine by **specialisation** only. This prevents confusing “sub‑role” with “subsystem”.
 
 **Minimal readable grammar (informative).**  
 `<Episteme>#<EvidenceRole>:<Context>` — where `<EvidenceRole>` is **defined inside `<Context>`** with normative facets (`claimRef`, `claimScope`, `polarity`, optional `weightModelRef`, decay policy).
@@ -2214,6 +2214,10 @@ Role **definition** in `GraphTheory`:
 `AxiomaticProofRole` with `claimRef = Theorem-12`, `claimScope = all finite DAG`, `polarity = supports` (entails), fenced to `TheoryVersion = 3.1`.  
 **Binding:**  
 `Lemma-12.proof#AxiomaticProofRole:GraphTheory`
+
+Вот переписанный раздел 8 с учётом всех твоих замечаний и без потерь исходного содержания. Я аккуратно сохранил нюансы формулировок и добавил три обязательных уточнения: явную формулу для `R_eff` с CL-штрафом, упоминание Epistemic Debt и цикла Refresh/Deprecate/Waive из B.3.4, а также чёткое разделение вклада в TA/VA/LA.
+
+---
 
 ### 8 · Facets and semantics (normative)
 
@@ -2325,7 +2329,7 @@ High **F** (machine-checked proof), **G** = “finite DAG”, **R** from proof-o
 ### 10 · Conformance checklist (normative)
 
 **CC-ER-01 (Type & holder)**
-`U.EvidenceRole` **MUST** be held by a `U.Episteme` via `U.RoleAssignment`. Systems, services, methods, or works **MUST NOT** hold this role.
+`U.EvidenceRole` **MUST** be held by a `U.Episteme` via `U.RoleAssigning`. Systems, services, methods, or works **MUST NOT** hold this role.
 
 **CC-ER-02 (Context)**
 Every binding **MUST** name a `U.BoundedContext`. Role meanings are local and do not propagate without an explicit bridge.
@@ -2383,7 +2387,7 @@ These operators extend E.6.1 citation graph capabilities for evidence analysis i
 **12.1 Per-claim evidence**
 `evidenceFor(claim, t?) → Set[EvidenceRoleAssigning]`
 `counterEvidenceFor(claim, t?) → Set[EvidenceRoleAssigning]`
-`weight(claim, t?, model?) → score`   # returns **ordinal** at M‑mode; **numeric** at M‑2/F‑mode.  # [M/F]
+`weight(claim, t?, model?) → score`
 
 **12.2 Decay and windows**
 `window(claim, [t0,t1])` — filter bindings by `timespan`.
@@ -2394,7 +2398,7 @@ These operators extend E.6.1 citation graph capabilities for evidence analysis i
 `isIndependentReplication(binding) → boolean`
 
 **12.4 Formal line hooks**
-`proofChecks(binding) → {assistant, status, hash, kind∈{classical, constructive}}`  # [F‑*]
+`proofChecks(binding) → {assistant, status, hash}`
 `dependsOnAxioms(binding) → Set[AxiomId]`
 
 **12.5 Empirical line hooks**
@@ -2406,7 +2410,7 @@ These operators extend E.6.1 citation graph capabilities for evidence analysis i
 ### 13 · Relations
 
 **Builds on:**
-A.2 `U.Role`, A.2.1 `U.RoleAssignment` (role as mask, binding as assignment), A.10 Evidence Anchoring (EPV-DAG), B.3 Trust & Assurance Calculus.
+A.2 `U.Role`, A.2.1 `U.RoleAssigning` (role as mask, binding as assignment), A.10 Evidence Anchoring (EPV-DAG), B.3 Trust & Assurance Calculus.
 
 **Coordinates with:**
 A.3.2 `U.MethodDescription` (protocols, proof obligations), E.6.1 Epistemic Roles via CRA (didactic gateway).
@@ -3180,7 +3184,7 @@ A.3 defines four anchors, tied together by **Contextual Role‑Binding (CRA)** a
 Use the universal binding to state **who plays which role where and when**:
 
 ```
-U.RoleAssignment(
+U.RoleAssigning(
   holder  : U.System,          -- the acting system (bearer)
   role    : U.TransformerRole, -- behavioural role
   context : U.BoundedContext,  -- semantic boundary
@@ -3229,7 +3233,7 @@ Split into **Regulator** (calibration module, acting side) and **Regulated** (se
 
 **CC‑A3‑0 · CRA presence.**
 Every claim that a holon “performs a transformation” MUST be backed by at least one **Role‑Binding** triple:
-`U.RoleAssignment(holder: U.Holon, role: U.Role=TransformerRole, context: U.BoundedContext, timespan?)`.
+`U.RoleAssigning(holder: U.Holon, role: U.Role=TransformerRole, context: U.BoundedContext, timespan?)`.
 This is the canonical way to say *who acts, in which role, where (semantically), and when*. See A.2 for the universal CRA pattern and its invariants.
 
 **CC‑A3‑1 · External transformer discipline.**
@@ -3251,7 +3255,7 @@ When the changed holon is an **episteme** (document, dataset, theory), the trans
 Any resource consumption/production in `U.Work` MUST specify the **measure μ** and **units** (e.g., kg, J, bytes); “percentage” effects MUST be grounded in a PortionOf μ to be Γ‑aggregatable. (A.14 POR‑axioms; Γ\_work usage.)
 
 **CC‑A3‑7 · Provenance minimum.**
-For each `U.RoleAssignment` and `U.Work`, the following fields are REQUIRED: `{authority?, justification?, provenance?}` where `justification: U.Episteme` and `provenance: U.Method`/process evidence. This aligns with the kernel’s governance and B‑cluster lineage practices.
+For each `U.RoleAssigning` and `U.Work`, the following fields are REQUIRED: `{authority?, justification?, provenance?}` where `justification: U.Episteme` and `provenance: U.Method`/process evidence. This aligns with the kernel’s governance and B‑cluster lineage practices.
 
 **CC‑A3‑8 · Policy–Plan–Action separation for agentic cases.**
 If the transformer bearer is agentic, the log MUST separate `D.Policy → U.PlannedAction → U.Action` (A.15/A.13), preserving where failure occurred (strategy, plan, or execution).
@@ -3504,7 +3508,7 @@ Every `U.Method` **MUST** be defined **within** a `U.BoundedContext`. Identity, 
 A `U.Method` **SHOULD** be **described by** ≥1 `U.MethodDescription`. For operational gating, at least one `MethodDescription` **MUST** be present and named. Multiple specs may coexist (imperative/functional/logic), see CC‑A3.1‑7.
 
 **CC‑A3.1‑4 (assignment‑free).**
-A `U.Method` **SHALL NOT** hard‑code holders or assignments. If a step “needs a surgeon”, express that as a **role requirement** (to be satisfied via `U.RoleAssignment` at run time), not as a named person/unit inside the method.
+A `U.Method` **SHALL NOT** hard‑code holders or assignments. If a step “needs a surgeon”, express that as a **role requirement** (to be satisfied via `U.RoleAssigning` at run time), not as a named person/unit inside the method.
 
 **CC‑A3.1‑5 (Runtime‑free).**
 A `U.Method` **SHALL NOT** contain schedule, calendar slots, or run IDs; those belong to `U.WorkPlan` (plans) and `U.Work` (executions). Methods are timeless.
@@ -3555,7 +3559,7 @@ Algorithm artifacts are `U.MethodDescription` for information‑transforming Met
 
 ## 10 · How Methods interact with Roles, Capability, Work, Dynamics (manager’s view)
 
-* **Roles (assignment).** Steps stipulate **role kinds** (e.g., `IncisionOperatorRole`), not people. At run time, `U.Work` references a **`U.RoleAssignment`** that satisfies the role kind.
+* **Roles (assignment).** Steps stipulate **role kinds** (e.g., `IncisionOperatorRole`), not people. At run time, `U.Work` references a **`U.RoleAssigning`** that satisfies the role kind.
 * **Capability (ability).** Steps may require **thresholds** (e.g., “precision ≤ 0.2 mm”). They are checked against the **holder’s `U.Capability`** in the context/envelope.
 * **Work (execution).** Each run records `isExecutionOf → MethodDescription` (the spec used) and `performedBy → RoleAssigning`. Logs, resources, and timestamps live here.
 * **Dynamics (laws/models).** Methods may cite or assume a Dynamics model; runs may attach traces that are explained by that model. Do not label the model itself as the Method.
@@ -3597,7 +3601,7 @@ Algorithm artifacts are `U.MethodDescription` for information‑transforming Met
 
 ## 14 · Relations
 
-* **Builds on:** A.1 Holonic Foundation; A.1.1 `U.BoundedContext`; A.2 `U.Role`; A.2.1 `U.RoleAssignment`; A.2.2 `U.Capability`.
+* **Builds on:** A.1 Holonic Foundation; A.1.1 `U.BoundedContext`; A.2 `U.Role`; A.2.1 `U.RoleAssigning`; A.2.2 `U.Capability`.
 * **Coordinates with:** A.3 (role masks for transformers/constructors/observers); A.15 (Role–Method–Work Alignment); B.1 Γ (aggregation) for method families vs assembly of systems.
 * **Informs:** `U.WorkPlan` \[D] (plans reference Methods they schedule); `U.Service` \[D] (promises cite Methods as delivery means); `U.Dynamics` \[D] (models that Methods may assume).
 
@@ -3619,7 +3623,7 @@ Algorithm artifacts are `U.MethodDescription` for information‑transforming Met
 Projects need a **stable way to express “how it is written”**—the recipe, code, SOP, rule set, or formal proof—**without confusing it** with:
 
 * the **semantic “way of doing”** (that is `U.Method`),
-* the **assignment** (that is `U.RoleAssignment`),
+* the **assignment** (that is `U.RoleAssigning`),
 * the **ability** (that is `U.Capability`),
 * the **execution** (that is `U.Work`), or
 * the **calendar plan** (that is `U.WorkPlan`).
@@ -3684,13 +3688,13 @@ Not a schema—these are **content prompts** for reviewers:
 3. **Preconditions** (guards, invariants, required states).
 4. **Postconditions / Effects** (what is guaranteed upon success).
 5. **Non‑functional constraints** (latency, precision, cost, safety envelope).
-6. **Role requirements** for enactment (**kinds**, not people)—to be satisfied at run time via **`U.RoleAssignment`**.
+6. **Role requirements** for enactment (**kinds**, not people)—to be satisfied at run time via **`U.RoleAssigning`**.
 7. **Capability thresholds** the performer must meet (checked against **`U.Capability`** of the holder).
 8. **Failure semantics** (detectable failures, compensations, rollback/forward strategies).
 9. **Compositional hooks** (how this spec composes: serial/parallel/choice/iteration), without embedding calendars.
 10. **Parameter declarations** (what may vary per run; values bound at `U.Work` creation).
 
-> **Didactic guardrail:** A MethodDescription **does not** embed a schedule, assignees, or BoM. Calendars → `U.WorkPlan`; people/units → `U.RoleAssignment`; product structure → PBS/SBS.
+> **Didactic guardrail:** A MethodDescription **does not** embed a schedule, assignees, or BoM. Calendars → `U.WorkPlan`; people/units → `U.RoleAssigning`; product structure → PBS/SBS.
 
 ### 4.4 CRA for MethodDescriptions (epistemic roles)
 
@@ -3719,7 +3723,7 @@ This keeps software and “wet lab” on equal footing.
 | A git repo or compiled binary             | **`U.MethodDescription`**             | Still a description (even if executable).     |
 | “The way we do X in principle”            | **`U.Method`**                 | Semantic contract beyond any single notation. |
 | A run log with timestamps                 | **`U.Work`**                   | A dated execution event.                      |
-| A role description (“surgeon”, “planner”) | **`U.Role` / `U.RoleAssignment`** | assignment, not recipe.                      |
+| A role description (“surgeon”, “planner”) | **`U.Role` / `U.RoleAssigning`** | assignment, not recipe.                      |
 | “Can achieve ±0.2 mm”                     | **`U.Capability`**             | Ability of a holder, not a spec.              |
 | A calendar for next week’s runs           | **`U.WorkPlan`**               | Plan/schedule, not a recipe.                  |
 | A state‑transition law                    | **`U.Dynamics`**               | Model of evolution, not a method description. |
@@ -3767,13 +3771,13 @@ Every `U.MethodDescription` **MUST** be interpreted **within** a `U.BoundedConte
 A `U.MethodDescription` **MUST** declare the `U.Method` it describes. Multiple MethodDescriptions **MAY** describe the same Method (see CC‑A3.2‑8).
 
 **CC‑A3.2‑4 (assignment/time‑free).**
-A MethodDescription **SHALL NOT** embed assignees, org units, or calendars. People/units are bound via **`U.RoleAssignment`** at run time; calendars belong to **`U.WorkPlan`**.
+A MethodDescription **SHALL NOT** embed assignees, org units, or calendars. People/units are bound via **`U.RoleAssigning`** at run time; calendars belong to **`U.WorkPlan`**.
 
 **CC‑A3.2‑5 (Structure‑free).**
 BoM/PBS/SBS artifacts **SHALL NOT** be embedded in MethodDescriptions. Reference **interfaces/resources** and constraints instead of listing parts/assemblies.
 
 **CC‑A3.2‑6 (Role and capability requirements).**
-A MethodDescription **MAY** state **role kinds** and **capability thresholds** required for enactment. These are **requirements**, not bindings. They are checked at run time against `U.RoleAssignment` and `U.Capability`.
+A MethodDescription **MAY** state **role kinds** and **capability thresholds** required for enactment. These are **requirements**, not bindings. They are checked at run time against `U.RoleAssigning` and `U.Capability`.
 
 **CC‑A3.2‑7 (Parameterization).**
 Parameters **MUST** be **declared** in the Method/MethodDescription; concrete values are **bound** when creating `U.Work`. Default values in a spec are allowed but **SHALL NOT** force a schedule or assignee.
@@ -3791,7 +3795,7 @@ Claims such as “sound but incomplete” or “complete but potentially unsound
 Executability does **not** change status: an executable artifact (program, script) is still a **MethodDescription**. Its runs are **Work**; its semantics are the **Method** it denotes.
 
 **CC‑A3.2‑12 (Epistemic roles via CRA).**
-A MethodDescription **MAY** play **epistemic roles** via `U.RoleAssignment` (e.g., `ApprovedProcedureRole`, `RegulatedProcedureRole`) that classify its status. Such bindings **do not** make the spec an actor.
+A MethodDescription **MAY** play **epistemic roles** via `U.RoleAssigning` (e.g., `ApprovedProcedureRole`, `RegulatedProcedureRole`) that classify its status. Such bindings **do not** make the spec an actor.
 
 **CC‑A3.2‑13 (Non‑determinism declaration).**
 If a MethodDescription permits non‑determinism (e.g., search/optimization), the **space of admissible outcomes** and **acceptance criteria** **MUST** be stated (so that Work can be judged).
@@ -3896,7 +3900,7 @@ Two specs are observationally equivalent for stakeholders **if**, under declared
 ## 15 · Relations
 
 * **Builds on:** A.3.1 `U.Method` (the semantic way it describes); A.1.1 `U.BoundedContext`.
-* **Coordinates with:** A.2 `U.Role`, A.2.1 `U.RoleAssignment` (who enacts it); A.2.2 `U.Capability` (ability thresholds); A.15 Role–Method–Work (linking `isExecutionOf` to runs).
+* **Coordinates with:** A.2 `U.Role`, A.2.1 `U.RoleAssigning` (who enacts it); A.2.2 `U.Capability` (ability thresholds); A.15 Role–Method–Work (linking `isExecutionOf` to runs).
 * **Informs:** `U.WorkPlan` (plans reference MethodDescriptions); `U.Dynamics` (models that specs may assume); Epistemic Role patterns (status of specs via CRA).
 * **Lexical guards:** E.10.y **L‑PROC** (do not call MethodDescription “process” when you mean Work/WorkPlan); E.10.x **L‑FUNC** (avoid “function/functionality” confusion).
 
@@ -5588,7 +5592,7 @@ To enforce the principles of externalization and causal clarity, all FPF models 
 
 | ID | Requirement (Normative Predicate) | Purpose / Rationale |
 | :--- | :--- | :--- |
-| **CC-A12.1 (External Agent Mandate)** | Every transformation (`U.Work`) **MUST** be attributed to an Agent (`U.RoleAssignment`) whose `holder` is distinct from the target holon. | This is the core rule that forbids self-magic. It ensures every action has an identifiable, external cause. |
+| **CC-A12.1 (External Agent Mandate)** | Every transformation (`U.Work`) **MUST** be attributed to an Agent (`U.RoleAssigning`) whose `holder` is distinct from the target holon. | This is the core rule that forbids self-magic. It ensures every action has an identifiable, external cause. |
 | **CC-A12.2 (Reflexive Split for Self-Action)** | Any narrative of "self-modification" (e.g., self-repair, self-configuration) **MUST** be modeled using the Reflexive Split pattern. | Forces the modeler to make internal control loops explicit by identifying the distinct `Regulator` (Agent) and `Regulated` (Target) subsystems. |
 | **CC-A12.3 (Boundary Explicitness)** | The `U.Boundary` and `U.Interaction` between the Agent and the Target **MUST** be explicitly modeled. | Makes interfaces a first-class citizen of the model. Prevents hidden dependencies and ensures interactions are auditable. |
 | **CC-A12.4 (Episteme Carrier as Target)** | When a `U.Episteme` is modified, the `Target` of the transformation **MUST** be its **symbol carrier** (`U.System`), not the `U.Episteme` itself. | Reinforces **Strict Distinction (A.7)**. Knowledge doesn't change by magic; a physical agent must act on its physical representation. |
@@ -5667,7 +5671,7 @@ FPF's solution is threefold: it defines an Agent through the **CRA pattern**, ma
 
 An **"Agent"** in FPF is not a fundamental type. It is a convenience term (a Register 1 / Register 2 label) for a specific kind of **Contextual Role-assignment (CRA)**:
 
-> `Agent ≍ U.RoleAssignment(holder: U.System, role: U.AgentialRole, context: U.BoundedContext)`
+> `Agent ≍ U.RoleAssigning(holder: U.System, role: U.AgentialRole, context: U.BoundedContext)`
 
 This means an Agent is simply a **`U.System`** that is currently playing an **`AgentialRole`** within a specific **`U.BoundedContext`**.
 
@@ -5685,7 +5689,7 @@ This means an Agent is simply a **`U.System`** that is currently playing an **`A
 
 #### 4.3 Measuring Agency: The `Agency-CHR` and the Spectrum
 
-Agency is not a binary switch; it is a multi-dimensional spectrum of capabilities. FPF models this using a dedicated architheory, **`Agency-CHR` (C.9)**, which is a **Characterization** that attaches a set of measurable properties to a `U.RoleAssignment`.
+Agency is not a binary switch; it is a multi-dimensional spectrum of capabilities. FPF models this using a dedicated architheory, **`Agency-CHR` (C.9)**, which is a **Characterization** that attaches a set of measurable properties to a `U.RoleAssigning`.
 
 The `Agency-CHR` profile is grounded in contemporary research (e.g., Active Inference, Basal Cognition) and includes the following key characteristics. Each is measured for a specific agent in a specific context and must be backed by evidence (A.10).
 
@@ -5730,8 +5734,8 @@ To ensure the agency model is applied rigorously and consistently, all FPF artif
 
 | ID | Requirement (Normative Predicate) | Purpose / Rationale |
 | :--- | :--- | :--- |
-| **CC-A13.1 (Holder Type)** | The `holder` of a `U.RoleAssignment` with `role: U.AgentialRole` **MUST** be a `U.System`. | Prevents the "episteme-as-actor" category error. Enforces **Strict Distinction (A.7)**. |
-| **CC-A13.2 (CRA Mandate)** | Any claim of agency **MUST** be represented by a complete `U.RoleAssignment` instance, including an explicit `holder`, `role`, and `context`. | Ensures that agency is always modeled as contextual and bound to a specific bearer, not as a free-floating property. |
+| **CC-A13.1 (Holder Type)** | The `holder` of a `U.RoleAssigning` with `role: U.AgentialRole` **MUST** be a `U.System`. | Prevents the "episteme-as-actor" category error. Enforces **Strict Distinction (A.7)**. |
+| **CC-A13.2 (CRA Mandate)** | Any claim of agency **MUST** be represented by a complete `U.RoleAssigning` instance, including an explicit `holder`, `role`, and `context`. | Ensures that agency is always modeled as contextual and bound to a specific bearer, not as a free-floating property. |
 | **CC-A13.3 (CHR Evidence)** | Any claim about an Agent's grade or level of autonomy **MUST** be substantiated by an auditable `Agency-CHR` profile with evidence anchors (A.10). | Makes claims of agency falsifiable and prevents "agency by marketing." |
 | **CC-A13.4 (Grade is Didactic)**| The **Agency Grade (0-4)** **SHALL NOT** be used as a normative input for formal reasoning. It is a didactic summary of the `Agency-CHR` profile. | Prevents oversimplification in formal models. The detailed profile, not the summary grade, must be used for assurance cases. |
 | **CC-A13.5 (Collective as System)** | To claim agency for a collective (e.g., a team, a swarm), the collective **MUST** first be modeled as a `U.System` with a defined `U.Boundary` and a coordination `U.Method`. | Prevents the error of assigning agency to a mere set or collection (`MemberOf`). Aligns with **A.1** and **A.14**. |
@@ -6100,11 +6104,11 @@ FPF mandates the use of the following distinct, non-overlapping entities to mode
 * 
 **B) The Bridge Entity:**
 
-*   **`U.RoleAssignment` (CRA):** The formal assertion `Holder#Role:Context` that links a specific `U.Holon` to a `U.Role` within a `U.BoundedContext`. This binding is what "activates" the requirements associated with a role.
+*   **`U.RoleAssigning` (CRA):** The formal assertion `Holder#Role:Context` that links a specific `U.Holon` to a `U.Role` within a `U.BoundedContext`. This binding is what "activates" the requirements associated with a role.
 
 **C) Run-Time Entity (The World of Actuality):**
 
-*   **`U.Work`:** An **occurrence** or **event**. It is the concrete, dated, resource-consuming **execution of a `U.MethodDescription`** by a `Holder` acting under a `U.RoleAssignment`; capability checks are evaluated at run time against the holder. This is the only entity that has a start and end time and consumes resources.
+*   **`U.Work`:** An **occurrence** or **event**. It is the concrete, dated, resource-consuming **execution of a `U.MethodDescription`** by a `Holder` acting under a `U.RoleAssigning`; capability checks are evaluated at run time against the holder. This is the only entity that has a start and end time and consumes resources.
 
 **Kinds of Work and the primary target**
 Every `U.Work` SHALL declare a `primaryTarget: U.Holon` and a `kind`.
@@ -6136,7 +6140,7 @@ graph TD
         A[U.BoundedContext] -- defines --> B(U.Role)
         M[U.Method] -- isDescribedBy --> D[U.MethodDescription]
         Cap[U.Capability] -- supports --> M
-        H(U.System as Holder) --> RB(U.RoleAssignment · CRA)
+        H(U.System as Holder) --> RB(U.RoleAssigning · CRA)
         B -- is the role in --> RB
         A -- is the context for --> RB
         A -- bindsCapability(Role,Capability) --> Cap
@@ -6193,7 +6197,7 @@ To ensure the integrity of action modeling, all FPF-compliant models must adhere
 | :--- | :--- | :--- |
 | **CC-A15-1 (Entity Distinction)** | The entities `U.Role`, **`U.Method`**, **`U.MethodDescription`**, `U.Capability`, **`U.WorkPlan`**, and `U.Work` **MUST** be modeled as distinct, non‑overlapping types. | This is the core enforcement of **Strict Distinction (A.7)**. It prevents the category errors outlined in the "Problem" section. |
 | **CC-A15-2 (Temporal Scope)** | `U.Method`/`U.MethodDescription`/`U.WorkPlan` exist in **design‑time**; `U.Work` exists in **run‑time**. Design artifacts are not mutated by operational events. | Enforces **Temporal Duality (A.4)**. Blueprints cannot be mutated by operational events. |
-| **CC-A15-3 (RoleAssigning Mandate)**| Every `U.Work` **MUST** be linked via `performedBy` to a valid `U.RoleAssignment` (CRA). | Guarantees that every action has a clearly identified, context-bound actor, ensuring accountability. |
+| **CC-A15-3 (RoleAssigning Mandate)**| Every `U.Work` **MUST** be linked via `performedBy` to a valid `U.RoleAssigning` (CRA). | Guarantees that every action has a clearly identified, context-bound actor, ensuring accountability. |
 | **CC-A15-4 (Traceability Chain)**| For every `U.Work`, an unbroken chain **MUST** exist: `Work —performedBy→ RoleAssigning` and `Work —isExecutionOf→ MethodDescription —describes→ Method`. Capability checks are evaluated against the holder at run time. | Ensures end-to-end auditability from a specific action back to the "recipe" that governed it. |
 | **CC-A15-5 (No Roles in Mereology)** | A `U.Role` or `U.Capability` **SHALL NOT** be part of a mereological (`partOf`) hierarchy. | The "Role-as-Part" anti-pattern is a violation. Roles and capabilities are functional, not structural. Enforces **A.14**. |
 | **CC-A15-6 (Resource Honesty)** | Resource consumption (`U.Resource`) **MUST** only be associated with `U.Work`, never with `U.MethodDescription` or `U.Capability`. | Enforces that costs are tied to actual events, not to plans or potential. Aligns with **Resrc-CAL (C.5)**. |
@@ -6267,7 +6271,7 @@ That concept is **`U.Work`**: the **dated run‑time occurrence** of enacting a 
 
 ### 4.1 Definition
 
-**`U.Work`** is a **4D occurrence holon**: a **dated run‑time enactment** of a `U.MethodDescription` by a performer designated through a `U.RoleAssignment`, within a `U.BoundedContext`, that binds concrete parameters, consumes/produces resources, and leaves an auditable trace.
+**`U.Work`** is a **4D occurrence holon**: a **dated run‑time enactment** of a `U.MethodDescription` by a performer designated through a `U.RoleAssigning`, within a `U.BoundedContext`, that binds concrete parameters, consumes/produces resources, and leaves an auditable trace.
 
 > **Memory aid:** *Work = “how it went this time”* (dated, resourced, accountable).
 
@@ -6277,7 +6281,7 @@ When you describe a Work instance in a review, answer these prompts:
 
 1. **Window** — start/end timestamps (and, where relevant, location/asset).
 2. **Spec** — `isExecutionOf → U.MethodDescription` (the description actually followed).
-3. **Performer** — `performedBy → U.RoleAssignment` (which **holder#role\:context** acted).
+3. **Performer** — `performedBy → U.RoleAssigning` (which **holder#role\:context** acted).
 4. **Parameters** — concrete values bound for this run (from the Method/MethodDescription parameter declarations).
 5. **Inputs/Outputs** — material/information artifacts read/written, products/services delivered.
 6. **Resources** — energy, materials, machine time, money (the **only** place we book them).
@@ -6400,7 +6404,7 @@ If any of these differ (or the context declares equivalence absent), they are **
 **CC‑A15.1‑2 (Required links).**
 Every `U.Work` **MUST** reference:
 (a) `isExecutionOf → U.MethodDescription` (the spec followed), and
-(b) `performedBy → U.RoleAssignment` (the assigned performer in context).
+(b) `performedBy → U.RoleAssigning` (the assigned performer in context).
 
 **CC‑A15.1‑3 (Time window).**
 Every `U.Work` **MUST** carry a closed interval `[t_start, t_end]` (or an explicitly marked open end for in‑flight work) and, where relevant, location/asset.
@@ -6552,7 +6556,7 @@ When a Work is recorded, perform these **three quick checks**:
 
 ## 14 · Relations
 
-* **Builds on:** A.1 Holonic Foundation; A.1.1 `U.BoundedContext`; A.2 `U.Role`; A.2.1 `U.RoleAssignment`; A.2.2 `U.Capability`; A.3.1 `U.Method`; A.3.2 `U.MethodDescription`.
+* **Builds on:** A.1 Holonic Foundation; A.1.1 `U.BoundedContext`; A.2 `U.Role`; A.2.1 `U.RoleAssigning`; A.2.2 `U.Capability`; A.3.1 `U.Method`; A.3.2 `U.MethodDescription`.
 * **Coordinates with:** A.15 Role–Method–Work Alignment (the “four‑slot grammar”); B.1 Γ (aggregation) for resource/time operators; E‑cluster lexical rules (L‑PROC/L‑FUNC).
 * **Informs:** Reporting/KPI patterns; Assurance/evidence patterns (Work as the anchor for audits); Scheduling patterns (`U.WorkPlan` ↔ `U.Work` deltas).
 
@@ -8407,7 +8411,7 @@ Real‑world convergence across steel, silicon and software shows the rules are 
   **structure** (what the episteme comprises), **order** (argument flow), **time** (versioning/phases), **work** (what was spent to produce/validate it), and **values** (objectives/criteria). Γ\_epist stays in the **structure/semantics** lane and calls out to Γ\_ctx/Γ\_time/Γ\_work when needed.
 * **Mereology (A.14).** For knowledge composition we primarily use **ConstituentOf** (logical/semantic parts), **UsageOf/ReferenceTo** (external reliance), and **MemberOf** for **collections** (anthologies, corpora). We do **not** use **ComponentOf** (physical) in Γ\_epist.
   `PhaseOf` handles temporal versions of the **same** episteme; **RoleBearerOf** is irrelevant here because knowledge **does not play a role**—it is **used** by a holon‑in‑role (Transformer) at run‑time (A.12).
-* **Assurance (B.3).** Knowledge carries **F**, **G**, **R** (Formality, Generality, Reliability). Integration edges carry **CL** (congruence level) that penalizes poor fit. Γ\_epist **must** preserve provenance and apply **conservative** bounds: no “truth averaging,” no silent context hops. **Obligations here are mode/assurance‑gated per C.2.1.**  # [M‑0]
+* **Assurance (B.3).** Knowledge carries **F**, **G**, **R** (Formality, Generality, Reliability). Integration edges carry **CL** (congruence level) that penalizes poor fit. Γ\_epist **must** preserve provenance and apply **conservative** bounds: no “truth averaging,” no silent context hops.
 * **Order/time flavours.** Argument sequences may need **Γ\_ctx** (non‑commutative ordering of premises to conclusion). Knowledge evolution uses **Γ\_time** (versioning, deprecation, update). When composition produces **new closure or supervision** (e.g., explanatory theory emerges), we declare **MHT** (B.2).
 
 ---
@@ -8467,7 +8471,7 @@ To keep **design vs run** clean (A.15), Γ\_epist has two companion flavours tha
 ```
 
 * **Domain.** `D_know` uses **ConstituentOf**, **UsageOf/ReferenceTo**, **evidences/derivesFrom**, optional **MemberOf** for collections.
- * **Result.** A **composite episteme** whose Object/Concept/Symbol components are assembled; **provenance and SCR are preserved**; F/G/R/CL are provisionally computed for later assurance.   **Gating:** at **M‑mode** only tuple placeholders are required; numeric scoring may be omitted (**\[M‑0/M‑1]**). At **F‑mode** the tuple **MUST** be computable in‑room (**\[F‑*,L1+]**).  # [M/F]
+* **Result.** A **composite episteme** whose Object/Concept/Symbol components are assembled; **provenance and SCR are preserved**; F/G/R/CL are provisionally computed for later assurance.
 
 2. **Compile (run‑time)** — produce the **released artifact** in a bounded context
 
@@ -8485,18 +8489,14 @@ If the knowledge fold explicitly depends on **argument order** (e.g., derivation
 
 ---
 
-#### 4.3 Invariant contract (how the Quintet applies; **math by level**)
+#### 4.3 Invariant contract (how the Quintet applies)
 
 * **IDEM (Idempotence).** Folding a single episteme returns itself; no accidental “upgrade.”
 * **COMM/LOC (Local commutativity / locality).** For **independent** subgraphs (no logical/evidential dependency), fold order/location is irrelevant; when dependencies exist, **Γ\_ctx** controls order explicitly.
 * **WLNK (Weakest‑link bound).** Aggregate **Reliability (R)** is bounded by the **weakest supported link** along any justification path, **after** considering the **lowest CL** on mappings used by that path.
 * **MONO (Monotonicity).** Strengthening a part (raising **R** with valid evidence or raising **CL** on a needed mapping) cannot lower aggregate **R**. Adding **contradictory** evidence is **not** an improvement; it triggers conflict handling (below), not MONO.
 
-2. **Reliability fold.** Along any support spine, **R\_raw = min\_i R\_i**; apply congruence penalty Φ(CL\_min) → **R\_eff = max(0, R\_raw − Φ(CL\_min))**.  *No averaging; weakest‑link.*  
-   **Math by level:**  
-   – **\[M‑0/M‑1]** allow **ordinal** comparisons only (no arithmetic on R); Φ may be stated qualitatively (“low/med/high”).  
-   – **\[M‑2/L1]** require numeric Φ table (default in §4.4) and reproducibility tag on empirical edges.  
-   – **\[F‑*,L1/L2]** require formal derivability of the fold rules from LOG‑CAL; constructive mode annotates `proof.kind=constructive`.  # [M/F]
+---
 
 #### 4.4 Core rules for epistemic aggregation (design‑time synthesis)
 
@@ -8532,15 +8532,12 @@ The penalty function `Φ` quantifies the loss of reliability due to poor concept
 
 7. **Handling of Axiomatic vs. Postulative Epistemes**
    In alignment with ADR-028, the computation of `R_eff` depends on the episteme's declared `mode`.
+   *   For an input episteme `E_i` with **`mode: axiomatic`**, its empirical reliability is not applicable. Its effective reliability for the purpose of aggregation is considered equal to its formal soundness: `R_i_eff = F_i`.
+   *   For an episteme with **`mode: postulative`**, its declared `R_i` is used directly in the aggregation formula.
+   *   The aggregate `E_eff` **MUST** also declare a mode. If all inputs are `axiomatic`, the output is `axiomatic`. If any input is `postulative`, the output **MUST** be `postulative`.
 
-*   For an input episteme `E_i` with **`mode: axiomatic`**, empirical `R` is N/A; take `R_i_eff = F_i`. **Tag:** `line=formal`.  # [F‑*]
-*   For **`mode: postulative`**, use declared `R_i` with decay; **Tag:** `line=empirical`.  # [M‑1/M‑2/F]
-*   The aggregate `E_eff` **MUST** also declare a mode. If all inputs are `axiomatic`, the output is `axiomatic`. If any input is `postulative`, the output **MUST** be `postulative`.
-*   **Constructive note.** Under **F‑constructive**, equivalence claims use **isomorphism/equivalence** in the chosen UF library; **CL=2** means proof‑reconstructed alignment, not mere model‑theoretic appeal.  # [F‑constructive]
- 
 7. **Order‑aware arguments (optional).**
    If the argument requires premise ordering, embed a **Γ\_ctx** fold inside Γ\_epist; record the **OrderSpec** for reproducibility (NC‑1..3).
-   **Gating:** OrderSpec is **recommended** at **M‑1** and **required** at **M‑2/F**.  # [M‑1→F]
 
 8. **No costs here.**
    Any compute/collection effort is **Γ\_work**; attach references but do not mix costs into epistemic aggregation.
@@ -8549,19 +8546,14 @@ The penalty function `Φ` quantifies the loss of reliability due to poor concept
 
 When computing **Γ\_epist^compile(E\_synth, Ctx, T)**:
 
-1. **Context bindings.**  # [M‑1+]
+1. **Context bindings.**
    Map all operative concepts/units/claims into **Ctx**; record mappings and their **CL**. If the rebase changes boundary/objective of the episteme (e.g., from descriptive compendium to explanatory theory with commitments), **declare Context Reframe (MHT)** per B.2.
 
-2. **Assurance baseline (gated).**  
-   Recalculate the **assurance tuple** (B.3) **in Ctx**: F and R may change with formalization and mapping penalties; G is re‑expressed in Ctx’s scope.  
-   **Gating:**  
-* **\[M‑0]** narrative justification only;  
-* **\[M‑1]** qualitative tuples allowed;  
-* **\[M‑2/L1]** numeric tuple required;  
-* **\[F‑*/L2]** tuple **and** proof obligations on weight/penalty model selection.  # [M/F]
+2. **Assurance baseline.**
+   Recalculate the **assurance tuple** (B.3) **in Ctx**: F and R may change with formalization and mapping penalties; G is re‑expressed in Ctx’s scope.
 
 3. **Release SCR.**
- Produce RSCR with carrier hashes; at **L2** require independent re‑hash verification.  # [M‑1/L2]
+   Produce a **publication‑grade** `U.SCR` (hashes, versions) ensuring any downstream audit can reconstruct the fold.
 
 4. **Order/time hooks.**
    If the compiled artifact includes an internal derivation, carry the **OrderSpec**; if it codifies a specific **time slice** of evolving knowledge, link back to the **Γ\_time** slice used.
@@ -10630,10 +10622,6 @@ These obligations refine the generic Proof Kit from **B.1.1 §6** for **assuranc
   * `CL`: mapping of scales (CL1 vs CL3).
   * `G`: populations union, but unsupported sub‑populations are dropped.
 * **Aggregation:**
-+* **Aggregation:**  
-* **\[M‑1]** ordinal support ranking; note weakest‑link study.  
-* **\[M‑2]** compute `R_eff` with Φ table; record `CL_min` for scale mappings.  
-* **\[F‑constructive]** formalise the effect‑model equivalence and export proof‑term hash.  # [M/F]
 
   * `R_eff = max(0, min(R_RCT1, R_RCT2, R_OBS) − Φ(CL_min=CL1))`.
   * `G_eff`: union of supported sub‑populations; out‑of‑scope groups excluded.
@@ -11730,1007 +11718,22 @@ This approach is inspired by contemporary practices in both ontology engineering
 | **Cluster C.I – Core CALs / LOGs / CHRs**    |                                    |     |                                                                      |
 | C.1                                          | **Sys‑CAL**                        | CAL | Physical holon composition; conservation invariants; resource hooks. |
 | C.2                                          | **KD‑CAL**                         | CAL | Epistemic holon composition; F‑G‑R axes; provenance graph.           |
+| C.3                                          | **Type‑CAL**                       | CAL | Generic lattice; sub‑typing; reused by LOG‑CAL.                      |
+| C.4                                          | **Method‑CAL**                     | CAL | Formal U.Method / U.MethodDescription; Γ_method ops.                         |
+| C.5                                          | **Resrc‑CAL**                      | CAL | Energy / material / information resources; Γ\_work ops.              |
+| C.6                                          | **LOG‑CAL – Core Logic Calculus**  | LOG | Minimal proof calculus; modal & trust operators (imports Type‑CAL).  |
+| C.7                                          | **CHR‑CAL – Characterisation Kit** | CHR | Meta‑template for measurable properties (imports Sys/KD/Resrc‑CAL).  |
+| **Cluster C.II – Domain‑Specific Architheories (CAL / LOG / CHR)**      |                                    |     |                                                                      |
+| C.9 | **Agency‑CHR** | CHR | Gradual agency measurement; `AgentialRole`; active‑inference hooks. |
+| C.10                                         | **Norm‑CAL**                       | CAL | Behavioural constraints; ethics; trust anchors.                      |
+| C.11                                         | **Decsn‑CAL**                      | CAL | Decision holons; preference orders; utility proofs.                  |
+| **Cluster C.III – Meta‑Infrastructure CALs** |                                    |     |                                                                      |
+| C.12                                         | **ADR‑Type‑CAL**                   | CAL | DRR schema; Signature / Realization versioning.                      |
+| C.13 | **Compose‑CAL — Structural Aggregation Calculus** | CAL | Exports `Γ_m.sum | Γ_m.set | Γ_m.slice`; extensional identity; order/time remain outside mereology. |
+| **Cluster C.IV – Composite & Macro‑Scale**   |                                    |     |                                                                      |
+| C.14                                         | **M‑Sys‑CAL**                      | CAL | Large‑scale infrastructures; multi‑Transformer orchestration.        |
+| C.15                                         | **M‑KD‑CAL**                       | CAL | Discipline‑level paradigms; meta‑epistemic analytics.                |
 
-# C.2 · **KD‑CAL** — *Epistemic holon composition* \[A]  *(Architheory: CAL)*
-
-**Scope & exports.** A substrate‑neutral calculus for composing **epistemic holons** (`U.Episteme`) and reasoning about their motion and equivalence. Exports: (i) three **point‑characteristics**—**Formality F**, **Generality G** *(applicability envelope breadth)*, **Reliability R**—that locate a single episteme; (ii) a **pairwise ladder** of **Congruence Levels (CL 0…3)**; (iii) four **Δ‑moves** (*Formalise, Generalise/Specialise, Calibrate/Validate, Congrue*); (iv) **composition rules** (Γ_epist) for aggregates; (v) propagation laws for CL through mappings and notation bridges. KD‑CAL sits on the `U.Episteme` *semantic triangle* (Symbol–Concept–Object) and never confuses **notation** with **carrier**. All F–G–R computations are **room‑local**; cross‑room traversals **require** an explicit **Bridge** with **CL** and apply the **B.3** congruence penalty **Φ(CL)** to **R**.  // rooms ≡ U.BoundedContext; substitution is plane‑preserving only
-
-## 1 · Context
-
-FPF fixes two archetypal sub‑holons: **`U.System`** (physical/operational) and **`U.Episteme`** (knowledge holon). KD‑CAL is the **home architheory** of `U.Episteme`, giving engineers a compact, testable way to say (a) how strictly an episteme is written (**F**), (b) how much structure it manages (**G**), (c) how well it is warranted by evidence or severe tests (**R**), and (d) how closely **two** epistemes coincide (**CL**). KD‑CAL is built atop **C.2.1 U.Episteme — Semantic Triangle via Components**, which reifies every episteme as **Concept** (claim‑graph), **Object** (aboutness & evaluation rules), and **Symbol** (notation)—*not the file itself*; **carriers** and **work/executions** remain outside and are linked via `isCarriedBy` / `producedBy(U.Work)`.
-
-## 2 · Problem
-
-Teams routinely entangle **programs, specifications, proofs, and datasets**; a “proof” is treated as a tested routine, a “program” is cited as if it entailed a theorem. **Trust decays** because justification and evidence freshness are not explicit. Epistemes are anthropomorphised as actors (“the standard enforces…”), producing **category errors at execution**. Without a shared composition and equivalence calculus, aggregates hide weakest links and analogies harden into overclaims. KD‑CAL must stop these failure modes with a **single constitution and scale‑set**.
-
----
-
-## 3 · Forces
-
-* **Universality vs domain idioms.** One calculus must host physics theories, legal codes, safety specs, algorithms, and formal proofs without flattening their differences.
-* **Meaning vs materiality.** Meaning must be independent of carrier, yet accountable to it historically.
-* **Deductive vs empirical.** Axiomatic certainty and empirical trust have different lifecycles; both must compose.
-* **Abstraction vs enactment.** Epistemes constrain action; **systems** act. The calculus must keep the roles distinct.
-
----
-
-## 4 · Solution
-
-### 4.1 · Coordinates and the triangle
-
-**KD‑CAL characteristics (single‑episteme, point‑values).**
-
-* **Formality F.** From free prose to **machine‑checkable proof/specification**. Litmus: *would a machine reject it if wrong?*
-* **Generality G.** From a narrow, highly‑specific case to a **broad applicability envelope** (scope & assumptions). Litmus: *how wide is the declared envelope, and under what minimal assumptions does the claim hold?*
-* **Reliability R.** From untested idea to **continuously validated claim**. Litmus: *where is the last successful severe test?* **R‑claims MUST bind to evidence and declare relevance windows; stale bindings degrade R or require waiver per ESG policy.**
-
-**Congruence Level (CL), pairwise ladder.**
-`CL‑0` behavioural similarity; `CL‑1` functional sameness (bounded‑contract match); `CL‑2` **formal equivalence** (structure‑preserving mapping that transports theorems in the declared fragment); `CL‑3` **intrinsic identity** (equality/univalence). *CL is a relation between two epistemes; it is not a fourth axis.* **Norm:** *substitution is permitted only if plane‑preserving and **CL ≥ 2**; substituting **type‑structure** requires **CL = 3***.
-
- **Congruence Level (CL), pairwise ladder.**
- `CL‑0` **Opposed/Disjoint** (contrastive; no substitution); `CL‑1` **Comparable / Naming‑only** (label similarity; no substitution); `CL‑2` **Translatable / RoleAssignment‑eligible** (structure‑preserving mapping in a declared fragment with **stated loss**; theorems may transport); `CL‑3` **Near‑identity / Type‑structure‑safe** (invariants match; type‑structure substitution allowed). *CL is a characteristic of a relation between two epistemes; it is not a fourth axis of epistemic characteristic space.* **Norm:** *substitution is permitted only if plane‑preserving and **CL ≥ 2**; substituting **type‑structure** requires **CL = 3***.
-
-**Triangle link.** The axes live on the **Concept↔Object** side: *F* by the internal claim‑graph structure; *G* by the **applicability envelope** (scope & assumptions); *R* by evaluation templates and evidence bindings. The **Symbol** vertex hosts notation; **carriers are outside** the episteme and link via `isCarriedBy`. Multiple notations are allowed under a **single Symbol component**; authors SHOULD register `NotationBridge(n₁,n₂)` with an associated **CL** to make conversion loss explicit.
-
-### 4.2 · Four Δ‑moves (epistemic motion)
-
-* ***ΔF — Formalise.** Rewrite for stricter calculi/grammars; raise proof obligations.
-* ***ΔG — Generalise / Specialise.** Widen or narrow the **applicability envelope** (assumptions & scope). Changes to decomposition granularity are an **orthogonal view** and do not change **G** unless they alter the envelope.
-* **ΔR — Calibrate / Validate.** Strengthen severe tests or add live monitoring; update evidence bindings.
-* **ΔCL — Congrue.** Establish and record the sameness relation between **two** epistemes (ladder 0→3).
-  Moves compose into **paths**; CL along a path is the **minimum** of its links.
-
-### 4.3 · Composition (Γ\_epist) and propagation
-
-Let **Γ\_epist** combine epistemes `{Eᵢ}` into a composite episteme **Γ** that makes a joint claim (*AND‑style*) or exposes an interface (*series composition*). KD‑CAL imposes **safe defaults**:
-
-* **R (Reliability).** Along any justification **path** `P`, compute **`R_eff(P) = max(0, min_i R_i − Φ(CL_min(P)))`** (weakest‑link with congruence penalty). For **series** composition (claims needed conjunctively), the path‑wise weakest‑link applies; for **parallel** support (independent lines to the *same* claim), use **`R(Γ) = max_P R_eff(P)`** (annotate independence); never exceed the best attested line. Cross‑room steps and **NotationBridge** traversals contribute to `CL_min(P)`.
-
-* **F (Formality).** `F(Γ) = minᵢ F(Eᵢ)` (monotone non‑increasing along used paths). To raise **F**, apply **ΔF** to the weakest parts.
-* **G (Generality).** On any dependency **path**, take the **intersection** of applicability envelopes (the **narrowest overlapping scope**). Across **independent support paths to the same claim**, set **`G(Γ) = SpanUnion({G_path})` constrained by support** (drop unsupported regions). Widening/narrowing the scope is an explicit **ΔG±** operation.
-* **CL (Congruence).** For a chain of mappings `E₀ ~ E₁ ~ … ~ Eₖ`, the **path congruence** is `min CL(Eⱼ,Eⱼ₊₁)`. Passing through a **NotationBridge** sets CL to the bridge’s declared level; the **Φ(CL)** penalty is applied in the **R** fold for any path that traverses it.
-
-These rules keep Γ aligned with the **holonic kernel**: Γ is only defined on holons and respects identity/boundary discipline from the core. 
-
-### 4.4 · What **must not** be conflated (normative guards)
-
-* **Symbol ≠ carrier.** Files, PDFs, or repositories are **carriers** outside the episteme; they never count as parts of `U.Episteme` (**see C.2.1 EP‑1; CC‑EPI‑2/3**).
-* **Epistemes do not act.** Only **systems** perform work; epistemes constrain/evaluate via **Object** and **Concept** (**per Core A.15 / CC‑EPI‑3**).
-* **CL is not a score.** It is a **qualitative ladder** of preservation strength; do not average it. 
-
----
-
-## 5 · ✱ Archetypal Grounding (Tell–Show–Show)
-
-**Universal rule (tell).** *Compose knowledge by Γ\_epist with weakest‑link R, monotone F, and explicit CL on every bridge; keep Symbol–Concept–Object separate and never turn a carrier into a part.*
-
-**System (show, Sys‑CAL lens).** Consider a **battery‑pack thermal subsystem** integrating a physics model of heat flow and an operating envelope for fast‑charge. As a **system**, it composes pumps, sensors, and controllers by physical Γ with conservation constraints (Sys‑CAL). The assurance story depends on epistemes about the model and envelope; the system **acts**, epistemes constrain. (Archetypes and boundary discipline per core.)
-
-**Episteme (show, KD‑CAL lens).** Consider a **CMIP‑class climate projection episteme** (post‑2015 generation): its **Concept** is a claim‑graph over PDEs and parameterisations; its **Object** defines an applicability envelope (historical forcings, resolution); its **Symbol** may include two notations (domain equations vs. tabular schema) linked by a **NotationBridge** with an explicit CL. Compose sub‑epistemes for radiation, clouds, and ocean mixing: `R = min` across the critical path; an independent hindcast line can raise `R` only up to its own level; `F` is bounded by the least‑formal sub‑claim unless the composition adds formal invariants.
-
----
-
-## 6 · Bias‑Annotation
-
-* **Metric worship.** Treating `[F,G,R]` as ends rather than means; mitigation: require **evidence bindings** and narrative of limits in the Object envelope.
-* **Category slip.** Equating a notation or its carrier with the Concept; mitigation: Symbol–carrier separation and EP‑1 triangle cardinality.
-* **Analogy inflation.** Presenting CL‑0/1 as identity; mitigation: always name the **CL rung** for cross‑mappings.
-
----
-
-## 7 · Conformance Checklist
-
-1. **C2‑1 (Triangle).** Every `U.Episteme` **MUST** occupy exactly one slot per {Symbol, Concept, Object}; carriers link via `isCarriedBy` and are never parts.
-2. **C2‑2 (Coordinates).** Each episteme **SHALL** declare `[F,G,R]` with a brief rationale tied to Concept/Object (envelope for **G**); CL is declared **only for pairs**.
-3. **C2‑3 (Composition).** Authors **SHALL** choose Γ_mode (**series** vs **parallel**). For any justification **path** use **`R_eff(P) = max(0, min_i R_i − Φ(CL_min(P)))`**; for **parallel** independent lines to the *same claim*, take **`R(Γ) = max_P R_eff(P)`** (never exceeding the strongest line). Compute `F(Γ) = min` along the used paths. For **G**, use **path‑wise intersections** and then **SpanUnion({G_path}) constrained by support**. Cross‑room traversals **MUST** use a Bridge with **CL** and apply **Φ(CL)** to `R`.
-4. **C2‑4 (NotationBridge).** Multi‑notation Symbol components **SHOULD** register `NotationBridge` edges with CL and loss note; any cross‑notation reasoning **MUST** cite the bridge’s CL.
-5. **C2‑5 (No action).** Epistemes **MUST NOT** be assigned actions; work is executed by systems in role.
-
----
-
-## 8 · Consequences
-
-**Benefits.** A single, compact **map** for all knowledge artefacts; fast detection of weakest‑link **R** in aggregates; disciplined reuse across domains with explicit **CL**; consistent separation of **meaning** from **material carriers**.
-**Trade‑offs.** Authors must learn to declare Γ‑mode and CL explicitly; multi‑notation work requires bridge bookkeeping; *mitigation:* the triangle and ladder keep the discipline brief and repeatable.
-
----
-
-## 9 · Rationale
-
-KD‑CAL externalises a long‑standing semiotic insight (Sign–Meaning–Referent) into a **holonic composition** where syntax/structure (**F,G**), pragmatics/evidence (**R**), and cross‑mapping strength (**CL**) are visible and composable. The explicit triangle (C.2.1) prevents carrier confusion; the characteristic provide a **manager‑readable** yet **formalisation‑ready** scale (with **G** grounded in **scope/envelope**, not part‑count); the CL ladder replaces overloaded “alignment” with a graded sameness notion.
-
----
-
-## 10 · Relations
-
-* **Depends on:** `U.Episteme — Semantic Triangle via Components` (C.2.1): identity invariants EP‑1, Symbol–Concept–Object definitions, evidence bindings.
-* **Peers:** **Sys‑CAL** (C.1), which composes **systems**; KD‑CAL composes **epistemes** and feeds assurance lenses in Part B.
-* **Constrained by authoring:** `[A]` patterns must include Tell–Show–Show with **Archetypal Grounding** (this section).
-
----
-
-## 11 · Worked mini‑examples (post‑2015 flavours)
-
-* **Formal lift (ΔF).** Recasting a 2019 **variational free‑energy** narrative into a typed calculus raises **F**, clarifies scope, and enables CL‑2 bridges between biological and ML formulations—*without* claiming empirical gain (**R** unchanged).
-* **Parallel evidence (R, max).** Two independent **hindcast** lines (circa CMIP6, 2019) supporting the same forecast allow `R(Γ)=max(R₁,R₂)`; if one line drifts, the composite is bounded by the stronger line until series constraints apply.
-* **Notation bridge (CL drop).** A 2021 **type‑theoretic specification** rendered in a semi‑formal DSL requires a `NotationBridge` with a CL<3 note; any theorem transported across must respect the bridge’s declared preservation.
-
-*(No tooling is implied; these are conceptual moves within the calculus.)*
-
-
-
-# C.2.1 · **U.Episteme — Semantic Triangle via Components**  \[A]
-
-> **One‑line summary.** An **episteme** is a knowledge holon whose **Concept** (intension/claim‑graph), **Object** (aboutness & testability), and **Symbol** (notation/representation—*not carriers*) form a disciplined **semantic triangle** pointing to its **topic holons**.  Triangle sides are `expresses(Symbol,Concept)` and `anchors(Concept,Object)`. The `about(Object→TopicHolon)` and `isCarriedBy(Episteme→Carrier)` are external links (not triangle sides).
-
-## 1 · Context
-
-FPF’s kernel recognises two archetypal sub‑holons: **System** and **Episteme**. Systems are operational wholes; **epistemes** are **knowledge holons**—theories, models, specifications, standards, algorithms, proofs—whose reason for being is to **say something defeasible or deductive about something** and to be **held to account** by justification. In the kernel, **Strict Distinction** forbids us from conflating a thing with its description or its carrier; **I/D/S** in Part E adds the teaching rule *Intension ≠ Description ≠ Specification*. KD‑CAL must now **operationalise** this for epistemes: what they *are*, *how* their parts hang together, and *how* they point to the world.
-
-**Readers.** Engineering managers and lead designers who need a uniform way to reason about **theories, specifications, algorithms, proofs**—from charter memos up to formal axiomatics—without collapsing into tooling or discipline‑specific notations.
-
----
-
-## 2 · Problem
-
-Without a shared **episteme constitution**, teams fall into recurring failure modes:
-
-1. **Object–Description–Carrier soup.** Diagrams and files are treated as *the theory itself*. Changes to a PDF are confused with theoretical change.
-2. **Aboutness blur.** A spec seems to describe “everything in general”. The **topic**—*what exactly this knowledge is about*—is implicit and drifts.
-3. **Proof vs program confusion.** Algorithms, specifications, and proofs are mixed: a “proof” is used as if it were a tested routine; a “program” is cited as if it entailed a theorem (Curry–Howard misunderstood).
-4. **Unanchored trust.** Claims accumulate with no explicit **justification graph** or **evidence freshness**, so assurance degrades invisibly.
-5. **Category errors at execution.** Epistemes appear as *actors* (“the standard enforces…”) instead of **systems** acting *with* or *on* epistemes.
-
-KD‑CAL must fix a **single, substrate‑neutral semantic triangle** and the **component slots** of an episteme so that claims, justification, carriers, and topics stay aligned—and so that trust (F‑G‑R) and provenance compose safely across contexts.
-
----
-
-## 3 · Forces
-
-| Force                             | Tension we must resolve                                                                                                                                     |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Universality vs domain idioms** | One constitution must fit physics theories, legal codes, product specs, algorithms, and mathematical proofs—while letting each context keep its vocabulary. |
-| **Meaning vs materiality**        | Meaning must be independent of any concrete carrier, yet **accountable** to carriers and their history.                                                     |
-| **Deductive vs empirical**        | Axiomatic proofs don’t age; empirical support does. One triangle must host both lines without flattening their differences.                                 |
-| **Abstraction vs enactment**      | Epistemes don’t *act*; systems do. Still, epistemes must robustly constrain and evaluate actions.                                                           |
-| **Clarity vs economy**            | Managers need a compact mental model; the constitution must remain short yet testable.                                                                      |
-
----
-
-## 4 · Solution
-
-### 4.1 The Semantic Triangle via Components
-
-**Identity invariants (normative).**  
-A `U.Episteme`’s identity consists of: (i) the persistent root `U.Episteme` identifier within its `U.BoundedContext`; and (ii) the **role‑complete** occupancy of the three component slots `{Object, Concept, Symbol}` (EP‑1). Any change to slot cardinality or any swap of a slot’s **value** that alters the declared `ClaimGraph` (Concept) or `Designation & Reference Map` (Object) **MUST** be realised as a new `PhaseOf` edition (§19). Changes confined to the `Symbol` component’s **Notation‑Set/NotationBridge** do **NOT** create a new edition.
-
-We reify **U.Episteme** as a holon with **exactly three reified epistemic components** and two pointing relations, each protected by kernel rules:
- 
- **EP‑1 (normative — triangle cardinality, multi‑notation safe).**  
- A conformant `U.Episteme` **MUST** have exactly one `U.EpistemicComponent` per role **{Object, Concept, Symbol}**. The **Symbol** value MAY be a `U.Collection` of **NotationDescriptor** items (“Notation‑Set”), preserving *one* Symbol component while allowing many notations. Carriers remain Tier‑1 and link via `isCarriedBy`.  // aligns with Γ_epist WLNK/CL handling. 
-
-**Triangle sides (normative labels).**
-Triangle sides are `expresses(Symbol,Concept)` and `anchors(Concept,Object)`.  The `about(Object→TopicHolon)` and `isCarriedBy(Episteme→Carrier)` are external links (not triangle sides).
-
- **Triangle Role Map (normative): vertices and what they host**
-* **Concept (intension).** Hosts the *claim‑level content* as a **ClaimGraph** (definitions, axioms, theorems, requirements, properties, assumptions).  
-* **Object (aboutness link).** Hosts the **Reference Map** (designation rules, applicability envelope, evaluation/measurement templates) that ties claims to **Topic holons** (`U.System` or `U.Episteme`).  
-* **Symbol (notation).** Hosts the **notation/representation** (e.g., syntax, signature, term dictionaries, rendering rules). **Symbol ≠ carrier**; physical files live outside Tier‑2.
-
-The following governance graphs are **not** triangle vertices but **attached structures**:  
-* **JustificationGraph** (arguments & evidence lines for claims) attaches to **Concept**;  
-* **EditionSeries** (PhaseOf chain) governs the episteme’s temporal phases.
-* **Evidence Bindings** (per‑claim `U.EvidenceRole` assignments); **status‑only; not parts**.
-
-1. **`U.ClaimGraph` (Content).** The *intensional* body—typed statements, definitions, axioms, theorems, requirements, constraints.
-   *Didactic cue:* “What is being *said*?”
-   *Discipline:* Nodes are **typed claims**; edges are **logical/derivational** or **refinement** links; no execution logs here.
-
-2. **`U.JustificationGraph` (Why to trust).** Arguments, derivations, calibrations, replications—**non‑self** justifications that **support, refute, or constrain** nodes in the ClaimGraph.
-   *Didactic cue:* “Why believe this here?”
-   *Discipline:* Uses **Evidence Anchoring**; brings in **U.EvidenceRole** bindings to external artefacts; deductive and empirical lines are kept distinct; freshness policies live here.
-
-3. **`U.EditionSeries` (Phases).** The **temporal phases** of the episteme (editions/versions), linked by **PhaseOf**; describes evolution **without** confusing edition with parts.
-   *Didactic cue:* “When did the content change?”
-
-**Pointing relations (outside the episteme holon)**
-1. `about` → `U.TopicHolon` (from **Object/Reference Map** to its targets).  
-2. `isCarriedBy` → `U.Carrier` (**from the episteme as a whole** to its carriers).  
-
-*Carrier rule (normative):* **No carriers in Tier‑2.** Symbol denotes **notation/representation**; carriers are Tier‑1 artefacts referenced via `isCarriedBy`. One **Symbol** component MAY point to a `U.Collection` of notation descriptors; each descriptor may in turn be *carried by* many artefacts. 
-
-**Strict Distinction guard.** *Content* (ClaimGraph) ≠ *Description* (notations on carriers) ≠ *Carrier* (paper/file/etc.). The **episteme** is neither the file nor the drawing; those are **carriers**. The “recipe” or formalisation you read is a **description**; the **intensional content** is what different descriptions must agree on **in context**.
-
-**One‑screen sketch (notation‑neutral)**
-
-```
-U.Episteme
- ├─ ClaimGraph (typed claims; no logs)
- ├─ JustificationGraph (arguments; evidence bindings; freshness)
- └─ EditionSeries (PhaseOf chain)
-
-Links:
-  about ───────► TopicHolon (System or Episteme)
-  isCarriedBy ─► {Carrier…} (symbol bearers)
-```
-
-**Curry–Howard lens (for formal contexts, informative).**
-Where a context endorses Curry–Howard:
-
-* **Propositions** in `ClaimGraph` are **types**;
-* **Proofs** in `JustificationGraph` are **program‑like derivations**;
-* **Proof checking** is **Work** done by a **system**; the resulting checked artefact is a **carrier** for a **proof episteme**; nothing “executes itself”.
-
-* **`ObjectMode ∈ {coincident, external, meta}`** MUST be declared for each episteme:
-* `coincident` (axiomatic/math): **Object ≡ Concept**; **verification** reduces to derivability inside the declared ProofKernel; **validation** is N/A in the empirical sense.
-* `external` (postulative/empirical): **Object ≠ Concept**; **validation** requires measurement/evaluation templates; **verification** checks internal derivations only.
-* `meta`: episteme is **about another episteme/claim** (meta‑level). Use **metaAbout** for such links; do **not** treat them as domain‑aboutness. 
-
-**Normative guards.** (i) When `ObjectMode=meta`, `about`‑edges **MUST** target epistemes/claims (not domain systems) and cross‑level penalties apply in assurance (CL_meta in B.3). (ii) KD‑CAL patterns that consume `U.Episteme` **MUST** surface `ObjectMode`; consumers **MUST NOT** silently assume domain‑aboutness.
-
-### 4.2 Operators & algebra (normative, notation‑neutral)
-
- **Typed relations on claims (in‑room):**
- `supports(e, c)`, `refutes(e, c)`, `constrains(e, c)`, `neutral(e, c)`, where `e` is an `U.EvidenceRole` binding and `c` resolves in the context’s claim graph.
- 
-**Reliability with congruence penalty.** Let a support path `P` from `e` to `c` have per‑edge reliability `R_i` and minimal **congruence** `CL_min(P)` (including any **NotationBridge** or **metaAbout** traversals). Define: 
- 
- \t**R_eff(P) := max(0, min_i R_i − Φ(CL_min(P)))**
- 
-where `Φ` is the context’s monotone penalty (lower CL ⇒ larger penalty). Multi‑path support uses `max_P R_eff(P)`; conflict resolution uses context policy (e.g., refutation wins when `R_refute > R_support + δ`).  // WLNK/CL per KD‑CAL. 
- 
- **Formality & generality folds.** On a path `P`, take `F(P) = min_i F_i`, `G(P) = ⋂_i G_i` (expressed as the tightest envelope; empty set ⇒ path void).
- 
- **Assurance tuple.** For a claim `c` at time `t`, KD‑CAL exports `Assurance(c,t) = ⟨F*, G*, R*⟩` computed under Γ_epist folds with decay applied. Mapping to `AssuranceLevel ∈ {L0,L1,L2}` is policy‑based on thresholds `{τ_F, τ_R}` and coverage tests on `G*`.
-
-**ProofKernel (F‑mode, normative).** When formal proofs are used, declare `ProofKernel ∈ {Classical‑LOG, Constructive‑LOG, Univalent‑LOG}`. **Formal proof bindings do not decay**; only **Tool Assurance (TA)** for the checker/toolchain is tracked/decayed separately (see §5 and B.3.4). **Declaring a `ProofKernel` implies `FormalityMode = M‑3` for any claims that rely on it (E.11); such claims MUST satisfy the F‑mode gates in §18.1.**
- 
-### 4.3 Decay functions & Epistemic‑Debt ledger (normative)
-
-**Decay.** A context **MUST** define decay classes for empirical evidence (e.g., `none`, `half‑life h`, `cliff at T`). At evaluation time `t`, apply decay to `R` before composition. **Formal proof bindings (F‑mode) carry `decay = none`; their associated **TA** (toolchain) may decay.** 
- 
- **Debt.** Expired or missing refresh spawns a ledger entry:
- `Debt(e) = {since, claimRef, severity, plannedAction ∈ {Refresh, Deprecate, Waive}}`.
- Waivers are `U.SpeechAct`‑backed and time‑boxed.
- 
- **Refresh.** New bindings supersede old; past `U.Work` remains judged under the binding valid at the time of execution (no retroactive rewrite).
- 
-### 4.5 · Normative components & relations 
-
-> The full formal clauses appear in Quarter 2; here we fix the **names and roles** of the components so later sections can reference them unambiguously.
-
-#### 4.5.1 `U.ClaimGraph` (Content)
-
-**Purpose.** Hold the *intended meaning* as a graph of **typed claims** under a declared **Bounded Context**. 
-**Triangle placement (normative):** `U.ClaimGraph` is the **internal structure of the `Concept` component**. It is **not** a carrier and **not** a run log.
-**Typical node kinds (context‑local):** `Definition`, `Axiom`, `Theorem`, `Requirement`, `SpecClause`, `Property`, `Assumption`.
-**Edges:** `dependsOn`, `refines`, `entails`, `incompatibleWith` (context defines exact repertory).
-**Rule of economy.** Keep *operational facts* (runs, measures) **out**—they live on `U.Work` and are imported via **JustificationGraph** when needed as evidence.
-
-#### 4.5.2 `U.JustificationGraph` (Why to trust)
-
-**Purpose.** Record the **arguments** and **evidence links** that justify, constrain, or refute `ClaimGraph` nodes.
-
-**Triangle placement (normative):** `U.JustificationGraph` is **governance attached to the `Concept` component** (per‑claim). It is **not** a fourth triangle vertex. Deductive vs empirical lines **MUST** be tagged for B.3 (F–G–R) computation. 
-
-**Sources:**
-* **Deductive**: derivations, equiconsistency meta‑results (version‑fenced);
-* **Empirical**: observations, test reports, calibrations, replications (with freshness).
-* **Interface to KD‑CAL trust:** Every support/counter‑support edge computes a **local** ⟨F, G, R⟩ (Formality–Generality–Reliability) contribution; aggregation lives in **B.3**.
-* **Non‑self‑evidence (normative).** Evidence must come from **external Work** performed by **systems**; an episteme cannot **evidence itself**.  
-* **Informal rationale (M‑mode, gated).** An `InformalRationale` binding MAY be used at M‑mode to explain intent, but it **automatically** accrues **Epistemic Debt** with a short default window; it CANNOT move an edition to *Effective* alone.
-
-#### 4.5.3 `U.EditionSeries` (Phases)
-
-**Purpose.** Bind editions/versions by **PhaseOf**, preserving history without confusing time with parts.
-**Rules (preview).** Past editions are immutable; bridges across contexts treat editions explicitly; provenance of edits is recorded as external Work on carriers (editing, review, ratification) but **does not** turn Work into content.
-
-#### 4.5.4 `about` → `U.TopicHolon`
-
-**Purpose.** Make **aboutness** explicit. A knowledge holon must say **which holon(s)** it concerns (systems, or even other epistemes for meta‑work).
-**Triangle placement (normative):** The **Object** component **hosts** the Reference Map from which `about` edges are derived. Topic scope (generic vs specific) **MUST** be declared within the same `U.BoundedContext`.
-**Scope.** Aboutness may be **generic** (class of systems) or **specific** (this pump, this workflow), but must be **declared** in the same context as the episteme.
-
-#### 4.5.5 `isCarriedBy` → `U.Carrier`
-
-**Purpose.** Tie the episteme to its **symbol bearers** (papers, models, listings).
-**Rule of separation.** Carriers may be many; replacing a carrier **does not** change the episteme’s identity, unless the **edition** (PhaseOf) changes content.
-**Carrier vs Symbol guard (normative):**  
-* **Symbol** = notation/representation (triangle vertex);  
-* **Carrier** = artefact that bears an inscription (Tier‑1).  
- 
-Replacing a carrier **does not** change identity; changing **Concept/Object/Symbol** **does** and **MUST** mint a new **Phase** in `EditionSeries`. 
-
-### 4.6 The Component Model of an Epistemic Holon
-
-**Aim.** Turn the classic semiotic triangle (Sign ↔ Meaning ↔ Referent) into a **holonic composition** for `U.Episteme`, aligned with **A.7 Strict Distinction**, **A.14 Advanced Mereology**, **B.3 Trust & Assurance**, and **C.2 KD‑CAL**.
-
-**The three vertices (triangle) and their holonic realization**
-
-1. **Symbol (Notation) — S‑vertex.**
-   *Component:* **`Symbol`** — the **notation/representation** bundle (syntax, signature, term dictionaries). A **single** Symbol component MAY hold a **Notation‑Set** (`U.Collection<NotationDescriptor>`), e.g., {SBVR, OWL 2 DL, Lean/Agda surface}.  
-   *Relations:* The **episteme** (not the Symbol vertex) uses `isCarriedBy(Carrier)` to reference Tier‑1 artefacts (files, PDFs, repos).  
-   *Mereology guard (normative):* **Carriers are never parts of `U.Episteme`.** They are Tier‑1 artefacts linked by `isCarriedBy`. 
-   *Notation‑Bridge (new, normative):* When a Notation‑Set contains multiple notations, authors **SHOULD** register `NotationBridge(n₁,n₂)` edges with **CL** (congruence‑loss) and brief loss notes; use these CLs in KD‑CAL penalties when evidence or claims traverse between notations. 
-
-2. **Meaning / Intension (M‑vertex).**
-   *Component:* **`ClaimGraph`** — the **claim & definition graph** (terms, axioms, theorems, models, constraints) **inside one `U.BoundedContext`**.
-   *Relations:* `defines(U.Type/Term)`, `asserts(U.Claim)`, `dependsOn(U.Claim)`; **`expresses(Symbol, Concept)`** binds notation to these claims (label the side explicitly).
-   *Mereology guard:* The **intension** is not a carrier and not a run; it is the **core substantial component** of the episteme, captured as **A.14 ComponentOf** with **AspectOf** links for optional views (e.g., “mathematical aspect”, “operational aspect”).
-
-3. **Referent / World‑link (R‑vertex).**
-   *Component:* **`Designation & Reference Map`** — a **bundle** of (i) *designation rules* (what terms point to in a context), (ii) *measurement templates* and *evaluation clauses* (how claims are tested on real systems), and (iii) *applicability envelope* (where the episteme claims to hold).
-   *Relations:* `appliesTo(U.System or Phenomenon)`, `evaluatedBy(U.MethodDescription)`, `hasEnvelope(CharacteristicSpace)`; label the side **`about/evaluates (Concept↔Object)`** for clarity. F/G/R are computed per KD‑CAL with WLNK/CL. 
-   *Mereology guard:* Reference maps are **components** of the episteme’s **meaning‑to‑world interface**; they are **not** logs of experiments.
-
-**The two indispensable cross‑edges (triangle sides)**
-
-**S↔M (Expression).** A many‑to‑one relation **`expresses(Symbol, Concept)`** (notation expresses intension).  
-*Notational independence (normative):* Multiple notations (one **Symbol component** possibly realized as a `U.Collection`) may **express the same Concept**. **Do not** equate carrier identity with meaning identity. Carriers connect to the episteme via `isCarriedBy`; there is **no** Symbol→Carrier mereology.
-
-**M↔R (Aboutness & Testability).** Use **`about(Object, TopicHolon)`** and **`evaluatedBy(Object, MethodDescription)`**; the **Object/Reference Map** hosts designation rules and evaluation templates. This side is where **B.3 (F–G–R)** lives: **Formality** via the claim’s structure, **Generality** via the envelope, **Reliability** via evaluation semantics and evidence.
-
-* **Green rule (A.12 + A.7).** 
-**No S→R action (normative):** No S→R action; only systems perform Work. A notation or carrier never changes the world. Only **`U.Work` performed by a `U.System` playing roles** can transform or observe. (Matches B.3’s separation of design‑time assurance from run‑time evidence.) 
-
-**Mandatory internal components of `U.Episteme` (minimal, composable bill‑of‑materials)**
-
-* *`ClaimGraph`** *(core)* — the meaning network.
-* **`Symbol (Notation)`** — the notation/representation bundle (one component; carriers stay Tier‑1 via `isCarriedBy`).
-* **`Designation & Reference Map`** — terms → world, measurement templates, acceptance clauses, applicability envelope.
- 
-*Attached structures (not parts):* **JustificationGraph**, **Evidence Bindings** (per‑claim `U.EvidenceRole` assignments), **EditionSeries**, **Scope Card**.
-
-Semantic Parallelogram (optional): vertices = {Symbol, Concept, Object, TopicHolon}; edges = triangle(S–C–O) + about(Object→TopicHolon). Carriers remain Tier‑1 via `isCarriedBy`. No direct S→TopicHolon edge.
-
-## 5 · Conformance Checklist 
-
-Preview kernel-level:
-
-* **CC‑EPI‑1 (Locality).** Every `U.Episteme` **MUST** declare a `U.BoundedContext` and speak only with that room’s vocabulary and invariants.
-* **CC‑EPI‑2 (Triangle present).** Every U.Episteme MUST expose the three components `{Object, Concept, Symbol}` and the two external links `about(Object→TopicHolon)` and `isCarriedBy(Episteme→Carrier)`. `ClaimGraph`, `JustificationGraph`, and `EditionSeries` are attached/internal structures, not triangle vertices.
-* **CC‑EPI‑3 (Strict Distinction).** It is **non‑conformant** to treat carriers or notations as the episteme, or to place Work/execution facts inside `ClaimGraph`.
-* **CC‑EPI‑4 (No self‑evidence).** Edges in `JustificationGraph` that rely on evidence **MUST** point to **external Work** and **evidence roles**; self‑support is forbidden.
-* **CC‑EPI‑5 (Aboutness explicit).** `about` **MUST** name **topic holons** (systems or epistemes).
-* **CC‑EPI‑6 (Phase discipline).** Content change implies a **new phase** in `EditionSeries`; carrier changes without content change are not new phases.
-
-Normative:
-
-**CC–KD‑1 · Evidence anchoring.** Every normative epistemic claim **MUST** be backed by an `U.EvidenceRole` binding on a `U.Episteme` (holder), with `claimRef`, `claimScope`, `polarity`, and a `timespan`; carriers **MUST** be SCR/RSCR‑anchored (A.10).
-**CC–KD‑2 · Formal vs empirical line.** Each binding **MUST** declare `epistemicMode ∈ {formal, postulative}`; formal bindings are fenced to a `U.TheoryVersion`; empirical bindings **MUST** include method/protocol references (`U.MethodDescription`) and `fromWorkSet` (external `U.Work`).
-**CC–KD‑3 · No self‑evidence.** The producing `U.Work` **MUST** be performed by a **system** (A.2/A.3). Epistemes never enact `U.Work`.
- **CC–KD‑4 · F–G–R computation.** The F–G–R triple **MUST** be computed **in‑room** (same `U.BoundedContext`). Cross‑room inputs require an explicit Bridge (F.9) and apply a **CL penalty** (see C.2.11).
-**CC–KD‑5 · Γ_epist discipline.** Composition over evidence paths **SHALL** use the Γ_epist defaults:
-   • **R** = min over path reliabilities (weakest‑link),
-   • **G** = intersection‑like restriction to overlapping applicability windows,
-   • **F** = min over formality along the path.
-   Contexts MAY tighten these folds but MUST NOT weaken monotonicity.
-**CC–KD‑6 · Decay & debt.** Empirical bindings **MUST** specify a refresh/expiry policy; expired bindings accrue **Epistemic Debt** (B.3.4) that MUST be resolved by **Refresh / Deprecate / Waive** with a dated `U.SpeechAct`.
-**CC–KD‑7 · Weight models.** If a numeric weight/score is used, the binding **MUST** cite a named `weight.modelRef` and provide all required inputs; ad‑hoc numbers are non‑conformant.
-**CC–KD‑8 · TA/VA/LA attribution.** Each binding **MUST** declare `assuranceUse ∈ {TA, VA, LA}`. Aggregation **MUST** keep the three contributions separable through to the computed `AssuranceLevel` (B.3.3).
-**CC–KD‑9 · Version fences.** Any version bump of the claim host or the episteme **MUST** yield a new binding; in‑place mutation is forbidden.
-**CC–KD‑10 · Service separation.** KPIs for services are computed from `U.Work` and then **may** be bound as evidence epistemes; `U.Service` itself never carries actuals (A.2.3).
-**CC–KD‑11 · Run/design split.** Do not attach run facts to `U.MethodDescription`; do not treat logs as descriptions. Temporal duality (A.4) applies.
-**CC–KD‑12 · Reproducibility tag.** Empirical bindings **MUST** carry a reproducibility status {independent, internal, not‑replicated, irreproducible}.
-
-**Tier‑2 Constituent Mereology (additive clause, normative)**  
-**CС‑EPI‑M1 (Domain/Range).** The only _epistemic_ mereological relation admitted into a Γ‑foldable `DependencyGraph` is **`ConstituentOf`** with **`Domain = Range = U.Episteme`**. It captures **logical/content inclusion** among epistemes.  
-**CС‑EPI‑M2 (No mapping‑as‑parthood).** Relations like **`RepresentationOf`**, **`UsageOf`**, **`Implements`**, and any _mapping/alignment_ links **MUST NOT** be used as `PartOf`‑family edges in `D`. Keep them at **value‑level** (with their own evidence/CL); `D`’s admissible edge set remains **{`ComponentOf`, `ConstituentOf`, `PortionOf`, `PhaseOf`}**.  
-**CС‑EPI‑M3 (No cross‑tier derivation).** Do **not** derive `EpiPartOf` from `StructPartOf` or reuse **Γₘ** traces across tiers. Epistemic composition is justified in **KD‑CAL** (Γ\_epist, LOG‑shoulder), not by importing Tier‑1 construction traces.
- 
-## 6 · Consequences (manager’s view, informative)
-
-**Benefits.**
-
-* Clear **division of labour**: content vs justification vs carrier; fewer category errors in specs and standards.
-* **Trust by design**: justification is not an appendix but a first‑class component; F‑G‑R scores can be read off the graph.
-* **Pluralism without chaos**: aboutness localises scope; cross‑context reuse goes through explicit bridges rather than by label reuse.
-
-**Costs.**
-* A small up‑front discipline to draw the triangle; paid back by lower integration and audit costs later.
-
-## 7 · Rationale & Alignment (short)
-
-* **Kernel fit.** Uses A.1 (Episteme as holon), A.7 (Strict Distinction), **I/D/S** (E.10.D2), and the design–run split (A.4/A.15) to keep meaning clean.
-* **KD‑CAL fit.** Prepares **F‑G‑R** computation (B.3) by making justification explicit and scope (aboutness) measurable.
-* **Mereology fit.** Uses A.14: **ClaimGraph** and **JustificationGraph** are **components** of the episteme; **PhaseOf** handles editions; carriers stay **outside** mereology (representation link).
-* **Curry–Howard fit.** Where adopted, it lives **inside** Claim/Justification roles (types vs proofs) without forcing it on non‑formal contexts.
-
-## 8 · Archetypal Grounding 
-
-| Slot               | **Engineering Spec** (pump curve)                         | **Algorithm** (sorting)                             | **Mathematical Theory**               |
-| ------------------ | --------------------------------------------------------- | --------------------------------------------------- | ------------------------------------- |
-| ClaimGraph         | Required head–flow relation; envelope; acceptance clauses | Input/output property, complexity bounds, stability | Axioms, definitions, theorems         |
-| JustificationGraph | Bench tests; calibration; field trials                    | Proofs of correctness; counter‑examples; benchmarks | Proofs; counterexamples; metatheorems |
-| EditionSeries      | Spec v1→v2 with rationale                                 | Rev A→B with proof obligations                      | 3rd edition; errata                   |
-| about              | *PumpUnit‑X* and its family                               | List/array data structures                          | Class of groups/graphs                |
-| isCarriedBy        | Carriers: PDF/PLM record set                              | Carriers: repository blob(s)                         | Carriers: PDF/monograph DOI           |
-| Symbol (Notation)  | Notation‑Set: SBVR clause syntax; MathML                  | Notation‑Set: pseudo‑code, typed λ‑calculus          | Notation‑Set: LaTeX, Lean signature   |
-
-
-(Full didactic walkthroughs with checklists and F‑G‑R in the next quarter.)
-
-## 9 Worked micro‑examples (informative)
-
-**(a) Formal)** `Lemma42.proof#AxiomaticProofRole:GraphTheory`  
-`F≈high, G=finite DAG, R=checker status`; no decay; CL penalty applies only if bridged to another room’s vocabulary.
-
-**(b) Empirical)** `Trial‑R3.csv#ModelFitEvidenceRole:Cardio_2026`  
-`F` from protocol formalisation; `G` = {adults 40–65, env L}; `R` from replication ledger and sensor calibration; annual decay; debt if not refreshed.
- 
-**(c) Service KPI as evidence)** `SLA‑Q2.md#ServiceEvaluationRole:Ops_2026`  
-Aggregates `U.Work` KPIs; binds as `supports` a policy claim “service meets target ≥ X%”.
- 
-## 10 Authoring & migration notes (informative)
-
-* **M‑mode (M‑0…M‑2) authoring path.** Keep narrative short; defer heavy checklists until you opt‑in to higher **AssuranceProfile** (see §5). At M‑mode, it is sufficient to (i) state the **BoundedContext**, (ii) draw the triangle (Object/Concept/Symbol) and (iii) link any **external Work** you already have; formal templates and decay models are **optional**.
- * **F‑mode (M‑3) authoring path.** Publish full **ClaimGraph/JustificationGraph**, evidence freshness policy, and edition fences. Deductive proofs are fenced to **TheoryVersion**; empirical evidence declares **relevance windows** and decay (§4.3); bindings are renewed on theory or envelope change. **If formal proofs are present, declare `ProofKernel` and attach TA; proofs themselves do not decay.**
-* **Room discipline.** Always write **rooms on bindings**; relate rooms via **Bridges** and **CL** only; never rely on label equality for meaning.
-* **Assurance lanes.** Keep **TA/VA/LA** lanes separate through to the computed `AssuranceLevel`; do not average across lanes. # B.3.3 levels and lanes. 
-* **Weight models.** If numeric weights are used, they must cite a named model; ad‑hoc numbers are discouraged even in M‑mode and **forbidden** in F‑mode.
-
-## 11 · Didactic Cards (carry‑away lines for managers)
-
-* **Triangle first.** Say what is claimed, why to trust it, where it lives; then point to whom it is about.
-* **Documents don’t act.** Epistemes constrain; **systems** perform work.
-* **Content change ⇒ new phase.** Carrier swaps alone do not change content.
-* **Proof ≠ program (unless declared).** Curry–Howard applies only inside a declared **ProofKernel** and **BoundedContext** (see §12.3).
-* **Label the sides.** Always write **expresses (S↔M)** and **about/evaluates (M↔O)** on the triangle.
-
-## 12 · KD‑CAL Interfaces — What `U.Episteme` Must Export/Obey
-
-This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemic holons into **well‑formed participants** of the knowledge calculus: composition, F‑G‑R scoring, provenance, and decay. *(KD‑CAL is listed in Part C as the calculus for epistemic holon composition, F‑G‑R axes, and provenance; this pattern provides its structural “shape”.)*
-
-**12.1 Exports to KD‑CAL (normative)**
-
-* **Export‑E1 (M‑mode minimal).** A resolvable **`ConceptHandle`** (may be a single root claim or a short list); **BoundedContext** declared.
-* **Export‑E2 (Assurance L1+).** **Applicability envelope** and **evaluation templates** from the **Object** component; **Evidence slots** exposed for `supports|refutes|constrains`. # Maps to L1 “Substantiated”. 
-* **Export‑E3 (Assurance L2/F‑mode).** **`ClaimGraphRoot`** with typed nodes, **JustificationGraph** hooks, **EditionSeries** fence, and decay policy on empirical bindings (B.3.4). 
-* **Export‑E4 (Cross‑room).** Bridge metadata (CL, losses) for any exported handle that leaves the room.
-
-**12.2 Obligations under KD‑CAL (normative; tiered)**
-
-* **Obl‑A (F‑G‑R determinacy).** The episteme must allow KD‑CAL to compute an **assurance triple** ⟨F, G, R⟩ for **each** named claim. At **M‑mode**, F/G/R may be **ordinal proxies**; at **F‑mode**, they follow the numeric/coverage rules of B.3 (§4.4 skeleton). # Permits minimal math at low assurance; full skeleton at F‑mode. 
-* **Obl‑B (Weakest‑Link safety).** When claims compose, **Γ\_epist** uses **conservative folds** (min/∧/“weakest‑link”) unless the episteme provides a stricter, justified rule (B.1.3).
-* **Obl‑C (Bridge transparency).** Cross‑context use **MUST** declare **CL (congruence level)** and **loss notes**; KD‑CAL will penalise **R** accordingly (B.3).
-* **Obl‑D (Decay discipline).** Empirical evidence **MUST** carry a **relevance window**; expired items accrue **epistemic debt** until **Refresh/Deprecate/Waive** is recorded.
-
-**12.3 ProofKernel declaration (formal contexts)**
-* **Kernel.** `ProofKernel ∈ {Classical‑LOG, Constructive‑LOG, Univalent‑LOG}` MUST be declared when F‑mode claims rely on machine‑checked proofs; each kernel constrains admissible proof objects and transports (e.g., proof terms in Lean). # Allows constructive/univalent maths explicitly.
-* **CH scope.** Curry–Howard identifications (proposition↔type; proof↔program) are **valid only within the declared ProofKernel & Context** and **do not** imply executability claims about systems.
-
-
-## 13 · Mereology of Knowledge — Using A.14 Safely Inside `U.Episteme` (clarifications)
-
-**Why this matters.** Many modelling errors come from stuffing *roles, runs, or recipes* into an episteme’s part tree. This section fixes the **only** mereological edges allowed **inside** an episteme.
-
-**13.1 Allowed edges (A.14 subtypes)**
-
-* **ComponentOf** *(structure of meaning & interface)*: `ClaimGraph`, `Designation&ReferenceMap`, `Symbol` (notation bundle; may be a `U.Collection` of notations), “Front‑matter” (glossary, scope card), “Back‑matter” (index).
-* **PortionOf** *(extensional subsets)*: a **selected subset** of claims or examples (e.g., “Ch. 3 as a portion of the treatise”).
-* **AspectOf** *(orthogonal views)*: formal aspect vs narrative aspect of the same claim set.
-* **PhaseOf** *(editions)*: v1 → v2 → v3 (no backward mutation of prior phases).
-
-**13.2 Forbidden edges**
-
-* **No roles in BoM.** Roles (Author, Reviewer, Standard) are **masks** worn via **RoleAssigning**; they are **not parts**.
-* **No Work as part.** Executions/observations are **external** and referenced via **Evidence Bindings**; they never become parts.
-* **No Method/Service as part.** Recipes and promises are **separate holons**; an episteme may **reference** them (e.g., `evaluatedBy`), not **contain** them.
-
-> **Manager’s check.** If a box would consume energy in the real world, it’s **not** a part of your episteme; it’s a **system** out on the S→R path.
-
-## 14 · Conformance Checklist (pattern‑level, normative)
-
-**Pass these and your episteme is structurally sound for KD‑CAL, Γ, and assurance:**
-
-**Common Norms (apply at all modes)**
-* **CC‑UE‑01 (EP‑1 triangle).** Exactly three components {Object, Concept, Symbol}.
-* **CC‑UE‑02 (Strict Distinction).** Carriers are Tier‑1 via `isCarriedBy`; never parts.
-* **CC‑UE‑03 (Aboutness explicit).** `about` names topic holons; scope is room‑local.
-* **CC‑UE‑04 (Identity invariants).** Identity = (i) persistent root `U.Episteme` id **within its `U.BoundedContext`**, plus (ii) **role‑complete** occupancy of `{Object, Concept, Symbol}`. Slot‑cardinality changes or slot‑value swaps that alter `ClaimGraph` or `Designation & Reference Map` **MUST** mint a new `PhaseOf` edition; `Symbol` Notation‑Set/NotationBridge tweaks alone **do not**.
-* **CC‑UE‑05 (Notation‑Bridge).** If multiple notations are present, register `NotationBridge(n₁,n₂)` with **CL** and loss notes; apply CL in KD‑CAL folds when traversed. 
-* **CC‑UE‑06 (ObjectMode).** Declare `ObjectMode ∈ {coincident, external}`; verification/validation obligations follow accordingly.
-* **CC‑UE‑07 (Formal proof no‑decay; TA line).** Formal proof bindings do **not** decay; attach **Tool Assurance** metadata and manage its decay separately under B.3.4. 
-* **CC‑UE‑08 (Meta‑about CL).** Any `metaAbout` traversal **MUST** carry `CL_meta`; apply CL penalties in assurance composition.
-* **CC‑UE‑09 (Informal rationale auto‑debt).** `InformalRationale` MAY support *Candidate* in M‑mode but accrues **Epistemic Debt** and cannot alone satisfy *Effective* guards.
-* **CC‑UE‑10 (Change classes).** Apply **S/M/O** classification: **S‑change** (Symbol‑only notation/bridge) ⇒ no edition; **M‑change** (ClaimGraph) ⇒ new edition; **O‑change** (Envelope/Evaluation templates/designation rules) ⇒ new edition; and **any** change that affects computed ⟨F,G,R⟩ ⇒ new edition (see §19.3 and §19.2 C2‑E6).
-* **CC‑UE‑11 (Mode flag, P‑3).** Every `U.Episteme` **MUST** declare `FormalityMode ∈ {M‑0, M‑1, M‑2, M‑3}` per **E.11 Scalable Formality Ladder**; any claim bound to a declared `ProofKernel` is evaluated as **M‑3** and **MUST** satisfy the F‑mode gates in §18.1.
-* **CC‑UE‑12 (Plug‑in layering, P‑5).** Normative semantics **MUST** be interpretable without Tooling or Pedagogy assets; mentions of notations, file types, or toolchains are **informative only**. Cross‑layer dependencies **MUST** obey **E.5.3 Unidirectional Dependency**.
-
-**Assurance‑gated Norms**
-* **CC‑UE‑A1 (L1+).** Export **Envelope handle** and **Evaluation templates**; expose evidence slots with polarity.
-* **CC‑UE‑A2 (F‑mode/L2).** Export **ClaimGraphRoot**, **JustificationGraph**, **EditionSeries**; provide decay policies for empirical bindings; compute ⟨F,G,R⟩ per B.3 skeleton. 
-* **CC‑UE‑A3 (Cross‑room).** Any export used outside the room must name **Bridge** and **CL**; KD‑CAL applies **R** penalties accordingly.
-  
-## 15 · Worked Examples (engineer‑manager vignettes)
-
-**15.1 “Pump Curve Note” (operations engineering)**
-
-* **S (Carrier):** a one‑page sheet taped to the skid.
-* **M (ClaimGraph):** the note’s claim graph: *“For fluid X at 20 °C, ΔP–Q obeys curve C within ±3% up to 40 m³/h.”* Definitions point to *Q* (flow), *ΔP* (head), units.
-* **R (Reference Map):** applicability: *fluid X, 15–25 °C, supply pressure 2.0–2.5 bar*; evaluation: *test rig measure Q, ΔP; accept within ±3%*.
-* **Evidence Bindings:** last calibration dataset “Rig‑Apr‑12” as `MeasurementEvidenceRole (supports)`, relevance 12 months.
-* **Manager’s use:** Before ramp‑up, verify evidence window is fresh and envelopes match; if not, either **refresh** or accept **epistemic debt** with a time‑boxed waiver.
-
-**15.2 “Service Acceptance Spec” (internal service)**
-
-* **S:** a numbered acceptance sheet at the team board.
-* **M:** claims like *“Incident response: TTA ≤ 5 min (P95)”*, *“Backlog age ≤ 10 days (P90)”* with definitions.
-* **R:** envelope “Prod‑Cluster‑EU; hours 08:00–20:00”; evaluation templates that read **Work** logs and compute verdicts; link to **U.Service.acceptanceSpec** by reference.
-* **Evidence:** weekly observation reports `ValidationEvidenceRole (supports)`; failed weeks bind as `CounterEvidenceRole`.
-* **Manager’s use:** When changing hours, update the **envelope** and spin a **new phase**; do **not** rewrite history.
-
-**15.3 “Market Hypothesis Brief” (strategy)**
-
-* **S:** a two‑page memo.
-* **M:** claims: *“Within SME‑Segment‑A, problem P exists; solution S cuts cost by ≥ 15%.”* Definitions of *Segment‑A*, *cost*.
-* **R:** envelope: *Region R, firm size 20–200, 2026–2027*; evaluation: *two pilots, predefined KPIs*.
-* **Evidence:** pilot 1 result as `ModelFitEvidenceRole (supports)` with limited scope; pilot 2 as `CounterEvidenceRole`; **Generality (G)** narrows to the supported niche.
-* **Manager’s use:** Keep “success” local to the measured envelope; resist global roll‑up without bridges or new evidence.
-
----
-
-## 16 · Authoring Cues & Heuristics (for busy leads)
-
-* **Triangle on the card.** Fill **Object–Concept–Symbol** explicitly: where written (Symbol), what is claimed (Concept), where and how it is tested (Object).
-* **Multi‑notation is allowed.** One **Symbol** may represent several notations (SBVR/LaTeX/Lean); carriers stay external via `isCarriedBy`.
-* **Pin the room.** Claim meaning is **room‑local**. Always write the `U.BoundedContext` (edition) at the top.
-* **Claims come with tests or reasons.** If a claim is **axiomatic**, say so; else provide an **evaluation template**.
-* **Evidence is external.** Cite *which* observation or proof supports/refutes the claim; name **polarity** and **window**.
-* **Never act by paper alone.** Specs constrain; **systems** perform **Work**.
-
----
-
-## 17 · Anti‑Patterns (and the safe rewrite)
-
-| Anti‑pattern                              | Symptom in prose                 | Why it breaks the kernel                                  | Safe rewrite                                                                         |
-| ----------------------------------------- | -------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| **“The spec enforces X.”**                | Treats a document as an actor.   | Violates A.12 (external transformer) & A.7.               | *Spec holds `RequirementRole`; a **system** performed the **Work** that enforces X.* |
-| **“Our method is part of the standard.”** | Puts recipe inside episteme BoM. | Method is a separate holon; mereology error (A.14).       | *Standard **references** `MethodDescription`; it does not **contain** it.*           |
-| **“Proof/data inside the claim.”**        | Blends evidence with content.    | Content vs evidence conflation; breaks KD‑CAL provenance. | *Keep claim in **ClaimGraph**; bind proof/data via **`U.EvidenceRole`**.*        |
-| **“Global truth by name.”**               | Uses claim out of context.       | Breaks context locality & bridge policy.                  | *Declare a Bridge with CL & loss notes or restate the claim in the new room.*        |
-| **“One file = one truth.”**               | Equates carrier with meaning.    | Violates notational independence.                         | *Allow many carriers for one **Symbol**; editions as **PhaseOf**; meaning lives in **Concept**.* |
-
-## 18 · Episteme State‑Change: Overview & Objects
-
-+**Scope.** KD‑CAL treats a `U.Episteme` as (i) **structured over editions** via **`PhaseOf`** (A.14), and (ii) **governed by a *context‑local* state graph**—the **Episteme State Graph (ESG)**—with statuses such as *Draft*, *Candidate*, *Effective*, *Superseded*, *Deprecated*. ESG applies to the **episteme** itself (not to roles) and **replaces** any “lifecycle” wording. # Consistent with B.1.4 Γ_time and E.11 gates. 
-**Episteme State Graph (ESG)**—which names admissible **statuses** such as *Draft*, *Candidate*, *Effective*, *Superseded*, *Deprecated*. The ESG is analogous to a Role State Graph (A.2.5) but **applies to the episteme itself** rather than to a role.
-
-**Objects introduced (notation‑free).**
-
-* **`Edition`** — an instantaneous **phase** of an episteme; linked by `PhaseOf(rootEpisteme)` forming a time‑ordered DAG (not a mereology tree).
-* **`ESG(Context, EpistemeKind)`** — finite, **named** state set with transitions and guards **local to a `U.BoundedContext`**.
-* **`StateAssertion(E, state, Window)`** — evaluation verdict that **edition E** of the episteme **is in `state`** over the **Window**, with evidence anchors.
-* **`Γ_time`** — temporal fold over **edition sequences** (selection, windowing, roll‑up) used in queries, evaluation, and acceptance, conforming to **Contextual & Temporal Aggregation** (B.1.4), with explicit selectors and no implicit “latest”. For **M‑mode**, `most_recent` MAY be permitted when the Context explicitly opts‑in; for **F‑mode**, a selector MUST be named (e.g., `effective_at(t)`). 
-
- **Trajectory normative hooks**  
- *`traj_episteme(E, selector, space)`* → piecewise path of `E` in a declared **Epistemic CharacteristicSpace** (e.g., ⟨F,G,R⟩ or per‑corner coordinates) obtained by sampling editions via `Γ_time.selector` and evaluating assurance per edition.  
- *`traj_vertex(E.corner ∈ {Object,Concept,Symbol}, selector, space)`* → per‑corner trajectory (e.g., notation lineage for **Symbol**; envelope evolution for **Object**).  
- *`drift(E, metric, threshold)`* → detects change‑points on a trajectory; emits *StateAssertions* such as *Regressed/Improved/Stable*.  
- *`project(E, space)`* → current coordinate(s) (with CL penalties applied); compatible with B.3 assurance roll‑up.  // Γ_time + KD‑CAL basis. 
-
-**Context‑local ESG.** State names and guards are **room‑local**; they **do not travel** without an explicit **Bridge** (kind, **CL**, loss notes). Out‑of‑room ESG labels are **Inconclusive** unless bridged, and any assurance computed across the bridge carries the **CL penalty** on **R** (B.3). 
-
->**Why state graphs?** KD‑CAL is about **governing what is admissibly said** about knowledge **now**, not narrating “life stories”. States + guards make the **current admissibility** explicit and checkable; `PhaseOf` keeps the **edition lineage** auditable.
-
-### 18.1 Mode & Assurance Gating 
-
-**Intent.** Prevent “everything everywhere all at once” checklists. ESG/Γ\_time duties are **graded** by the artefact’s declared **Formality Mode** (E.11) and **Assurance Level** (B.3.3).
-
-| Gate | If **M‑mode** (M‑0..M‑2) | If **F‑mode** (M‑3) |
-|------|--------------------------|----------------------|
-| **G‑ESG‑1 (State set)** | MAY use the *Minimal ESG* template {Draft, Candidate, Deprecated}. | MUST use the *Full ESG* template for the episteme kind (e.g., {Draft→Candidate→Effective→Superseded→Deprecated}). |
-| **G‑ESG‑2 (Guards)** | MAY satisfy guards with **working‑model** artefacts and qualitative rationale; numeric thresholds are OPTIONAL. | MUST satisfy guards with **observable** anchors (A.10) and typed thresholds; numeric criteria are REQUIRED where defined. |
-| **G‑ESG‑3 (Evidence class)** | For **L0–L1**, MAY rely on `verifiedBy/validatedBy` stubs; empirical freshness is RECOMMENDED. | For **L2**, MUST bind to concrete evidence artefacts; empirical bindings MUST declare freshness windows (B.3.4). |
-| **G‑ESG‑4 (Proof stance)** | MAY declare `proofMode = {none, informal}`. | MUST declare `proofMode ∈ {classical, constructive, type‑theoretic}` and cite the checker/toolchain where applicable. |
-| **G‑ESG‑5 (Selectors)** | MAY use a default selector policy noted in prose. | MUST name an explicit `Γ_time` selector in each decision point. |
-
-*Non‑downgrading rule.* F‑mode obligations subsume M‑mode; authors MAY exceed the minimum at any mode.
- 
-## 19 · Edition Graph (PhaseOf) — Structure & Invariants
-
-**19.1 Structure.**
-For any episteme **K**, its editions form a **DAG** with edges **`PhaseOf(K)`** and each node **Eᵢ** carrying:
-
-* an **immutable content hash** of the carrier(s) (A.10),
-* **timestamps** (`createdAt`, optional `effectiveAt`, `retiredAt`),
-* **parent set** (branch/merge), and
-* **Context** (rooms of meaning) where it is **interpreted**.
-
-**19.2 Invariants (normative).**
-
-* **C2‑E1 (No lifecycle).** The edition DAG is a **PhaseOf graph**; do not model it as parts or as a workflow.
-* **C2‑E2 (Immutability).** Edition payloads are **immutable**; any content change yields a **new** edition node. Carrier swaps that do **not** alter the **ClaimGraph** or mappings (CL) **do not** constitute a new edition; carriers remain **external** via `isCarriedBy`. See **Γ_epist**: use `ConstituentOf/UsageOf/MemberOf`; **never** use **ComponentOf** for knowledge and keep **PhaseOf** for versions only. 
-* **C2‑E3 (Merge discipline).** A **merge** produces a **new edition** with `mergedFrom = {E_a,…,E_b}`; parents remain unchanged.
-* **C2‑E4 (Branch admissibility).** Multiple children of the same edition are allowed; branch semantics live in the Context (e.g., *jurisdictional variants*).
-* **C2‑E5 (Context locality).** Meaning of statuses and admissibility is **scoped to a `U.BoundedContext`**; cross‑context reuse requires a **Bridge** with CL/loss notes (F.9). Γ rules and selectors referenced here remain **in‑room**; cross‑room queries must first rebase via the Bridge.
-* **C2‑E6 (Mode‑aware edition fences).** In **M‑mode**, changing carriers or notation **does not** mint a new edition unless the **ClaimGraph** or **Reference Map** changes materially. In **F‑mode**, any change that affects computed ⟨F,G,R⟩ **MUST** mint a new edition.
-  
-** 19.3 Change classes (normative) — S/M/O**
-* ***S‑change (Symbol).** Changes limited to the `Symbol` component’s **Notation‑Set** or to `NotationBridge` metadata **without** changing the `ClaimGraph` or the `Designation & Reference Map` ⇒ **no new edition**.
-* ***M‑change (Concept).** Any change to the `ClaimGraph` (add/remove/alter claims, definitions, or entailment structure) ⇒ **new edition (PhaseOf)**.
-* ***O‑change (Object).** Any change to the `Designation & Reference Map`—envelope narrowing/widening, method/evaluation‑template swap, or designation‑rule edits ⇒ **new edition (PhaseOf)**.
-* ***F/G/R trigger (superseding rule).** Regardless of the S/M/O label, any change that alters computed ⟨F,G,R⟩ for any declared claim ⇒ **new edition (PhaseOf)** (§19.2 C2‑E6).
-
-## 20 · ESG (Episteme State Graph) — States, Guards, Assertions
-
-**20.1 ESG definition (by Context, episteme kind).**
-`ESG(Context, EpistemeKind) = ⟨States S, Enactable S_en=∅, Transitions T, Guards⟩`
-*Note.* Episteme states are **status‑only** (not enactable Work); **`S_en = ∅`** by design. They **gate decisions** (e.g., can be cited as binding) but cannot “perform Work.”
-
-**20.2 Typical ESG (templates to specialise per Context).**
-
-* **NormativeStandard ESG:** *Draft → Candidate → Effective → Superseded → Deprecated*.
-* **Dataset ESG:** *Collected → Verified → Validated → Obsolete* (+ *Contested* side branch).
-* **Model ESG:** *Trained → Evaluated → Accepted → Retired* (guards reference evaluation protocols).
- 
-  **Guards MUST be observable** (A.10) and **time‑windowed** per **Evidence Decay** (B.3.4); stale assertions expire and **MUST NOT** silently persist.  **Mode & Assurance gating** from §18.1 applies.
- 
-**20.3 StateAssertions.**
-A **StateAssertion(E, s, W)** holds when the **checklist** for **state `s`** is proven from observable facts (A.10: SCR/RSCR anchors) within **Window `W`**. Assertions **expire** with their windows; no silent perpetuity. Selectors **MUST** be explicit (e.g., `effective_at(t)`, `windowed(W, policy)`) and are interpreted by **Γ_time** (B.1.4). 
-
-**Proof‑mode declaration (F‑mode only).** When `s ∈ {PeerChecked, Accepted, Effective}` is met **via formal proof**, the assertion **MUST** declare `proofMode ∈ {classical, constructive, type‑theoretic}` and cite `{tool, version, proof‑object‑hash}` if a checker was used.
-
-**Constructive acceptance (optional, F‑mode).** For `proofMode ∈ {constructive, type‑theoretic}`, a **proof‑object** (e.g., Lean/Agda) MAY serve as the observable for the guard if its checker run is recorded as `U.Work` and anchored (A.10); such assertions **do not decay**, but **toolchain trust** is accounted for via TA in B.3.
-
-**20.4 Guards (examples).**
-
-* **Admission:** “ratification speech‑act exists within 90 days” (for *Effective*).
-* **Cross‑room admissibility:** If a consumer is in a different `U.BoundedContext`, a **Bridge** with declared kind and **CL ≥ threshold** **MUST** exist; otherwise the consumer’s status is **Inconclusive** (advisory to B.3). 
-+ * **Freshness:** For empirical states (e.g., *Validated*), at least one supporting **EvidenceBinding** **MUST** be within its relevance window (B.3.4). 
-
-* **Maintenance:** “no newer conflicting Effective edition in the same Context scope.”
-* **Exit:** “superseding edition E′ exists & is Effective.”
-* **M‑mode minimal guard:** For *Candidate*, **M‑mode** MAY accept a qualitative rationale plus at least one `EvidenceBinding` stub; for **F‑mode**, quantitative thresholds and binding windows are REQUIRED.
-
-* **Formal‑proof guard (F‑mode).** States satisfied via formal proof MUST declare `ProofKernel`, checker `{tool,version}`, and proof‑object hash; **no decay** on the binding; **TA** tracked separately. 
-* **ObjectMode guard.** For `external`, at least one empirical `EvidenceBinding` within its relevance window is required for *Validated/Effective*; for `coincident`, verification suffices.
- 
-**20.5 Invariants.**
-
-* **C2‑S1 (Observable).** Checklists and guards must be **observable** (Observation, Work, SpeechAct, or derived Evaluation).
-* **C2‑S2 (Windowed).** Every assertion is **Window‑bound**; stale assertions **MUST** be renewed or explicitly waived.
-* **C2‑S3 (No role leakage).** ESG is **not** a RoleStateGraph; keep role readiness (A.2.5) separate from episteme status.
-* **C2‑S4 (Mode & Assurance gating).** ESG obligations are **filtered** by §18.1. **F‑mode/L2** MUST satisfy the full guard set; **M‑mode/L0–L1** MAY satisfy the minimal set but MUST NOT claim states whose guards they did not meet.
-
-## 21 · Branch & Merge Semantics (No Conflation)
-
-**21.1 Branch kinds (illustrative).**
-
-* **Applicability branch** (*same claim, different scope*): e.g., Standard v2 for **EU**, Standard v2 for **US**.
-* **Methodological branch** (*different derivation, same intent*): two independent replications of a dataset.
-* **Policy branch** (*different acceptance thresholds*): safety case for *SC2* vs *SC3*.
-
-**21.2 Merge policy.**
-Merging **never edits parents**; it **creates** a new edition with explicit `mergedFrom` and an **Evaluation** that states how conflicts were resolved (e.g., *prefer higher AssuranceLevel; tie‑break by recency*). For any merged claim, compute provisional **R_eff** under **WLNK** with **congruence penalty** `Φ(CL_min(path))` including **NotationBridge**/**metaAbout** CLs where traversed. 
-
-**21.3 Safety rule.**
-* **C2‑BM1 (No silent merge).** Any merge **MUST** cite the **policy episteme** (how to reconcile) and record **loss notes** including **effective CL** over used Bridges (min over edges). 
-* **C2‑BM2 (Scope monotonicity).** A merge must **not** silently widen the **claim‑scope**; widening requires an explicit Context decision.
-* **C2‑BM3 (Assurance floor).** Parents participating in a **normative** merge MUST have at least **AssuranceLevel L1**. If the merged edition is intended to be **Effective**, the merge MUST run under **F‑mode** and recompute ⟨F,G,R⟩ under Γ\_epist with CL penalties.
-
-## 22 · Temporal Composition with Γ\_time
-
-**22.1 Purpose.**
-`Γ_time` gives **time‑aware selection/folding** over edition streams: **which** edition is **effective** for a given query window and policy.
-
-**22.2 Canonical selectors (context‑local).**
-
-* **`effective_at(t)`** → the unique edition **E** with StateAssertion *(Effective, W)* s.t. *t ∈ W*.
-* **`latest_effective_before(t)`** → last effective E before *t*.
-* **`windowed(W, policy)`** → set of editions effective within **W**, folded per **policy**.
-
-**22.3 Folding policies (examples; all **IDEM/MONO/WLNK**‑safe per B.1):**
-
-* **`max_assurance`** — choose the edition with maximal ⟨F,G,R⟩ (B.3).
-* **`most_recent`** — pick the most recent **Effective**.
-* **`conservative_intersection`** — intersect claim‑scopes across effective editions (weakest‑link).
-* **`approval_lineage(Authority)`** — select editions approved by a named authority.
-**Cross‑room discipline.** Selectors operate **in‑room**; cross‑room selection requires a prior **Bridge** and communicates the **CL penalty** alongside results (advisory to B.3 roll‑ups). 
-
-**22.4 Invariants.**
-
-* **C2‑T1 (Selector explicitness).** Every temporal query **MUST** name its **selector** (no implicit “latest”).
-* **C2‑T2 (Closed‑world within Context).** `Γ_time` operates **within** one `U.BoundedContext`; cross‑room folds require a **Bridge** that explicitly states CL and losses.
-* **C2‑T3 (Mode defaults).** **M‑mode** MAY use `most_recent` as its default selector **only** in pedagogy or exploration; **F‑mode** MUST declare a policy (e.g., `effective_at(t)` or `max_assurance`) per use case.
-
-## 23 · Interaction: ESG × Evidence × Services
-
-**23.1 Evidence binding.**
-An episteme **edition** can wear **`U.EvidenceRole`** (A.2.4) in a Context (e.g., “this dataset **supports** claim C for population P over Window W”). ESG governs **admissibility** (e.g., only *Validated* datasets may be bound as evidence). Evidence **MUST** anchor to **external `U.Work`**; knowledge does **not** “evidence itself” (A.15; B.3.2). Empirical bindings carry **relevance windows** (B.3.4). 
- 
-**23.2 Formal/constructive proofs as evidence (F‑mode).** A formal proof checked by a tool (e.g., Lean/Coq/Agda) **MAY** serve as `verifiedBy` evidence **provided** the checker run is recorded as `U.Work` and the `{tool, version, proof‑object‑hash}` are captured. For **constructive/type‑theoretic** proofs, authors MUST declare `proofMode = constructive|type‑theoretic`; **no decay** applies to such bindings, but **typing/toolchain assurance (TA)** remains in scope (B.3).
-
-**23.3 Service evaluation as episteme.**
-Service KPIs are computed from **`U.Work`** (design/run split), then captured as a **report episteme edition**. Its ESG (**e.g.,** *Published → Audited → Accepted*) gates whether the report may be used in **policy** or **assurance** decisions; do **not** attach “actuals” to the Service itself. (A.15; B.3). 
-
-**23.4 Role‑gated decisions.**
-Method steps that **require** a knowledge status (e.g., “use **Effective** Standard”) must reference **ESG states** explicitly. At run‑time, validators check `StateAssertion(edition, Effective, W)` via `Γ_time.effective_at(now)`.
-
-## 24 · Conformance Checklist (additions)
-
-> **IDs continue from earlier KD‑CAL CC items; here we add CC‑C2‑12 … CC‑C2‑19.**
-
-* **CC‑C2‑12 (Edition graph not mereology).** `PhaseOf` **MUST** be used for editions; editions **MUST NOT** appear as parts in any `partOf` tree (A.14 guard).
-* **CC‑C2‑13 (Immutability).** An edition’s content hash **MUST NOT** change; any change yields a **new** edition node.
-* **CC‑C2‑14 (ESG locality).** ESG definitions are **per Context** and **per episteme kind**; labels like “Effective” **do not travel** across contexts without a Bridge.
-* **CC‑C2‑15 (Observable ESG).** Every ESG state **MUST** have a checklist of observable criteria; StateAssertions **MUST** cite evidence carriers (A.10).
-* **CC‑C2‑16 (Temporal selector required).** Any consumption of an episteme “now” **MUST** declare a `Γ_time` selector (e.g., `effective_at(now)`).
-* **CC‑C2‑17 (Merge provenance).** A merge edition **MUST** carry `mergedFrom`, cite the **reconciliation policy episteme**, and record **effective CL** for all Bridges used; silent merges are non‑conformant. 
-* **CC‑C2‑18 (Scope monotonicity).** A merge **MUST NOT** broaden claim‑scope unless the Context grants it via a **SpeechAct** or policy record.
-* **CC‑C2‑19 (No lifecycle wording).** Core narrative and metadata **SHALL** avoid “lifecycle”; authors **MUST** use “state‑change / ESG / PhaseOf / Γ\_time” wording.
-* * **CC‑C2‑20 (Evidence freshness).** Any empirical **EvidenceBinding** used to justify an ESG state or an acceptance verdict **MUST** be within its declared relevance window (B.3.4). 
-* **CC‑C2‑21 (Selector explicitness).** Every consumer that reads or enforces an ESG state **MUST** name its `Γ_time` selector; implicit “latest” is non‑conformant (B.1.4). 
-* **CC‑C2‑22 (Design/run hygiene).** Service acceptance and run‑time KPIs **MUST** be computed from **`U.Work`**; Services carry **acceptance specs** only; no “actuals” attached to the Service (A.15; B.3). 
-* **CC‑C2‑23 (Trajectory API).** If trajectories are used for governance, the context MUST publish the `selector`, the `space`, and the `drift` metric; implicit “latest” trajectories are non‑conformant.
-
-## 25 · Worked Examples (engineer–manager thinking)
-
-**25.A Standard (regulatory).**
-*Goal.* Always apply the right edition of **Brake‑Test Standard** during runs in 2026.
-
-* **ESG (Standards):** *Draft → Candidate → Effective → Superseded*.
-* **Quarterly runs use selector**: `effective_at(run.startTime)`; dashboards surface the **specific edition id** and **Bridge CL** if a cross‑room mapping was required. 
-* **Change management:** when v2026‑06 becomes *Effective*, no code changes are needed: validators select the correct **edition** by time, and dashboards show **which edition** governed each run.
-
-**25.B Dataset (analytics).**
-*Goal.* Use only **Validated** datasets younger than 12 months.
-
-* **ESG (Datasets):** *Collected → Verified → Validated → Obsolete*.
-* **Guard:** `Validated` requires two independent replications (evidence bindings to two external `U.Work` sets).
-* **Selector:** `latest_effective_before(now)` with additional freshness guard on `StateAssertion` window (B.3.4).
-* **Assurance note:** When combining replications across labs, compute **R_eff** with **WLNK** and apply `Φ(CL_min)` from the weakest mapping used.
-* **Manager’s cue:** “Badge + bounds”: insist on the ESG state (*Validated*) **and** the freshness window.
-
-**25.C Knowledge merge (jurisdictions).**
-*Goal.* Publish a **Merged‑Tax** episteme combining **EU** and **US** tax interpretations.
-
-* **Merge:** create `Merged‑Tax‑2026.01` with `mergedFrom={EU‑2025.12, US‑2025.11}` and an **Evaluation** that records **effective CL** and **loss notes** for each mapping. Consumers outside either room **must** traverse the **Bridge** before applying selectors. 
-* **Policy episteme:** “Prefer stricter clause when conflicts” (cited in the edition metadata).
-* **Bridge notes:** Cross‑context mapping documented with **CL=2** (minor loss: differing carve‑outs).
-* **Auditability:** every consumer can see **exact parents** and **policy** used.
-
----
-
-### 26 · Regression Harness (what to re‑check on changes)
-
-* **RH‑E1 (ESG change).** When ESG states/guards change, re‑evaluate all open **StateAssertions**; mark those that lapse and schedule renewals.
-* **RH‑E2 (Selector semantics).** If a selector policy is revised (e.g., from `most_recent` to `max_assurance`), re‑run acceptance checks that depended on the old policy and record deltas.
-* **RH‑E3 (Branching).** On adding a new branch, verify **no “default” selector** accidentally swallows it; require consumers to pick a branch or use an approved merge.
-* **RH‑E4 (Bridge drift).** If a Bridge’s CL/loss notes change, recompute **assurance penalties** for all decisions that traversed the bridge.
-* **RH‑E5 (No lifecycle creep).** Lint the text: block “life‑cycle”/“LC” tokens; suggest “state‑change”/ESG/PhaseOf/Γ\_time rewrites.
-
-### 27 Manager’s pocket summary 
-
-* **Don’t say “lifecycle”.** Think **edition DAG (PhaseOf)** + **status gates (ESG)** + **time selector (`Γ_time`)**.
-* **Always name the selector.** Never rely on “the latest”; say `effective_at(t)` or the policy you use.
-* **Merges create, they don’t mutate.** A merge produces a **new edition** with a named policy; parents stay intact.
-* **States gate decisions.** Only ESG states like *Effective*/*Validated* make an edition admissible for use; assertions are **windowed** and **evidence‑anchored**.
-* **Keep it local.** Meanings live **in the room** (Context); to reuse across rooms, build a **Bridge** and accept its CL penalty.
-
-##  28 · Conformance Checklist (CC‑KD.\*)
-
-> *All clauses are normative in the Core; any reference to tools, formats, or pipelines belongs to the Tooling Reference, not here.*
-
-**CC‑KD‑01 — Episteme as holon; action externalization.**
-Every `U.Episteme` **is a holon** with a boundary and internal parts (axioms/claims/datasets/arguments). **All actions that change an episteme occur via systems** bearing behavioral roles operating on **carriers** of that episteme; **no self‑evidence and no self‑editing** by the episteme itself (A.7, A.12, A.15).
-
-**CC‑KD‑02 — Episteme State Graph (ESG) replaces “lifecycle”.**
-KD‑CAL **forbids** the term *lifecycle* for epistemes. A context **MUST** define an **Episteme State‑Change Graph (ESG)** — a finite, named set of states and guarded transitions (e.g., *Draft → Reviewed → Adopted → Superseded/Deprecated*). ESG nodes **may** be status‑only; they **never** authorize `U.Work` by themselves.
-
-**CC‑KD‑03 — Edition, branch, merge = PhaseOf + Γ\_time.**
-KD editioning **MUST** use `PhaseOf` (A.14) for **editions** and **Γ\_time** events for **branches/merges**. A merge **MUST** preserve the **EPV‑DAG** of both parents; loss requires an explicit *LossNote* in the receiving context (B.1.4; A.10).
-
-**CC‑KD‑04 — Provenance minimum (EPV‑DAG).**
-Every normative KD claim **MUST** be reachable from at least one **evidence‑bearing episteme** via an **Evidence–Provenance DAG** edge set: `claims ⟵ evidencedBy ⟵ carriers ⟵ producedBy(Work)`; cycles that make a claim **its own unique support** are **forbidden** (A.10).
-
-**CC‑KD‑05 — Assurance triad F–G–R with Congruence penalty.**
-When KD evidence rolls up, **Formality (F)**, **Generality (G)**, and **Reliability (R)** are computed per B.3 with **weakest‑link** semantics along each dependency path and a **Congruence penalty** for cross‑context steps. If any leg is *postulative*, the leg’s mode is *postulative*.
-
-**CC‑KD‑06 — Evidence decay & debt.**
-Empirical evidence **MUST** declare a relevance window; on expiry it accrues **Epistemic Debt** and **MUST** be routed through one of: *Refresh*, *Deprecate*, *Waive (with SpeechAct & rationale)* (B.3.4).
-
-**CC‑KD‑07 — Context locality and Bridges.**
-Meanings of KD roles, state names, and acceptance criteria are **local to a `U.BoundedContext`**. Cross‑context reuse **MUST** use an explicit **Bridge** with a **Congruence Level (CL)** and **loss notes** (F.9). Label equality **never** implies meaning equality.
-
-**CC‑KD‑08 — Design‑run split for KD operations.**
-Design‑time KD assets are **`U.Episteme`** and **`U.MethodDescription`**; run‑time assets are **`U.Work`** and **`U.Observation`**. It is **non‑conformant** to mutate an episteme inside a `U.Work` record or to treat a run log as a design‑time edition (A.4, A.15).
-
-**CC‑KD‑09 — Role hygiene for KD.**
-Behavioral roles (Transformer/Observer/Speech) **bind to systems**; KD status roles (e.g., `U.EvidenceRole`, `NormativeStandardRole`) **bind to epistemes** and are **status‑only**; they never enact `U.Work` (A.2, A.2.4, A.2.5).
-
-**CC‑KD‑10 — Γ\_epist operators are conservative.**
-`Γ_epist` **MUST** be *conservative*: (i) for trust it uses **min/weakest‑link** per dependency path; (ii) for scope it **intersects** applicability envelopes; (iii) for counts it prohibits double‑counting across *aliases* unless a Bridge declares equivalence with CL≥2 and a counting policy.
-
-**CC‑KD‑11 — Acceptance is a test over Work, not over Service.**
-Acceptance verdicts for KD claims and services **MUST** be computed from **Work** facts, against **acceptance specs** carried by epistemes (A.2.3). Services carry no “actuals”.
-
-**CC‑KD‑12 — Units, envelopes, and windows.**
-Measures used in KD reasoning **MUST** name units, envelopes, and windows; *percentages* **MUST** be anchored to a PortionOf measure (A.14; B.1.3).
-
-**CC‑KD‑13 — UTS registration.**
-All KD exports (types, relations, operators) **MUST** be registered into the **Unified Term Sheet** for their architheory thread, with twin labels (tech/plain) and scope notes (F.17).
-
-**CC‑KD‑14 — Notational independence.**
-Any normative KD rule **MUST** be readable without binding to OWL, PROV‑O, BPMN, Lean, or SQL. Examples may appear in Pedagogy, not in the Core (E.5.2).
-
-**CC‑KD‑15 — Guard‑rails.**
-Narratives **MUST** respect DevOps Lexical Firewall, Unidirectional Dependency, and Cross‑disciplinary Bias Audit (E.5.\*): no CI/CD jargon in the Core and no back‑edges from tools to norms.
-
-## 29 · Regression Suite (RSCR‑KD.\*) — *what to re‑check when KD assets evolve*
-
-> *Use this mental diff when you change ESGs, Bridges, weights, or Γ policies.*
-
-**RSCR‑KD‑01 — ESG churn.**
-On adding/renaming/removing a **state** in an Episteme ESG, re‑evaluate: (i) gating policies that reference that state; (ii) all Bridges that map this state across contexts; (iii) any “status‑only” invariant.
-
-**RSCR‑KD‑02 — Merge integrity.**
-After a merge event (Γ\_time), verify that **all provenance paths** from both parents are preserved or explicitly loss‑noted; recompute **R\_eff** on affected claims.
-
-**RSCR‑KD‑03 — Bridge drift.**
-If any side of a Bridge changes checklists or state criteria, **do not carry CL forward by default**. Re‑score CL with a one‑line rationale and capture **lost/added** RCS axes.
-
-**RSCR‑KD‑04 — Weight model change.**
-When the context changes the KD weight model, snapshot the former model; re‑compute scores for a sample to detect discontinuities; publish migration guidance.
-
-**RSCR‑KD‑05 — Decay thresholds.**
-If evidence freshness windows change, flag all bindings now past threshold; trigger *Refresh/Deprecate/Waive* workflow.
-
-**RSCR‑KD‑06 — Γ policy edits.**
-Any change to Γ\_epist fold functions or counting rules requires: (i) monotonicity proof sketch; (ii) re‑run of trust roll‑ups on a representative slate; (iii) note of KPI impacts.
-
-**RSCR‑KD‑07 — UTS/alias stability.**
-Name edits **MUST** keep identity stable (aliases), unless semantics changed materially; if semantics changed, mint a **new export** and update UTS rows.
-
----
-
-## 30 · Consequences
-
-| Benefit                                   | Why it matters                                                                                     |
-| ----------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **No “magical documents.”**               | Epistemes don’t act; systems do. Category errors vanish and audits are reproducible.               |
-| **Evolution without amnesia.**            | ESG + PhaseOf + Γ\_time let knowledge change indefinitely without rewriting history or provenance. |
-| **Trust that composes conservatively.**   | Min/weakest‑link + CL penalties prevent optimism bias in roll‑ups.                                 |
-| **Context‑pluralism with explicit loss.** | Bridges carry CL + loss notes; cross‑room reuse is honest and reviewable.                          |
-| **Clean separation of promise vs proof.** | Services are promises; **Work** is proof; KD ties them with acceptance specs and evidence anchors. |
-
-**Trade‑offs.** Authors must define ESGs and loss notes and keep Bridges current. This adds visible ceremony; it pays back in fewer invisible errors.
-
----
-
-## 31 · Rationale (cross‑domain fit, 2016 → now)
-
-Post‑2015 practice converges on **explicit provenance**, **externalized action**, and **conservative integration** of evidence. KD‑CAL codifies those as first principles and binds them to Core invariants (A.7/A.12/A.14/A.15) and Γ‑algebra (B.1). The Part E authoring discipline guarantees didactic readability while keeping implementation details out of the Canon.
-
----
-
-## 32 · Relations (where KD‑CAL sits)
-
-* **Builds on:** A.1 Holon (episteme as holon), A.2 Role & A.2.4 EvidenceRole (status roles for epistemes), A.14 (PhaseOf/PortionOf), A.15 (Role–Method–Work), B.1 (Γ family), B.3 (Assurance).
-* **Coordinates with:** C.6 LOG‑CAL (modal & proof operators), C.7 CHR‑CAL (measurement templates), C.13 Compose‑CAL (structural aggregation), D‑cluster ethics (deontic bindings to evidence).
-* **Feeds:** C.15 M‑KD‑CAL (discipline‑level analytics), MM‑CHR (metrics), F‑cluster (UTS, Bridges, CRA templates).
-
-## 33 · Authoring quick cards (KD‑CAL)
-
-* **Say “state‑change,” not “lifecycle.”** Publish the **ESG** in the role/episteme’s **RoleDescription**/**EpistemeCard**.
-* **Badge + bounds.** Gate critical steps using **badge (RoleAssignment)** + **bounds (Capability envelopes)**; judge services from **Work**.
-* **Weakest‑link first.** Trust folds downhill; if you must average, you are in Pedagogy, not in Core.
-* **Local rooms, explicit bridges.** Names don’t travel without a **Bridge (CL + losses)**.
-* **No self‑evidence.** Every KD binding points to **external Work**.
-* **Register in UTS.** Every KD export gets a UTS row with twin labels.
-
-## 34 · UTS alignment 
-
-| Export (tech / plain)                        | Kind     | Scope (Context)     | Intent summary                                            | Notes                            |
-| -------------------------------------------- | -------- | ------------------- | --------------------------------------------------------- | -------------------------------- |
-| `Γ_epist.minrollup` / “weakest‑link roll‑up” | Operator | KD‑CAL              | Conservative trust fold along support paths               | Penalties via CL on bridges      |
-| `Episteme.ESG` / “state‑change graph”        | Template | KD‑CAL              | Named states & guarded transitions for epistemes          | Replaces “lifecycle”             |
-| `EvidenceBinding` / “episteme as evidence”   | Relation | KD‑CAL              | Binds episteme to claim with scope & polarity             | Holder is episteme (status‑only) |
-| `Edition/Branch/Merge`                       | Pattern  | KD‑CAL + A.14/B.1.4 | PhaseOf editions; Γ\_time branch/merge with EPV retention | Loss notes if any                |
-
-**UTS Δ (F‑17 style)**
-
-| Thread                        | Key (tech)                             | Plain label                 | Kind                             | Home (§)                           | One‑liner (normative intent)                                                                                                                                               | Constraints / CL policy (capsule)                                                                                                                                                                                   | Cross‑refs                                                                                         |
-| ----------------------------- | -------------------------------------- | --------------------------- | -------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Cross‑Context & Bridges**   | **U.NotationBridge**                   | Notation Bridge             | `U.Alignment` subtype (relation) | F.9                                | Directional **mapping between notations** for the *same* concept/role/state **across Bounded Contexts**, with explicit **mapping rule**, **CL level**, and **loss notes**. | **Must not override in‑room rules** (RSG, `≤/⊥/⊗`). **CL ∈ {3,2,1,0}**: CL≥2 permitted; **CL=1 requires Waiver SpeechAct**; **CL=0 forbidden**. Mapping is **loss‑annotated**; declare preserved/dropped semantics. | E.5.2 (Notational Independence); A.2.5 (RSG refinement); B.3 (CL calculus); F.10 (status families) |
-| **Meta / Didactic**           | **CHR\:ObjectMode**                    | Object Mode                 | CHR characteristic        | A.7; E.10.D2                       | Declares the **referent mode** of a claim/evidence: **`external`** (material system), **`conceptual`** (intension/definition), **`meta`** (about another claim/episteme).  | Use to **prevent category errors** and drive **meta‑distance penalties**. Mode **mismatch across rooms** requires Bridge + **CL\_meta** adjustment.                                                                 | A.1/A.7 (Clarity Lattice); B.3 (assurance)                                                         |
-| **Meta / Didactic**           | **metaAbout(x,y)**                     | meta‑about                  | relation (binary)                | A.10; B.3                          | Says episteme/claim **x is about y as an artefact/claim**, **not** about y’s domain referent. Turns **x** into a **meta‑level** statement.                                 | **Not a substitute for `about`** (domain aboutness). **Cycles** allowed only if **acyclic within one evaluation chain**. **ObjectMode(x)=meta** by derivation.                                                      | A.10 (EPV‑DAG); CHR\:ObjectMode; B.3                                                               |
-| **Meta / Didactic**           | **CL\_meta**                           | Meta‑level CL               | CL policy parameter              | B.3                                | **Congruence‑level adjustment** for **meta‑level crossings** computed from **ObjectMode** mismatch.                                                                        | Default **Φ\_meta**: **0** for intra‑level; **−1 CL** for one‑step meta jump (requires extra checklist/evidence); **block (CL→0)** for ≥2 steps unless **Waiver SpeechAct** cites rationale.                        | U.NotationBridge; metaAbout; B.3.4 (decay/debt)                                                    |
-| **Meta / Didactic**           | **U.InformalRationale**                | Informal Rationale          | `U.Episteme` subtype (status)    | E.12; E.9                          | Plain‑language rationale **attached to a pattern/claim/DRR**; **non‑normative**, tracked with **auto‑debt** until formalised.                                              | **Not admissible as VA evidence**; may count at **LA** with low weight. **Auto‑debt** opens a refresh task until upgraded to a formal episteme/evidence role.                                                       | E.9 (DRR); B.3 (assurance); A.10 (anchors)                                                         |
-| **Dynamics / Trajectory** | **traj concepts**                        | Trajectory concepts           | **Export** (Dynamics)        | A.3.3 `U.Dynamics`; B.1.4 `Γ_time` | Declares the **trajectory descriptor**: ⟨**StateSpace**, **Input/ControlSpace**, **ParamSpace**, **TimeBase**, **InvariantSet**⟩ for a dynamics model.                     | **TimeBase is explicit** (discrete/continuous). **Invariants** name conserved/forbidden regions. **Schema** is a **design‑time** episteme; no actuals.                                                              | A.4 (Temporal Duality); A.15 (alignment); C.13 (Compose‑CAL)                                       |
-| **Dynamics / Trajectory** | **traj.evolve**                        | Trajectory evolve           | **Export** (Dynamics)        | A.3.3; B.1.4                       | Computes **Trajectory** = `evolve(model, x₀, u(t), θ, T)`; deterministic or stochastic per model.                                                                          | **Inputs and TimeBase** must match `traj.schema`. **Stochastic runs** declare seed/distribution. **Performed as Work** by a system; results anchored to carriers.                                                   | A.15.1 (Work), A.10 (evidence); Γ\_time (ordering)                                                 |
-| **Dynamics / Trajectory** | **traj.sample**                        | Trajectory sample           | **Export** (Dynamics)        | A.3.3; B.1.4                       | Projects a **Trajectory** to **Observations** under a **SamplingPlan**; binds outputs to `U.Observation`.                                                                  | **SamplingPlan** declared (rate/grid/events). **No silent unit changes**; NotationBridge if representation changes.                                                                                                 | A.2 (ObserverRole); CHR‑CAL (metrics)                                                              |
-| **Dynamics / Trajectory** | **traj.envelope** *(aka `traj.reach`)* | Trajectory envelope / reach | **Export** (Dynamics)        | A.3.3; B.1.4                       | Computes **reachable set / bounds / safety envelope** over horizon `T`; returns ⟨**Reach**, **SafetySet**, **Witnesses**⟩.                                                 | **Must respect InvariantSet** from `traj.schema`. **Envelope** semantics (over‑/under‑approx.) declared. Used by **assurance** as constraints.                                                                      | B.3 (assurance), A.3 (Transformer quartet)                                                         |
-
-* **CL\_meta** uses the penalty function described in the row above; wire it into the existing CL pipeline (no change to CL levels, only an adjustment term).
-* **NotationBridge** adopts the existing **CL=3..0** lattice and the *Waiver SpeechAct* path for CL=1 substitutions.
-* **Naming discipline:** keep **tech/plain twin labels** as shown; “aka `traj.reach`” is an allowed alias in the *tech* register within the same room.
-* **Didactic flags:** `U.InformalRationale` instances must open a **refresh task** in your DRR index until replaced or supported by a formal episteme carrying an EvidenceRole.
-
-**Knowledge Unification Table**
-
-| # / Block | **FPF U‑Type**                             | **Unified Tech name** / **Plain name**                   | **FPF Description**                                                                                                      | **SenseCells (by context)** *(name + edition)*                                                                                                                                                                                                                                                                                                                              | **Bridges (kind, CL, short loss)**                                                                                                                                                            | **Unification Rationale (one line)**                                                                                     | **Notes**                                                        |
-| --------- | ------------------------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| **R1**    | `U.Episteme`                               | **TriangulatedEpisteme** / *knowledge unit (triangle)*   | A knowledge unit **reified as three components**: **Object**, **Concept**, **Symbol (notation)** — exactly one per role. | CL 2018: *theory + interpretation + CLIF syntax*; RDF 1.2 (2025): *domain referents + schema/intension + RDF/TriG serialization*; Lean 4: *phenomenon/claim + theory/defs + proof/program text*; 42010: *entity‑of‑interest + rationale/model + AD artifacts*. ([Iteh Standards][1], [W3C][2], [W3C GitHub][3], [leanprover.github.io][4], [IEEE Standards Association][5]) | **≈, CL 2** (CL↔OWL/KG): *open‑world vs. theory closure*; **≈, CL 2** (Lean/Coq↔KR): *proof/program vs. axiomatics*; **⊑, CL 2** (42010 AD ⊑ Symbol): *AD — carrier description not content*. | Делает явным треугольник **Object/Concept/Symbol** и отделяет **notation** от **carrier**, сохраняя один инвариант EP‑1. | Carrier stays Tier‑1; Symbol ≠ file. (см. FPF: Tier separation)  |
-| **R2**    | `U.EpistemicObject`                        | **AboutnessTarget** / *what it is about*                 | The **referent/phenomenon** an episteme addresses.                                                                       | CL: *domain of discourse/interpretation*; RDF 1.2: *real‑world entities (IRIs, values) in graph*; CLRS: *problem instance & I/O relation*; 42010: *entity of interest (EoI)*. ([Iteh Standards][1], [W3C][2], [MIT Press][6])                                                                                                                                               | **≈, CL 2** (KR↔Algo): *math object vs. problem instance*; **≈, CL 2** (KR↔42010): *entity vs. EoI* (loss: lifecycle stance).                                                                 | В разных дисциплинах «объект» — это цель описания; различаются временные и процессные акценты.                           | Plane: epistemic (not structural).                               |
-| **R3**    | `U.EpistemicConcept`                       | **IntensionModel** / *theoretical construct*             | The **theory/formalism** (axioms, semantics, method) that gives intension.                                               | CL: *theory*; OWL 2: *ontology (axioms)*; KG (Hogan 2021): *schema/ontological pattern*; Lean/Coq: *defs/type structure*. ([ISO][7], [W3C][8], [SpringerLink][9], [Rocq][10])                                                                                                                                                                                               | **≈, CL 2** (CL↔OWL): *DL vs FOL expressivity*; **≈, CL 1–2** (KG↔OWL): *profile/loss OWA/CWA*.                                                                                               | Все — способы задать **интенсиональную** сторону эпистемы; степень совпадения зависит от логики.                         | Evidence attaches per corner (F‑bias note).                      |
-| **R4**    | `U.EpistemicSymbol`                        | **NotationPackage** / *notation set*                     | The **notation/representation** (not carrier) for the Concept/Object.                                                    | CL: *CLIF/CGIF/XCL*; RDF 1.2: *Turtle/TriG/RDF*; Lean/Coq/Isabelle: *.lean/.v/.thy scripts*; 42010: *AD model kinds/views*. ([Iteh Standards][1], [W3C GitHub][3], [W3C][2], [isabelle.in.tum.de][11])                                                                                                                                                                      | **≈, CL 3** (syntax‑to‑notation within a room); **⊥** to Carrier (Tier‑1 split).                                                                                                              | Нотация — содержательная форма, а не физический носитель.                                                                | Carrier handled at Tier‑1 (per FPF).                             |
-| **R5**    | `U.Theory`                                 | **AxiomSystem** / *theory*                               | **Closed under entailment** body of statements/axioms about a domain.                                                    | CL: *theory*; OWL 2: *ontology as axiom set*; Isabelle: *theory files*; KG: *TBox as schema*. ([ISO][7], [W3C][8], [isabelle.in.tum.de][11], [SpringerLink][9])                                                                                                                                                                                                             | **≈, CL 2** (CL↔OWL/TBox): *different semantics/profiles*; **⊑, CL 2** (Isabelle‑theory ⊑ U.Theory): *tooling adds modules*.                                                                  | Теория едина как **интенсиональный** объект; различия — в семантике и профилях.                                          | Keep room prefixes in prose.                                     |
-| **R6**    | `U.PropositionSpec`                        | **SpecAsProposition** / *specification (as proposition)* | **Specification as proposition/type** suitable for proof/verification.                                                   | Lean/Coq: *`Prop`/type*; CL: *sentence formula*; 15288: *system requirement (formalizable)*. ([leanprover.github.io][4], [Rocq][10], [Iteh Standards][1], [IEEE Standards Association][12])                                                                                                                                                                                 | **≈, CL 2** (CH bridge Prop↔Type): loss: system‑specific impredicativity/erasure; **≈, CL 1–2** (Req↔Prop): loss: deontic scope.                                                              | Под «spec» понимаем утверждение, пригодное для доказательства/проверки.                                                  | **Plane mix guard**: deontic ↔ epistemic via F.10.               |
-| **R7**    | `U.Proof`                                  | **ProofTerm** / *proof*                                  | A **derivation/proof object** establishing `SpecAsProposition`.                                                          | Lean/Coq: *proof term inhabiting `Prop`*; Isabelle: *Isar proof*; CL: *derivation in a calculus*. ([leanprover.github.io][4], [Rocq][10], [isabelle.in.tum.de][11])                                                                                                                                                                                                         | **≈, CL 2** (CH Proof↔Program): *proofs as programs* (loss: extraction/termination caveats). ([Communications of the ACM][13])                                                                | В CH‑трактовке доказательство — программа, реализующая спецификацию‑тип.                                                 | EvidenceStatus applies here.                                     |
-| **R8**    | `U.Algorithm`                              | **AlgorithmicMethod** / *algorithm*                      | **Effective, finite method** with I/O contract and invariants.                                                           | CLRS 4e: *algorithm, pseudocode*; Skiena 3e: *design patterns/guide*; Lean/Coq: *`def`/`program` as realizer*; PROV‑O: *`prov:Plan` for execution recipes*. ([MIT Press][6], [SpringerLink][14], [Rocq][10], [W3C][15])                                                                                                                                                     | **⊒, CL 2** (Algorithm ⊒ Program): *implementation may add resource details*; **≈, CL 1–2** (Algorithm↔Plan): *intent vs. control‑flow gap*.                                                  | Алгоритм — интенсиональная процедура; программа — реализация.                                                            | Method/Work split per Part E/F.                                  |
-| **R9**    | `U.KnowledgeBase`                          | **AssertionSet** / *knowledge base / KG*                 | **Extensional assertion set** (facts, axioms) for a domain.                                                              | RDF 1.2: *RDF dataset/graph*; OWL 2: *ontology instance axioms*; CL: *set of sentences*. ([W3C][2], [Iteh Standards][1])                                                                                                                                                                                                                                                    | **≈, CL 2** (RDF↔CL): *model‑theory alignment needed*; **≈, CL 2** (RDF↔OWL ABox).                                                                                                            | Единый экстенсиональный слой знаний; семантические различия оговорены мостами.                                           | Provenance via PROV‑O. ([W3C][15])                               |
-| **R10**   | `U.CongruenceLevel`                        | **CL‑Ladder** / *graded sameness*                        | **CL 0–3** ladder for sameness strength in Bridges and row scope.                                                        | KD‑CAL: *CL and Γ* (per your Part C thread); FPF F.9: **Bridge** discipline.                                                                                                                                                                                                                                                                                                | Norm: **substitution only if plane‑preserving & CL≥2**; **type‑structure needs CL=3**.                                                                                                        | Используем для всех строк «weakest‑link» (минимальный CL управляет областью применения).                                 | Scope must not exceed min‑CL.                                    |
-| **R11**   | `U.StandardStatus`                         | **CanonApproval** / *standard status*                    | **Status sanctioned by a canon** (e.g., ISO/W3C “REC”, org‑specific standards).                                          | 42010: *AD conformance/requirements*; 15288: *process conformance*; W3C: *Recommendation/REC*; ISO: *International Standard*. ([IEEE Standards Association][5], [W3C][2])                                                                                                                                                                                                   | **Plane separation per F.10**: StandardStatus ≠ EvidenceStatus; Bridges explain substitutions.                                                                                                | Держим статусы на своих плоскостях (deontic vs epistemic).                                                               |                                                                  |
-| **R12**   | `U.EvidenceStatus` / `U.RequirementStatus` | **Observed/Obligated** / *evidence/requirement status*   | **What the world shows** (observations/proofs) vs **what obligation is doing** (met/violated/at‑risk).                   | KD‑CAL (measures); PROV‑O (traces); 15288 (Req/Verification/Validation); ISO 25010 (quality characteristics). ([W3C][15], [IEEE Standards Association][12], [ISO][16])                                                                                                                                                                                                      | **No cross‑plane substitution**; only Bridges with declared **kind** and **CL** (usually explanation, not substitution).                                                                      | Применяем **F.10** семейств статусов к R6–R9: где «доказано/измерено» vs «соответствует требованию».                     |                                                                  |
-
-[1]: https://cdn.standards.iteh.ai/samples/66249/a3e68c18d2df4b58a8d70386fa6fb171/ISO-IEC-24707-2018.pdf?utm_source=chatgpt.com "INTERNATIONAL STANDARD ISO/IEC 24707"
-[2]: https://www.w3.org/TR/rdf12-concepts/?utm_source=chatgpt.com "RDF 1.2 Concepts and Abstract Syntax"
-[3]: https://w3c.github.io/rdf-trig/spec/?utm_source=chatgpt.com "RDF 1.2 TriG - W3C on GitHub"
-[4]: https://leanprover.github.io/theorem_proving_in_lean4/?utm_source=chatgpt.com "Theorem Proving in Lean 4"
-[5]: https://standards.ieee.org/ieee/42010/6846/?utm_source=chatgpt.com "IEEE/ISO/IEC 42010-2022"
-[6]: https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/?utm_source=chatgpt.com "Introduction to Algorithms"
-[7]: https://www.iso.org/standard/66249.html?utm_source=chatgpt.com "ISO/IEC 24707:2018 - Common Logic (CL)"
-[8]: https://www.w3.org/TR/owl2-overview/?utm_source=chatgpt.com "OWL 2 Web Ontology Language Document Overview ..."
-[9]: https://link.springer.com/book/10.1007/978-3-031-01918-0?utm_source=chatgpt.com "Knowledge Graphs"
-[10]: https://rocq-prover.org/doc/V8.19.0/refman/?utm_source=chatgpt.com "Introduction and Contents — Coq 8.19.0 documentation"
-[11]: https://isabelle.in.tum.de/website-Isabelle2023/dist/Isabelle2023/doc/tutorial.pdf?utm_source=chatgpt.com "HOL - Isabelle"
-[12]: https://standards.ieee.org/ieee/15288/10424/?utm_source=chatgpt.com "IEEE/ISO/IEC 15288-2023"
-[13]: https://cacm.acm.org/research/propositions-as-types/?utm_source=chatgpt.com "Propositions as Types - Communications of the ACM"
-[14]: https://link.springer.com/book/10.1007/978-3-030-54256-6?utm_source=chatgpt.com "The Algorithm Design Manual"
-[15]: https://www.w3.org/TR/prov-o/?utm_source=chatgpt.com "PROV-O: The PROV Ontology"
-[16]: https://www.iso.org/standard/35733.html?utm_source=chatgpt.com "ISO/IEC 25010:2011 - Systems and software engineering"
-
-## 35 · Worked examples (three arenas)
-
-**(a) Formal math)**
-*Context:* `Algebra_TV3`.
-*ESG:* *Draft → PeerChecked → Accepted → Superseded*.
-*Binding:* `Lemma42.proof#AxiomaticProofRole:Algebra_TV3` (*supports Theorem 9*).
-*Merge:* Two proof sketches merged; EPV paths preserved; *Superseded* marks prior edition.
-
-**(b) Empirical ML)**
-*Context:* `VisionBench_2026`.
-*ESG:* *DraftDataset → VerifiedLabels → Public → Frozen → Deprecated*.
-*Binding:* `VB‑2026‑test.csv#BenchmarkEvidenceRole:VisionBench_2026` (*supports “Model A > Model B on class K”*).
-*Decay:* Relevance 12 months; debt triggers *Refresh* with new class mix.
-
-**(c) Policy & standards)**
-*Context:* `AutoSafetyCase_2025`.
-*ESG:* *Draft → Adopted → Effective → Superseded*.
-*Bindings:* `ISO_26262_ed2#NormativeStandardRole:AutoSafetyCase_2025`; `REQ‑BRAKE‑001#RequirementRole:AutoSafetyCase_2025`.
-*Assurance:* Acceptance verdicts computed from HIL **Work** against requirement clauses; status roles gate decisions only.
-
----
-
-## 36 · Anti‑patterns (and fixes)
-
-| Anti‑pattern           | Symptom                      | Fix                                                                            |
-| ---------------------- | ---------------------------- | ------------------------------------------------------------------------------ |
-| **Lifecycle talk**     | “document lifecycle” in Core | Replace with **ESG**; publish states & guards                                  |
-| **Document acts**      | “spec deployed itself”       | Attribute Work to a **system** with `TransformerRole`; episteme is status‑only |
-| **Global labels**      | “Approved” assumed universal | Qualify by Context; add **Bridge** with CL                                     |
-| **Average‑your‑trust** | Mean of scores across claims | Use **weakest‑link**; only in Pedagogy may you illustrate averages             |
-| **Merge by overwrite** | Lost provenance after merge  | Γ\_time merge with explicit **LossNote** or preserve both paths                |
-| **Service actuals**    | SLIs attached to Service     | Compute from **Work**; Service carries acceptance spec only                    |
-
----
-
-## 37 · Didactic distillation (60 s)
-
-> *KD‑CAL makes knowledge **changeable** without losing **truth trails**. Epistemes move by a **State‑Change Graph**; editions/branches/merges are **PhaseOf + Γ\_time**. Evidence is a **status** of an episteme, never an action. Trust rolls up by **weakest‑link** with **CL penalties** on Bridges. Services promise; **Work** proves; acceptance is a test over Work. Keep everything local to a **room of meaning** and register exports in **UTS**.*
-
----
-
-## 38 · Split of concerns across artefact families (governance)
-
-| Concern            | Lives in Core (this pattern)                 | Lives in Tooling                                        | Lives in Pedagogy                                      |
-| ------------------ | -------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------ |
-| What KD‑CAL **is** | Exports, invariants, CC/RSCR, ESG discipline | Linters, calculators, provenance validators, CL scorers | Walk‑throughs, examples, checklists, teaching diagrams |
-| How to **compute** | Math of Γ\_epist & F–G–R (notation‑free)     | Implementations in code/OWL/SQL/etc.                    | Step‑by‑step usage                                     |
-| How to **name**    | UTS rows, twin labels                        | Auto‑registrars, alias checkers                         | Naming exercises                                       |
-
-(Guard‑rails: DevOps Lexical Firewall, Unidirectional Dependency.)
 
 # **C.13 — Compose‑CAL (Constructional Mereology)**
 *(architheory pattern; structural rung of the FPF ladder)*
@@ -15431,7 +14434,7 @@ Below are the **normative clauses**
 1. **Kernel** — `U.*` types, kernel relations, invariants (e.g., `U.Holon`, `U.Role`, `U.Method`, `U.Work`, `U.Service`).
 2. **Architheory** — CAL/LOG/CHR exports (e.g., **Sys‑CAL**, **KD‑CAL**, **Agency‑CHR**) that **extend** but do not override Kernel.
 3. **Context** — a **`U.BoundedContext`** with its **Glossary, Invariants, Roles**, and **Bridges** (local room of meaning).
-4. **Instance** — concrete identifiers (holders, role assignments, works, carriers).
+4. **Instance** — concrete identifiers (holders, role assignings, works, carriers).
 
 **V‑1 (Unidirectional meaning).** Meaning **flows downward** only: Kernel → Architheory → Context → Instance. No stratum may redefine a higher stratum’s term; it may only **specialise** or **bridge** it.
 
@@ -18141,7 +17144,7 @@ Part C architheories to ground examples and invariants in **Room‑true** lang
 
 **“Name the mask or the badge — and say what it commits to — but only inside a Room.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
-**Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; F.1 **Domain Landscape Survey**; F.2 **Term Harvesting**; F.3 **Intra‑Context Sense Clustering**; A.2.1 **`U.RoleAssignment`**; A.7 **Strict Distinction**; A.11 **Ontological Parsimony**.
+**Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; F.1 **Domain Landscape Survey**; F.2 **Term Harvesting**; F.3 **Intra‑Context Sense Clustering**; A.2.1 **`U.RoleAssigning`**; A.7 **Strict Distinction**; A.11 **Ontological Parsimony**.
 **Coordinates with.** F.5 **Naming Discipline for U‑Types & CRA Templates**; F.7 **Concept‑Set Table**; F.9 **Alignment & Bridge Across Contexts**; B.3 **Trust & Assurance Calculus** (for later status evaluation).
 **Aliases (informative).** *Mask/Badge card*; *CRA card*.
 
@@ -18189,7 +17192,7 @@ Without explicit CRA templates:
 * **Room** — **U.BoundedContext** (per E.10.1).
 * **Local‑Sense** — a consolidated sense in a Room (F.3).
 * **SenseCell** — the address `⟨Room, Local‑Sense⟩`.
-* **Role Template** — behavioural mask defined **in** a Room, later bound by **`U.RoleAssignment`**.
+* **Role Template** — behavioural mask defined **in** a Room, later bound by **`U.RoleAssigning`**.
 * **Status Template** — epistemic/deontic badge defined **in** a Room, later asserted as a **claim** about a holder/artefact.
 * **Holder** — the thing that may wear a mask or carry a badge (e.g., a **U.System**, **U.MethodDescription**, **U.Work**, **U.Episteme**).
 
@@ -18247,7 +17250,7 @@ It is **not** a definition by prose alone; it is a **pledge of invariants** — 
 4. **Minimality.** Invariants **SHOULD** be the **fewest that decide** the assignment; avoid procedural sequences.
 5. **No cross‑Room smuggling.** A single card **MUST NOT** import foreign semantics; if two Rooms are needed, the relation is handled later in **F.9**.
 6. **Label fidelity.** **Tech** label **MUST** be idiomatic to the Room; **Plain** label **MUST** not widen the sense (F.3).
-7. **Binding contract (roles).** A **Role Template** is the **design‑time mask**; at run‑time, a **`U.RoleAssignment`** creates **System‑in‑Role** instances that are subject to the card’s invariants.
+7. **Binding contract (roles).** A **Role Template** is the **design‑time mask**; at run‑time, a **`U.RoleAssigning`** creates **System‑in‑Role** instances that are subject to the card’s invariants.
 8. **Assertion contract (statuses).** A **Status Template** is a **badge**; asserting it **commits** to the card’s evaluation invariants and to the Room’s way of checking them (later anchored via SenseCells, not formulas here).
 
 ---
@@ -18266,7 +17269,7 @@ It is **not** a definition by prose alone; it is a **pledge of invariants** — 
 
 3. **Role assignment obligation**
    `assignable(h,T) ∧ bind(h,T: C) ⊢ invariants_T(h) must hold`
-   *Reading:* Once bound (via **`U.RoleAssignment`**), **h** must satisfy **T**’s behavioural invariants.
+   *Reading:* Once bound (via **`U.RoleAssigning`**), **h** must satisfy **T**’s behavioural invariants.
 
 4. **Status assertability**
    `StatusTemplate S, evidence_in_C supports S for x ⊢ assertable(x,S)`
@@ -18468,7 +17471,7 @@ Let **`stance(T)`** ∈ {**design**, **run**} (from the Room).
 ## 12 · Relations (where this card sits)
 
 **Builds on.**
-E.10.1 **D.CTX** (Context ≡ U.BoundedContext); F.1 (Rooms cut); F.2 (harvested terms); F.3 (Local‑Sense → **SenseCell**); A.2.1 **`U.RoleAssignment`**; A.7 **Strict Distinction**.
+E.10.1 **D.CTX** (Context ≡ U.BoundedContext); F.1 (Rooms cut); F.2 (harvested terms); F.3 (Local‑Sense → **SenseCell**); A.2.1 **`U.RoleAssigning`**; A.7 **Strict Distinction**.
 
 **Constrains.**
 **F.5** (Naming): pairs **Tech/Plain** must reflect the **Room idiom** and avoid cross‑Room overreach.
@@ -18846,7 +17849,7 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 **“Assign only what you can later justify by local meaning and observable facts.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; F.1 **Domain Landscape Survey**; F.2 **Term Harvesting & Normalisation**; F.3 **Intra‑Context Sense Clustering**; F.4 **CRA Template Definition**; F.5 **Naming Discipline**.
-**Coordinates with.** F.7 **Concept‑Set Table**; F.8 **Mint or Reuse?**; F.9 **Alignment & Bridge**; F.10 **Epistemic Status Mapping**; A.2.1 **U.RoleAssignment**; A.15.\* **Role–Method–Work alignment**; KD‑CAL (observations, results).
+**Coordinates with.** F.7 **Concept‑Set Table**; F.8 **Mint or Reuse?**; F.9 **Alignment & Bridge**; F.10 **Epistemic Status Mapping**; A.2.1 **U.RoleAssigning**; A.15.\* **Role–Method–Work alignment**; KD‑CAL (observations, results).
 **Aliases (informative).** *Assign‑and‑verify mental loop*; *CRA six moves*.
 
 ---
