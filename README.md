@@ -1,56 +1,45 @@
 # fpf-sync
 
-To install dependencies:
+Keep a file from a public Yandex Disk link in sync with this repository. When the file changes, this repo automatically opens a Pull Request (PR) with the updated version.
 
-```bash
-bun install
-```
+For developer-focused details (coding, variables, local runs, tests), see `DEVELOPERS.md`.
 
-To run:
+**What You Need**
+- Yandex Disk public link: a share link anyone can open.
+- Repo admin access: permission to change GitHub Actions settings.
 
-```bash
-bun run index.ts
-```
+**One-Time Setup**
+- Actions permissions: enable write access and PR creation.
+  - Repo → Settings → Actions → General → Workflow permissions
+  - Select “Read and write permissions”
+  - Turn on “Allow GitHub Actions to create and approve pull requests”
+- Source configuration (link and file selection) is pre‑set. If it needs to change, ask a developer to update it (see `DEVELOPERS.md`).
 
-This project was created using `bun init` in bun v1.2.3. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+**Run the Sync**
+- Automatic: runs every 30 minutes.
+- Manual: Repo → Actions → “Sync Yandex Disk to PR” → Run workflow.
 
-## Yandex Disk → Auto‑PR Sync
+**What You’ll See**
+- A new or updated PR titled “Sync: Yandex Disk update”.
+- The downloaded file stored under the `yadisk/` folder in the PR.
+- Merge the PR to update the repository.
 
-This repo can automatically watch a Yandex Disk public share and open a PR when the file changes.
+**Review Changes (Diffs) On GitHub**
+- Open Pull Requests: Repo → Pull requests → select “Sync: Yandex Disk update”.
+- Files Changed tab: shows exactly what changed inside `yadisk/…`.
+- Compare view (optional): visit `Compare changes` in the PR to see side‑by‑side diffs.
+- Tip: The sync branch is `sync/yadisk` (base is `main`).
 
-- Workflow: `.github/workflows/yadisk-sync.yml` (runs every 30 minutes and on manual dispatch)
-- Script: `scripts/yadisk-sync.mjs` (downloads a file from a Yandex public link)
+**Download The File (No Coding Needed)**
+- From the PR before merging:
+  - Open the PR → Files changed → click the changed file under `yadisk/`.
+  - Click “Download raw file” (download icon) or “Raw”, then use your browser’s Save.
+- After merging to main:
+  - Go to the repo’s `yadisk/` folder → click the file.
+  - Click “Download raw file” (download icon) or “Raw”, then Save.
+- Download everything (ZIP): Repo → Code (green button) → Download ZIP, then open the `yadisk/` folder inside.
 
-Configure via repository Variables (Settings → Variables → Actions) or use the defaults:
-
-- `YANDEX_PUBLIC_URL`: Public share URL (defaults to `https://disk.yandex.ru/d/N2xaJZWo-hhFYw`).
-- `YANDEX_PUBLIC_PATH` (optional): Path of the file within the share (use when the link points to a folder).
-- `YANDEX_TARGET_NAME` (optional): File name to pick from a folder share when `YANDEX_PUBLIC_PATH` is a directory.
-- `YANDEX_DEST_FILENAME` (optional): Override the filename saved into the repo.
-
-Downloaded files are saved under `yadisk/`. The workflow uses `peter-evans/create-pull-request` to open/update PRs only when changes are detected.
-
-Security & limits:
-- Actions are pinned to specific commit SHAs to reduce supply‑chain risk.
-- Writes only under `yadisk/**` and uses minimal token permissions.
-- Filenames are sanitized to prevent path traversal.
-- Default max file size is 10MB (override via `YANDEX_MAX_BYTES`).
-
-Run locally (Bun):
-
-```bash
-bun scripts/yadisk-sync.mjs \
-  --public-url "https://disk.yandex.ru/d/N2xaJZWo-hhFYw" \
-  # If the share is a folder, either specify a file path:
-  # --public-path "/Folder/file.ext" \
-  # or specify a file name to pick from that folder:
-  # --target-name "file.ext" \
-  --dest-path "yadisk" \
-  # --dest-filename "desired-name.ext"
-  # --max-bytes 10485760
-```
-
-Notes:
-
-- Yandex Disk does not expose webhooks for public shares; this uses periodic polling via GitHub Actions.
-- Increase frequency by adjusting the cron in `.github/workflows/yadisk-sync.yml` (GitHub schedules are best‑effort and not real‑time).
+**Notes**
+- Scheduling is best‑effort by GitHub; runs may be slightly delayed.
+- Basic safety is built in: filenames are cleaned, and large files are blocked by a size limit.
+ - If something doesn’t look right, contact a maintainer. Technical troubleshooting lives in `DEVELOPERS.md`.
