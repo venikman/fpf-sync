@@ -24,6 +24,26 @@ For developer-focused details (coding, variables, local runs, tests), see `DEVEL
 - The downloaded file stored under the `yadisk/` folder in the PR.
 - Merge the PR to update the repository.
 
+**How It Works (Diagram)**
+
+```mermaid
+flowchart TD
+    A["Yandex Disk (public link)"] -->|scheduled or manual| B["GitHub Actions: Sync workflow"]
+    B --> C["Download file to repo under yadisk/"]
+    C --> D{Changes detected?}
+    D -- No --> B
+    D -- Yes --> E["Create/Update branch sync/yadisk"]
+    E --> F["Open Pull Request → main"]
+    F --> G["Review 'Files changed' diff"]
+    G --> H["Merge PR"]
+    H --> I["Main branch updated • file available in yadisk/"]
+```
+
+What the PR does:
+- Shows exactly what changed in the file (safe review step).
+- Nothing changes in the main branch until the PR is merged.
+- You can download the file from the PR (before merge) or from main (after merge).
+
 **Review Changes (Diffs) On GitHub**
 - Open Pull Requests: Repo → Pull requests → select “Sync: Yandex Disk update”.
 - Files Changed tab: shows exactly what changed inside `yadisk/…`.
