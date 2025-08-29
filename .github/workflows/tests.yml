@@ -21,7 +21,7 @@ jobs:
       - name: Guard: no .only/.skip in tests
         run: |
           set -euo pipefail
-          if grep -RInE "^\s*(it|describe|test)\.(only|skip)\s*\(" tests; then
+          if [ -d tests ] && grep -RInE "^\s*(it|describe|test)\.(only|skip)\s*\(" tests; then
             echo "Error: .only/.skip found in tests" >&2
             exit 1
           fi
