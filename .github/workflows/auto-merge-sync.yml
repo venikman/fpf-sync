@@ -33,7 +33,7 @@ jobs:
           jq -c '. | select(.createdAt <= env.CUTOFF)' | \
           while read -r item; do
             pr=$(echo "$item" | jq -r '.number')
-            echo "Merging PR #$pr ..."
-            gh pr merge "$pr" --merge --delete-branch --yes -R "$GITHUB_REPOSITORY"
+            echo "Merging PR #$pr (squash) ..."
+            gh pr merge "$pr" --squash --delete-branch --yes -R "$GITHUB_REPOSITORY"
           done
 
