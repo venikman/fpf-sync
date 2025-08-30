@@ -19,11 +19,11 @@ jobs:
         uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
         with:
           bun-version: '1.2.3'
-      - name: Guard: no .only/.skip in tests
+      - name: "Guard: no .only/.skip in tests"
+        shell: bash
         run: |
-          set -euo pipefail
-          if [ -d tests ] && grep -RInE "^\s*(it|describe|test)\.(only|skip)\s*\(" tests; then
-            echo "Error: .only/.skip found in tests" >&2
+          if [ -d tests ] && grep -RInE '^\s*(it|describe|test)\.(only|skip)\s*\(' tests; then
+            echo 'Error: .only/.skip found in tests' >&2
             exit 1
           fi
       - name: Run tests
