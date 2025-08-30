@@ -23,7 +23,7 @@ jobs:
     concurrency:
       group: sync-yadisk
       cancel-in-progress: true
-    timeout-minutes: 10
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -45,6 +45,7 @@ jobs:
           bun scripts/yadisk-sync.mjs --max-bytes "${{ vars.YANDEX_MAX_BYTES || '10485760' }}"
 
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6
         with:
           commit-message: 'chore(sync): Yandex Disk update'
@@ -52,7 +53,29 @@ jobs:
           body: |
             Automated sync from Yandex Disk public share.
             - Source: ${{ env.PUBLIC_URL }} ${{ env.PUBLIC_PATH && format('(path: {0})', env.PUBLIC_PATH) }}
+            - Main FPF document: https://github.com/venikman/fpf-sync/blob/main/yadisk/First%20Principles%20Framework%20%E2%80%94%20Core%20Conceptual%20Specification%20(holonic).md
+            - Review the diff in the "Files changed" tab.
           branch: sync/yadisk
           delete-branch: true
           add-paths: |
             yadisk/**
+
+      - name: Wait 25 minutes before auto-merge
+        if: ${{ steps.cpr.outputs.pull-request-number != '' }}
+        run: sleep 1500
+
+      - name: Auto-merge PR if mergeable
+        if: ${{ steps.cpr.outputs.pull-request-number != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR=${{ steps.cpr.outputs.pull-request-number }}
+          info=$(gh pr view "$PR" --json state,mergeable --jq '.state + ":" + .mergeable' -R "$GITHUB_REPOSITORY")
+          echo "PR $PR status: $info"
+          if [ "$info" = "OPEN:MERGEABLE" ]; then
+            gh pr merge "$PR" --merge --delete-branch --yes -R "$GITHUB_REPOSITORY"
+          else
+            echo "PR not mergeable yet or closed; skipping merge."
+          fi
