@@ -1587,7 +1587,7 @@ Teams frequently blur the two, and then further mix them with **how** the work i
 
 ## 2 · Problem (what goes wrong without this concept)
 
-1. **Permission ≠ ability.** A Role assignment authorizes execution in a context; it does **not** prove the system can meet the performance envelope.
+1. **Permission ≠ ability.** A Role assignment authorizes execution in a context; it does **not** prove the system can meet the performance WorkScope.
 2. **Recipe ≠ ability.** A Method says *how* to do something; it does not guarantee that *this* holder can meet the target outcomes under the required constraints.
 3. **Execution log ≠ ability.** A past Work record does not, by itself, establish a stable ability; conditions may have been favorable or unique.
 4. **Cross‑team confusion.** Enterprise terms like “capability”, “service”, and the old “function” are used interchangeably; planning, staffing, and assurance become fragile.
@@ -1613,6 +1613,12 @@ Teams frequently blur the two, and then further mix them with **how** the work i
 
 > **One‑liner to remember:** *Capability = “can do (within these bounds)”*, independent of *“is assigned now”* or *“did do at time t”*.
 
+**Capability declaration (summary).** A capability SHALL declare, as **separate** items:
+* **`U.WorkScope`** (*Work scope*) — the set of `U.ContextSlice` under which the capability can deliver the intended `U.Work` (see **A.2.6 §6.4**);
+* **`U.WorkMeasures`** — measurable targets with units evaluated on a **JobSlice** (R‑lane facet);
+* **`U.QualificationWindow`** — the time policy that governs operational admissibility at **`Γ_time`** (R‑lane facet).
+**Note.** This separation supersedes the legacy “envelope + measures + validity interval” bundle.
+
 ### 4.2 Conceptual descriptors (not a data schema)
 
 When you describe a capability in a model or a review, anchor it by answering these five didactic prompts:
@@ -1620,7 +1626,7 @@ When you describe a capability in a model or a review, anchor it by answering th
 1. **Holder:** *Whose ability is this?* → a specific `U.System`.
 2. **Scope:** *In which bounded context were the measures established?* → `U.BoundedContext` (strongly recommended for clarity and comparability).
 3. **Task family:** *Ability to do **what kind** of work?* → reference the relevant **MethodDescription**(s) or method family the system can execute.
-4. **Envelope:** *Under what conditions?* → inputs/resources/environment assumptions (e.g., voltage, pressure, ambient, tool head).
+4. **WorkScope:** *Under what conditions?* → inputs/resources/environment assumptions (e.g., voltage, pressure, ambient, tool head).
 5. **Performance measures:** *With what bounds?* → CHR‑style measures (throughput, precision, latency, reliability, MTBF…) with ranges/targets.
 
 Optional descriptors that improve trust without adding bureaucracy:
@@ -1635,7 +1641,7 @@ Optional descriptors that improve trust without adding bureaucracy:
 
 To keep discussions terse yet precise, teams often write:
 
-* **“S#17 can \<MethodDescription / task family> @ \<envelope> → \<measures>.”**
+* **“S#17 can \<MethodDescription / task family> @ \<WorkScope> → \<measures>.”**
 * Or as a bullet in a capability table scoped to a context, e.g., *AssemblyLine\_2025 Capability Sheet*.
 
 This is not a formal notation—just a consistent way to keep the five prompts in view.
@@ -1666,7 +1672,7 @@ This is not a formal notation—just a consistent way to keep the five prompts i
 
 * **Holder:** `RobotArm_A` (`U.System`).
 * **Task family:** seam welding per `Weld_MIG_v3` **MethodDescription**.
-* **Envelope:** workpiece steel grades S235–S355; ambient 18–30 °C; argon mix 92–95 %; torch T‑MIG‑07.
+* **WorkScope:** workpiece steel grades S235–S355; ambient 18–30 °C; argon mix 92–95 %; torch T‑MIG‑07.
 * **Measures:** bead width 6.0 mm ± 0.2 mm; throughput ≤ 12 seams/min; defect rate < 0.5 %.
 * **Context:** `AssemblyLine_2025`.
 * **Readable claim:** *RobotArm\_A can execute Weld\_MIG\_v3 within the stated envelope at the stated measures (AssemblyLine\_2025).*
@@ -1676,7 +1682,7 @@ This is not a formal notation—just a consistent way to keep the five prompts i
 
 * **Holder:** `PlannerService_v4` (deployed system).
 * **Task family:** job‑shop schedule generation per `JS_Schedule_v4` MethodDescription.
-* **Envelope:** 50–500 jobs; 5–40 machines; hard deadlines only; network latency ≤ 20 ms.
+* **WorkScope:** 50–500 jobs; 5–40 machines; hard deadlines only; network latency ≤ 20 ms.
 * **Measures:** schedule completion within 0.95 of theoretical optimum (benchmark set), 98 % on‑time delivery in simulation.
 * **Context:** `PlantScheduling_2025`.
 * **Use:** Steps that “require ScheduleGeneration capability ≥ 0.90 optimality” will only pass if the holder’s capability meets or exceeds that bound.
@@ -1685,7 +1691,7 @@ This is not a formal notation—just a consistent way to keep the five prompts i
 
 * **Holder:** `FinanceDept` (`U.System` as OrgUnit).
 * **Task family:** period close per `CloseBooks_v3` MethodDescription.
-* **Envelope:** IFRS; ERP v12; 8 legal entities; staffing ≥ 6 FTE; cut‑off rules X.
+* **WorkScope:** IFRS; ERP v12; 8 legal entities; staffing ≥ 6 FTE; cut‑off rules X.
 * **Measures:** close in ≤ 5 business days; adjustment error rate < 0.2 %.
 * **Context:** `OperatingModel_2025`.
 * **Distinction:** This is **ability**; the **Service** “Provide month‑end close” is the external promise derived from this ability once formally offered.
@@ -1706,14 +1712,14 @@ A capability **belongs to** a **`U.System`** (physical, cyber, socio‑technical
 **CC‑A2.2‑2 (Separation of concerns).**
 A capability is **not** a Role, **not** a Method/MethodDescription, **not** a Work, and **not** a Service. Models **SHALL NOT** use capability declarations to stand in for assignments, recipes, executions, or promises.
 
-**CC‑A2.2‑3 (Envelope required for operational use).**
-When a capability is used to qualify a step or to support planning, its statement **MUST** name an **envelope** (conditions/assumptions) and **measures** (targets/ranges). Without an envelope and measures, a capability is advisory and **SHALL NOT** be used for step admission or assurance claims.
+**CC‑A2.2‑3 (WorkScope required for operational use).**
+When a capability is used to qualify a step or to support planning, its statement **MUST** name an **WorkScope** (conditions/assumptions) and **measures** (targets/ranges). Without an WorkScope and measures, a capability is advisory and **SHALL NOT** be used for step admission or assurance claims.
 
 **CC‑A2.2‑4 (Context anchor).**
 Capability statements that drive operational decisions **MUST** be anchored to a **`U.BoundedContext`** (the “room” whose vocabulary and test norms apply).
 
-**CC‑A2.2‑5 (Validity interval).**
-When capabilities are used operationally (e.g., to gate Work), the statement **MUST** carry a **validity interval** (calibration window, software version window, etc.). Outside this interval, the claim is not admissible for gating.
+**CC‑A2.2‑5 (QualificationWindow).**
+When capabilities are used operationally (e.g., to gate Work), the statement **MUST** carry a **QualificationWindow** (calibration window, software version window, etc.). Outside this interval, the claim is not admissible for gating.
 
 **CC‑A2.2‑6 (Past work remains past).**
 Updates to a capability statement **SHALL NOT** retroactively invalidate already recorded Work. Past Work is judged against the capability declaration that was valid **at the time of execution**.
@@ -1732,7 +1738,7 @@ Algorithms, standards, and documents provide **evidence** or **recipes**; they *
 A step in a **Method** may define **required roles** (assignment) and **capability thresholds** (ability). A Work passes the gate if:
 
 1. **assignment check:** the Work’s `performedBy` points to a valid **Role assignment** that covers the step window and satisfies the role relation (including specialization `≤` inside the context).
-2. **Ability check:** the **holder** of that Role assignment has a **capability** whose **envelope** matches the step’s assumptions (or is a declared superset) and whose **measures** meet the step’s threshold(s) during the Work’s time window.
+2. **Ability check:** the **holder** of that Role assignment has a **capability** whose **WorkScope** matches the step’s assumptions (or is a declared superset) and whose **measures** meet the step’s threshold(s) during the Work’s time window.
 
 **Idioms managers can reuse (plain text):**
 
@@ -1750,7 +1756,7 @@ A step in a **Method** may define **required roles** (assignment) and **capabili
 Capabilities are **stable but not static**. Three simple practices keep reasoning honest:
 
 * **Validity windows.** Abilities drift. Put a window on the statement (e.g., “valid for software v4.2; recalibration due 2025‑09‑30”).
-* **Change points.** Note upgrades/downgrades that affect the envelope or measures.
+* **Change points.** Note upgrades/downgrades that affect the WorkScope or measures.
 * **Snapshot at execution.** When Work is recorded, it is implicitly tied to the **then‑current** capability statement; later edits do not rewrite history (see CC‑A2.2‑6).
 
 **Manager’s rule of thumb:** if you would reschedule a job after a tool change, the capability statement needs a new window.
@@ -1759,7 +1765,7 @@ Capabilities are **stable but not static**. Three simple practices keep reasonin
 
 ## 11 · Composition and Γ (how assembled systems “can do”)
 
-Γ builds a **new holder** (a composite system). Its capability is not the algebraic sum of parts; it is an **ability of the whole** under its own envelope.
+Γ builds a **new holder** (a composite system). Its capability is not the algebraic sum of parts; it is an **ability of the whole** under its own WorkScope.
 
 * **Express at the whole.** “Cell\_3 can place 12 PCB/min with ±0.1 mm” — that is a capability of **Cell\_3**, not of the pick‑and‑place head alone.
 * **State dependencies.** “Valid while Feeder\_A delivers reels at ≥ X; vision subsystem calibrated ≤ 72 h ago.”
@@ -1782,7 +1788,7 @@ A **Service** is an **external promise**. It relies on capability but is not ide
 ## 13 · Interaction with Dynamics (laws vs. abilities)
 
 * **Dynamics** describe **how states evolve** (models, laws, trajectories).
-* **Capability** says **what this system can achieve** within an envelope.
+* **Capability** says **what this system can achieve** within an WorkScope.
 * Dynamics often serve as **evidence** or **explanatory models** for capability but are **not** the capability itself.
 
 **Physics example:** an “isothermal process” is a **Work** instance whose path is explained by a **Dynamics** episteme; a lab rig’s ability to run that path repeatably is its **capability**.
@@ -1792,9 +1798,9 @@ A **Service** is an **external promise**. It relies on capability but is not ide
 ## 14 · Anti‑patterns (and the right move)
 
 * **Role‑as‑capability.** “Welder role ensures ±0.2 mm.” → Keep **role** as assignment; put **precision** in a **capability** on the holder; put the **threshold** on the **step**.
-* **Recipe‑as‑capability.** “We have the ‘Etch\_Al2O3’ capability.” → Recipe is **Method/MethodDescription**; ability is “can execute Etch\_Al2O3 within envelope E at measures M.”
+* **Recipe‑as‑capability.** “We have the ‘Etch\_Al2O3’ capability.” → Recipe is **Method/MethodDescription**; ability is “can execute Etch\_Al2O3 within WorkScope E at measures M.”
 * **Work‑as‑capability.** “We did it once, so we can.” → One Work log is not a stable ability; state envelope and measures if you want a capability claim.
-* **Context‑less claims.** “This tool can machine titanium.” → Say **where and under what bounds** (context + envelope + measures).
+* **Context‑less claims.** “This tool can machine titanium.” → Say **where and under what bounds** (context + WorkScope + measures).
 * **Stuffing capabilities into BoM/PBS.** Structure lists **what it is**; capabilities belong to **what it can do** (the holder), not inside the parts list.
 * **Service‑as‑capability.** “We have the Month‑end Close capability (promise).” → Promise is **Service**; ability is internal, promise is external.
 
@@ -1802,7 +1808,7 @@ A **Service** is an **external promise**. It relies on capability but is not ide
 
 ## 15 · Migration notes (quick wins for existing texts)
 
-1. **Underline envelopes.** For every “can do” sentence, add **conditions** and **measures**; otherwise treat it as background color, not a gate.
+1. **Underline WorkScopes.** For every “can do” sentence, add **conditions** and **measures**; otherwise treat it as background color, not a gate.
 2. **Pull thresholds out of roles.** Move “≤ 0.2 mm”, “≥ 0.90 optimality” from role labels into **step requirements**; leave roles clean (assignments).
 3. **Pin contexts.** Add the bounded context name to each capability table (“Capability Sheet — AssemblyLine\_2025”).
 4. **Snapshot validity.** Add a “valid through” column (software version or calibration horizon).
@@ -1814,7 +1820,7 @@ A **Service** is an **external promise**. It relies on capability but is not ide
 
 | Benefits                                                                                           | Trade‑offs / mitigations                                                                                                      |
 | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Truthful planning.** Schedulers and managers can ask “can do?” independently of “assigned now?” | **Extra column in tables.** Adding envelope/measures/valid‑through is a small burden that repays itself in fewer reschedules. |
+| **Truthful planning.** Schedulers and managers can ask “can do?” independently of “assigned now?” | **Extra column in tables.** Adding scope/measures/valid‑through is a small burden that repays itself in fewer reschedules. |
 | **Safer gating.** Steps gate on both role and ability; fewer silent failures.                      | **Two checks instead of one.** Keep the checklist simple: *badge + bounds*.                                                   |
 | **Clear service design.** Services become explicit promises built on visible abilities.            | **Temptation to over‑promise.** Keep service SLOs within demonstrated capability measures.                                    |
 | **Clean separation with Dynamics and PBS/SBS.** No more “process” or “function” soup.              | **Some retraining.** Use the litmus tables (from the lexical rules) during onboarding.                                        |
@@ -1835,7 +1841,7 @@ A **Service** is an **external promise**. It relies on capability but is not ide
 
 * **Capability = can do (within bounds).** assignment ≠ ability ≠ recipe ≠ execution ≠ promise.
 * **Gate every critical step with two checks:** *badge (Role assignment)* + *bounds (Capability)*.
-* **Write the room on every claim:** context name, envelope, measures, valid‑through.
+* **Write the room on every claim:** context name, scope, measures, valid‑through.
 
 ## A.2.3 · `U.Service` \[D]
 
@@ -2261,7 +2267,7 @@ Each `U.EvidenceRole` **MUST** anchor into the **Evidence–Provenance DAG** (A.
 A `U.EvidenceRole` classifies an artefact; its contribution to the target claim’s assurance tuple ⟨F, G, R⟩ is computed in B.3 using:
 
 * **F (formality)** — lower-bounded by the least formal constituent in the provenance path.
-* **G (generality)** — limited to the claim scope; unsupported regions are dropped (WLNK).
+* **G (ClaimScope)** — limited to the claim scope; unsupported regions are dropped (WLNK).
 * **R (reliability)** — computed as:
 
 ```
@@ -3123,7 +3129,810 @@ Use when **adding/removing states**, **changing criteria**, or **bridging** acro
 * **Enables.** A.15 (Role‑Method‑Work Alignment via Green‑Gate); B.3 (Trust penalties when crossing Bridges with lower `CL`).
 * **Interacts with.** D‑cluster deontics (speech‑acts gate **Authorized**‑like states for agential roles); F.9 (state‑level alignment across contexts).
 
-  
+
+# A.2.6 · **Unified Scope Mechanism (USM): Context Slices & Scopes**  \[A] 
+
+> **One‑line summary.** Introduces a single, room‑local **scope mechanism** for all holons: **`U.ContextSlice`** (where we reason and measure) and a family of **set‑valued scope characteristics** (**`U.Scope`**), specialized as **`U.ClaimScope`** for epistemes (**G** in **F–G–R**) and **`U.WorkScope`** for system capabilities, with one algebra (∩ / SpanUnion / translate / widen / narrow / refit) and uniform cross‑room handling (Bridge + CL).
+
+---
+
+## 0 · Status, Placement & Deprecations
+
+**Status.** Normative pattern \[A] in **Part A · Core Holonic Concepts**. Numbered **A.2.6**.
+
+**Replaces / deprecates.**
+This pattern **supersedes** the scattered use of characteristic labels *applicability*, *envelope*, *generality*, and *capability envelope* when they name a scope‑like characteristic. From now on:
+
+* For epistemes, the only scope characteristic is **`U.ClaimScope`** (nick **G** in F–G–R).
+* For system capabilities, the only scope characteristic is **`U.WorkScope`**.
+* The abstract architectural notion is **`U.Scope`** (the shared set‑valued mechanism).
+
+Legacy words (*applicability / envelope / generality / capability envelope*) MAY appear **only** as explanatory aliases in non‑normative notes.
+
+**Cross‑references.**
+— **C.2.3** (Unified Formality **F**) and **C.2.2** (F–G–R): this pattern **defines G** as `U.ClaimScope`.
+— **A.2.2** (Capabilities): capability gating now **SHALL** use `U.WorkScope`.
+— **Part B** (Bridges & CL): cross‑room transfers **MUST** declare a Bridge with **CL**; CL affects **R**, not **F/G**.
+
+
+## 1 · Purpose & Audience
+
+This pattern gives **engineering managers and assurance architects** one vocabulary, one model, and one set of operations to talk about **where** a claim holds and **under which conditions** a system can deliver a piece of **Work**. It removes the need to remember whether a document said “applicability,” a model said “envelope,” or a safety plan said “capability envelope.” **Scope is scope.** The only distinction that matters is **what carries it**:
+
+* **Knowledge/episteme** → **Claim scope** (G).
+* **System/capability** → **Work scope** (conditions to execute Work at the promised measures).
+
+With USM, teams can:
+
+* specify, compare, and compose scope **without translation games**;
+* gate ESG and Method–Work steps with **observable, room‑local scope checks**;
+* cross rooms safely using Bridges and **explicit CL penalties** applied to **R**.
+
+This pattern **defines** the **scope mechanism** (Context slices, set‑valued scopes, algebra, and guard usage) and the canonical **lexicon** (Claim scope (G), Work scope). It does **not** prescribe which rooms must widen/narrow scope, nor which assurance levels are required; those are set by room‑local ESG and Method–Work policies, which SHALL reference the mechanisms defined here.
+
+## 2 · Context
+
+### 2.1 Cross‑disciplinary pressures
+
+Modern projects couple **formal specs**, **data‑driven models**, **safety cases**, and **operational playbooks**. Each artifact must say **where it is valid**—yet terminology drifts:
+
+* Standards and specs often say *applicability* or *scope*.
+* Modeling communities say *envelope*.
+* Safety and performance documents speak about *capability envelope*.
+* Knowledge patterns have used *generality* (G) as if it were “more abstract,” when we actually need “**where the statement holds**.”
+
+### 2.2 Room‑local reasoning
+
+FPF is room‑local: decisions, checks, and state assertions are **valid inside a bounded context**. Every practical question—*Is this claim usable here? Can this capability deliver that Work now?*—must be answered **on a concrete slice of context** (terminology, versions, environmental parameters, time selector **Γ\_time**). USM provides a first‑class object for such slices and a single scope calculus atop them.
+
+### 2.3 Minimal, composable trust math
+
+In **F–G–R**:
+
+* **F** (formality) is “how strictly a claim is expressed” (C.2.3).
+* **G** must be “**where it holds**,” not “how abstract it sounds.”
+* **R** measures evidence and decays/penalties (freshness, CL).
+
+When **G** is a **set‑valued scope**, composition becomes precise: serial dependencies **intersect** scopes; parallel, independently supported lines can publish a **SpanUnion**—but only where each line is supported.
+
+---
+
+## 3 · Problem
+
+1. **Synonym soup.** *Applicability, envelope, generality, capability envelope*—different labels for the **same mechanism** led to mismatches in gating, review, and reuse.
+2. **Abstraction confusion.** Calling G “generality” invited teams to treat “more abstract wording” as “broader scope,” silently masking unstated assumptions.
+3. **Split mechanics.** Episteme vs system text used different algebra and guard language, though **the same set operations** were meant.
+4. **Cross‑room opacity.** Transfers between rooms lacked a shared carrier and a rule for what changes (trust) vs what stays (scope).
+5. **Overloaded words.** *Validity* clashed with **Validation Assurance (LA)**; *operation/operational* clashed with **Work/Run** in A.15, producing governance ambiguity.
+
+---
+
+## 4 · Forces
+
+| Force                                             | Tension to resolve                                                                                                                                               |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **One mechanism vs two worlds**                   | We must serve both **knowledge about the world** (claims) and **doing work in the world** (capabilities) **without** duplicating concepts.                       |
+| **Locality vs interoperability**                  | Scope must be **room‑local** and precisely checkable, yet transferable across rooms via Bridges **without redefining** the characteristic.                       |
+| **Expressivity vs minimal vocabulary**            | Teams need to capture rich conditions (time windows, environment, versions) but not explode the lexicon into “envelope/applicability/…” variants.                |
+| **Static content vs operational change**          | Claims may hold broadly while current operations are narrow (or vice versa). The mechanism must keep “what is true” and “what can be done” aligned yet distinct. |
+| **Open‑world exploration vs closed‑world gating** | Exploration benefits from permissive drafts; **gates** require crisp, observable checks. The same scope object must support both.                                |
+
+---
+
+## 5 · Solution — Overview (preview; full definitions in Part 2)
+
+**USM** introduces:
+
+* **`U.ContextSlice`** — an addressable **slice of a bounded context** (terminology, parameter ranges, versions/contracts, and a mandatory **Γ\_time** selector). All scope checks are performed **on slices**.
+* **`U.Scope`** — the abstract **set‑valued scope characteristic** over `U.ContextSlice`.
+* **Specializations:**
+  **`U.ClaimScope`** (*nick **G***) on `U.Episteme` (“**where the claim holds**”), and **`U.WorkScope`** on `U.Capability` (“**where the capability can deliver Work at declared measures within qualification windows**”).
+* **One algebra:** serial **intersection**, parallel **SpanUnion** (only where supported), **translate** via Bridge (CL affects **R**, not **F/G**), and **widen / narrow / refit** operations for scope evolution.
+
+**Lexical commitments (normative):**
+— In normative text and guards, use **Claim scope (G)** and **Work scope**.
+— Do **not** name the characteristic “applicability/envelope/generality/capability envelope/validity.” Those words are permitted only as explanatory aliases in notes.
+
+## 6 · Normative Definitions
+
+### 6.1 · `U.ContextSlice` — where scope is evaluated
+
+**Definition.** `U.ContextSlice` is an addressable, room‑local selection of a bounded context comprising:
+
+* **Vocabulary & roles.** The active terminology, role bindings, and local dictionaries.
+* **Contracts & versions.** Concrete versioned interfaces, schemas, notations, or service contracts in force.
+* **Environment selectors.** Named parameters/ranges (e.g., temp, humidity, platform, jurisdiction, dataset cohort).
+* **Time selector `Γ_time`.** A **mandatory** selector for the temporal frame of reference (point, window, or policy), disallowing implicit “latest”.
+
+**Semantics.** All scope checks, guards, and compositions are evaluated **inside** an explicitly named `U.ContextSlice`. Cross‑room or cross‑slice usage MUST be mediated by a Bridge (Part B) with an explicit CL rating; see §7.4.
+
+**Addressability.** A slice MUST be identifiable via a canonical tuple (room, vocab‑id, contract/version ids, env selector(s), `Γ_time`). A slice MAY be a singleton or a finite set if a guard tests multiple coherent sub‑conditions. 
+
+**Slice key (minimal).** A `U.ContextSlice` **SHALL** be addressable by a tuple containing at least: `(room, contract/version ids (if any), environment selectors, Γ_time)`. Rooms MAY extend this tuple (e.g., vocab/roleset ids).
+
+### 6.2 · `U.Scope` — the abstract set‑valued scope characteristic
+
+**Definition.** `U.Scope ⊆ ContextSliceSpace` is a **set‑valued `U.Characteristic`** whose values are sets of `U.ContextSlice` where a given statement, behavior, or capability is **fit‑for‑use**. It is **not** numeric; its internal order is the subset relation `⊆`. There is no “unit”. The primitive judgement is **membership**: `slice ∈ Scope`.
+
+**Operations.** USM admits:
+
+* **Intersection `∩`** (serial composition).
+* **SpanUnion** (parallel, independently supported coverage).
+* **Translate** (cross‑room mapping via Bridge).
+* **Widen / Narrow** (monotone changes to the set).
+* **Refit** (content‑preserving re‑expression; set equality).
+
+**Locality.** `U.Scope` values are defined and reasoned about **room‑locally**. Translation between rooms never occurs implicitly; see §7.4.
+
+---
+
+### 6.3 · `U.ClaimScope` (nick **G**) — scope of a claim (episteme)
+
+**Carrier.** `U.Episteme` (claims, specifications, theories, policies).
+
+**Meaning.** The set of `U.ContextSlice` where the **claim holds** as stated. This is **G** in the F–G–R triple. **G is not “abstraction level”**; it is the applicability area of the claim.
+
+**Expression.** Authors SHALL declare Claim scope as explicit predicates or condition blocks (assumptions, parameter ranges, cohorts, platform/contract versions, `Γ_time` windows).
+
+**Path composition (serial).** Along any essential dependency path supporting the claim, the effective scope is the **intersection** of contributors’ Claim scopes (see §7.2). Empty intersection makes the path inapplicable.
+
+**Parallel support.** Where **independent** lines of support justify disjoint areas, the episteme MAY publish a **SpanUnion** (see §7.3) limited strictly to the covered slices.
+
+**Δ‑moves.**
+
+* **ΔG+ (widen).** Replace scope S with S′ such that S ⊂ S′.
+* **ΔG− (narrow).** Replace scope S with S′ such that S′ ⊂ S.
+* **Refit.** Replace S with S′ where S′ = S (normalization, re‑parametrization).
+* **Translate.** Map S across rooms via a declared Bridge; CL penalties apply to **R**, not to **F/G**.
+
+**Orthogonality.** Changes in **F** (form of expression) or **D/AT** (detail/abstraction tiers) do not change **G** unless the declared area of validity changes.
+
+---
+
+### 6.4 · `U.WorkScope` — scope of doing Work (capability)
+
+**Carrier.** `U.Capability` (a system’s ability to deliver specified `U.Work`).
+
+**Meaning.** The set of `U.ContextSlice` (conditions, contracts, platforms, operating parameters, `Γ_time`) under which the capability can **deliver the intended Work** at the declared **measures**, within declared **qualification windows**.
+
+**Expression.** Capability owners SHALL declare **`U.WorkScope`** as explicit **conditions/constraints over `U.ContextSlice` only** (environment, platforms, contracts by version, resource regimes, `Γ_time`). Quantitative deliverables and operation windows are **not** part of the scope value:  
+* Declare targets as **`U.WorkMeasures`** (e.g., latency ≤ L, throughput ≥ T, tolerance ≤ ε) bound in guards (WG‑2).  
+* Declare inspection/recertification policies as **`U.QualificationWindow`** bound in guards (WG‑3).  
+The use‑time admission requires **all** of: `WorkScope covers JobSlice` **AND** `WorkMeasures satisfied` **AND** `QualificationWindow holds`.
+
+**Method–Work gating.** A Work step’s guard MUST check that the target slice is **covered** by the capability’s Work scope **and** that required measures and qualification windows are satisfied.
+
+**Composition and Δ‑moves.** Work scope uses the **same algebra** as Claim scope (∩ / SpanUnion / translate / widen / narrow / refit). Translation across rooms follows §7.4.
+
+**Separation from knowledge.** Work scope does **not** assert a proposition about the world; it asserts **deliverability** of Work under conditions. Evidence for deliverability feeds **R** (Reliability) via measurements and monitoring.
+
+**Required guard facets (capabilities).**  
+* **`U.WorkMeasures` (mandatory).** A set of measurable targets with units and tolerated ranges, evaluated on the JobSlice.  
+* **`U.QualificationWindow` (mandatory for operational use).** A time policy (point/window/rolling) stating when the capability is considered qualified; evaluated at `Γ_time`.  
+These facets are **separate** from `U.WorkScope` and live in the **R‑lane** (assurance). They MUST be referenced in Method–Work guards (see §10.3 WG‑2/WG‑3).
+
+## 7 · Scope Algebra
+
+### 7.1 · Membership & Coverage
+
+* **Membership judgement.** `slice ∈ Scope` is the primitive check.
+* **Coverage guard.** A guard “Scope **covers** TargetSlice” means either:
+
+  * **singleton:** `TargetSlice ∈ Scope`, or
+  * **set:** `TargetSet ⊆ Scope`.
+* **No implicit expansion.** Absent an explicit declaration, guards MUST NOT treat “close” slices as covered; widening requires a ΔG+ change.
+
+---
+
+### 7.2 · Serial Composition (Intersection)
+
+**Rule S‑INT (serial).** For an essential dependency chain `C1 → C2 → … → Ck` that supports a claim/capability, the effective scope along that chain is:
+
+```
+Scope_serial = ⋂_{i=1..k} Scope(Ci)
+```
+
+If `Scope_serial = ∅`, the chain is **inapplicable** and MUST NOT contribute to published scope.
+
+**Monotonicity.** Adding a new essential dependency can only narrow (or leave unchanged) the serial scope.
+
+---
+
+### 7.3 · Parallel Support (SpanUnion)
+
+**Rule P‑UNION (parallel).** If there exist **independent** support lines `L₁,…,Lₙ` for the **same** claim/capability, each with serial scope `S_i`, the publisher MAY declare:
+
+```
+Scope_published = SpanUnion({S_i})  =  ⋃_{i=1..n} S_i
+```
+
+**Constraints.**
+
+* Independence MUST be justified (different support lines must not rely on the same weakest link).
+* The union MUST NOT exceed the union of supported slices; “hopeful” areas are disallowed.
+* Publishers SHOULD annotate coverage density/heterogeneity (informative) to aid R assessment, but numeric “coverage” is not part of G.
+* **Independence criterion.** Support lines in a **SpanUnion** MUST be partitioned so that each line has a set of **essential components** disjoint from the others’ essential components (no shared weakest link). The partition (or a certificate thereof) SHALL be referenced in the publication.
+
+### 7.4 Why a **G-ladder/levels/scales** is not needed (and **must not** be introduced)
+
+**1) The scale type is not ordinal; it is set‑valued.**
+Under MM‑CHR, `U.ClaimScope` is a **set‑valued** `U.Characteristic` over `U.ContextSlice`. The only well‑typed primitives are **membership** and **set operations** (`⊆`, `∩`, `⋃`). Imposing ordinal “levels” such as **G0…Gk** violates the type discipline and produces non‑invariant behavior (the **same set** could be “rated” with different numbers under different heuristics).
+
+**2) G composes via `∩` / `SpanUnion`, not via `min` / `avg`.**
+USM already fixes composition: along a **dependent path** use **intersection**; across **independent support lines** publish **SpanUnion**. None of these operations relies on (or preserves) any linear order. An ordinal “G ladder” invites people to take **minimums/averages**, which is **incorrect** for sets and breaks the established algebra.
+
+**3) A G ladder drags in “abstraction level,” which is orthogonal.**
+Early “G ladders” effectively encoded **abstraction/typing** (instances → patterns → formal classes/types → up‑to‑iso). That is valuable **didactics**, but **not applicability**. We have already separated these concerns: **abstraction** is captured, if needed, by **`U.AbstractionTier (AT)`** as an optional facet; **applicability** is **`U.ClaimScope (G)`**.
+
+**4) A G ladder breaks locality and Bridge semantics.**
+Cross‑room transfer maps a **set** `Scope` via a **Bridge** and penalizes **R** by **CL**. There is no canonical way to “translate” an **ordinal G level** between rooms: the mapped area may be **strictly narrower** or differently factored. Level numbers would become non‑portable, causing hidden loss or inflation of trust. With USM, we **translate sets** and keep the CL penalty where it belongs—**in R**, not in G.
+
+**5) A G ladder duplicates ESG guards without adding decision power.**
+What teams often want to “compress into a G number” is actually (a) the **quality of expression** and (b) the **completeness** of the declared scope. The first is an **F threshold** (e.g., require **`U.Formality ≥ F4`** so the scope is predicate‑like and addressable); the second is handled by explicit **ESG guards**: “**Scope covers TargetSlice**,” “**`Γ_time` is specified**,” and “**freshness window holds**” (R‑lane). A ladder for G adds confusion but no additional control.
+
+**Normative directive.**
+`U.ClaimScope (G)` **SHALL** remain a **set‑valued** characteristic; **no ordinal or numeric ladder SHALL be defined** for G. Authoring and gating **SHOULD** use **F thresholds** (C.2.3) and **explicit guard predicates** (A.2.6) rather than pseudo‑levels of G.
+
+### 7.5 · Translation Across Rooms (Bridge & CL)
+
+**Rule T‑BRIDGE.** To use a scope in a different bounded context (room), an explicit **Bridge** MUST be declared with:
+
+* **Mapping.** A documented mapping from source to target `U.ContextSlice` vocabulary/axes.
+* **Congruence Level (CL).** A rating of mapping congruence.
+* **Loss notes.** Any known losses, assumptions, or non‑isomorphisms.
+
+**Effect.** The mapped scope is `T(Scope)` in the target room. **CL penalties apply to R** (the trust in support/evidence), **not to F or G**. If mapping is coarse, the publisher SHOULD also narrow the mapped scope to the area where losses are negligible (best practice, not a requirement).
+
+---
+
+### 7.5 · Δ‑Operations (Widen, Narrow, Refit)
+
+* **ΔG+ (widen).** Monotone expansion: `S ⊂ S′`. Requires new support or stronger bridges.
+* **ΔG− (narrow).** Monotone restriction: `S′ ⊂ S`. Often used to remove areas invalidated by new findings.
+* **Refit.** `S′ = S` after normalization (e.g., re‑parameterization, changing units, factoring common predicates). Refit MUST NOT alter membership.
+
+**Refit (normalization).** A refit **MUST preserve membership** exactly (S′ = S). Any change that alters boundary inclusion (due to rounding, unit conversion, discretization) is a ΔG± change, not a refit.
+
+**Edition triggers.** Any change that alters the published set (ΔG±) is a content change and MAY trigger a new edition per room policy (see A.2.x on editions). Refit is not a content change.
+
+### 7.6 · Invariants
+
+* **I‑LOCAL.** All scope evaluation is **room‑local**. Cross‑room usage MUST follow §7.4.
+* **I‑SERIAL.** Serial scope is an **intersection**; it cannot grow by adding dependencies.
+* **I‑PARALLEL.** Parallel scope MAY grow by union, but only where **independently supported**.
+* **I‑WLNK.** Weakest‑link applies to **F** and **R** on dependency paths; **G** follows set rules (∩ / ⋃).
+* **I‑IDS.** Idempotence: Intersecting or unioning a set with itself does not change it.
+* **I‑EMPTY.** Empty scope is a first‑class value; guards MUST treat it as “not applicable”.
+
+---
+
+### 7.7 · Empty & Partial Scopes
+
+* **Empty scope (`∅`).** The claim/capability is **currently not usable anywhere** in the room; guards MUST fail.
+* **Partial scope.** Publishers SHOULD avoid “global” language when actual scope is thin; instead, publish explicit slices and (informatively) coverage hints to guide R assessment.
+
+---
+
+## 8 · Locality, Time & Version Semantics
+
+### 8.1 · Room‑locality
+
+Scopes are **owned and evaluated** within a `U.BoundedContext`. State assertions (ESG/RSG) and Method–Work gates MUST NOT assume that a scope declared in another room applies verbatim; see §7.4.
+
+### 8.2 · Time selector `Γ_time`
+
+Every scope declaration and every guard MUST specify a **`Γ_time` selector** (point, window, or policy such as “rolling 180 days”) whenever time‑dependent assumptions exist. Implicit “latest” is forbidden. When `Γ_time` differs between contributors, serial intersection resolves the overlap.
+
+### 8.3 · Contracts, versions & notations
+
+Scope predicates SHALL name contracts/interfaces/schemas **by version**. Changing symbols/notations with a faithful mapping does not change **G** (it may change **CL** for the mapping and thus affect **R**).
+
+### 8.4 · Determinism of evaluation
+
+Given fixed inputs (slice tuple, declared scope), the membership judgement MUST be deterministic. Guards SHALL fail closed (no membership ⇒ no use).
+
+### 8.5 · Interaction with R (freshness & decay)
+
+For empirical claims and operational capabilities, **R** typically binds evidence freshness windows. Scope does not decay with time; **trust in the support** does. Guards MAY combine “Scope covers” with “Evidence freshness holds” as separate predicates.
+
+---
+
+## 9 · Lexical Discipline (Part E compliance)
+
+**L‑USM‑1 (names).** Use **Claim scope (G)** for epistemes and **Work scope** for capabilities. Use **Scope** only when discussing the abstract mechanism. Avoid naming characteristics “applicability,” “envelope,” “generality,” “capability envelope,” or “validity”.
+
+**L‑USM‑2 (Work/Run).** Prefer **Work/Run** vocabulary from A.15 for system execution contexts. Do not introduce “operation/operating” as characteristic names; use **Work scope**.
+
+**L‑USM‑3 (Validation).** “Validation/Validate” remain reserved for **LA** in assurance lanes (Part B). Do not name the scope characteristic “validity”.
+
+**L‑USM‑4 (Domain).** “Domain” is a descriptive convenience. Scopes are evaluated on **Context slices**; guards SHALL reference slices, not generic “domains”.
+
+**L‑USM‑5 (First mention).** On first use in a room, include the parenthetical nick: *“Claim scope (**G**)”* to preserve the F–G–R mapping.
+
+## 10 · Guard Patterns (ESG & Method–Work)
+
+### 10.1 · Common guard shape
+
+A scope‑aware guard has the form:
+
+```
+Guard := ScopeCoverage AND TimePolicy AND (EvidenceFreshness?) AND (BridgePolicy?)
+```
+
+Where:
+
+* **ScopeCoverage**: `Scope covers TargetSlice` (singleton or finite set), see §7.1.
+* **TimePolicy**: explicit `Γ_time` selector(s); implicit “latest” is forbidden (§8.2).
+* **EvidenceFreshness**: optional R‑lane freshness/decay predicates; **separate** from ScopeCoverage (§8.5).
+* **BridgePolicy**: required if the Scope and TargetSlice are in **different rooms**; declares Bridge, CL, loss notes (§7.4).
+
+The guard **fails closed** (no membership ⇒ denial), and evaluation is **deterministic** given the slice tuple (§8.4).
+
+---
+
+### 10.2 · ESG guard families (epistemes)
+
+**EG‑1 · ClaimScopeCoverage (mandatory).**
+The state transition MUST include a predicate:
+
+```
+U.ClaimScope(episteme) covers TargetSlice
+```
+
+* **Singleton**: `TargetSlice ∈ ClaimScope`.
+* **Finite set**: `TargetSet ⊆ ClaimScope`.
+
+**EG‑2 · Formality threshold (if required by ESG).**
+When rigor is gated, the guard MUST reference C.2.3:
+
+```
+U.Formality(episteme) ≥ F_k
+```
+
+**EG‑3 · Evidence freshness (R‑lane).**
+If the state implies trust, a separate predicate MUST assert freshness windows for bound evidence:
+
+```
+Fresh(evidence, window)  AND  (NoExpiredBindings)
+```
+
+**EG‑4 · Cross‑room usage.**
+If `TargetSlice.room ≠ episteme.room`, the guard MUST require a declared Bridge and CL:
+
+```
+Bridge(source=episteme.room, target=TargetSlice.room)  AND  CL ≥ c
+```
+
+> **Effect:** CL penalties apply to **R**, not to **F/G** (§7.4). The ESG guard MAY also **narrow** the mapped Claim scope when mapping losses are known.
+
+**EG‑5 · ΔG triggers.**
+If the transition publishes a **wider** Claim scope (ΔG+), the guard MUST capture the new support or the new Bridge and, if room policy so dictates, mint a new edition (PhaseOf).
+
+**EG‑6 · Independence for SpanUnion (when claiming parallel scope).**
+When the episteme declares a **SpanUnion** across independent lines, the guard MUST include an **independence justification** (pointer to the support partition). No independence ⇒ no union.
+
+*(Informative note.)* Managers often combine EG‑1 (coverage) + EG‑2 (F threshold) + EG‑3 (freshness) for “Effective” or “Approved” states, and EG‑4 when adopting claims across rooms.
+
+---
+
+### 10.3 · Method–Work guard families (capabilities)
+
+**WG‑1 · WorkScopeCoverage (mandatory).**
+A capability can be used to deliver a Work step only if:
+
+```
+U.WorkScope(capability) covers JobSlice
+```
+
+**WG‑2 · `U.WorkMeasures` satisfied** (mandatory for deliverables).
+Guards MUST bind quantitative measures that the capability promises in the JobSlice:
+
+```
+SLO/target measures satisfied (latency ≤ L, throughput ≥ T, tolerance ≤ ε, ...)
+```
+
+**WG‑3 · `U.QualificationWindow` holds** (mandatory for operational use).
+Operational guards MUST assert that qualification windows (qualification/inspection/recert intervals) hold **at `Γ_time`**:
+
+```
+ValidityWindow(capability) holds at Γ_time
+```
+
+**WG‑4 · Cross‑room use of capability.**
+If the JobSlice is in another room:
+
+```
+Bridge(source=capability.room, target=JobSlice.room)  AND  CL ≥ c
+```
+
+CL penalties affect **R** (confidence in deliverability), **not** Work scope; however, the guard SHOULD narrow the mapped Work scope to account for known mapping losses.
+
+**WG‑5 · Δ(WorkScope).**
+When widening Work scope (new operating ranges/platforms), the guard MUST require evidence at the new slices (measures + qualification windows). Refit (e.g., new units/parametrization) requires no new evidence.
+
+---
+
+### 10.4 · Bridge‑aware guard macro (reusable)
+
+A reusable macro for cross‑room guards:
+
+```
+Guard_XRoom(Scope, TargetSlice) :=
+    exists Bridge b: (b.source = owner(Scope).room AND b.target = TargetSlice.room)
+AND CL(b) ≥ c
+AND Scope’ = translate(b, Scope)
+AND Scope’ covers TargetSlice
+AND (Apply CL penalty to R)
+```
+
+* **Owner(Scope).** The carrier that declares the scope: an **Episteme** (for `U.ClaimScope`) or a **Capability** (for `U.WorkScope`).  
+* **Translate(b, Scope).** The partial mapping of a set of source slices to target slices induced by Bridge **b**. If a source slice is unmappable, it is dropped. The result is a set of target slices; **CL penalties apply to R only**.
+* **Penalty to R**: applied per trust calculus; F and G remain as declared.
+
+### 10.5 · Selector policy (Γ\_time)
+
+All ESG and Method–Work guards MUST spell out **`Γ_time`**:
+
+* **Point** (“as of 2026‑03‑31T00:00Z”).
+* **Window** (“rolling 180 days”).
+* **Policy** (“last lab calibration within 90 days”).
+
+Implicit “latest” is not allowed. If multiple contributors declare different policies, **serial intersection** computes the overlap (§8.2).
+
+---
+
+## 11 · Conformance Checklist (USM)
+
+| ID                                    | Requirement                                                                                                                                                                                    |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **CC‑USM‑1 (Declaration).**           | Epistemes **SHALL** declare **`U.ClaimScope`**, capabilities **SHALL** declare **`U.WorkScope`**. The abstract `U.Scope` MAY be used in architectural notes but not in guards.                 |
+| **CC‑USM‑2 (Set‑valued).**            | Scope characteristics are **set‑valued** over `U.ContextSlice`. Implementations MUST support **membership**, **intersection**, **SpanUnion**, **translate**, **widen/narrow**, **refit**.      |
+| **CC‑USM‑3 (Coverage guards).**       | ESG and Method–Work guards **MUST** use `Scope covers TargetSlice` predicates and **MUST** specify `Γ_time`. Guards fail closed.                                                               |
+| **CC‑USM‑4 (Serial intersection).**   | Along essential dependency paths, effective scope **SHALL** be the **intersection**; empty intersection invalidates the path.                                                                  |
+| **CC‑USM‑5 (SpanUnion constraints).** | Parallel scope **MAY** use **SpanUnion** only if independent support lines are **justified**; published union **MUST NOT** exceed supported slices.                                            |
+| **CC‑USM‑6 (Cross‑room).**            | Any cross‑room use **MUST** declare a Bridge and **CL**; CL penalties apply to **R**, not **F/G**.                                                                                             |
+| **CC‑USM‑7 (No synonym drift).**      | In normative text and guards, **MUST** use **Claim scope (G)** or **Work scope**. Terms “applicability/envelope/generality/capability envelope/validity” **MUST NOT** name the characteristic. |
+| **CC‑USM‑8 (Determinism).**           | Membership evaluation **MUST** be deterministic given the slice tuple; no heuristic “close enough” matching.                                                                                   |
+| **CC‑USM‑9 (Edition triggers).**      | ΔG± (widen/narrow) constitutes a **content change**; refit does not. Rooms MAY require a new edition when published scope changes.                                                             |
+| **CC‑USM‑10 (Separation).**           | Scope coverage checks and evidence freshness/assurance checks **MUST** be separate predicates (G vs R).                                                                                        |
+| **CC‑USM‑11 (Versioned contracts).**  | Scope predicates **SHALL** name contracts/interfaces by **version**; changes in notations with faithful mapping do not change **G** (may change CL for R).                                     |
+| **CC‑USM‑12 (Min‑info publication).** | Published scopes **SHOULD** enumerate slices or predicate blocks sufficient to re‑evaluate membership without external folklore.                                                               |
+
+---
+
+## 12 · Worked Examples
+
+> Each example declares the room, the scope, the target slice, and shows the guard outcome. Where relevant, serial intersection, SpanUnion, and Bridge & CL are illustrated.
+
+### 12.1 · Research claim (controlled narrative → predicate)
+
+* **Room:** `MaterialsLab@2026`.
+* **Episteme:** claim “Adhesive X retains ≥85 % tensile strength on Al6061 for 2 h at 120–150 °C.”
+* **Claim scope (G):** `{substrate=Al6061, temp∈[120,150]°C, dwell≤2h, Γ_time = window(1y), rig=Calib‑v3}`.
+* **Target slice:** `{substrate=Al6061, temp=140 °C, dwell=90 min, Γ_time=2026‑04‑02, rig=Calib‑v3}`.
+* **Guard (EG‑1, EG‑2):** `covers(TargetSlice)` **true**; `U.Formality ≥ F4` **true** (predicates in spec).
+* **Outcome:** state transition allowed (freshness checked separately under R).
+
+### 12.2 · Cross‑room use of the research claim
+
+* **Target room:** `AssemblyFloor@EU‑PLANT‑B`.
+* **Bridge:** declared mapping of rigs and temp measurement correction; **CL=2** (loss: ±2 °C bias).
+* **Mapped Claim scope:** `translate(Bridge, G)` narrows temp to `[122,148]°C`.
+* **Guard (EG‑4):** Bridge present, `CL≥2` **true**; **R** is penalized per Φ(CL).
+* **Outcome:** allowed; **G** remains the mapped set; **R** lowered.
+
+### 12.3 · Capability: robotic weld Work scope
+
+* **Room:** `RobotCell‑Weld@2026`.
+* **Capability:** “Weld seam W at bead width 2.5 ± 0.3 mm, cycle ≤ 12 s.”
+* **Work scope:** `{humidity<60 %, current∈[35,45]A, wire=ER70S‑6, Γ_time=rolling(90d), controller=FW‑2.1}`.
+* **Job slice:** `{humidity=55 %, current=40A, wire=ER70S‑6, Γ_time=now, controller=FW‑2.1}`.
+* **Guards (WG‑1..3):** coverage **true**; measures satisfied; qualification window **true** (controller certified 60 d ago).
+* **Outcome:** capability admitted for this Work.
+
+### 12.4 · Serial intersection (API + dataset compatibility)
+
+* **Claim A (API contract):** `v2.3` request schema with constraint “idempotent under retry”.
+* **Claim B (Dataset cohort):** “metrics valid for cohort K with schema `ds‑14`”.
+* **Composition:** service S depends on both A and B → **serial intersection** of Claim scopes: `{api=v2.3} ∩ {cohort=K, schema=ds‑14}`.
+* **Target slice:** `{api=v2.3, cohort=K, schema=ds‑14}` → membership **true**.
+* **Any drift (e.g., `ds‑15`)** empties the intersection ⇒ path inapplicable.
+
+### 12.5 · Parallel support (SpanUnion) in a safety case
+
+* **Line L1:** tests on **dry asphalt** support braking property; scope `S1={surface=dry, speed≤50 km/h}`.
+* **Line L2:** simulations for **wet asphalt**; scope `S2={surface=wet, speed≤40 km/h}`.
+* **Published scope:** `SpanUnion({S1,S2})` = `{(dry, ≤50), (wet, ≤40)}` with independence note (L1 empirical, L2 model‑validated).
+* **Guard:** allowed; union does **not** include `(wet, 45)` because not supported.
+
+### 12.6 · ML model deployment across rooms
+
+* **Model claim:** “AUC ≥ 0.92 on cohort K, pipeline P, features F, `Γ_time=rolling(180d)`.”
+* **Claim scope:** `{cohort=K, pipeline=P, features=F, Γ_time=rolling(180d)}`.
+* **Target room:** product `On‑Device@v7`, features `F’` (subset), pipeline `P’`.
+* **Bridge:** declared mapping `F→F’`, `P→P’`, **CL=1** (notably lossy).
+* **Guard:** Bridge present; `translate(G)` covers a **strict subset**; CL=1 penalizes **R** strongly; ESG requires **F≥F5** (executable semantics) and **freshness < 90 d**.
+* **Outcome:** allowed only for the covered subset; adoption flagged with reduced **R**.
+
+---
+
+## 13 · Playbooks (Informative)
+
+### 13.1 · Manager’s 6‑step adoption checklist
+
+1. **Name the TargetSlice.** Write the tuple (room, versions, environment params, `Γ_time`).
+2. **Check scope coverage.** “Claim/Work scope covers TargetSlice?” If **no**, either **ΔG+** (publish wider scope with support) or **decline**.
+3. **Check rigor if gated.** If ESG requires it, ensure `U.Formality ≥ F_k`.
+4. **Check evidence freshness (R).** Validate windows/decay policies; do not conflate with coverage.
+5. **Bridge if cross‑room.** Require declared Bridge, CL, and loss notes; accept **R** penalties.
+6. **Record the decision.** Keep the slice and guard outcomes with the StateAssertion (auditability).
+
+### 13.2 · Architect’s design rubric for scopes
+
+* **Prefer predicates over prose.** Name parameters, ranges, contracts by **version**, and `Γ_time`.
+* **Factor common conditions.** Use Refit to normalize units and factor shared predicates; do not widen by stealth.
+* **Partition support lines.** If you plan a **SpanUnion**, document independence up front.
+* **Keep scope thin & honest.** Publish what you can support; add slices as support appears (ΔG+).
+* **Design Bridges early.** When interop is planned, sketch mapping axes and **expected CL**; plan **R** penalties.
+
+### 13.3 · Review anti‑patterns & fixes
+
+| Anti‑pattern                                    | Why it’s wrong                   | Fix                                                        |
+| ----------------------------------------------- | -------------------------------- | ---------------------------------------------------------- |
+| “Latest” time by default                        | Non‑deterministic; violates §8.2 | Declare `Γ_time` explicitly (point/window/policy)          |
+| Using “domain” in guards                        | Not addressable; hides slices    | Replace with concrete `U.ContextSlice` tuples              |
+| Treating “more abstract wording” as wider scope | Abstraction ≠ applicability      | Keep **AT/D** separate; widen **G** only with explicit ΔG+ |
+| Publishing union without independence           | Overstates coverage              | Justify independence or publish serial intersection only   |
+| Cross‑room use without Bridge                   | Silent semantic drift            | Require Bridge + CL; apply **R** penalties                 |
+
+### 13.4 · Minimal DSL snippet for scope blocks (illustrative)
+
+```
+claimScope:
+  room: MaterialsLab@2026
+  contracts:
+    - rig: Calib-v3
+    - api: v2.3
+  env:
+    substrate: Al6061
+    temp: [120, 150] # °C
+    dwell: { max: "2h" }
+  gamma_time: { window_days: 365 }
+```
+
+*(Illustrative only; the specification does not mandate a particular syntax.)*
+
+## 14 · Governance Hooks & Audits
+
+### 14.1 · Governance metadata (normative)
+
+Rooms that adopt USM SHALL record, per scope‑aware decision:
+
+* **Owner & carrier.** Episteme (for Claim scope) or Capability (for Work scope).
+* **TargetSlice tuple.** Room, vocab/roles, versioned contracts, environment selectors, **`Γ_time`**.
+* **Guard outcomes.** Membership result, Bound measures (for Work scope), Freshness predicates (R).
+* **Bridge info (if any).** Mapping summary, **CL**, loss notes, applied R penalty.
+* **ΔG log.** Widen/narrow/refit; edition policy outcome.
+
+### 14.2 · USM compliance levels (informative)
+
+* **USM‑Ready.** Room declares adoption; editors trained; lexicon updated.
+* **USM‑Guarded.** All ESG/Method–Work guards use Claim/Work scope and `Γ_time`.
+* **USM‑Auditable.** Decision records include TargetSlice tuples and Bridge/CL details.
+* **USM‑Composed.** Serial intersection and SpanUnion are implemented in composition tooling.
+
+### 14.3 · Audit checklist (informative)
+
+* Does each guard **name** a concrete **TargetSlice**?
+* Is **membership** deterministically recomputable from published predicates?
+* Are **freshness** and **coverage** separate predicates?
+* For cross‑room use: is there a **Bridge** with **CL** and loss notes?
+* For parallel support: is **independence** justified?
+
+### 14.4 · Risk controls (informative)
+
+* **Silent widening.** Require ΔG+ review; flag any scope increase without new support/Bridge.
+* **Opaque slices.** Disallow “domain” placeholders; enforce addressable selectors.
+* **Time drift.** Require `Γ_time` policies (rolling windows) for time‑sensitive scopes.
+
+---
+
+## 15 · Cross‑Pattern Coordination
+
+### 15.1 · With F–G–R (C.2.2)
+
+* **G is Claim scope.** Use set algebra (∩ / SpanUnion).
+* **F** remains the expression rigor (C.2.3); **R** captures evidence freshness and CL penalties.
+* **Weakest‑link.** On dependency paths: **F\_composite = min(F)**, **R\_composite = min(R)**; **G** follows §7.2–§7.3 (set rules).
+
+### 15.2 · With Formality (C.2.3)
+
+* **No conflation.** Raising **F** does not change **G** unless scope predicates change.
+* **Guarding rigor.** ESG may use `U.Formality ≥ F_k` alongside scope coverage.
+
+### 15.3 · With Work & Run (A.15)
+
+* **Work scope** aligns with the **execution context** of `U.Work`.
+* Method–Work gates use **Work scope coverage** plus **measures** and **qualification windows**.
+
+### 15.4 · With Bridges & CL (Part B)
+
+* **CL only impacts R.** CL penalties reduce trust; they never rewrite **F** or **G**.
+* **Best practice.** Narrow mapped scopes where mapping losses are material.
+
+### 15.5 · With Capability governance (A.2.2)
+
+* Capabilities MUST declare **Work scope**, **measures**, **qualification windows**; gates MUST verify all three.
+* Capability refits that preserve the set (unit changes) are **Refit**, not Δ(WorkScope).
+
+---
+
+## 16 · Extended FAQ (informative)
+
+**Q1. Is “Claim scope” the same as “domain”?**
+**No.** “Domain” is descriptive and often fuzzy. **Claim scope** is **addressable**: it names concrete `U.ContextSlice` conditions and a **`Γ_time`** policy. Guards MUST reference slices, not generic “domains”.
+
+**Q2. How do we express partial coverage across different cohorts or platforms?**
+Declare each supported serial scope (`S₁, S₂, …`) and publish **SpanUnion({Sᵢ})** with independence justification. Do **not** include unsupported slices.
+
+**Q3. Can raising F (formalizing) widen G?**
+Only if the formalization **explicitly changes** the scope predicates (ΔG+). Formalization alone does not widen scope.
+
+**Q4. What is the difference between Work scope and SLOs?**
+**Work scope** is **where** the capability can deliver; **measures** within the guard are **what** it promises there (SLO targets). Both are required at use time (WG‑1..3).
+
+**Q5. Can we assign numeric coverage to G?**
+Not normatively. G is set‑valued. You MAY attach **informative** coverage metrics (e.g., proportions) to aid **R** assessment, but guards use set membership.
+
+**Q6. How do we handle “latest data” scopes?**
+You don’t. Declare a **`Γ_time`** policy (e.g., rolling 90 days). “Latest” is forbidden to ensure reproducible evaluation.
+
+**Q7. How do we move a scope to another room?**
+Declare a **Bridge** with **CL** and loss notes; compute `translate(Bridge, Scope)`; apply CL penalty to **R**; consider narrowing the mapped set.
+
+**Q8. What about abstraction level or detail?**
+Keep **AT (AbstractionTier)** and **D (Detail/Resolution)** as orthogonal, optional annotations. They never substitute for **Claim/Work scope**.
+
+**Q9. Can a capability’s Work scope be broader than an upstream claim’s Claim scope?**
+They are on different carriers. In a serial dependency, the **effective** scope is the **intersection**; the broader one does not dominate.
+
+**Q10. When does an empty scope make sense?**
+It indicates “not usable anywhere (here, now)”. Guards MUST fail. This is common during early drafting or after a refutation.
+
+---
+
+## 17 · Annexes (informative)
+
+### 17.1 · Legacy → USM dictionary
+
+| Legacy wording                      | USM term                                                 |
+| ----------------------------------- | -------------------------------------------------------- |
+| applicability (of a claim)          | **Claim scope (G)**                                      |
+| envelope (of a requirement/spec)    | **Claim scope**                                          |
+| generality G                        | **Claim scope (G)**                                      |
+| capability envelope                 | **Work scope**                                           |
+| validity (as a characteristic name) | **Claim scope** or **Work scope** (depending on carrier) |
+| operational applicability           | **Work scope**                                           |
+
+*(Use legacy terms only in explanatory notes; not in guards or conformance text.)*
+
+### 17.2 · Minimal data model hints
+
+**ContextSlice tuple (suggested keys):**
+`room`, `vocabId`, `rolesetId?`, `contracts: [{name, version}]`, `env: {param: range/value}`, `gamma_time: {point|window|policy}`.
+
+**Claim scope block:**
+`assumptions`, `cohorts`, `platforms/contracts`, `env`, `gamma_time`.
+
+**Work scope block:**
+`conditions (env/platform/contracts)`, `measures (targets & units)`, `validity_windows`, `gamma_time`.
+
+*(These are informative; the spec does not mandate a concrete serialization.)*
+
+### 18.3 · Pseudocode membership (illustrative)
+
+```python
+def covers(scope: Set[Slice], target: Union[Slice, Set[Slice]]) -> bool:
+    if isinstance(target, Slice):
+        return target in scope
+    return target.issubset(scope)
+```
+
+## 17. 4 Rationale · F‑Cluster Unification for A.2.6 (F.17 / F.18)
+
+> **Intent.** This annex applies the **F‑cluster method** to triangulate **USM** terms against a diverse set of post‑2015 sources and communities (“rooms”), and then fixes the **Unified Tech** and **Plain** names used in A.2.6. Results are ready for downstream lexicon entries (Part E) and guard templates (ESG / Method–Work).
+
+### 17.4.1 · F.17 Unified Term Survey (UTS) — Method & Scope
+
+**Rooms surveyed (SoTA, diverse):**
+
+1. **ISO/IEC/IEEE 42010** (architecture description)
+2. **OMG Essence** (Kernel: Alphas, Work Products, States)
+3. **NIST AI RMF 1.0/1.1** (trustworthy AI)
+4. **ASME V\&V 40–2018 / FDA 2021–2023** (model credibility)
+5. **W3C SHACL (2017+) / SHACL‑AF** (data constraints)
+6. **OWL 2 / ontology engineering (2012+, current practice)**
+7. **IETF BCP 14 (RFC 2119/8174)** (normative keywords & guard style)
+8. **DO‑178C + DO‑333** (avionics, formal methods supplement)
+9. **ISO 26262:2018/2025** (automotive functional safety)
+10. **IEC 61508 (2010+, current revisions)** (basic safety)
+11. **ACM Artifact Review & Badging v1.1** (reproducibility signals)
+12. **MLOps/Cloud SLO practice (SRE / platform)** (operational guardrails)
+
+**Survey focus (terms we align):** `U.ContextSlice`, generic **Scope** and set algebra, **Claim scope (G)**, **Work scope**, **Bridge & CL**, **Γ\_time**, **widen/narrow/refit/translate**, **SpanUnion / serial intersection**, separation from **F** and **R**, avoidance of overloaded **validity/operation** terms.
+
+---
+
+### 17.4.2 · UTS Table (F.17) — Cross‑room term mapping
+
+|  # | Room / Source      | Local label(s) (native)                                                     | Closest USM concept                                                                      | Notes on fit & deltas                                                                                                                                                                         |
+| -: | ------------------ | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  1 | ISO/IEC/IEEE 42010 | *Architecture context; environment; stakeholder concerns; viewpoints/views* | **ContextSlice** (addressable slice); **Scope** as view‑specific applicability           | 42010 is about **views in context**; it has no first‑class set‑valued scope char but aligns with “evaluate **in a concrete context**” → USM uses explicit **slice tuples**.                   |
+|  2 | OMG Essence        | *Alpha State; Work Product State; Level of Detail (LoD)*                    | **Work scope** (guards), **Detail (D)** (LoD), **ESG/RSG**                               | Essence separates **status** (states) and **work evidence**; LoD is **detail**, not scope. USM treats **scope** as guardable membership over slices; states/LoD map to ESG & **D**, not to G. |
+|  3 | NIST AI RMF        | *Context of use; validity, reliability, robustness; monitoring*             | **Claim scope (G)**; **R** freshness/monitoring                                          | “Context of use” = **where a claim/model holds** → maps to **G**. “Validity” is part of **R** vocabulary; we **avoid** naming the characteristic “validity” to prevent LA confusion.          |
+|  4 | ASME V\&V 40 / FDA | *Context of use; credibility factors; verification/validation*              | **Claim scope (G)**; **R** (credibility)                                                 | Direct fit for G via “context of use”. Credibility/evidence freshness contribute to **R**, not to G; USM keeps them separate in guards.                                                       |
+|  5 | W3C SHACL          | *Shapes; targets (sh\:targetClass, sh\:target); constraints*                | **Claim scope** (targets define **where** constraints apply); **F≥4** (predicate form)   | SHACL “target” ≈ **membership predicate** on a dataset context; perfect analogue of **Claim scope** on data slices; constraint language supports **F4**‑style predicates.                     |
+|  6 | OWL 2 practice     | *Class extension; domain/range; imports/version IRI*                        | **Claim scope** as class extension over an ontology context                              | Class extension is set‑semantics by design; **G** naturally maps to extension over a versioned ontology (part of **ContextSlice**).                                                           |
+|  7 | IETF BCP 14        | *MUST/SHALL/SHOULD; requirements language*                                  | **Guard style** (observable predicates)                                                  | BCP 14 doesn’t define scope but dictates how guards are worded; USM aligns by requiring **observable, deterministic** membership checks.                                                      |
+|  8 | DO‑178C / DO‑333   | *Operational conditions; DAL; formal method objectives; TQL*                | **Work scope** (operating conditions); **F** (proof‑grade), **R** (assurance objectives) | Operational applicability = **Work scope**; formal method objectives lift **F**; Tool qualification impacts **TA/R**, not G.                                                                  |
+|  9 | ISO 26262          | *Operational situation & operating modes; ASIL; OSED*                       | **Work scope** (operating modes/situations)                                              | OSED/operating modes define **where capability can be exercised** → **Work scope**. Assurance level (ASIL) relates to **R**, not G.                                                           |
+| 10 | IEC 61508          | *SIL; demand mode; proof test interval*                                     | **Work scope** (demand vs continuous mode) + **R freshness**                             | Mode concepts influence **where/how** a function can be claimed → **Work scope**; proof test interval sits in **R** (freshness/decay).                                                        |
+| 11 | ACM Artifacts      | *Available/Evaluated/Reusable; Reproduced/Replicated*                       | **R** signals; **ContextSlice** (reproduction environment)                               | Badges encode **evidence availability/strength**; the declared environment maps to a **slice**; scope of claim is often implicit → USM makes it explicit.                                     |
+| 12 | SRE / Cloud SLO    | *SLOs; error budgets; regions/tiers; rollout windows*                       | **Work scope** (regions/tiers/windows) + **measures**; **Γ\_time** policies              | SLOs attach **measures** within a **Work scope** (region/tier/time window); perfect fit for USM Method–Work guards (WG‑1..3).                                                                 |
+
+**Summary.** Across all rooms, two stable notions recur: (1) **evaluate in a concrete context** (→ `U.ContextSlice`), and (2) **declare where something holds/is deliverable** (→ set‑valued **Scope**). “Context of use,” “operating modes,” “targets,” “class extension,” and “OSED” are all room‑flavored presentations of **Claim scope** or **Work scope**. Terms like *validity* and *operation* are semantically close but collide with **LA** and FPF’s **Work/Run** lexicon; we therefore **do not** adopt them as characteristic names.
+
+---
+
+### 17.4.3 · F.18 Term Selection — Unified Tech & Plain names
+
+#### 17.4.3.1 Selected names (normative)
+
+| Concept in A.2.6                | **Unified Tech** (lexicon)                      | **Unified Plain** (manager‑friendly) | Allowed short form   | Deprecated / avoid                                                    |
+| ------------------------------- | ----------------------------------------------- | ------------------------------------ | -------------------- | --------------------------------------------------------------------- |
+| Addressable evaluation context  | **`U.ContextSlice`**                            | **Context slice**                    | *Slice* (when local) | “domain” (as guard input), “latest” time                              |
+| Abstract mechanism (set‑valued) | **`U.Scope`**                                   | **Scope**                            | —                    | “applicability”, “envelope”, “validity” (as characteristic names)     |
+| Episteme applicability          | **`U.ClaimScope`** (*nick **G***)               | **Claim scope**                      | **G**                | “generality”, “applicability/envelope (of claim)”                     |
+| Capability applicability        | **`U.WorkScope`**                               | **Work scope**                       | “capability envelope”, “operational applicability”, “operation scope” |
+| Time selector                   | **`Γ_time`**                                    | **Time selector**                    | —                    | implicit “latest”                                                     |
+| Cross‑room mapping              | **Bridge + CL**                                 | **Bridge + congruence level**        | **CL**               | silent reuse across rooms                                             |
+| Parallel coverage               | **SpanUnion**                                   | **Union of supported areas**         | —                    | unqualified “union” without independence                              |
+| Serial dependency               | **Intersection**                                | **Intersection of scopes**           | —                    | ordinal “more/less general” language                                  |
+| Scope edits                     | **ΔG+ (widen), ΔG− (narrow), Refit, Translate** | **Widen, narrow, refit, translate**  | —                    | stealth widening (“it’s obvious”)                                     |
+| Optional didactics              | **`U.Detail (D)`, `U.AbstractionTier (AT)`**    | **Detail / abstraction tier**        | **D / AT**           | using AT/D as G substitutes                                           |
+
+**Why these names (decision grounds):**
+
+* **“Scope” wins over “envelope/applicability/validity”.** It is short, **self‑documenting**, and already idiomatic in SRE/SW, while “validity” clashes with **Validation Assurance (LA)** and “envelope” suggests geometry, not **membership**.
+* **“Claim scope” vs “Work scope”.** Two‑word compounds meet the FPF clarity rule: the first token reveals the **carrier** (Claim vs Work/Capability), the second the **mechanism** (scope).
+* **Keep **G**.** The F–G–R triple is canonical; we retain **G** as nickname for **Claim scope**.
+* **“Context slice”** is the only term that makes the evaluation target **addressable** (room, versions, params, **Γ\_time**).
+* **“Operation/operating/validity” avoided.** They are **overloaded** in existing FPF lanes (Work/Run, LA) and create policy ambiguities in guards.
+
+#### 17.4.3.2 Phrasebook (for editors, normative)
+
+* Use **“Claim scope (G) covers TargetSlice”** and **“Work scope covers JobSlice”** in guards.
+* Always spell **`Γ_time`**; never say “latest”.
+* To compose, say: **“intersection along dependency paths; SpanUnion across independent support lines.”**
+* For cross‑room use, say: **“via Bridge; CL penalties apply to R (trust), not to F/G (content/scope).”**
+* When widening/narrowing, write **“ΔG+ / ΔG−”** and log the support change; use **“Refit”** for unit/param normalization.
+
+#### 17.4.3.3 Rosetta summary (informative, for rationale box)
+
+| Local room phrase                          | Use in USM wording                                          |
+| ------------------------------------------ | ----------------------------------------------------------- |
+| “Context of use” (NIST, ASME/FDA)          | **Claim scope (G)** on explicit **Context slice**           |
+| “Operating modes/situations” (ISO 26262)   | **Work scope** with measures & qualification windows             |
+| “Target (class/shape)” (SHACL/OWL)         | **Claim scope predicates** (membership)                     |
+| “Architecture view context” (42010)        | **Context slice** + **Scope** checks inside the view        |
+| “Capability envelope” (legacy safety docs) | **Work scope**                                              |
+| “Domain” (informal)                        | **Context slice** elements; not acceptable as a guard input |
+
+---
+
+**Outcome.** The UTS shows strong convergence across SoTA rooms on **addressable context** and **set‑valued applicability**. F.18 therefore fixes: **Context slice**, **Scope**, **Claim scope (G)**, **Work scope**, with the algebra and guard clauses mandated in A.2.6. This closes synonym drift while remaining readable for engineering managers and precise for assurance tooling.
+
+ 
 # A.3 Transformer Constitution (Quartet)  \[A]
 
 ## 1 · Intent
@@ -8407,7 +9216,7 @@ Real‑world convergence across steel, silicon and software shows the rules are 
   **structure** (what the episteme comprises), **order** (argument flow), **time** (versioning/phases), **work** (what was spent to produce/validate it), and **values** (objectives/criteria). Γ\_epist stays in the **structure/semantics** lane and calls out to Γ\_ctx/Γ\_time/Γ\_work when needed.
 * **Mereology (A.14).** For knowledge composition we primarily use **ConstituentOf** (logical/semantic parts), **UsageOf/ReferenceTo** (external reliance), and **MemberOf** for **collections** (anthologies, corpora). We do **not** use **ComponentOf** (physical) in Γ\_epist.
   `PhaseOf` handles temporal versions of the **same** episteme; **RoleBearerOf** is irrelevant here because knowledge **does not play a role**—it is **used** by a holon‑in‑role (Transformer) at run‑time (A.12).
-* **Assurance (B.3).** Knowledge carries **F**, **G**, **R** (Formality, Generality, Reliability). Integration edges carry **CL** (congruence level) that penalizes poor fit. Γ\_epist **must** preserve provenance and apply **conservative** bounds: no “truth averaging,” no silent context hops. **Obligations here are mode/assurance‑gated per C.2.1.**  # [M‑0]
+* **Assurance (B.3).** Knowledge carries **F**, **G**, **R** (Formality, ClaimScope, Reliability). Integration edges carry **CL** (congruence level) that penalizes poor fit. Γ\_epist **must** preserve provenance and apply **conservative** bounds: no “truth averaging,” no silent context hops. **Obligations here are mode/assurance‑gated per C.2.1.**  # [M‑0]
 * **Order/time flavours.** Argument sequences may need **Γ\_ctx** (non‑commutative ordering of premises to conclusion). Knowledge evolution uses **Γ\_time** (versioning, deprecation, update). When composition produces **new closure or supervision** (e.g., explanatory theory emerges), we declare **MHT** (B.2).
 
 ---
@@ -10400,7 +11209,7 @@ We standardize three characteristics on **nodes (holons)** plus one **edge** cha
         `F0 Informal prose` · `F1 Structured narrative` · `F2 Formalizable schema` · `F3 Proof‑grade formalism`.
    * **Monotone direction:** higher is better (never lowers assurance when all else fixed).
 
-2. **Generality (G)** — *how broadly the result applies in the relevant domain space.*
+2. **ClaimScope (G)** — *how broadly the result applies in the relevant domain space.*
 
    * **Scale kind:** **coverage / span** (set‑ or measure‑based; domain‑specific).
    * **Monotone direction:** larger, but only when **correctly supported** (see WLNK and CL below).
@@ -10468,7 +11277,7 @@ Any Γ‑flavour that claims an **Assurance** result **must** adopt the followin
    *Rationale:* the least formal piece caps the formality of the whole (WLNK on F).
    *Monotone:* raising any `F_i` cannot reduce `F_eff`.
 
-2. **Generality:**
+2. **ClaimScope:**
 
    ```
    G_eff = SpanUnion({G_i}) constrained by support
@@ -11732,7 +12541,7 @@ This approach is inspired by contemporary practices in both ontology engineering
 
 # C.2 · **KD‑CAL** — *Epistemic holon composition* \[A]  *(Architheory: CAL)*
 
-**Scope & exports.** A substrate‑neutral calculus for composing **epistemic holons** (`U.Episteme`) and reasoning about their motion and equivalence. Exports: (i) three **point‑characteristics**—**Formality F**, **Generality G** *(claim scope breadth)*, **Reliability R**—that locate a single episteme; (ii) a **pairwise ladder** of **Congruence Levels (CL 0…3)**; (iii) four **Δ‑moves** (*Formalise, Generalise/Specialise, Calibrate/Validate, Congrue*); (iv) **composition rules** (Γ_epist) for aggregates; (v) propagation laws for CL through mappings and notation bridges. KD‑CAL sits on the `U.Episteme` *semantic triangle* (Symbol–Concept–Object) and never confuses **notation** with **carrier**. All F–G–R computations are **room‑local**; cross‑room traversals **require** an explicit **Bridge** with **CL** and apply the **B.3** congruence penalty **Φ(CL)** to **R**.  // rooms ≡ U.BoundedContext; substitution is plane‑preserving only.
+**Scope & exports.** A substrate‑neutral calculus for composing **epistemic holons** (`U.Episteme`) and reasoning about their motion and equivalence. Exports: (i) three **point‑characteristics**—**Formality F**, **ClaimScope G**, **Reliability R**—that locate a single episteme; (ii) a **pairwise ladder** of **Congruence Levels (CL 0…3)**; (iii) four **Δ‑moves** (*Formalise, Generalise/Specialise, Calibrate/Validate, Congrue*); (iv) **composition rules** (Γ_epist) for aggregates; (v) propagation laws for CL through mappings and notation bridges. KD‑CAL sits on the `U.Episteme` *semantic triangle* (Symbol–Concept–Object) and never confuses **notation** with **carrier**. All F–G–R computations are **room‑local**; cross‑room traversals **require** an explicit **Bridge** with **CL** and apply the **B.3** congruence penalty **Φ(CL)** to **R**.  // rooms ≡ U.BoundedContext; substitution is plane‑preserving only.
 
 **Formality F** is the rigor characteristic defined **normatively in C.2.3**. All KD‑CAL computations and guards **SHALL** use `U.Formality` (F0…F9) as specified there; **no parallel “mode” ladders** are allowed.
 
@@ -11762,7 +12571,7 @@ Teams routinely entangle **programs, specifications, proofs, and datasets**; a �
 **KD‑CAL characteristics (single‑episteme, point‑values).**
 
 * **Formality F.** From free prose to **machine‑checkable proof/specification**. Litmus: *would a machine reject it if wrong?*
-*  **Claim scope (G).** A set‑valued applicability over Context slices. Litmus: *how wide is the declared scope, and under what minimal assumptions does the claim hold?*
+* **Claim scope (G), a set‑valued applicability over `U.ContextSlice`, with ∩/SpanUnion/translate algebra; CL penalties apply to R, not to F/G.** Litmus: *how wide is the declared scope, and under what minimal assumptions does the claim hold?*
 * **Reliability R.** From untested idea to **continuously validated claim**. Litmus: *where is the last successful severe test?* **R‑claims MUST bind to evidence and declare relevance windows; stale bindings degrade R or require waiver per ESG policy.**
 
  **Congruence Level (CL), pairwise ladder.**
@@ -11785,7 +12594,7 @@ Let **Γ\_epist** combine epistemes `{Eᵢ}` into a composite episteme **Γ** th
 * **R (Reliability).** Along any justification **path** `P`, compute **`R_eff(P) = max(0, min_i R_i − Φ(CL_min(P)))`** (weakest‑link with congruence penalty). For **series** composition (claims needed conjunctively), the path‑wise weakest‑link applies; for **parallel** support (independent lines to the *same* claim), use **`R(Γ) = max_P R_eff(P)`** (annotate independence); never exceed the best attested line. Cross‑room steps and **NotationBridge** traversals contribute to `CL_min(P)`.
 
 * **F (Formality).** `F(Γ) = minᵢ F(Eᵢ)` (monotone non‑increasing along used paths). To raise **F**, apply **ΔF** to the weakest parts.
-* **G (Generality).** On any dependency **path**, take the **intersection** of claim scopes (the **narrowest overlapping scope**). Across **independent support paths to the same claim**, set **`G(Γ) = SpanUnion({G_path})` constrained by support** (drop unsupported regions). Widening/narrowing the scope is an explicit **ΔG±** operation.
+* **G (ClaimScope).** On any dependency **path**, take the **intersection** of claim scopes (the **narrowest overlapping scope**). Across **independent support paths to the same claim**, set **`G(Γ) = SpanUnion({G_path})` constrained by support** (drop unsupported regions). Widening/narrowing the scope is an explicit **ΔG±** operation.
 * **CL (Congruence).** For a chain of mappings `E₀ ~ E₁ ~ … ~ Eₖ`, the **path congruence** is `min CL(Eⱼ,Eⱼ₊₁)`. Passing through a **NotationBridge** sets CL to the bridge’s declared level; the **Φ(CL)** penalty is applied in the **R** fold for any path that traverses it.
 
 These rules keep Γ aligned with the **holonic kernel**: Γ is only defined on holons and respects identity/boundary discipline from the core. 
@@ -11977,7 +12786,7 @@ Where a context endorses Curry–Howard:
  
 where `Φ` is the context’s monotone penalty (lower CL ⇒ larger penalty). Multi‑path support uses `max_P R_eff(P)`; conflict resolution uses context policy (e.g., refutation wins when `R_refute > R_support + δ`).  // WLNK/CL per KD‑CAL. 
  
- **Formality & generality folds.** On a path `P`, take `F(P) = min_i F_i`, `G(P) = ⋂_i G_i` (expressed as the tightest envelope; empty set ⇒ path void).
+ **Formality & ClaimScope folds.** On a path `P`, take `F(P) = min_i F_i`, `G(P) = ⋂_i G_i` (expressed as the tightest envelope; empty set ⇒ path void).
  
  **Assurance tuple.** For a claim `c` at time `t`, KD‑CAL exports `Assurance(c,t) = ⟨F*, G*, R*⟩` computed under Γ_epist folds with decay applied. Mapping to `AssuranceLevel ∈ {L0,L1,L2}` is policy‑based on thresholds `{τ_F, τ_R}` and coverage tests on `G*`.
 
@@ -12014,7 +12823,7 @@ where `Φ` is the context’s monotone penalty (lower CL ⇒ larger penalty). Mu
 **Sources:**
 * **Deductive**: derivations, equiconsistency meta‑results (version‑fenced);
 * **Empirical**: observations, test reports, calibrations, replications (with freshness).
-* **Interface to KD‑CAL trust:** Every support/counter‑support edge computes a **local** ⟨F, G, R⟩ (Formality–Generality–Reliability) contribution; aggregation lives in **B.3**.
+* **Interface to KD‑CAL trust:** Every support/counter‑support edge computes a **local** ⟨F, G, R⟩ (Formality–ClaimScope–Reliability) contribution; aggregation lives in **B.3**.
 * **Non‑self‑evidence (normative).** Evidence must come from **external Work** performed by **systems**; an episteme cannot **evidence itself**.  
 * **Informal rationale (M‑mode, gated).** An `InformalRationale` binding MAY be used at M‑mode to explain intent, but it **automatically** accrues **Epistemic Debt** with a short default window; it CANNOT move an edition to *Effective* alone.
 
@@ -12066,7 +12875,7 @@ Replacing a carrier **does not** change identity; changing **Concept/Object/Symb
 **S↔M (Expression).** A many‑to‑one relation **`expresses(Symbol, Concept)`** (notation expresses intension).  
 *Notational independence (normative):* Multiple notations (one **Symbol component** possibly realized as a `U.Collection`) may **express the same Concept**. **Do not** equate carrier identity with meaning identity. Carriers connect to the episteme via `isCarriedBy`; there is **no** Symbol→Carrier mereology.
 
-**M↔R (Aboutness & Testability).** Use **`about(Object, TopicHolon)`** and **`evaluatedBy(Object, MethodDescription)`**; the **Object/Reference Map** hosts designation rules and evaluation templates. This side is where **B.3 (F–G–R)** lives: **Formality** via the claim’s structure, **Generality** via the envelope, **Reliability** via evaluation semantics and evidence.
+**M↔R (Aboutness & Testability).** Use **`about(Object, TopicHolon)`** and **`evaluatedBy(Object, MethodDescription)`**; the **Object/Reference Map** hosts designation rules and evaluation templates. This side is where **B.3 (F–G–R)** lives: **Formality** via the claim’s structure, **ClaimScope** via the envelope, **Reliability** via evaluation semantics and evidence.
 
 * **Green rule (A.12 + A.7).** 
 **No S→R action (normative):** No S→R action; only systems perform Work. A notation or carrier never changes the world. Only **`U.Work` performed by a `U.System` playing roles** can transform or observe. (Matches B.3’s separation of design‑time assurance from run‑time evidence.) 
@@ -12263,7 +13072,7 @@ This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemi
 * **S:** a two‑page memo.
 * **M:** claims: *“Within SME‑Segment‑A, problem P exists; solution S cuts cost by ≥ 15%.”* Definitions of *Segment‑A*, *cost*.
 * **R:** envelope: *Region R, firm size 20–200, 2026–2027*; evaluation: *two pilots, predefined KPIs*.
-* **Evidence:** pilot 1 result as `ModelFitEvidenceRole (supports)` with limited scope; pilot 2 as `CounterEvidenceRole`; **Generality (G)** narrows to the supported niche.
+* **Evidence:** pilot 1 result as `ModelFitEvidenceRole (supports)` with limited scope; pilot 2 as `CounterEvidenceRole`; **ClaimScope (G)** narrows to the supported niche.
 * **Manager’s use:** Keep “success” local to the measured envelope; resist global roll‑up without bridges or new evidence.
 
 ---
@@ -12400,7 +13209,7 @@ Merging **never edits parents**; it **creates** a new edition with explicit `mer
 
 **21.3 Safety rule.**
 * **C2‑BM1 (No silent merge).** Any merge **MUST** cite the **policy episteme** (how to reconcile) and record **loss notes** including **effective CL** over used Bridges (min over edges). 
-* **C2‑BM2 (Scope monotonicity).** A merge must **not** silently widen the **claim‑scope**; widening requires an explicit Context decision.
+* **C2‑BM2 (Scope monotonicity).** A merge must **not** silently widen the **ClaimScope**; widening requires an explicit Context decision.
 * **C2‑BM3 (Assurance floor).** Parents participating in a **normative** merge MUST have at least **AssuranceLevel L1**. If the merged edition is intended to be **Effective**, the merge MUST run under **F‑mode** and recompute ⟨F,G,R⟩ under Γ\_epist with CL penalties.
 
 ## 22 · Temporal Composition with Γ\_time
@@ -12519,7 +13328,7 @@ KD editioning **MUST** use `PhaseOf` (A.14) for **editions** and **Γ\_time** ev
 Every normative KD claim **MUST** be reachable from at least one **evidence‑bearing episteme** via an **Evidence–Provenance DAG** edge set: `claims ⟵ evidencedBy ⟵ carriers ⟵ producedBy(Work)`; cycles that make a claim **its own unique support** are **forbidden** (A.10).
 
 **CC‑KD‑05 — Assurance triad F–G–R with Congruence penalty.**
-When KD evidence rolls up, **Formality (F)**, **Generality (G)**, and **Reliability (R)** are computed per B.3 with **weakest‑link** semantics along each dependency path and a **Congruence penalty** for cross‑context steps. If any leg is *postulative*, the leg’s mode is *postulative*.
+When KD evidence rolls up, **Formality (F)**, **ClaimScope (G)**, and **Reliability (R)** are computed per B.3 with **weakest‑link** semantics along each dependency path and a **Congruence penalty** for cross‑context steps. If any leg is *postulative*, the leg’s mode is *postulative*.
 
 **CC‑KD‑06 — Evidence decay & debt.**
 Empirical evidence **MUST** declare a relevance window; on expiry it accrues **Epistemic Debt** and **MUST** be routed through one of: *Refresh*, *Deprecate*, *Waive (with SpeechAct & rationale)* (B.3.4).
@@ -12852,7 +13661,7 @@ FPF provides **default anchors F0…F9** (next subsection). **Contexts MAY**:
 
 ## 5 · Canonical Anchors **F0…F9** (normative)
 
-> **How to read this section.** Each anchor defines *what is minimally true* of an episteme to be rated at that level — across disciplines. The anchors are **ordinal**: F7 is strictly more formal than F6, etc. Levels are **about expression**, not truth; Reliability (R) and Generality (G) are separate.
+> **How to read this section.** Each anchor defines *what is minimally true* of an episteme to be rated at that level — across disciplines. The anchors are **ordinal**: F7 is strictly more formal than F6, etc. Levels are **about expression**, not truth; Reliability (R) and ClaimScope (G) are separate.
 
 For every anchor we state **Definition**, **Inclusion criteria**, **Non‑examples** (to prevent over‑rating), and **Indicative artifacts** (cross‑disciplinary, post‑2015).
 
@@ -21141,7 +21950,7 @@ Each box/arrow is **Room‑local** (SPEM, PROV‑O, IEC…). **Cross‑room rela
 | **A6**  | **Homonym Collapse**           | *Task*, *activity*, *process* used interchangeably across Rooms.      | Imports meaning implicitly; masks losses.                                   | Prefix with **Room** and use **SenseCells**: e.g., *task (IEC)*, *activity (PROV)*, *process (BPMN)*. Any relation uses **Bridges** with CL/Loss.                                                                    |
 | **A7**  | **Signal‑Only Compliance**     | SLO judged solely from actuator traces.                               | Ignores measured outcomes; risks false positives.                           | Tie **SLO** clauses to **Observations** (KD‑CAL) **about Work outcomes**; treat Actuation as an input, not proof.                                                                                                    |
 | **A8**  | **Recipe‑as‑Role**             | “The Spec assigns responsibility” (mixes MethodDescription with CRA Roles).  | Conflates epistemic artefact with behavioural masks.                        | Use **F.4 CRA Templates** to bind Roles; let **MethodDescription** only **describe** a Method.                                                                                                                              |
-| **A9**  | **One‑Room Generality**        | A single Room (e.g., BPMN) used as if it covered control/measurement. | Scope mirage; silent cross‑domain generalisation.                           | Re‑cut Rooms (F.1) to include control and sensing. Re‑express statements with the quartet across those Rooms.                                                                                                        |
+| **A9**  | **One‑Room Scope**        | A single Room (e.g., BPMN) used as if it covered control/measurement. | Scope mirage; silent cross‑domain generalisation.                           | Re‑cut Rooms (F.1) to include control and sensing. Re‑express statements with the quartet across those Rooms.                                                                                                        |
 | **A10** | **Lossless Bridge Assumption** | Claiming “equivalent” across Rooms without Loss.                      | Hides mismatches; unsafe transfer of inferences.                            | In **F.7/F.9** declare Bridge **kind**, **CL**, and explicit **Loss** notes.                                                                                                                                         |
 | **A11** | **Recipe‑as‑Type**             | Treating a MethodDescription vocabulary as a type taxonomy.                  | Category error; misuses Type‑CAL.                                           | If a stable hierarchy of **kinds** of Methods is needed, mint **U.Type** nodes in Type‑CAL; keep MethodDescription as *description* only.                                                                                   |
 | **A12** | **Actuation Outside Work**     | Commands modeled without enclosing Work.                              | Severs signal from enactment context; breaks traceability.                  | Embed **Actuation** **within** **Work** intervals; relate to the enacting Role and Method/MethodDescription references.                                                                                                     |
@@ -24175,3 +24984,73 @@ Pick the right noun—every time:
 | score (composite or normalized) | **Score** (produced via a **Gauge**) | “score” _(if needed in narrative, ensure it’s explained as a result of a defined Gauge)_ | A.17/A.18 (Gauge/Score) |
 | unit dimension; unit axis | **Unit** (of a Scale) | “unit” _(plain usage okay)_ | A.18 (Scale/Unit) |
 | metric (as a noun) | **Avoid in Tech and as primitive** → use **`U.MetricTemplate` / `U.Measure` / Score** | “metric” _(Plain only on first use, with pointer to canonical terms)_ | C.16 § 5.1 (L5), A.18 |
+
+## Migration debt from A.2.6 (Scope, ClaimScope, WorkScope)
+
+### Deprecations (normative)
+
+The following terms **MUST NOT** name scope characteristics in normative text, guards, or conformance blocks:
+
+* *applicability*, *envelope*, *generality*, *capability envelope*, *validity* (as a characteristic name).
+
+Use instead:
+
+* **`U.ClaimScope`** (*Claim scope*, nick **G**) for epistemes;
+* **`U.WorkScope`** (*Work scope*) for capabilities;
+* **`U.Scope`** only when explaining the abstract mechanism (not in guards).
+
+### Affected locations and required edits (normative)
+
+Editors SHALL apply the following replacements:
+
+1. **Part C.2.2 (F–G–R).**
+
+   * Replace any internal definition of “Generality” with a normative reference to **A.2.6 §6.3** (*Claim scope (G)*).
+   * Where “abstraction level” is mentioned as G, replace with “Claim scope (where the claim holds)”; keep **AT** (AbstractionTier) only as optional didactics (non‑G).
+   * Ensure composition examples use **intersection/SpanUnion** for G, not ordinal “more/less general”.
+
+2. **Part C.2.3 (Formality F).**
+
+   * No change to F itself.
+   * Any example that implies “raising F widens G” MUST be rephrased: F changes expression form; G changes only via **ΔG**.
+
+3. **Part A.2.2 (Capabilities).**
+
+   * Replace “capability envelope/applicability” with **`U.WorkScope`**.
+   * Method–Work gates MUST test **Work scope covers JobSlice**, with **measures** and **qualification windows** bound.
+
+4. **Part B (Bridges & CL).**
+
+   * Add a note: **CL penalties apply to R**, not to **F/G**; mapping MAY recommend **narrowing** the mapped scope (best practice).
+
+5. **Part E (Lexicon).**
+
+   * Add entries for **Claim scope (G)**, **Work scope**, **Scope** (mechanism).
+   * Mark listed deprecated terms as **legacy aliases** allowed only in explanatory notes.
+
+6. **ESG & Method–Work templates.**
+
+   * Replace any “applicability”/“envelope” guard phrasing with **ScopeCoverage** (see §10).
+   * Require explicit **`Γ_time`** selectors in all scope‑sensitive guards.
+
+### Migration playbook (informative)
+
+1. **Inventory** scope‑like phrases across your room (search: applicability, envelope, generality, capability envelope, valid\*).
+2. **Classify** each occurrence as **Claim scope** (episteme) or **Work scope** (capability).
+3. **Rewrite** guards to use `Scope covers TargetSlice` + explicit **`Γ_time`**; remove “latest”.
+4. **Publish** any required **Bridges** with **CL** for cross‑room usage.
+5. **Document** ΔG changes separately from evidence freshness (R).
+
+### Backwards compatibility (informative)
+
+Legacy artifacts MAY keep their historical phrasing in body prose. All **guards, conformance checklists, and state assertions** MUST be rewritten to the USM terms and semantics.
+
+
+### Change Log (normative migration record)
+
+* **A.2.6 introduced.** Defines `U.ContextSlice`, `U.Scope`, `U.ClaimScope (G)`, `U.WorkScope`; sets algebra and guard patterns.
+* **Deprecated labels.** “applicability / envelope / generality / capability envelope / validity” as characteristic names.
+* **Edits required.** C.2.2 (G = Claim scope), A.2.2 (Work scope for capabilities), Part B (CL→R note), Part E (Lexicon updates), ESG/Method–Work guard templates (ScopeCoverage + `Γ_time`).
+* **No change.** C.2.3 (F) unchanged; its examples updated only for wording consistency.
+
+ 
