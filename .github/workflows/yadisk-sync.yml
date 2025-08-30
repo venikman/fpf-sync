@@ -16,7 +16,7 @@ env:
   PUBLIC_PATH: ${{ vars.YANDEX_PUBLIC_PATH }}
   TARGET_NAME: ${{ vars.YANDEX_TARGET_NAME }}
   DEST_PATH: yadisk
-  DEST_FILENAME: ${{ vars.YANDEX_DEST_FILENAME }}
+  DEST_FILENAME: ${{ vars.YANDEX_DEST_FILENAME || 'First Principles Framework — Core Conceptual Specification (holonic).md' }}
 
 jobs:
   sync:
@@ -60,7 +60,7 @@ jobs:
           labels: |
             sync:auto-merge
           add-paths: |
-            yadisk/**
+            yadisk/First Principles Framework — Core Conceptual Specification (holonic).md
 
       - name: Wait 25 minutes before auto-merge
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
