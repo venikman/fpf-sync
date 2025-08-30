@@ -35,7 +35,10 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
         with:
-          bun-version: 'latest'
+          bun-version: '1.2.3'
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
       - name: Download from Yandex Disk
         run: |

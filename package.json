@@ -1,15 +1,21 @@
 {
   "name": "fpf-sync",
-  "module": "index.ts",
   "type": "module",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
+  "scripts": {
+    "start": "bun run index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix",
+    "test": "bun test"
   },
-  "peerDependencies": {
+  "devDependencies": {
+    "bun-types": "latest",
+    "oxlint": "latest",
     "typescript": "^5"
   },
-  "scripts": {
-    "test": "bun test"
-  }
+  "engines": {
+    "bun": ">=1.2.3"
+  },
+  "packageManager": "bun@1.2.3"
 }

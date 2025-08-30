@@ -14,10 +14,6 @@ async function ensureDir(dir) {
   await fs.promises.mkdir(dir, { recursive: true });
 }
 
-async function writeFileBytes(filePath, bytes) {
-  await ensureDir(path.dirname(filePath));
-  await fs.promises.writeFile(filePath, Buffer.from(bytes));
-}
 
 async function main() {
   const publicUrl = getArg('public-url');
@@ -84,12 +80,17 @@ async function main() {
   if (verbose) console.log('Downloading:', dl.href);
   const fileRes = await fetch(dl.href);
   if (!fileRes.ok) throw new Error(`Failed to download file: HTTP ${fileRes.status}`);
-  const bytes = await fileRes.arrayBuffer();
-  enforceSizeCap({ downloadedBytes: bytes.byteLength, maxBytes });
+
+  const contentLength = Number(fileRes.headers.get('content-length') || 0);
+  if (Number.isFinite(contentLength) && contentLength >= 0) {
+    enforceSizeCap({ reportedSize: contentLength, maxBytes });
+  }
 
   const outFile = path.join(destPath, name);
-  await writeFileBytes(outFile, bytes);
-  console.log(`Saved ${name} (${bytes.byteLength} bytes) to ${outFile}`);
+  await ensureDir(path.dirname(outFile));
+  const written = await Bun.write(outFile, fileRes);
+  enforceSizeCap({ downloadedBytes: written, maxBytes });
+  console.log(`Saved ${name} (${written} bytes) to ${outFile}`);
 }
 
 main().catch((err) => {
