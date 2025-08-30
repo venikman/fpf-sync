@@ -2,7 +2,7 @@
 
 Keep a file from a public Yandex Disk link in sync with this repository. When the file changes, this repo automatically opens a Pull Request (PR) with the updated version.
 
-For developer-focused details (coding, variables, local runs, tests), see `DEVELOPERS.md`.
+For developer-focused details (coding, variables, local runs), see `DEVELOPERS.md`.
 
 **What You Need**
 - Yandex Disk public link: a share link anyone can open.
