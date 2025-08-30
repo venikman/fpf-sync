@@ -2221,7 +2221,7 @@ This section deepens the definition of `U.EvidenceRole` by specifying **which no
 
 #### 8.1 Claim-scope schema
 
-Every `U.EvidenceRole` definition **within a `U.BoundedContext`** **MUST** declare a claim-scope record. This record ties the role’s meaning to the exact target claim and its applicability envelope, and aligns with the typed-claim form used in B.3:
+Every `U.EvidenceRole` definition **within a `U.BoundedContext`** **MUST** declare a claim-scope record. This record ties the role’s meaning to the exact target claim and its claim scope, and aligns with the typed-claim form used in B.3:
 
 | Field           | Meaning                            | Norms                                                                                               |
 | --------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------- |
@@ -2261,7 +2261,7 @@ Each `U.EvidenceRole` **MUST** anchor into the **Evidence–Provenance DAG** (A.
 A `U.EvidenceRole` classifies an artefact; its contribution to the target claim’s assurance tuple ⟨F, G, R⟩ is computed in B.3 using:
 
 * **F (formality)** — lower-bounded by the least formal constituent in the provenance path.
-* **G (generality)** — limited to the applicability envelope; unsupported regions are dropped (WLNK).
+* **G (generality)** — limited to the claim scope; unsupported regions are dropped (WLNK).
 * **R (reliability)** — computed as:
 
 ```
@@ -11729,11 +11729,12 @@ This approach is inspired by contemporary practices in both ontology engineering
 | -------------------------------------------- | ---------------------------------- | --- | -------------------------------------------------------------------- |
 | **Cluster C.I – Core CALs / LOGs / CHRs**    |                                    |     |                                                                      |
 | C.1                                          | **Sys‑CAL**                        | CAL | Physical holon composition; conservation invariants; resource hooks. |
-| C.2                                          | **KD‑CAL**                         | CAL | Epistemic holon composition; F‑G‑R axes; provenance graph.           |
 
 # C.2 · **KD‑CAL** — *Epistemic holon composition* \[A]  *(Architheory: CAL)*
 
-**Scope & exports.** A substrate‑neutral calculus for composing **epistemic holons** (`U.Episteme`) and reasoning about their motion and equivalence. Exports: (i) three **point‑characteristics**—**Formality F**, **Generality G** *(applicability envelope breadth)*, **Reliability R**—that locate a single episteme; (ii) a **pairwise ladder** of **Congruence Levels (CL 0…3)**; (iii) four **Δ‑moves** (*Formalise, Generalise/Specialise, Calibrate/Validate, Congrue*); (iv) **composition rules** (Γ_epist) for aggregates; (v) propagation laws for CL through mappings and notation bridges. KD‑CAL sits on the `U.Episteme` *semantic triangle* (Symbol–Concept–Object) and never confuses **notation** with **carrier**. All F–G–R computations are **room‑local**; cross‑room traversals **require** an explicit **Bridge** with **CL** and apply the **B.3** congruence penalty **Φ(CL)** to **R**.  // rooms ≡ U.BoundedContext; substitution is plane‑preserving only
+**Scope & exports.** A substrate‑neutral calculus for composing **epistemic holons** (`U.Episteme`) and reasoning about their motion and equivalence. Exports: (i) three **point‑characteristics**—**Formality F**, **Generality G** *(claim scope breadth)*, **Reliability R**—that locate a single episteme; (ii) a **pairwise ladder** of **Congruence Levels (CL 0…3)**; (iii) four **Δ‑moves** (*Formalise, Generalise/Specialise, Calibrate/Validate, Congrue*); (iv) **composition rules** (Γ_epist) for aggregates; (v) propagation laws for CL through mappings and notation bridges. KD‑CAL sits on the `U.Episteme` *semantic triangle* (Symbol–Concept–Object) and never confuses **notation** with **carrier**. All F–G–R computations are **room‑local**; cross‑room traversals **require** an explicit **Bridge** with **CL** and apply the **B.3** congruence penalty **Φ(CL)** to **R**.  // rooms ≡ U.BoundedContext; substitution is plane‑preserving only.
+
+**Formality F** is the rigor characteristic defined **normatively in C.2.3**. All KD‑CAL computations and guards **SHALL** use `U.Formality` (F0…F9) as specified there; **no parallel “mode” ladders** are allowed.
 
 ## 1 · Context
 
@@ -11761,21 +11762,18 @@ Teams routinely entangle **programs, specifications, proofs, and datasets**; a �
 **KD‑CAL characteristics (single‑episteme, point‑values).**
 
 * **Formality F.** From free prose to **machine‑checkable proof/specification**. Litmus: *would a machine reject it if wrong?*
-* **Generality G.** From a narrow, highly‑specific case to a **broad applicability envelope** (scope & assumptions). Litmus: *how wide is the declared envelope, and under what minimal assumptions does the claim hold?*
+*  **Claim scope (G).** A set‑valued applicability over Context slices. Litmus: *how wide is the declared scope, and under what minimal assumptions does the claim hold?*
 * **Reliability R.** From untested idea to **continuously validated claim**. Litmus: *where is the last successful severe test?* **R‑claims MUST bind to evidence and declare relevance windows; stale bindings degrade R or require waiver per ESG policy.**
-
-**Congruence Level (CL), pairwise ladder.**
-`CL‑0` behavioural similarity; `CL‑1` functional sameness (bounded‑contract match); `CL‑2` **formal equivalence** (structure‑preserving mapping that transports theorems in the declared fragment); `CL‑3` **intrinsic identity** (equality/univalence). *CL is a relation between two epistemes; it is not a fourth axis.* **Norm:** *substitution is permitted only if plane‑preserving and **CL ≥ 2**; substituting **type‑structure** requires **CL = 3***.
 
  **Congruence Level (CL), pairwise ladder.**
  `CL‑0` **Opposed/Disjoint** (contrastive; no substitution); `CL‑1` **Comparable / Naming‑only** (label similarity; no substitution); `CL‑2` **Translatable / RoleAssignment‑eligible** (structure‑preserving mapping in a declared fragment with **stated loss**; theorems may transport); `CL‑3` **Near‑identity / Type‑structure‑safe** (invariants match; type‑structure substitution allowed). *CL is a characteristic of a relation between two epistemes; it is not a fourth axis of epistemic characteristic space.* **Norm:** *substitution is permitted only if plane‑preserving and **CL ≥ 2**; substituting **type‑structure** requires **CL = 3***.
 
-**Triangle link.** The axes live on the **Concept↔Object** side: *F* by the internal claim‑graph structure; *G* by the **applicability envelope** (scope & assumptions); *R* by evaluation templates and evidence bindings. The **Symbol** vertex hosts notation; **carriers are outside** the episteme and link via `isCarriedBy`. Multiple notations are allowed under a **single Symbol component**; authors SHOULD register `NotationBridge(n₁,n₂)` with an associated **CL** to make conversion loss explicit.
+**Triangle link.** The axes live on the **Concept↔Object** side: *F* by the internal claim‑graph structure; *G* by the **ClaimScope** (scope & assumptions); *R* by evaluation templates and evidence bindings. The **Symbol** vertex hosts notation; **carriers are outside** the episteme and link via `isCarriedBy`. Multiple notations are allowed under a **single Symbol component**; authors SHOULD register `NotationBridge(n₁,n₂)` with an associated **CL** to make conversion loss explicit.
 
 ### 4.2 · Four Δ‑moves (epistemic motion)
 
 * ***ΔF — Formalise.** Rewrite for stricter calculi/grammars; raise proof obligations.
-* ***ΔG — Generalise / Specialise.** Widen or narrow the **applicability envelope** (assumptions & scope). Changes to decomposition granularity are an **orthogonal view** and do not change **G** unless they alter the envelope.
+* ***ΔG — Generalise / Specialise.** Widen or narrow the **claim scope** (assumptions & scope). Changes to decomposition granularity are an **orthogonal view** and do not change **G** unless they alter the envelope.
 * **ΔR — Calibrate / Validate.** Strengthen severe tests or add live monitoring; update evidence bindings.
 * **ΔCL — Congrue.** Establish and record the sameness relation between **two** epistemes (ladder 0→3).
   Moves compose into **paths**; CL along a path is the **minimum** of its links.
@@ -11787,7 +11785,7 @@ Let **Γ\_epist** combine epistemes `{Eᵢ}` into a composite episteme **Γ** th
 * **R (Reliability).** Along any justification **path** `P`, compute **`R_eff(P) = max(0, min_i R_i − Φ(CL_min(P)))`** (weakest‑link with congruence penalty). For **series** composition (claims needed conjunctively), the path‑wise weakest‑link applies; for **parallel** support (independent lines to the *same* claim), use **`R(Γ) = max_P R_eff(P)`** (annotate independence); never exceed the best attested line. Cross‑room steps and **NotationBridge** traversals contribute to `CL_min(P)`.
 
 * **F (Formality).** `F(Γ) = minᵢ F(Eᵢ)` (monotone non‑increasing along used paths). To raise **F**, apply **ΔF** to the weakest parts.
-* **G (Generality).** On any dependency **path**, take the **intersection** of applicability envelopes (the **narrowest overlapping scope**). Across **independent support paths to the same claim**, set **`G(Γ) = SpanUnion({G_path})` constrained by support** (drop unsupported regions). Widening/narrowing the scope is an explicit **ΔG±** operation.
+* **G (Generality).** On any dependency **path**, take the **intersection** of claim scopes (the **narrowest overlapping scope**). Across **independent support paths to the same claim**, set **`G(Γ) = SpanUnion({G_path})` constrained by support** (drop unsupported regions). Widening/narrowing the scope is an explicit **ΔG±** operation.
 * **CL (Congruence).** For a chain of mappings `E₀ ~ E₁ ~ … ~ Eₖ`, the **path congruence** is `min CL(Eⱼ,Eⱼ₊₁)`. Passing through a **NotationBridge** sets CL to the bridge’s declared level; the **Φ(CL)** penalty is applied in the **R** fold for any path that traverses it.
 
 These rules keep Γ aligned with the **holonic kernel**: Γ is only defined on holons and respects identity/boundary discipline from the core. 
@@ -11806,7 +11804,7 @@ These rules keep Γ aligned with the **holonic kernel**: Γ is only defined on h
 
 **System (show, Sys‑CAL lens).** Consider a **battery‑pack thermal subsystem** integrating a physics model of heat flow and an operating envelope for fast‑charge. As a **system**, it composes pumps, sensors, and controllers by physical Γ with conservation constraints (Sys‑CAL). The assurance story depends on epistemes about the model and envelope; the system **acts**, epistemes constrain. (Archetypes and boundary discipline per core.)
 
-**Episteme (show, KD‑CAL lens).** Consider a **CMIP‑class climate projection episteme** (post‑2015 generation): its **Concept** is a claim‑graph over PDEs and parameterisations; its **Object** defines an applicability envelope (historical forcings, resolution); its **Symbol** may include two notations (domain equations vs. tabular schema) linked by a **NotationBridge** with an explicit CL. Compose sub‑epistemes for radiation, clouds, and ocean mixing: `R = min` across the critical path; an independent hindcast line can raise `R` only up to its own level; `F` is bounded by the least‑formal sub‑claim unless the composition adds formal invariants.
+**Episteme (show, KD‑CAL lens).** Consider a **CMIP‑class climate projection episteme** (post‑2015 generation): its **Concept** is a claim‑graph over PDEs and parameterisations; its **Object** defines an claim scope (historical forcings, resolution); its **Symbol** may include two notations (domain equations vs. tabular schema) linked by a **NotationBridge** with an explicit CL. Compose sub‑epistemes for radiation, clouds, and ocean mixing: `R = min` across the critical path; an independent hindcast line can raise `R` only up to its own level; `F` is bounded by the least‑formal sub‑claim unless the composition adds formal invariants.
 
 ---
 
@@ -11821,7 +11819,7 @@ These rules keep Γ aligned with the **holonic kernel**: Γ is only defined on h
 ## 7 · Conformance Checklist
 
 1. **C2‑1 (Triangle).** Every `U.Episteme` **MUST** occupy exactly one slot per {Symbol, Concept, Object}; carriers link via `isCarriedBy` and are never parts.
-2. **C2‑2 (Coordinates).** Each episteme **SHALL** declare `[F,G,R]` with a brief rationale tied to Concept/Object (envelope for **G**); CL is declared **only for pairs**.
+2. **C2‑2 (Coordinates).** Each episteme **SHALL** declare `[F,G,R]` with a brief rationale; **F** is `U.Formality ∈ {F0…F9}` per **C.2.3**, **exactly one episteme‑level F** computed as the **min over essential parts**. CL is declared for **pairs only**. Sub‑anchors: ** Contexts **MAY** mint named sub‑anchors (e.g., `F4[OCL]`, `F7[HOL]`), which **MUST** preserve the global order and **map to their parent anchor** from C.2.3.
 3. **C2‑3 (Composition).** Authors **SHALL** choose Γ_mode (**series** vs **parallel**). For any justification **path** use **`R_eff(P) = max(0, min_i R_i − Φ(CL_min(P)))`**; for **parallel** independent lines to the *same claim*, take **`R(Γ) = max_P R_eff(P)`** (never exceeding the strongest line). Compute `F(Γ) = min` along the used paths. For **G**, use **path‑wise intersections** and then **SpanUnion({G_path}) constrained by support**. Cross‑room traversals **MUST** use a Bridge with **CL** and apply **Φ(CL)** to `R`.
 4. **C2‑4 (NotationBridge).** Multi‑notation Symbol components **SHOULD** register `NotationBridge` edges with CL and loss note; any cross‑notation reasoning **MUST** cite the bridge’s CL.
 5. **C2‑5 (No action).** Epistemes **MUST NOT** be assigned actions; work is executed by systems in role.
@@ -11914,7 +11912,7 @@ Triangle sides are `expresses(Symbol,Concept)` and `anchors(Concept,Object)`.  T
 
  **Triangle Role Map (normative): vertices and what they host**
 * **Concept (intension).** Hosts the *claim‑level content* as a **ClaimGraph** (definitions, axioms, theorems, requirements, properties, assumptions).  
-* **Object (aboutness link).** Hosts the **Reference Map** (designation rules, applicability envelope, evaluation/measurement templates) that ties claims to **Topic holons** (`U.System` or `U.Episteme`).  
+* **Object (aboutness link).** Hosts the **Reference Map** (designation rules, claim scope, evaluation/measurement templates) that ties claims to **Topic holons** (`U.System` or `U.Episteme`).  
 * **Symbol (notation).** Hosts the **notation/representation** (e.g., syntax, signature, term dictionaries, rendering rules). **Symbol ≠ carrier**; physical files live outside Tier‑2.
 
 The following governance graphs are **not** triangle vertices but **attached structures**:  
@@ -12059,7 +12057,7 @@ Replacing a carrier **does not** change identity; changing **Concept/Object/Symb
    *Mereology guard:* The **intension** is not a carrier and not a run; it is the **core substantial component** of the episteme, captured as **A.14 ComponentOf** with **AspectOf** links for optional views (e.g., “mathematical aspect”, “operational aspect”).
 
 3. **Referent / World‑link (R‑vertex).**
-   *Component:* **`Designation & Reference Map`** — a **bundle** of (i) *designation rules* (what terms point to in a context), (ii) *measurement templates* and *evaluation clauses* (how claims are tested on real systems), and (iii) *applicability envelope* (where the episteme claims to hold).
+   *Component:* **`Designation & Reference Map`** — a **bundle** of (i) *designation rules* (what terms point to in a context), (ii) *measurement templates* and *evaluation clauses* (how claims are tested on real systems), and (iii) *claim scope* (where the episteme claims to hold).
    *Relations:* `appliesTo(U.System or Phenomenon)`, `evaluatedBy(U.MethodDescription)`, `hasEnvelope(CharacteristicSpace)`; label the side **`about/evaluates (Concept↔Object)`** for clarity. F/G/R are computed per KD‑CAL with WLNK/CL. 
    *Mereology guard:* Reference maps are **components** of the episteme’s **meaning‑to‑world interface**; they are **not** logs of experiments.
 
@@ -12077,7 +12075,7 @@ Replacing a carrier **does not** change identity; changing **Concept/Object/Symb
 
 * *`ClaimGraph`** *(core)* — the meaning network.
 * **`Symbol (Notation)`** — the notation/representation bundle (one component; carriers stay Tier‑1 via `isCarriedBy`).
-* **`Designation & Reference Map`** — terms → world, measurement templates, acceptance clauses, applicability envelope.
+* **`Designation & Reference Map`** — terms → world, measurement templates, acceptance clauses, claim scope.
  
 *Attached structures (not parts):* **JustificationGraph**, **Evidence Bindings** (per‑claim `U.EvidenceRole` assignments), **EditionSeries**, **Scope Card**.
 
@@ -12184,7 +12182,7 @@ This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemi
 **12.1 Exports to KD‑CAL (normative)**
 
 * **Export‑E1 (M‑mode minimal).** A resolvable **`ConceptHandle`** (may be a single root claim or a short list); **BoundedContext** declared.
-* **Export‑E2 (Assurance L1+).** **Applicability envelope** and **evaluation templates** from the **Object** component; **Evidence slots** exposed for `supports|refutes|constrains`. # Maps to L1 “Substantiated”. 
+* **Export‑E2 (Assurance L1+).** **claim scope** and **evaluation templates** from the **Object** component; **Evidence slots** exposed for `supports|refutes|constrains`. # Maps to L1 “Substantiated”. 
 * **Export‑E3 (Assurance L2/F‑mode).** **`ClaimGraphRoot`** with typed nodes, **JustificationGraph** hooks, **EditionSeries** fence, and decay policy on empirical bindings (B.3.4). 
 * **Export‑E4 (Cross‑room).** Bridge metadata (CL, losses) for any exported handle that leaves the room.
 
@@ -12234,7 +12232,7 @@ This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemi
 * **CC‑UE‑08 (Meta‑about CL).** Any `metaAbout` traversal **MUST** carry `CL_meta`; apply CL penalties in assurance composition.
 * **CC‑UE‑09 (Informal rationale auto‑debt).** `InformalRationale` MAY support *Candidate* in M‑mode but accrues **Epistemic Debt** and cannot alone satisfy *Effective* guards.
 * **CC‑UE‑10 (Change classes).** Apply **S/M/O** classification: **S‑change** (Symbol‑only notation/bridge) ⇒ no edition; **M‑change** (ClaimGraph) ⇒ new edition; **O‑change** (Envelope/Evaluation templates/designation rules) ⇒ new edition; and **any** change that affects computed ⟨F,G,R⟩ ⇒ new edition (see §19.3 and §19.2 C2‑E6).
-* **CC‑UE‑11 (Mode flag, P‑3).** Every `U.Episteme` **MUST** declare `FormalityMode ∈ {M‑0, M‑1, M‑2, M‑3}` per **E.11 Scalable Formality Ladder**; any claim bound to a declared `ProofKernel` is evaluated as **M‑3** and **MUST** satisfy the F‑mode gates in §18.1.
+* **CC‑UE‑11 (Formality declaration).** Every U.Episteme MUST declare U.Formality = Fk per C.2.3; ESG guards and acceptance policies SHALL reference F thresholds instead of legacy “modes/tiers”. Formal proof bindings do not decay; Tool Assurance is managed separately under B.3.4. 
 * **CC‑UE‑12 (Plug‑in layering, P‑5).** Normative semantics **MUST** be interpretable without Tooling or Pedagogy assets; mentions of notations, file types, or toolchains are **informative only**. Cross‑layer dependencies **MUST** obey **E.5.3 Unidirectional Dependency**.
 
 **Assurance‑gated Norms**
@@ -12313,20 +12311,16 @@ This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemi
 
 >**Why state graphs?** KD‑CAL is about **governing what is admissibly said** about knowledge **now**, not narrating “life stories”. States + guards make the **current admissibility** explicit and checkable; `PhaseOf` keeps the **edition lineage** auditable.
 
-### 18.1 Mode & Assurance Gating 
+### **18.1 Rigor‑Aware Gating by `U.Formality` (F) and Assurance**  
+**Intent.** Avoid one‑size‑fits‑all checklists. ESG/Γ\_time duties are **graded by the artifact’s declared `U.Formality` (F)** and the target Assurance Level (B.3).  
+**Guards (skeleton):**  
+* **G‑ESG‑1 (State set).** Contexts **SHALL** define which states are admissible **per F thresholds** (e.g., `F < 3` MAY use a minimal ESG; `F ≥ 6` MUST use the full ESG).  
+* **G‑ESG‑2 (Anchors).** Guards **MUST** use observable anchors (A.10); **numeric criteria REQUIRED** whenever defined for the episteme kind.  
+* **G‑ESG‑3 (Evidence).** For higher assurance (e.g., L2), guards **MUST** bind concrete evidence with freshness windows (B.3.4).  
+* **G‑ESG‑4 (Proof facet).** Where a guard relies on formal proof, it **SHALL** declare `proofMode ∈ {classical | constructive | type‑theoretic}` and checker anchors `{tool, version, proof‑object‑hash}`.  
+* **G‑ESG‑5 (Selectors).** All decisions **MUST** name an explicit `Γ_time` selector; no implicit “latest”.  
+_Note._ F thresholds are **context‑local**; do not infer sameness across rooms without a **Bridge** and **CL**. 
 
-**Intent.** Prevent “everything everywhere all at once” checklists. ESG/Γ\_time duties are **graded** by the artefact’s declared **Formality Mode** (E.11) and **Assurance Level** (B.3.3).
-
-| Gate | If **M‑mode** (M‑0..M‑2) | If **F‑mode** (M‑3) |
-|------|--------------------------|----------------------|
-| **G‑ESG‑1 (State set)** | MAY use the *Minimal ESG* template {Draft, Candidate, Deprecated}. | MUST use the *Full ESG* template for the episteme kind (e.g., {Draft→Candidate→Effective→Superseded→Deprecated}). |
-| **G‑ESG‑2 (Guards)** | MAY satisfy guards with **working‑model** artefacts and qualitative rationale; numeric thresholds are OPTIONAL. | MUST satisfy guards with **observable** anchors (A.10) and typed thresholds; numeric criteria are REQUIRED where defined. |
-| **G‑ESG‑3 (Evidence class)** | For **L0–L1**, MAY rely on `verifiedBy/validatedBy` stubs; empirical freshness is RECOMMENDED. | For **L2**, MUST bind to concrete evidence artefacts; empirical bindings MUST declare freshness windows (B.3.4). |
-| **G‑ESG‑4 (Proof stance)** | MAY declare `proofMode = {none, informal}`. | MUST declare `proofMode ∈ {classical, constructive, type‑theoretic}` and cite the checker/toolchain where applicable. |
-| **G‑ESG‑5 (Selectors)** | MAY use a default selector policy noted in prose. | MUST name an explicit `Γ_time` selector in each decision point. |
-
-*Non‑downgrading rule.* F‑mode obligations subsume M‑mode; authors MAY exceed the minimum at any mode.
- 
 ## 19 · Edition Graph (PhaseOf) — Structure & Invariants
 
 **19.1 Structure.**
@@ -12344,7 +12338,7 @@ For any episteme **K**, its editions form a **DAG** with edges **`PhaseOf(K)`** 
 * **C2‑E3 (Merge discipline).** A **merge** produces a **new edition** with `mergedFrom = {E_a,…,E_b}`; parents remain unchanged.
 * **C2‑E4 (Branch admissibility).** Multiple children of the same edition are allowed; branch semantics live in the Context (e.g., *jurisdictional variants*).
 * **C2‑E5 (Context locality).** Meaning of statuses and admissibility is **scoped to a `U.BoundedContext`**; cross‑context reuse requires a **Bridge** with CL/loss notes (F.9). Γ rules and selectors referenced here remain **in‑room**; cross‑room queries must first rebase via the Bridge.
-* **C2‑E6 (Mode‑aware edition fences).** In **M‑mode**, changing carriers or notation **does not** mint a new edition unless the **ClaimGraph** or **Reference Map** changes materially. In **F‑mode**, any change that affects computed ⟨F,G,R⟩ **MUST** mint a new edition.
+* **C2‑E6 (Characteristic‑aware fences).** Any change that alters computed ⟨F,G,R⟩ for any declared claim MUST mint a new edition (PhaseOf), regardless of carrier/notation changes. S/M/O classes apply as defined; Symbol‑only tweaks that do not alter ClaimGraph or Reference Map do not mint a new edition.
   
 ** 19.3 Change classes (normative) — S/M/O**
 * ***S‑change (Symbol).** Changes limited to the `Symbol` component’s **Notation‑Set** or to `NotationBridge` metadata **without** changing the `ClaimGraph` or the `Designation & Reference Map` ⇒ **no new edition**.
@@ -12369,7 +12363,7 @@ For any episteme **K**, its editions form a **DAG** with edges **`PhaseOf(K)`** 
 **20.3 StateAssertions.**
 A **StateAssertion(E, s, W)** holds when the **checklist** for **state `s`** is proven from observable facts (A.10: SCR/RSCR anchors) within **Window `W`**. Assertions **expire** with their windows; no silent perpetuity. Selectors **MUST** be explicit (e.g., `effective_at(t)`, `windowed(W, policy)`) and are interpreted by **Γ_time** (B.1.4). 
 
-**Proof‑mode declaration (F‑mode only).** When `s ∈ {PeerChecked, Accepted, Effective}` is met **via formal proof**, the assertion **MUST** declare `proofMode ∈ {classical, constructive, type‑theoretic}` and cite `{tool, version, proof‑object‑hash}` if a checker was used.
+**Proof‑mode declaration (guard facet).** When a state is gated **via formal proof**, the assertion **MUST** declare `proofMode ∈ {classical, constructive, type‑theoretic}` and cite `{tool, version, proof‑object‑hash}` where applicable. _(This facet is independent of F; F is defined by C.2.3.)_
 
 **Constructive acceptance (optional, F‑mode).** For `proofMode ∈ {constructive, type‑theoretic}`, a **proof‑object** (e.g., Lean/Agda) MAY serve as the observable for the guard if its checker run is recorded as `U.Work` and anchored (A.10); such assertions **do not decay**, but **toolchain trust** is accounted for via TA in B.3.
 
@@ -12540,7 +12534,7 @@ Design‑time KD assets are **`U.Episteme`** and **`U.MethodDescription`**; run�
 Behavioral roles (Transformer/Observer/Speech) **bind to systems**; KD status roles (e.g., `U.EvidenceRole`, `NormativeStandardRole`) **bind to epistemes** and are **status‑only**; they never enact `U.Work` (A.2, A.2.4, A.2.5).
 
 **CC‑KD‑10 — Γ\_epist operators are conservative.**
-`Γ_epist` **MUST** be *conservative*: (i) for trust it uses **min/weakest‑link** per dependency path; (ii) for scope it **intersects** applicability envelopes; (iii) for counts it prohibits double‑counting across *aliases* unless a Bridge declares equivalence with CL≥2 and a counting policy.
+`Γ_epist` **MUST** be *conservative*: (i) for trust it uses **min/weakest‑link** per dependency path; (ii) for scope it **intersects** claim scopes; (iii) for counts it prohibits double‑counting across *aliases* unless a Bridge declares equivalence with CL≥2 and a counting policy.
 
 **CC‑KD‑11 — Acceptance is a test over Work, not over Service.**
 Acceptance verdicts for KD claims and services **MUST** be computed from **Work** facts, against **acceptance specs** carried by epistemes (A.2.3). Services carry no “actuals”.
@@ -12613,7 +12607,7 @@ Post‑2015 practice converges on **explicit provenance**, **externalized action
 ## 33 · Authoring quick cards (KD‑CAL)
 
 * **Say “state‑change,” not “lifecycle.”** Publish the **ESG** in the role/episteme’s **RoleDescription**/**EpistemeCard**.
-* **Badge + bounds.** Gate critical steps using **badge (RoleAssignment)** + **bounds (Capability envelopes)**; judge services from **Work**.
+* **Badge + bounds.** Gate critical steps using **badge (RoleAssignment)** + **bounds (WorkScope)**; judge services from **Work**.
 * **Weakest‑link first.** Trust folds downhill; if you must average, you are in Pedagogy, not in Core.
 * **Local rooms, explicit bridges.** Names don’t travel without a **Bridge (CL + losses)**.
 * **No self‑evidence.** Every KD binding points to **external Work**.
@@ -12731,6 +12725,518 @@ Post‑2015 practice converges on **explicit provenance**, **externalized action
 | How to **name**    | UTS rows, twin labels                        | Auto‑registrars, alias checkers                         | Naming exercises                                       |
 
 (Guard‑rails: DevOps Lexical Firewall, Unidirectional Dependency.)
+
+# C.2.3 · **Unified Formality Characteristic F**  \[A]
+
+> **One‑line summary.** Defines **Formality (F)** as a single, ordinal **Characteristic** (`U.Formality`) with **polarity “up”**, anchored by a **default ladder F0…F9** from **free prose** to **proof‑grade foundations**. This unifies how rigor is declared and compared across all epistemes and contexts, and supplies the **F‑coordinate** in the F–G–R assurance space.
+
+---
+
+### 0 · Status & Scope
+
+**Status.** Normative pattern in **KD‑CAL / Part C.2**. It **replaces** the legacy “modes/tiers” language and any parallel “formality ladders.” The letter **F** hereafter denotes the **Formality** characteristic in the **F–G–R** triple.
+
+**Scope.** Conceptual only. The pattern **does not** prescribe workflows, toolchains, or team procedures. It specifies *what Formality is and how to measure/declare it*, so that any team, discipline, or architheory can think and communicate rigor with the same yardstick.
+
+**Non‑goals.**
+– Not a publication process, not a governance gate.
+– Not a reliability metric (R) and not a scope/abstraction metric (G).
+– Not tied to any notation, repository layout, or CI/CD practice.
+
+---
+
+## 1 · Context
+
+Transdisciplinary work (physics, software, systems, policy, data) needs a **shared notion of rigor** that travels across rooms of meaning. A controller invariant stated in a theorem prover, a research hypothesis framed in constrained English, and a managerial decision rule written as acceptance criteria must be **comparable**—not by their domain lore, but by **how strictly they are expressed**.
+
+Historically, FPF texts carried **multiple signals of rigor** (narrative “modes,” editorial tiers, ad‑hoc “formal vs. informal” talk). These signals mixed with status labels (e.g., “Draft/Effective”), obscuring whether an “approved” artifact was **actually precise** or merely **organizationally accepted**. To reason soundly in KD‑CAL and to compose artifacts safely, we standardize a **single Formality characteristic F**:
+
+* **Portable:** works for math, code, models, requirements, policies.
+* **Ordinal & minimal:** few clear anchors from “sketch” to “foundations.”
+* **Composable:** participates in the F–G–R calculus and weak‑link invariants.
+* **Context‑extensible:** rooms may introduce **intermediate anchors** without breaking comparability.
+
+---
+
+## 2 · Problem
+
+Absent a unified **F**:
+
+1. **Rigor whiplash.** Either everything is forced into premature formalism (blocking exploration), or informal artifacts drift into high‑assurance use (creating silent risks).
+2. **Incomparability.** Each room’s labels mean different things. Reviewers, integrators, and auditors cannot align expectations or compute trustworthy composites.
+3. **Lost continuity.** Moving from sketch to proof often becomes a **rewrite**, severing provenance; the same idea looks like different artifacts at each “mode,” inviting translation errors.
+4. **Confused roles.** Status (e.g., “accepted here”) gets conflated with rigor (“precise enough”), undermining governance and the KD‑CAL trust math.
+
+---
+
+## 3 · Forces
+
+| Force                                             | Tension to resolve                                                                                                                             |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Human ↔ Formal system**                         | Natural language is fast and legible; formal systems are unambiguous and checkable. We need a spectrum, not a cliff.                           |
+| **Local freedom ↔ Global comparability**          | Contexts must be free to set thresholds; cross‑context reasoning requires a shared scale and anchors.                                          |
+| **Readability ↔ Precision**                       | Rich narrative aids understanding; tight syntax prevents misinterpretation. The characteristic must not force one at the expense of the other. |
+| **Open‑world thinking ↔ Closed‑world guarantees** | Exploration benefits from openness; certification needs explicit closure. F must support gradual “closing” without renaming the artifact.      |
+
+---
+
+## 4 · Solution — The **Formality Characteristic F**
+
+### 4.1 · Identity and Type (MM‑CHR)
+
+* **Name:** `U.Formality` (nicknamed **F** in F–G–R).
+* **Type:** `U.Characteristic`.
+* **Scale:** **ordinal** (no arithmetic; comparisons and thresholds only).
+* **Polarity:** **up** (higher ⇒ more strictly and unambiguously expressed).
+* **Unit:** **formality step** (qualitative anchor).
+* **Value domain:** default anchors **F0…F9** (see §4.4).
+* **Carrier:** any `U.Episteme` (claim/theory/spec/model/policy/etc.).
+* **Notation‑agnostic:** the same F semantics apply regardless of symbol system; bridges between notations do **not** change F (they may affect R via CL, see C.2.2).
+
+**Normative reading.** “F = k” states *how strictly the content is expressed*, not whether it is true (R) nor how broadly it applies (G).
+
+---
+
+### 4.2 · Relationship to KD‑CAL (F–G–R)
+
+* **F in the triple.** F is the **Formality coordinate** in the F–G–R assurance space. It influences trust **indirectly**: higher F reduces ambiguity, enabling stronger evidence and safer composition, but **does not** substitute for evidence (R) or scope (G).
+* **Composition invariant (weakest‑link).** For any composite episteme,
+  **F\_composite = min(F\_parts on support paths)**.
+  *Rationale:* the formal rigor of a whole cannot exceed its least‑formal essential part.
+* **Orthogonality.** Changing **G** (envelope/scope) or **R** (evidence) does not, by itself, change **F**; conversely, raising **F** does not imply broader G or higher R.
+
+---
+
+### 4.3 · Extensibility and Local Anchors
+
+FPF provides **default anchors F0…F9** (next subsection). **Contexts MAY**:
+
+* introduce **intermediate anchors** (e.g., F6.5) or **named sub‑anchors** (e.g., “F4‑OCL” vs “F4‑TLA‑constraints”),
+* publish **domain exemplars** for anchors,
+* define **thresholds** (e.g., “claims of type X must be F≥7”).
+
+**Constraints (normative):**
+
+* **Monotonic order is preserved.** New anchors **MUST NOT** invert or blur the ordering.
+* **Anchor meaning is conserved.** Local elaborations **SHALL** map to the nearest global anchor without shifting global semantics (e.g., anything called “F8.x” remains **proof‑grade**).
+* **No proxy scales.** Do **not** invent alternative “formality modes/tiers” as surrogates; use **F** explicitly.
+
+---
+
+### 4.4 · Default **F0…F9** Anchors (overview)
+
+> *Full anchor definitions with cross‑disciplinary examples appear in §5 (next part). Below is the overview for orientation.*
+
+* **F0 — Unstructured prose.** Free narrative; ambiguous; human interpretation only.
+* **F1 — Scoped notes.** Informal but term‑consistent scope; clearer than F0.
+* **F2 — Structured outline.** Template present; coherent sections; criteria mostly “TBD”.
+* **F3 — Controlled narrative.** Complete template; constraints sketched in constrained NL or pseudo‑formal phrasing.
+* **F4 — First‑order constraints.** Explicit invariants/properties expressible at ≈FOL level (checkable conditions exist).
+* **F5 — Executable math/algorithmics.** Precisely defined computational semantics; outcomes checkable by execution/simulation.
+* **F6 — Hybrid formalism.** Mixed discrete/continuous methods; model‑checking or equivalent obligations identified.
+* **F7 — Higher‑order verified.** Core claims encoded and checked in HOL‑style systems.
+* **F8 — Dependent/constructive proofs.** Proof‑carrying content (programs‑as‑proofs).
+* **F9 — Univalent/higher foundations.** Equality‑as‑structure; frontier‑grade formal foundations.
+
+**Intent of anchors.** They form a **gentle gradient** from “thinker‑friendly” (F0–F3) through “formalizable” (F4–F6) to **proof‑grade** (F7–F9), allowing the **same artifact** to climb without renaming or forking.
+
+---
+
+### 4.5 · Usage Obligations (declaration, not governance)
+
+* **Declare F.** Every normative episteme **SHALL** declare its **F** (one value) in its context. There is **no default**.
+* **Use F in reasoning.** Any comparison, composition, or alignment that depends on rigor **SHOULD** reference **F** explicitly rather than implicit labels like “draft/final.”
+* **Do not conflate F with status.** Status systems (ESG/RSG) may **refer** to F in their guards, but **F ≠ status**. This pattern defines **what** rigor is, not **when** a room should require it.
+
+---
+
+## 5 · Canonical Anchors **F0…F9** (normative)
+
+> **How to read this section.** Each anchor defines *what is minimally true* of an episteme to be rated at that level — across disciplines. The anchors are **ordinal**: F7 is strictly more formal than F6, etc. Levels are **about expression**, not truth; Reliability (R) and Generality (G) are separate.
+
+For every anchor we state **Definition**, **Inclusion criteria**, **Non‑examples** (to prevent over‑rating), and **Indicative artifacts** (cross‑disciplinary, post‑2015).
+
+---
+
+### 5.1 · **F0 — Unstructured Prose**
+
+**Definition.** Free natural language; ambiguous; unstated assumptions; no required sections; meaning depends on reader context.
+**Inclusion criteria.** Narrative exists but lacks stable structure; terms may shift meaning; no explicit acceptance/denial conditions.
+**Non‑examples.** Any document with a consistent outline and stable vocabulary is at least F1.
+**Indicative artifacts.** Whiteboard photos; impromptu email threads; notes from a hallway discussion; an ad‑hoc wiki page with mixed jargon.
+
+---
+
+### 5.2 · **F1 — Scoped Notes**
+
+**Definition.** Informal narrative with a **consistent scope** and **stable terms**; some headings; the central claim/problem is bounded.
+**Inclusion criteria.** Key terms are used consistently; scope is named (e.g., “for single‑node scheduling”); still no explicit criteria.
+**Non‑examples.** If each requirement already names a check or scenario, that is F2+.
+**Indicative artifacts.** A design note that consistently uses the same nouns/verbs and states “this applies to v2 of the service”; a lab memo defining a focus population.
+
+---
+
+### 5.3 · **F2 — Structured Outline**
+
+**Definition.** A **complete template** (Context/Problem/Forces/Solution/…) is populated; content is coherent end‑to‑end; criteria are mostly placeholders.
+**Inclusion criteria.** All expected sections exist; cross‑references are consistent; open items are marked (e.g., “TBD acceptance”).
+**Non‑examples.** If acceptance criteria are explicit per claim, that is F3+.
+**Indicative artifacts.** A draft pattern/spec with fully populated sections but qualitative language; an experiment plan with all slots filled yet non‑operational metrics.
+
+---
+
+### 5.4 · **F3 — Controlled Narrative**
+
+**Definition.** Narrative remains human‑readable but uses **constrained phrasing**; each claim has a **clear, singular interpretation**.
+**Inclusion criteria.** Use of controlled NL or disciplined templates (e.g., “shall/if/then”); per‑claim **acceptance statements** exist in prose.
+**Non‑examples.** If properties are encoded as logical constraints or typeable contracts, that is F4+.
+**Indicative artifacts.** Requirements written in Attempto‑style controlled English; decision rules with explicit pre‑/post‑conditions phrased in a fixed schema.
+
+---
+
+### 5.5 · **F4 — First‑Order Constraints**
+
+**Definition.** Key claims are expressible at **≈ first‑order logic** (FOL) granularity; invariants/constraints are **explicit and checkable in principle**.
+**Inclusion criteria.** Each critical statement can be rendered as a predicate over well‑typed variables; conflict/consistency checks are conceivable.
+**Non‑examples.** Bare unit tests or executable code without stated invariants is not automatically F4.
+**Indicative artifacts.** TLA+ or OCL constraints on a model; an API spec where pre/postconditions and invariants are written as logic‑like rules; well‑typed schema constraints with quantification over entities.
+
+---
+
+### 5.6 · **F5 — Executable Math / Algorithmics**
+
+**Definition.** Content has **precise execution semantics**; results can be checked by **running** (simulation or computation).
+**Inclusion criteria.** A model is encoded so that outcomes are deterministic (modulo declared randomness); simulations/tests demonstrate the claims’ executable shape.
+**Non‑examples.** “It runs” without a statement of what is guaranteed is not enough; opaque notebooks with side effects but no declared semantics stay F3–F4.
+**Indicative artifacts.** Differential‑equation models in code; a reference implementation with clear contract comments linked to tests; an ML training recipe where the algorithmic pipeline and metrics are fully explicit (yet not proven).
+
+---
+
+### 5.7 · **F6 — Hybrid Formalism**
+
+**Definition.** Combination of **discrete and continuous** reasoning or multiple formal layers; **model‑checking obligations** or equivalent are identified and traceable.
+**Inclusion criteria.** Hybrid claims (e.g., controller + plant) are spelled out with both sides’ formalisms and the glue; property checks are specified.
+**Non‑examples.** A prose description of cyber‑physical behavior without model obligations is ≤F5.
+**Indicative artifacts.** Safety envelopes for autonomous motion expressed as state‑space invariants plus controller logic; hybrid automata with stated safety properties; contracts linking simulation to discrete decisions.
+
+---
+
+### 5.8 · **F7 — Higher‑Order Verified**
+
+**Definition.** Core claims are encoded in a **higher‑order logic (HOL)** or equivalent, and **machine‑checked**; proof scripts or structured proofs exist.
+**Inclusion criteria.** The kernel/tool verifies each inference step; failing changes break proofs.
+**Non‑examples.** A hand proof attached to F4 constraints without machine checking remains F4–F5.
+**Indicative artifacts.** A theorem in Isabelle/HOL or HOL‑Light proving a protocol invariant; a verified algebraic property of a cryptographic scheme.
+
+---
+
+### 5.9 · **F8 — Dependent / Constructive Proofs**
+
+**Definition.** **Programs‑as‑proofs** (Curry–Howard) or **dependent type** artifacts; proof terms are part of the artifact; compilation/type‑check is verification.
+**Inclusion criteria.** Types capture the property; changing the property changes the type and breaks the build.
+**Non‑examples.** A typed program whose types do not encode the critical property is ≤F5.
+**Indicative artifacts.** A Coq/Lean implementation whose type encodes sortedness/safety; a certified compiler pass with proof objects maintained by the build.
+
+---
+
+### 5.10 · **F9 — Univalent / Higher Foundations**
+
+**Definition.** Frontier‑grade **higher foundations** (e.g., homotopy type theory / univalence); equality is treated as **structure**; proofs live at that level.
+**Inclusion criteria.** Equivalences are recognized as identities by construction; properties rely on higher equalities.
+**Non‑examples.** Any proof that does not hinge on higher‑dimensional equality is ≤F8.
+**Indicative artifacts.** Formal developments where isomorphic structures are path‑equal by univalence; higher‑inductive types used to encode core invariants.
+
+---
+
+### 5.11 · Cross‑anchor cautions (normative)
+
+* **Execution ≠ Proof.** Running code/examples (F5) is not a proof (F7+) unless proof obligations are explicitly encoded and checked.
+* **Schema ≠ Semantics.** Parseable schemas (F2) are not logical constraints (F4) without semantic predicates.
+* **Labels ≠ Levels.** “Approved,” “Final,” or “Published” are **status labels** and have no bearing on F unless they explicitly bind to these anchors.
+
+---
+
+## 6 · Assigning **F** in Practice (guidance)
+
+This section is **informative**. It offers practical heuristics so engineers‑managers can triage artifacts quickly and consistently.
+
+### 6.1 · Three questions to place a first guess
+
+1. **Can a competent reader misread the claim?**
+   If yes, you are likely ≤F2. If no (unique reading by construction), you are ≥F3.
+2. **Are constraints stated as predicates over typed things?**
+   If yes, you are around **F4**; if they are only executable tests without predicates, you’re **F5**.
+3. **Would a tool *reject* an incorrect change?**
+   If “only by rerunning examples,” that’s **F5**; if “because the logic kernel/type checker refuses it,” that’s **F7–F8**.
+
+### 6.2 · Decision steps (quick rubric)
+
+* **Has complete template?** If not, **F0–F1**. If yes →
+* **Are per‑claim acceptances written (even informal)?** If not, **F2**. If yes →
+* **Are they predicate‑like (quantifiers, implies, forall/exists)?** If yes, **F4**; if no, **F3**.
+* **Is there an executable model with declared semantics?** If yes, **F5–F6** (hybrid if both discrete/continuous).
+* **Are core properties machine‑proved?** If yes, **F7**; if types carry the property, **F8**; if higher equivalence is essential, **F9**.
+
+### 6.3 · Litmus tests (do/don’t)
+
+* **Do** point to the **lowest** rigor segment that is essential to the artifact; **F is capped by the weakest required part**.
+* **Do** keep **F** independent from **R** and **G**: a well‑verified but informal hypothesis is **low F, high R**; a formal theorem without empirical content is **high F, R=N/A or VA‑lane only**.
+* **Don’t** “average” levels: a long F8 appendix does not make an F3 body F8; F sticks to the **claim** or the **episteme**, not to page counts.
+* **Don’t** upgrade F just because a tool was used; tooling matters only if the **content** reaches the anchor’s semantics.
+
+### 6.4 · Anti‑patterns
+
+* **Terminology inflation.** Calling acceptance criteria a “specification” without predicates → F3 at most.
+* **Notebook mirage.** Treating an executable notebook with hidden state as formal proof → remains F5 without explicit obligations.
+* **Schema worship.** Equating JSON Schema validity with logical safety → F2/F3, not F4.
+* **Proof‑by‑CI.** “The pipeline is green” is not a logic kernel; without proofs or dependent types, F≤F6.
+
+### 6.5 · Edge cases and how to rate them
+
+* **Generated docs from formal sources.** Rate **by the source**, not the rendered prose. If the source is F7 proofs, the generated PDF remains **F7** as long as it is a faithful view.
+* **Natural‑language with embedded formulas.** If formulas are illustrative only, keep **F3**; if they define obligations and are checkable, move **F4–F6** accordingly.
+* **Contracts in code comments.** If they constrain behavior and are enforced (e.g., via runtime/type checks), consider **F4–F5**; otherwise **F3**.
+* **Hybrid ML systems.** The training procedure (executable) suggests **F5**; safety guards as formal constraints can raise parts to **F4/F6**; certified components may reach **F7/F8**.
+
+### 6.6 · Raising **F** (ΔF moves, informative)
+
+Typical **ΔF** steps (see KD‑CAL motion primitives):
+
+* **F2→F3:** Introduce controlled phrasing; per‑claim acceptances.
+* **F3→F4:** Recast acceptances as typed predicates/invariants.
+* **F4→F5:** Provide executable semantics with declared contracts.
+* **F5→F7:** Encode properties in a proof‑capable logic; prove core invariants.
+* **F7→F8/9:** Migrate property into types / adopt higher‑equality foundations.
+
+> **Note.** ΔF does not require changing **G** or **R**. Many projects raise F while holding scope and evidence constant, then tackle R (validation) separately.
+
+## 7 · Conformance (normative)
+
+This section defines what it means to **use F correctly** in KD‑CAL. All “**SHALL**/**MUST**/**SHOULD**/**MAY**” statements here are normative.
+
+### 7.1 · Declaration & Semantics
+
+* **CC‑F‑1 (Declaration).** Every normative `U.Episteme` **SHALL** declare exactly one value for `U.Formality` (**F ∈ {F0…F9}**, or a context‑defined sub‑anchor that maps to one of these).
+* **CC‑F‑2 (Ordinality).** F is an **ordinal Characteristic**: implementations **MUST NOT** perform arithmetic on F; only comparisons and thresholds are valid.
+* **CC‑F‑3 (Polarity).** The polarity of F is **up**: a larger F value denotes **strictly greater or equal** expressive rigor than a smaller one.
+* **CC‑F‑4 (No proxies).** Contexts **MUST NOT** introduce alternative “formality modes/tiers” as surrogates for F. If additional labels are desired, they **SHALL** be published as named **sub‑anchors** of F (see §4.3).
+
+### 7.2 · Locality, Extensibility, and Anchors
+
+* **CC‑F‑5 (Local extensibility).** A bounded context **MAY** introduce intermediate anchors (e.g., F6.5) and domain‑named anchors (e.g., “F4‑OCL”), **provided that** (a) the global F0…F9 order is preserved, and (b) each sub‑anchor is explicitly mapped to a parent anchor.
+* **CC‑F‑6 (Anchor conservation).** Sub‑anchors **SHALL NOT** redefine the global meaning of their parent anchor (e.g., anything under F8 remains **proof‑grade**).
+
+### 7.3 · Composition & Granularity
+
+* **CC‑F‑7 (Weakest‑link fold).** For any composite episteme (theory, spec, model), the effective Formality **F\_composite** along any essential support path **SHALL** be computed as the **minimum** F of its essential parts on that path.
+* **CC‑F‑8 (Granularity rule).** If different parts of an episteme carry different F values, the **episteme‑level F** is the **minimum** over all **essential** parts (non‑essential/illustrative parts are excluded).
+* **CC‑F‑9 (No averaging).** Implementations **MUST NOT** average or otherwise combine F values numerically; the min rule suffices.
+
+### 7.4 · Orthogonality & Non‑Interference
+
+* **CC‑F‑10 (Orthogonality to G/R).** Changes in scope/envelope (G) or evidence (R) **SHALL NOT** alter F unless the **expression form** of the claims changes. Conversely, raising F **SHALL NOT** be interpreted as raising R or broadening G.
+* **CC‑F‑11 (Notation‑agnostic).** Changing notations or carriers (Symbol side) **does not** change F if the claim graph and its formal content are preserved. Any translation loss is accounted for by **CL** penalties in R, not by altering F.
+
+### 7.5 · Bridges & Cross‑Context Use
+
+* **CC‑F‑12 (Bridges keep F stable).** When a claim is used across bounded contexts via a Bridge, the original F value **SHALL** be preserved in attribution. If the receiving context requires a different expression form, it **MUST** produce a **new episteme** (with its own F).
+* **CC‑F‑13 (CL is for trust, not F).** Any mismatch across contexts **SHALL** be handled via Congruence Level (CL) and its effect on R; CL **MUST NOT** be used to down‑rate F.
+
+### 7.6 · Traceability & Change
+
+* **CC‑F‑14 (Observable basis).** An assigned F **SHALL** be justifiable by observable content (e.g., presence of predicates/invariants for F4; mechanized proofs for F7+).
+* **CC‑F‑15 (ΔF disclosure).** A **ΔF** move (raising or, if justified by discovered error, lowering F) **SHALL** be recorded as a content change to the episteme. Whether a context versions that change is outside this pattern’s scope.
+
+---
+
+## 8 · Composition & Interaction (normative + informative notes)
+
+### 8.1 · Inside one episteme (normative)
+
+* **Essential paths.** Identify essential parts/claims that are required for the episteme’s truth. Apply **min‑F** along each support path; the **episteme‑level F** is the min over essential paths (CC‑F‑7, CC‑F‑8).
+* **Meta‑about.** Meta‑descriptions (descriptions of a claim) carry their **own** F. They **do not** raise the target’s F; their impact on trust flows through **CL→R**.
+
+> **Note (informative).** A long formal appendix (F8) attached to a largely narrative body (F3) does **not** make the whole F8; the episteme remains **F3** unless the core claims move into the formal appendix.
+
+### 8.2 · Relation to **G** (scope/envelope) (normative)
+
+* F concerns the **expression form** of the claim; G concerns its **claim scope**. Tightening the envelope without changing how the claim is expressed does not change F; re‑expressing the claim in a stricter form (e.g., predicates) can raise F without changing G.
+
+> **Caution (informative).** Raising F often **reveals** hidden assumptions, which may lead to a **ΔG** (narrower envelope). Treat this as a **separate** change: update G explicitly rather than smuggling scope changes under F.
+
+### 8.3 · Relation to **R** (evidence/assurance) (normative)
+
+* **F ≠ R.** Proof‑grade expression (F7+) still requires binding to appropriate assurance lanes (VA/LA/TA) in the trust calculus; empirical claims may have high R with low F if they remain informal.
+* **Decay independence.** F **does not decay** with time; R may decay (empirical freshness) or shift due to CL. Tool assurance (TA) is tracked independently of F.
+
+> **Note (informative).** Higher F typically **enables** stronger R (easier to test or prove), but no automatic relationship is assumed.
+
+### 8.4 · CL & Bridges (normative)
+
+* **CL effects.** Using content across context boundaries requires a Bridge with a CL rating. CL affects **R** (penalties) and **never** changes **F** (CC‑F‑12/13).
+* **Semantic change ⇒ new episteme.** If a cross‑context mapping **alters** the claim (e.g., coarsens predicates, drops obligations), treat it as a **new episteme** with its own F rather than “the same F with lower CL.”
+
+### 8.5 · Motion primitives (informative)
+
+* **ΔF** raises or (rarely) lowers the rigor of expression. Plan ΔF moves independently of **ΔG**/**ΔR**: projects often alternate “raise F” (make the claim checkable) with “raise R” (gather proof/validation) at a fixed G.
+* **Cost signals.** Typical costs: authoring overhead (F3→F4), model encoding (F4→F5/6), proof engineering (F6→F7/8). The benefit is reduced ambiguity and safer composition.
+
+### 8.6 · Gaps & thresholds (informative)
+
+* **F‑gap** = ordinal difference between two F anchors (no arithmetic). Large gaps signal translation risk: an F8‑level component will not accept informal inputs (F2) except via additional formalization (ΔF) or robust alignment (CL‑guarded).
+
+---
+
+## 9 · Worked Examples (informative)
+
+> Each mini‑case states the artifact, assigns **F**, and notes interactions with **G/R**. Examples are deliberately cross‑disciplinary to stress transdisciplinary comparability.
+
+### 9.1 · Research hypothesis (physics)
+
+**Artifact.** Short note proposing a new scaling law; clear vocabulary; scope “low‑Reynolds flows in microchannels.”
+**F.** **F3** (controlled narrative with per‑claim acceptance in prose).
+**G/R.** G is a narrow physical envelope; R is initially low (hypothesis).
+**Next ΔF.** Recast acceptance as predicates over variables → **F4**; encode a simple simulation harness → **F5**.
+
+### 9.2 · API specification (software)
+
+**Artifact.** REST API doc with request/response schemas and explicit pre/postconditions; invariants like “idempotent under retry.”
+**F.** **F4** (first‑order constraints).
+**G/R.** G = stated resource model; R improves via conformance tests (independent).
+**Next ΔF.** Reference implementation and executable test suite with declared contracts → **F5**; model‑check idempotence under failure injection → **F6**.
+
+### 9.3 · Safety controller (cyber‑physical)
+
+**Artifact.** Controller with plant model; safety distance invariant and braking envelope defined and verified in a hybrid model checker.
+**F.** **F6** (hybrid formalism with obligations checked).
+**G/R.** G = operating envelope (speed ranges, road conditions); R increases via track tests and simulation coverage.
+**Next ΔF.** Encode key invariants in HOL and prove monotonicity → **F7**; migrate safety property into dependent types in the control kernel → **F8**.
+
+### 9.4 · Decision policy (management)
+
+**Artifact.** Escalation policy: if risk score ≥ θ and budget slack ≤ β, escalate to committee; otherwise defer.
+**F.** **F3→F4** depending on phrasing. If the thresholds and variables are typed and the rule is predicate‑like, rate **F4**.
+**G/R.** G = organizational scope (which portfolios, time windows); R entails retrospective calibration (did escalations match outcomes?).
+
+### 9.5 · Verified algorithm (theory/software)
+
+**Artifact.** Sorting function implemented with a dependent type ensuring output is ordered and a permutation of input; proof included.
+**F.** **F8** (dependent/constructive proof).
+**G/R.** G = data types and preconditions; R (empirical) is irrelevant; VA lane suffices (proof stands).
+
+### 9.6 · ML classifier (data/ML)
+
+**Artifact.** Training pipeline fully specified; metrics defined; OOD detection configured; no formal invariants.
+**F.** **F5** (executable algorithmic semantics).
+**G/R.** G = data distributions and deployment envelope; R grows with validation/monitoring.
+**Next ΔF.** Add formal constraints for safety (e.g., monotonicity in features) → **F4/F6** for those aspects; certified post‑processing may achieve **F7** for a slice.
+
+### 9.7 · Meta‑specification (method description)
+
+**Artifact.** A guideline on how to review specs; it includes checklists and litmus tests.
+**F.** **F3–F4** depending on whether checks are predicates.
+**Interaction.** Its F does **not** lift the F of the reviewed artifacts; it only affects **R** via better CL (clearer alignments and fewer losses).
+
+## 10 · Authoring & Review Guidance (informative)
+
+This section helps engineering managers, architects, and researchers **assign F consistently**, plan **ΔF moves**, and **review** claims without slipping into status/process language.
+
+### 10.1 · For authors — placing and raising **F**
+
+* **Start honest.** If you’re drafting ideas in plain prose, declare **F0–F1**. You are not “behind”; you’re **appropriately early**.
+* **Stabilize vocabulary first.** Move to **F2–F3** by making terms stable and acceptance statements unambiguous (controlled phrasing).
+* **Name predicates next.** When acceptance can be written as **typed predicates** (“for all …, if … then …”), you have reached **F4**.
+* **Give semantics to execution.** When readers can **run** a model/algorithm with *declared* semantics and see outcomes aligned with the predicates, you are in **F5** (hybrid + obligations → **F6**).
+* **Prove what matters.** When the **logic kernel/type system** will **reject** incorrect changes to core claims, you are at **F7–F8**; if equality as structure is essential, **F9**.
+* **Keep identity.** Prefer **ΔF** on the *same* episteme (raising rigor stepwise) over creating new documents; this keeps provenance and reduces translation error.
+
+**Typical ΔF plan:** *Sketch (F1) → Controlled narrative (F3) → Predicates (F4) → Executable semantics (F5/6) → Machine‑checked core (F7/8).* Scope (G) and evidence (R) can remain fixed while F rises.
+
+### 10.2 · For reviewers — verifying the declared **F**
+
+Use **observable checks**:
+
+* **F2?** Template is complete; terms don’t drift; “TBD” acceptance is explicitly marked.
+* **F3?** Every claim has a **single reading** via constrained phrasing; hidden ambiguity is flagged.
+* **F4?** Each critical claim is **predicate‑like** (typed variables, quantifiers/implication allowed); conflicts are **checkable in principle**.
+* **F5?** Executable **semantics are declared**; runs/tests are not ad‑hoc but trace back to claims.
+* **F6?** Hybrid obligations are **identified and linked** (discrete + continuous, or layered formalisms).
+* **F7/8?** Incorrect edits to core claims are **rejected by the kernel/type system**; proof/scripts or proof‑objects exist and are traceable.
+* **F9?** Higher equalities are **first‑class** (e.g., univalence), and core results rely on them.
+
+**Failure modes to watch:** “green CI” as proof; schema validation treated as semantics; notebooks without declared semantics; long formal appendix while the main claim stays informal (rate by the **weakest essential part**).
+
+### 10.3 · For integrators & architects — using **F** in composition
+
+* **Plan around the minimum.** In any composition, **F\_composite = min F\_parts** along essential paths. Identify the **bottleneck F** first; your ΔF effort goes there.
+* **Mind the F‑gaps.** Large ordinal gaps (e.g., F7 vs F2) imply translation risks and alignment costs. Either **raise** the low‑F part or insert **bridges** with explicit scope and confidence impacts (handled in **R** via **CL**).
+* **Don’t upgrade by proximity.** An F8 component does not “elevate” an F3 neighbor. Keep F independent and visible.
+
+### 10.4 · For assurance leads — relating **F** to **G/R** without conflation
+
+* **F enables, R assures.** Raising **F** makes evidence easier to formulate and check; it does not **create** evidence. Rate R separately (calibration/validation/monitoring vs proof lanes).
+* **G is separate.** Tightening **G** (scope/envelope) may accompany ΔF (as assumptions become explicit) — treat this as a **ΔG** move, not a side effect.
+* **Use thresholds explicitly.** If a context expects “formalized before use,” write guard conditions as **`F ≥ k`**, not as status labels.
+
+### 10.5 · Common pitfalls & remedies
+
+| Pitfall                                   | Remedy                                                                                          |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Calling structured prose a “formal spec.” | If acceptance isn’t predicate‑like, rate **≤F3** and plan **ΔF: prose → predicates (F4)**.      |
+| Treating runnable code as proof.          | Declare **F5**; add **stated obligations** and property checks to progress **F6–F7**.           |
+| Averaging F across parts.                 | Use **min over essential parts**; if unsure which parts are essential, audit the support graph. |
+| Letting status leak into F.               | Keep **status** (e.g., “accepted here”) separate; **F** is about expression only.               |
+
+---
+
+## 11 · Glossary & Notation (normative where noted)
+
+**Formality (F).** `U.Formality` — an **ordinal Characteristic** with polarity **up**; default anchors **F0…F9** (§5). *(Normative)*
+
+**Anchor (F‑anchor).** A named qualitative milestone on the F scale (e.g., F4 “first‑order constraints”). Sub‑anchors are context‑local refinements that **preserve order**. *(Normative)*
+
+**ΔF.** A change to the expression form that alters F (usually **up**). Record as an episteme content change. *(Normative)*
+
+**Essential part/path.** A part or claim without which the episteme’s central assertion does not hold. Composition applies **min‑F** along essential support paths. *(Normative)*
+
+**Predicate / Invariant.** A typed, checkable statement about objects/states; at **F4** and above, critical claims are expressed as such.
+
+**Machine‑checked / Proof‑carrying.** Content for which a logic kernel/type system rejects incorrect changes (F7+) or where programs and proofs are the same artifact (F8).
+
+**Higher equality / Univalence.** Treatment of equivalence as identity in higher foundations relevant at **F9**.
+
+**Notation & examples.**
+
+* Declare as `F = Fk` (e.g., `F = F4`).
+* Sub‑anchor: `F = F4[OCL]` or `F = F7[HOL]`.
+* Thresholds in prose: “requires **F ≥ F6** for core claims.”
+* Mixed parts: list per part if useful (e.g., “Body F3; Appendix proofs F7 — **episteme F3**”).
+
+---
+
+## 12 · Change Log & Patch Notes (normative migration)
+
+**12.1 Supersession.**
+This pattern **supersedes** the legacy “modes/tiers” language. Any references to “M‑mode/F‑mode”, “publication tiers”, or parallel “formality ladders” are **deprecated**. From now on, **Formality** is expressed **only** as **F** with default anchors **F0…F9** (and optional sub‑anchors per §4.3).
+
+**12.2 Impacted cross‑references.**
+
+* **C.2.2 (F–G–R).** Replace any generic “F‑ladder” description with a normative reference to **C.2.3** and treat **F** in the triple as defined here (including **min‑F** composition).
+* **ESG/RSG text.** Where guards previously referenced “modes/tiers,” rewrite guards as **`F ≥ Fk`** conditions.
+* **Meta‑descriptions.** Ensure meta‑artifacts carry **their own F** and do not “lift” a target artifact’s F; use **CL→R** for cross‑context penalties, not F changes.
+
+**12.3 Transitional guidance.**
+
+* **Legacy artifacts without F.** Assign an initial F by applying the rubric in **§6**; record the assignment as a content attribution (not as a status change).
+* **Legacy labels in prose.** Replace them with explicit **F** declarations. If prose implies mixed rigor, rate by the **weakest essential** segment (see §7.3).
+* **No dual systems.** Do not keep “modes” alongside F; remove proxies and speak **F directly**.
+
+**12.4 Backward compatibility (non‑normative note).**
+During editorial refresh, it is acceptable to annotate historical records with both the **new F** and the legacy note for provenance. Forward‑looking reasoning and composition, however, **SHALL** use **F only**.
+
+**12.5 Versioning & edits.**
+Raising or (exceptionally) lowering **F** constitutes a **content change** (ΔF). Whether such a change triggers a new edition in a given room is **outside this pattern**; respect the room’s edition policy while keeping **F** accurate.
+
 
 # **C.13 — Compose‑CAL (Constructional Mereology)**
 *(architheory pattern; structural rung of the FPF ladder)*
@@ -16212,99 +16718,7 @@ The L-PROC micropattern is a direct and pragmatic application of FPF's constitut
 
 ###  E.11 · Scalable Formality Ladder (M‑mode ⇢ F‑mode) 
 
-#### Context  
-FPF must serve a solo researcher sketching a hypothesis **and** a
-distributed team certifying a safety‑critical system. A single, fixed
-rigour level would cripple one audience or endanger the other.  
-Therefore Pillar **P‑3 Scalable Formality** demands a mechanism that lets
-artifacts mature smoothly “from napkin sketch to certified deliverable”.
-
-#### Problem  
-Without a formal maturity path:
-
-1. **Exploration choked** – high ceremony blocks early ideation (violates P‑7 Pragmatic Utility).  
-2. **High‑assurance blocked** – informal texts lack machine‑checkable
-   guarantees; auditors reject them.  
-3. **Rewrite penalty** – if moving to rigour means rewriting, provenance
-   is lost and costs spike.
-
-#### Forces  
-
-| Force | Tension |
-|-------|---------|
-| **Agility vs Rigour** | Low‑friction brainstorming ↔ verifiable assurance. |
-| **Continuity vs Transformation** | Preserve identity across maturation ↔ add strong constraints. |
-| **Cognitive Load vs Completeness** | Minimal ceremony early ↔ exhaustive checks late. |
-
-#### Solution — Two macro modes, four rungs  
-
-FPF defines **two macro modes**:
-
-* **M‑mode (Mental‑model)** – human‑centred clarity; only *lexical*
-  coherence required.  
-* **F‑mode (Formal‑realisation)** – machine‑verifiable assurance; lexical,
-  structural **and** evidence anchoring required.
-
-To avoid a giant leap, M‑mode is split into **three internal rungs**;
-together with F‑mode they form a **four‑rung ladder**:
-
-| Rung | Nickname | Allowed coherence | Typical use |
-|------|----------|-------------------|-------------|
-| **M‑0 Draft** | “Napkin” | informal prose, consistent terms | private sketch, Annex‑INF |
-| **M‑1 Provisional** | “Shaky bridge” | template headings present; criteria *TODO* | team brainstorming |
-| **M‑2 Candidate** | “Load test” | full template, criteria drafted, bias‑check done | pre‑review deliverable |
-| **F‑mode (M‑3 Final)** | “Solid road” | full invariants & evidence; passes DRR | normative Core pattern |
-
-**Ascent Invariant** – promotion only flows *upward* (M‑0→1→2→F); an
-artifact’s `id` and provenance remain intact. Demotion can occur only via
-a DRR citing substantive error.
-
-#### Archetypal Grounding (System / Episteme)
-
-| Rung | `U.System` example | `U.Episteme` example |
-|------|-------------------|----------------------|
-| M‑0 | Whiteboard sketch of pump blocks. | Notebook prose outlining a new hypothesis. |
-| M‑1 | Pattern draft: cavitation counter‑measure, sections stubbed. | Draft metric for citation density, criteria *TODO*. |
-| M‑2 | Cavitation pattern includes Γ‑core invariants & tests. | Metric pattern grounded with System/Episteme examples. |
-| F‑mode | Pattern accepted into Sys‑CAL; linked to simulation evidence. | Metric accepted into KD‑CAL; proofs verified in Lean. |
-
-#### Advancement Gates  
-* **Gate 0→1** – template conformity & Bias‑Annotation added.  
-* **Gate 1→2** – Conformance Checklist drafted; Pillar & lens review pass.  
-* **Gate 2→3** – DRR captures final debate; pattern accepted into Core.
-
-#### Conformance Checklist
-
-| ID | Requirement |
-|----|-------------|
-| **CC‑FL.1** | Every artefact **SHALL** declare its Formality Mode (M‑0…M‑3). |
-| **CC‑FL.2** | Modes **M‑2** and **M‑3** **SHALL** satisfy all Style‑Guide requirements (E 8). |
-| **CC‑FL.3** | Transition from one mode to the next **REQUIRES** satisfying the corresponding advancement gate and, for M‑2→M‑3, an accepted DRR. |
-| **CC‑FL.4** | Down‑ranking (e.g., M‑3→M‑2) **SHALL** only occur via DRR citing substantive error. |
-
-#### Consequences  
-
-| Benefits | Trade‑offs / Mitigations |
-|----------|-------------------------|
-| Encourages early sharing (M‑0) while guaranteeing eventual rigour (M‑3). | Requires tracking mode meta‑data; handled in non‑normative index. |
-| Review effort scales with maturity; high rigour reserved for near‑final work. | Potential “mode creep”; mitigated by Gate checklist and DRR. |
-| Provides clear roadmap for contributors: know next step to reach normative status. | — |
-
-#### Rationale  
-Borrowing from software release trains and academic peer‑review stages,
-the ladder balances innovation speed with conceptual safety. It embeds
-evolutionary pressure (Gate reviews) without freezing early creativity,
-thus fulfilling **P‑3** and **P‑10** simultaneously and meshing with the
-DRR process (E 9) as the final hardening mechanism.
-
-#### Relations  
-
-* **Implements:** P‑3 Scalable Formality, P‑10 Open‑Ended Evolution  
-* **Constrained by:** Style‑Guide (E 8) for template compliance; DRR
-  Process (E 9) for final gate.  
-* **Interacts with:** Lexical Governance (E 10) – mode upgrades may
-  promote `R‑domain` terms to `R‑core`.  
-
+E.11 (Deprecated). The former M/F “mode” ladder is superseded by C.2.3 (Formality Characteristic F). All status and review gates shall reference F thresholds instead of modes. 
   
 ### **Pattern E.12 — Didactic Primacy & Cognitive Ergonomics \[A] 
 
@@ -19588,7 +20002,7 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 * **Row?** **Naming‑only** row “actor”, CL = 2.
 * **Decision.** **Reuse** “actor” **in prose only**; keep Room‑loyal labels in formal sections. No CRA Template minted unless tied to one Room.
 
-### 7.3 For researchers — “New **U.Type** for ‘Capability Envelope’?”
+### 7.3 For researchers — “New **U.Type** for ‘Work Scope’?”
 
 * **Need.** Kernel notion capturing **feasible performance region** across systems.
 * **Test A.8.** Appears in **control** (reachable sets), **services** (operating envelope), **measurement** (confidence bands): **≥ 3 families?**
@@ -21640,7 +22054,7 @@ Explosion harms didactics and increases alignment cost (F.9).
 * **Concept‑Set row** (F.7): a cross‑Room **intent** (“what we count as one thing”) aligned by SenseCells.
 * **Bundle** (this pattern): a **named composition** of CRA Templates that are meant to be used together by design (e.g., {Requester, Approver} for change control). A Bundle is a **concept**, not a package.
 * **SoD Constraint** (this pattern): a **conceptual rule** stating that two Roles **must not** be played by the same Holder in the **same window**.
-* **Window** (F.10): an **applicability envelope** (time stance, holon level, run segment) that delimits when a Role/Status holds.
+* **Window** (F.10): an **claim scope** (time stance, holon level, run segment) that delimits when a Role/Status holds.
 
 ---
 
