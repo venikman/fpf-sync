@@ -57,6 +57,8 @@ jobs:
             - Review the diff in the "Files changed" tab.
           branch: sync/yadisk
           delete-branch: true
+          labels: |
+            sync:auto-merge
           add-paths: |
             yadisk/**
 
@@ -64,7 +66,7 @@ jobs:
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         run: sleep 1500
 
-      - name: Auto-merge PR if mergeable
+      - name: Auto-merge PR if mergeable and labeled
         if: ${{ steps.cpr.outputs.pull-request-number != '' }}
         env:
           GH_TOKEN: ${{ github.token }}
@@ -72,10 +74,21 @@ jobs:
         run: |
           set -euo pipefail
           PR=${{ steps.cpr.outputs.pull-request-number }}
-          info=$(gh pr view "$PR" --json state,mergeable --jq '.state + ":" + .mergeable' -R "$GITHUB_REPOSITORY")
-          echo "PR $PR status: $info"
-          if [ "$info" = "OPEN:MERGEABLE" ]; then
+          # Fetch status and metadata
+          state=$(gh pr view "$PR" --json state -q .state -R "$GITHUB_REPOSITORY")
+          mergeable=$(gh pr view "$PR" --json mergeable -q .mergeable -R "$GITHUB_REPOSITORY")
+          head=$(gh pr view "$PR" --json headRefName -q .headRefName -R "$GITHUB_REPOSITORY")
+          base=$(gh pr view "$PR" --json baseRefName -q .baseRefName -R "$GITHUB_REPOSITORY")
+          labels=$(gh pr view "$PR" --json labels -q '.labels[].name' -R "$GITHUB_REPOSITORY" || true)
+          echo "PR $PR state=$state mergeable=$mergeable head=$head base=$base labels=[$labels]"
+
+          # Ensure this is the sync PR we created and it's explicitly labeled
+          if [ "$state" = "OPEN" ] \
+             && [ "$mergeable" = "MERGEABLE" ] \
+             && [ "$head" = "sync/yadisk" ] \
+             && [ "$base" = "main" ] \
+             && echo "$labels" | grep -q "sync:auto-merge"; then
             gh pr merge "$PR" --merge --delete-branch --yes -R "$GITHUB_REPOSITORY"
           else
-            echo "PR not mergeable yet or closed; skipping merge."
+            echo "Conditions not met for auto-merge; leaving PR open."
           fi
