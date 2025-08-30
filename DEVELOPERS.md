@@ -6,9 +6,7 @@ This document is for contributors working on the code. For setup and usage aimed
 
 - Sync script: `scripts/yadisk-sync.mjs` (Bun runtime)
 - Shared helpers: `scripts/yadisk-lib.ts`
-- Workflows:
-  - Sync: `.github/workflows/yadisk-sync.yml`
-  - Tests: `.github/workflows/tests.yml`
+- Workflow: `.github/workflows/yadisk-sync.yml`
 - Downloaded artifacts live under `yadisk/` (committed via PRs only).
 
 ## Prerequisites
@@ -16,13 +14,11 @@ This document is for contributors working on the code. For setup and usage aimed
 - Bun 1.2+ (`bun --version`)
 - GitHub CLI (optional, for creating/rerunning PRs locally): `gh --version`
 
-## Install & Test
+## Install
 
-No runtime deps are required; tests use Bun’s built-in test runner.
+No runtime dependencies are required.
 
 - Install (noop for now): `bun install`
-- Run tests: `bun test`
-  - CI also runs tests on every push/PR, and fails if any tests are focused or skipped (`.only`/`.skip`).
 
 ## Running the sync locally
 
@@ -92,7 +88,6 @@ Potential future enhancements:
 ## Contributing workflow
 
 - Branch naming: `ci/...`, `feat/...`, `fix/...`
-- Ensure `bun test` passes and no tests are focused/skipped
 - Small, focused PRs preferred; include rationale in the description
 
 ## Troubleshooting
@@ -113,7 +108,7 @@ Operational issues (moved from README):
 
 Developer environment:
 
-- IDE can’t find Bun: ensure Bun is on PATH; we avoid committing user‑specific paths. VS Code tasks are provided.
+- IDE can’t find Bun: ensure Bun is on PATH; we avoid committing user‑specific paths.
 - Action schedule timing: GitHub schedules are best‑effort, not real‑time.
 
 ## Yandex API references (public share)

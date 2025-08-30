@@ -29,6 +29,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # IntelliJ based IDEs
 .idea
+# VS Code
+.vscode
 
 # Finder (MacOS) folder config
 .DS_Store
