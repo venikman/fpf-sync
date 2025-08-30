@@ -1,4 +1,0 @@
-{
-  // Keep workspace generic: rely on PATH; set Bun path in User settings if needed
-  // You can set a user-specific path via: Settings → Extensions → Bun → Path
-}

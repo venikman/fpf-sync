@@ -3,11 +3,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun run index.ts",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint .",
-    "lint:fix": "oxlint . --fix",
-    "test": "bun test"
+    "lint:fix": "oxlint . --fix"
   },
   "devDependencies": {
     "bun-types": "latest",
