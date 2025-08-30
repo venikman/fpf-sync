@@ -2,7 +2,7 @@ name: Sync Yandex Disk to PR
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # every 30 minutes
+    - cron: '0 17 * * *' # daily at 20:00 MSK (UTC+3)
   workflow_dispatch: {}
 
 permissions:
