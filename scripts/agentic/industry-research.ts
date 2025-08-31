@@ -415,7 +415,7 @@ function buildModelFallbackChain(requested: string): string[] {
     if (!chain.includes(m)) chain.push(m);
   };
   add(requested);
-  if (/-pro$/.test(requested)) add(requested.replace(/-pro$/, "-flash"));
+  if (requested.endsWith("-pro")) add(requested.replace(/-pro$/, "-flash"));
   // Generic safety fallbacks
   ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-1.5-pro", "gemini-1.5-flash"]
     .forEach(add);
