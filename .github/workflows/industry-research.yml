@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Setup Bun
+        continue-on-error: true # avoid failing the job if post-job cache save has an outage
         uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
         with:
           bun-version: '1.2.3'
@@ -43,20 +44,4 @@ jobs:
         run: |
           bun scripts/agentic/industry-research.ts
 
-      - name: Copy job summary for artifact (optional)
-        if: always()
-        run: |
-          if [ -n "${GITHUB_STEP_SUMMARY}" ] && [ -f "${GITHUB_STEP_SUMMARY}" ]; then
-            cp "$GITHUB_STEP_SUMMARY" /tmp/industry-research-summary.md
-          else
-            echo "No step summary file found" > /tmp/industry-research-summary.md
-          fi
-
-      - name: Upload step summary as artifact (optional)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: industry-research-summary
-          path: /tmp/industry-research-summary.md
-          if-no-files-found: warn
 
