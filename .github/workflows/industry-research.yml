@@ -1,0 +1,47 @@
+name: "Industry Research (Daily)"
+on:
+  schedule:
+    - cron: "0 17 * * *"
+  workflow_dispatch: {}
+  pull_request: {}
+
+permissions:
+  contents: read
+  actions: read
+  checks: read
+  statuses: read
+
+concurrency:
+  group: industry-research-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+      checks: read
+      statuses: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
+        with:
+          bun-version: '1.2.3'
+          no-cache: true # disable caching to avoid post-job save outages causing warnings/failures
+
+      - name: Install dependencies
+        run: |
+          bun install
+
+      - name: Generate daily industry research report (TS + Gemini)
+        env:
+          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+        run: |
+          bun scripts/agentic/industry-research.ts
+
+
