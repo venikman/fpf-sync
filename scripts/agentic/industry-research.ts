@@ -14,6 +14,19 @@ import { resolve } from "node:path";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { XMLParser } from "fast-xml-parser";
 
+const REQUEST_TIMEOUT_MS = Number.parseInt(process.env.REQUEST_TIMEOUT_MS || "8000", 10);
+const UA = "fpf-sync/industry-research (+https://github.com/venikman/fpf-sync)";
+
+async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}, timeoutMs = REQUEST_TIMEOUT_MS): Promise<Response> {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(id);
+  }
+}
+
 // Small helper: env access with validation (typed overloads)
 function getEnv(name: string, required: true): string;
 function getEnv(name: string, required?: false): string | undefined;
@@ -80,7 +93,7 @@ function extractTopicsFromFpf(text: string, maxTopics = 8): string[] {
 async function fetchArxiv(keyword: string, maxResults = 3): Promise<SourceItem[]> {
   const url = `http://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(keyword)}&sortBy=submittedDate&sortOrder=descending&start=0&max_results=${maxResults}`;
   try {
-    const res = await fetch(url, { headers: { "User-Agent": "fpf-sync/industry-research" } });
+    const res = await fetchWithTimeout(url, { headers: { "User-Agent": UA } });
     if (!res.ok) {
       console.error(`arXiv API failed for '${keyword}': ${res.status} ${res.statusText}`);
       return [];
@@ -104,7 +117,7 @@ async function fetchArxiv(keyword: string, maxResults = 3): Promise<SourceItem[]
 async function fetchCrossref(keyword: string, rows = 3): Promise<SourceItem[]> {
   const url = `https://api.crossref.org/works?query=${encodeURIComponent(keyword)}&rows=${rows}&sort=published&order=desc`;
   try {
-    const res = await fetch(url, { headers: { "User-Agent": "fpf-sync/industry-research" } });
+    const res = await fetchWithTimeout(url, { headers: { "User-Agent": UA, Accept: "application/json" } });
     if (!res.ok) {
       console.error(`Crossref API failed for '${keyword}': ${res.status} ${res.statusText}`);
       return [];
