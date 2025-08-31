@@ -13,7 +13,7 @@ export const MarkdownPatterns = {
 
   // Matches words for topic extraction, allowing hyphens in compound words
   // but not at the start or end
-  wordTokens: /\b[a-z]+(?:-[a-z]+)*\b/gi,
+  wordTokens: /\b[a-zA-Z]+(?:-[a-zA-Z]+)*\b/g,
 
   // Matches inline citations like [1], [2], etc.
   citations: /\[(\d+)\]/g,
@@ -458,13 +458,17 @@ export function validateResearchReport(markdown: string): ValidationResult {
     [];
 
   // Validate Impact Map bullets have required tags
-  for (const bullet of impactBullets) {
-    if (!/Lens:\s*(Meta|Macro|Micro)/i.test(bullet)) {
+  if (impactBullets.length > 0) {
+    if (
+      impactBullets.some((bullet) =>
+        !/Lens:\s*(Meta|Macro|Micro)/i.test(bullet)
+      )
+    ) {
       result.warnings.push(
         "Impact Map bullets should include Lens tag (Meta/Macro/Micro)",
       );
     }
-    if (!/Time:\s*(design|run)/i.test(bullet)) {
+    if (impactBullets.some((bullet) => !/Time:\s*(design|run)/i.test(bullet))) {
       result.warnings.push(
         "Impact Map bullets should include Time tag (design/run)",
       );
@@ -624,8 +628,8 @@ export function truncateAtWordBoundary(
 
   const truncateLength = maxLength - suffix.length;
   // Ensure we keep at least one character before the suffix
-  const actualTruncateLength = Math.max(1, truncateLength);
-  const truncated = text.substring(0, actualTruncateLength);
+  const minTruncateLength = Math.max(1, truncateLength);
+  const truncated = text.substring(0, minTruncateLength);
   const lastSpace = truncated.lastIndexOf(" ");
 
   if (lastSpace > 0) {
@@ -638,8 +642,6 @@ export function truncateAtWordBoundary(
     return text.substring(0, Math.min(text.length, truncateLength + 1)) +
       suffix;
   }
-
-  return truncated + suffix;
 }
 
 /**
