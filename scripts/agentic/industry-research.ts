@@ -438,10 +438,53 @@ async function run() {
     await writeSummary(text);
 
     // Post-generation validation (heuristic) and summary append
-    const validation = validateReport(text);
+    let validation = validateReport(text);
     if (validation.summary.trim()) {
       await writeSummary("\n\n" + validation.summary);
     }
+
+    // Auto-repair pass: try to fix formatting to satisfy checks without adding new claims
+    const autoRepairPref = (getEnv("AUTO_REPAIR") || "1").toLowerCase();
+    const autoRepair = autoRepairPref !== "0" && !validation.allOk;
+    if (autoRepair) {
+      const failing = validation.summary
+        .split("\n")
+        .filter((l) => l.trim().startsWith("- [ ] "))
+        .map((l) => l.replace(/^- \[ \]\s*/, "").trim())
+        .join("; ");
+      const repairInstr = `You must repair your own report to satisfy strict formatting checks without changing factual content.\n\nChecks failing: ${failing || "(unspecified)"}.\n\nRepair rules:\n- Keep the same claims and sources; do not invent new sources or facts.\n- Ensure exact section headings and order from the prompt (1..7).\n- Add missing inline [n] citations mapped to the numbered sources list created earlier. If a claim cannot be supported, mark it as “insufficient evidence”.\n- Executive Summary: include 'Bottom line:' and 3–5 bullets with Audience: and Recency: tags.\n- Impact Map bullets must include Lens: and Time: tags.\n- Recommendations must include Confidence and Assurance hints.\n- Do not add YAML. Markdown only.`;
+
+      const repairParts: any[] = [
+        { text: repairInstr },
+        { text: "\n\n---\n\nYour report (to be repaired):\n\n" + text }
+      ];
+      const repairContents = [ { role: 'user', parts: repairParts } ];
+
+      const genCfgRepair: any = {
+        temperature: 0.2,
+        topP: 0.9,
+        maxOutputTokens: Math.floor(readNumberEnv("GEN_MAX_TOKENS", 2048)),
+      };
+
+      const repaired = await generateStructuredWithFallback(
+        genAI,
+        requestedModel,
+        repairContents,
+        /*trySearch*/ false,
+        /*autoDisable*/ false,
+        genCfgRepair
+      );
+
+      if (repaired.text && repaired.text.trim()) {
+        await writeSummary("\n\n🔧 Auto-repair applied (format compliance)");
+        await writeSummary(repaired.text);
+        validation = validateReport(repaired.text);
+        if (validation.summary.trim()) {
+          await writeSummary("\n\n" + validation.summary);
+        }
+      }
+    }
+
     if (process.env.VALIDATION_STRICT === '1' && !validation.allOk) {
       await writeSummary("\n❌ Validation failed (strict mode enabled). Failing the job.");
       process.exitCode = 2;
