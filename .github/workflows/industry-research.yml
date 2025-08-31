@@ -12,7 +12,8 @@ permissions:
   statuses: read
 
 concurrency:
-  group: industry-research-daily
+  group: industry-research-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   run:
@@ -24,16 +25,16 @@ jobs:
       statuses: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
         with:
           bun-version: '1.2.3'
 
-      - name: Install deps for research script
+      - name: Install dependencies
         run: |
-          bun add @google/generative-ai@latest
+          bun install
 
       - name: Generate daily industry research report (TS + Gemini)
         env:

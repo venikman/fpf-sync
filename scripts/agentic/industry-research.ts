@@ -6,15 +6,16 @@
  * - Optionally adaptable to Mastra if you want a richer agent runtime later
  */
 
-import { writeFile, appendFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { appendFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 // Use the official Google Generative AI SDK for Node
 // npm/bun: @google/generative-ai
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Small helper: env access with validation
+// Small helper: env access with validation (typed overloads)
+function getEnv(name: string, required: true): string;
+function getEnv(name: string, required?: false): string | undefined;
 function getEnv(name: string, required = false): string | undefined {
   const v = process.env[name];
   if (required && (!v || v.trim() === "")) {
@@ -29,13 +30,8 @@ async function writeSummary(text: string, opts?: { header?: boolean }) {
 
   if (summaryPath) {
     const path = resolve(summaryPath);
-    if (!existsSync(path)) {
-      await writeFile(path, "");
-    }
     const prefix = header ? "# Daily Industry Research Report\n\n" : "";
-    await appendFile(path, prefix + text + (text.endsWith("\n") ? "" : "\n"), {
-      encoding: "utf8",
-    });
+    await appendFile(path, prefix + text + (text.endsWith("\n") ? "" : "\n"), "utf8");
   } else {
     // Fallback to stdout if not in Actions
     if (header) process.stdout.write("# Daily Industry Research Report\n\n");
@@ -44,8 +40,7 @@ async function writeSummary(text: string, opts?: { header?: boolean }) {
 }
 
 async function ghGet<T = unknown>(endpoint: string, token?: string): Promise<T | null> {
-  const repo = getEnv("GITHUB_REPOSITORY");
-  if (!repo) return null;
+  const repo = getEnv("GITHUB_REPOSITORY", true);
   const url = `https://api.github.com/repos/${repo}/${endpoint}`;
   try {
     const res = await fetch(url, {
@@ -54,16 +49,20 @@ async function ghGet<T = unknown>(endpoint: string, token?: string): Promise<T |
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error(`GitHub API request to ${url} failed: ${res.status} ${res.statusText}`);
+      return null;
+    }
     return (await res.json()) as T;
-  } catch {
+  } catch (error) {
+    console.error(`Error fetching from GitHub API endpoint "${endpoint}":`, error);
     return null;
   }
 }
 
 async function gatherContext() {
   const token = getEnv("GH_TOKEN") || getEnv("GITHUB_TOKEN");
-  const repo = getEnv("GITHUB_REPOSITORY") ?? "";
+  const repo = getEnv("GITHUB_REPOSITORY", true);
 
   const [repoInfo, languages, recentCommits, openPRs, openIssues] = await Promise.all([
     ghGet<Record<string, unknown>>("", token),
@@ -84,7 +83,7 @@ async function gatherContext() {
 }
 
 function buildPrompt(ctx: Awaited<ReturnType<typeof gatherContext>>): string {
-  const description = (ctx.repoInfo as any)?.description ?? "";
+  const description = (ctx.repoInfo as { description?: string | null } | null)?.description ?? "";
   const langs = ctx.languages ? Object.keys(ctx.languages).join(", ") : "unknown";
 
   return `You are a research assistant. Produce a concise, high-signal daily industry research report for the repository ${ctx.repo}.
@@ -115,7 +114,7 @@ Include a final note:
 
 async function run() {
   try {
-    const apiKey = getEnv("GOOGLE_AI_API_KEY", true)!; // required
+    const apiKey = getEnv("GOOGLE_AI_API_KEY", true); // required
     const modelName = getEnv("GEMINI_MODEL") || "gemini-1.5-flash";
 
     await writeSummary("", { header: true });

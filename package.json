@@ -13,6 +13,9 @@
     "oxlint": "latest",
     "typescript": "^5"
   },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0"
+  },
   "engines": {
     "bun": ">=1.2.3"
   },
