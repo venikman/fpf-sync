@@ -94,11 +94,16 @@ export function extractSection(
 
   let capturing = false;
   let capturedLines: string[] = [];
+  let startLevel = 0;
 
   for (const line of lines) {
     if (!capturing && startHeading.test(line)) {
-      capturing = true;
-      continue;
+      const match = line.match(/^(#{1,6})\s+/);
+      if (match) {
+        startLevel = match[1].length;
+        capturing = true;
+        continue;
+      }
     }
 
     if (capturing) {
@@ -109,7 +114,10 @@ export function extractSection(
         if (endHeading.test(line)) break;
       } else {
         // Stop at next heading of same or higher level
-        if (/^#{1,6}\s+/.test(line)) break;
+        const match = line.match(/^(#{1,6})\s+/);
+        if (match && match[1].length <= startLevel) {
+          break;
+        }
       }
       capturedLines.push(line);
     }
@@ -251,7 +259,6 @@ export const DEFAULT_STOP_WORDS = new Set([
   "might",
   "must",
   "can",
-  "could",
   "shall",
 
   // Common adverbs and adjectives
@@ -419,8 +426,7 @@ export function validateResearchReport(markdown: string): ValidationResult {
 
   // Check A→D→I section
   result.sections.adiSection = headingTexts.some((h) =>
-    h.includes("abduction") || h.includes("deduction") ||
-    h.includes("induction")
+    /abduction\s*→\s*deduction\s*→\s*induction/i.test(h)
   );
   if (!result.sections.adiSection) {
     result.errors.push("Missing Abduction → Deduction → Induction section");
@@ -457,13 +463,11 @@ export function validateResearchReport(markdown: string): ValidationResult {
       result.warnings.push(
         "Impact Map bullets should include Lens tag (Meta/Macro/Micro)",
       );
-      break;
     }
     if (!/Time:\s*(design|run)/i.test(bullet)) {
       result.warnings.push(
         "Impact Map bullets should include Time tag (design/run)",
       );
-      break;
     }
   }
 
@@ -630,7 +634,7 @@ export function truncateAtWordBoundary(
 
   // When no word boundary, try to keep a bit more text if possible
   // to make the truncation more readable
-  if (text.length > maxLength && truncateLength < text.length) {
+  if (text.length > maxLength) {
     return text.substring(0, Math.min(text.length, truncateLength + 1)) +
       suffix;
   }

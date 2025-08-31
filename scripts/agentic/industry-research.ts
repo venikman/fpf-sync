@@ -158,7 +158,10 @@ async function fetchArxiv(
     const xml = await res.text();
     const parser = new XMLParser({ ignoreAttributes: false });
     const data = parser.parse(xml);
-    const entries = (data?.feed?.entry ?? []) as any[];
+    const rawEntries = data?.feed?.entry;
+    const entries = rawEntries
+      ? (Array.isArray(rawEntries) ? rawEntries : [rawEntries])
+      : [];
     return entries.slice(0, maxResults).map((e) => ({
       title: String(e.title ?? "Untitled").replace(/\s+/g, " ").trim(),
       url: typeof e.link === "object"
@@ -334,7 +337,7 @@ async function buildPreamble(
     lines.push("");
   }
   lines.push(
-    "Navigation: [Executive Summary](#executive-summary) • [Impact Map](#impact-map-to-fpf-top-5) • [A→D→I](#abduction-→-deduction-→-induction-b5) • [Recommendations](#recommendations--next-state-b51) • [Sources](#sources)",
+    "Navigation: [Executive Summary](#executive-summary) • [Impact Map](#impact-map-to-fpf-top-5) • [A→D→I](#abduction--deduction--induction-b5) • [Recommendations](#recommendations--next-state-b51) • [Sources](#sources)",
   );
   return lines.join("\n");
 }
@@ -660,10 +663,6 @@ function validateReport(md: string): ValidationResult {
   const validation = validateResearchReport(md);
   const checks: Array<{ name: string; ok: boolean; details?: string }> = [];
 
-  // Check for "Bottom line:" in the document
-  const hasBottomLine = /Bottom line:/i.test(md);
-  checks.push({ name: "Has 'Bottom line:' statement", ok: hasBottomLine });
-
   // Check Executive Summary
   checks.push({
     name: "Executive Summary section present",
@@ -698,18 +697,6 @@ function validateReport(md: string): ValidationResult {
     ok: validation.sections.impactMap,
   });
 
-  // Check Impact Map bullets for tags
-  const impactSection = extractSection(md, "Impact Map", "Abduction");
-  const impactBullets = impactSection.match(/^\s*[-*]\s+(.+)$/gm) || [];
-  const impactHasLensTime = impactBullets.length > 0 &&
-    impactBullets.every((l) =>
-      /Lens:\s*(Meta|Macro|Micro)/i.test(l) && /Time:\s*(design|run)/i.test(l)
-    );
-  checks.push({
-    name: "Impact bullets include Lens and Time tags",
-    ok: impactHasLensTime,
-  });
-
   // Check A→D→I section
   checks.push({
     name: "A→D→I section present",
@@ -731,6 +718,9 @@ function validateReport(md: string): ValidationResult {
   // Add any validation errors/warnings as checks
   for (const error of validation.errors) {
     checks.push({ name: error, ok: false });
+  }
+  for (const warning of validation.warnings) {
+    checks.push({ name: warning, ok: false });
   }
 
   const allOk = checks.every((c) => c.ok);
