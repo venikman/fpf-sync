@@ -40,7 +40,6 @@ jobs:
       - name: Generate daily industry research report (TS + Gemini)
         env:
           GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bun scripts/agentic/industry-research.ts
 

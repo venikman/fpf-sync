@@ -6,12 +6,13 @@
  * - Optionally adaptable to Mastra if you want a richer agent runtime later
  */
 
-import { appendFile } from "node:fs/promises";
+import { appendFile, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 // Use the official Google Generative AI SDK for Node
 // npm/bun: @google/generative-ai
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { XMLParser } from "fast-xml-parser";
 
 // Small helper: env access with validation (typed overloads)
 function getEnv(name: string, required: true): string;
@@ -39,77 +40,129 @@ async function writeSummary(text: string, opts?: { header?: boolean }) {
   }
 }
 
-async function ghGet<T = unknown>(endpoint: string, token?: string): Promise<T | null> {
-  const repo = getEnv("GITHUB_REPOSITORY", true);
-  const url = `https://api.github.com/repos/${repo}${endpoint ? `/${endpoint}` : ""}`;
+type SourceItem = {
+  title: string;
+  url: string;
+  date?: string;
+  source: "arXiv" | "Crossref";
+};
+
+const FPF_PATH = "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md";
+
+function extractTopicsFromFpf(text: string, maxTopics = 8): string[] {
+  const headingRegex = /^#{1,6}\s+(.+)$/gm;
+  const headings: string[] = [];
+  for (const m of text.matchAll(headingRegex)) {
+    headings.push(m[1]);
+  }
+  const words = headings
+    .join(" ")
+    .toLowerCase()
+    .match(/[a-z][a-z\-]{3,}/g) ?? [];
+  const stop = new Set([
+    "with","from","that","this","into","about","within","between","those","these","using","through","their","there",
+    "your","ours","mine","ourselves","itself","it","them","they","also","over","under","have","has","been",
+    "core","conceptual","framework","first","principles","introduction","summary","chapter","section","appendix",
+  ]);
+  const freq = new Map<string, number>();
+  for (const w of words) {
+    if (stop.has(w)) continue;
+    freq.set(w, (freq.get(w) ?? 0) + 1);
+  }
+  const sorted = [...freq.entries()].sort((a, b) => b[1] - a[1]).map(([w]) => w);
+  // Always include 'holonic' if present in the document
+  if (text.toLowerCase().includes("holonic") && !sorted.includes("holonic")) {
+    sorted.unshift("holonic");
+  }
+  return sorted.slice(0, maxTopics);
+}
+
+async function fetchArxiv(keyword: string, maxResults = 3): Promise<SourceItem[]> {
+  const url = `http://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(keyword)}&sortBy=submittedDate&sortOrder=descending&start=0&max_results=${maxResults}`;
   try {
-    const res = await fetch(url, {
-      headers: {
-        Accept: "application/vnd.github+json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    });
+    const res = await fetch(url, { headers: { "User-Agent": "fpf-sync/industry-research" } });
     if (!res.ok) {
-      console.error(`GitHub API request to ${url} failed: ${res.status} ${res.statusText}`);
-      return null;
+      console.error(`arXiv API failed for '${keyword}': ${res.status} ${res.statusText}`);
+      return [];
     }
-    return (await res.json()) as T;
-  } catch (error) {
-    console.error(`Error fetching from GitHub API endpoint "${endpoint}":`, error);
-    return null;
+    const xml = await res.text();
+    const parser = new XMLParser({ ignoreAttributes: false });
+    const data = parser.parse(xml);
+    const entries = (data?.feed?.entry ?? []) as any[];
+    return entries.slice(0, maxResults).map((e) => ({
+      title: String(e.title ?? "Untitled").replace(/\s+/g, " ").trim(),
+      url: typeof e.link === "object" ? e.link[0]?.["@_href"] ?? e.link?.["@_href"] ?? "" : "",
+      date: e.published ?? e.updated ?? undefined,
+      source: "arXiv" as const,
+    })).filter(i => i.url);
+  } catch (err) {
+    console.error(`Error querying arXiv for '${keyword}':`, err);
+    return [];
   }
 }
 
-async function gatherContext() {
-  const token = getEnv("GH_TOKEN") || getEnv("GITHUB_TOKEN");
-  const repo = getEnv("GITHUB_REPOSITORY", true);
-
-  const [repoInfo, languages, recentCommits, openPRs, openIssues] = await Promise.all([
-    ghGet<Record<string, unknown>>("", token),
-    ghGet<Record<string, number>>("languages", token),
-    ghGet<unknown[]>("commits?per_page=5", token),
-    ghGet<unknown[]>("pulls?state=open&per_page=5", token),
-    ghGet<unknown[]>("issues?state=open&per_page=5", token),
-  ]);
-
-  return {
-    repo,
-    repoInfo,
-    languages,
-    recentCommitsCount: Array.isArray(recentCommits) ? recentCommits.length : "n/a",
-    openPRsCount: Array.isArray(openPRs) ? openPRs.length : "n/a",
-    openIssuesCount: Array.isArray(openIssues) ? openIssues.length : "n/a",
-  };
+async function fetchCrossref(keyword: string, rows = 3): Promise<SourceItem[]> {
+  const url = `https://api.crossref.org/works?query=${encodeURIComponent(keyword)}&rows=${rows}&sort=published&order=desc`;
+  try {
+    const res = await fetch(url, { headers: { "User-Agent": "fpf-sync/industry-research" } });
+    if (!res.ok) {
+      console.error(`Crossref API failed for '${keyword}': ${res.status} ${res.statusText}`);
+      return [];
+    }
+    const json = await res.json();
+    const items = json?.message?.items ?? [];
+    return items.slice(0, rows).map((it: any) => {
+      const title = Array.isArray(it.title) ? it.title[0] : (it.title || "Untitled");
+      const dateParts = it.published?.["date-parts"]?.[0] || it["published-print"]?.["date-parts"]?.[0] || it["published-online"]?.["date-parts"]?.[0] || [];
+      const date = dateParts.length ? dateParts.join("-") : undefined;
+      return {
+        title: String(title).replace(/\s+/g, " ").trim(),
+        url: it.URL || (it.DOI ? `https://doi.org/${it.DOI}` : ""),
+        date,
+        source: "Crossref" as const,
+      } satisfies SourceItem;
+    }).filter((i: SourceItem) => i.url);
+  } catch (err) {
+    console.error(`Error querying Crossref for '${keyword}':`, err);
+    return [];
+  }
 }
 
-function buildPrompt(ctx: Awaited<ReturnType<typeof gatherContext>>): string {
-  const description = (ctx.repoInfo as { description?: string | null } | null)?.description ?? "";
-  const langs = ctx.languages ? Object.keys(ctx.languages).join(", ") : "unknown";
+function dedupeItems(items: SourceItem[]): SourceItem[] {
+  const seen = new Set<string>();
+  const out: SourceItem[] = [];
+  for (const it of items) {
+    const key = (it.title.toLowerCase() + "|" + it.url.toLowerCase()).slice(0, 500);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(it);
+  }
+  return out;
+}
 
-  return `You are a research assistant. Produce a concise, high-signal daily industry research report for the repository ${ctx.repo}.
+function buildPrompt(topics: string[], items: SourceItem[]): string {
+  const sourcesList = items.map(i => `- ${i.title} (${i.source}${i.date ? ", " + i.date : ""}) — ${i.url}`).join("\n");
+  return `You are a research assistant. Produce a concise, high-signal daily industry research report focused on updates that could impact the First Principles Framework (FPF).
 
-Repository context:
-- Description: ${description}
-- Languages: ${langs}
-- Open issues: ${ctx.openIssuesCount}
-- Open PRs: ${ctx.openPRsCount}
-- Recent commits: ${ctx.recentCommitsCount}
+FPF core topics (derived from the repository document): ${topics.join(", ")}
+
+Consider only the following sources (do not invent links):
+${sourcesList}
 
 Constraints:
 - Do not produce code changes.
-- Provide links to sources when possible.
+- Base your analysis strictly on the supplied sources and FPF topics.
 - Output must be markdown only. No YAML frontmatter.
 
 Report structure:
 1. Executive Summary (3–6 bullets)
-2. Notable News and Releases (5–10 items: each line has [name](url) — one-line context)
-3. Tech Trends Relevant to this repo (1–3 short paragraphs)
+2. Notable News and Releases (use only items listed above; for each use [name](url) — one-line context)
+3. Tech Trends Relevant to FPF (1–3 short paragraphs linking the items to FPF)
 4. Opportunities and Risks (bullets)
-5. Sources (bullet list of links)
+5. Sources (bullet list of the links above)
 
 Include a final note:
-> AI-generated content by this workflow may contain mistakes.
-`;
+> AI-generated content by this workflow may contain mistakes.`;
 }
 
 async function run() {
@@ -119,8 +172,26 @@ async function run() {
 
     await writeSummary("", { header: true });
 
-    const ctx = await gatherContext();
-    const prompt = buildPrompt(ctx);
+    // Read FPF file and extract topics
+    let fpfRaw = "";
+    try {
+      fpfRaw = await readFile(FPF_PATH, "utf8");
+    } catch (err) {
+      await writeSummary(`❌ Failed to read FPF document at '${FPF_PATH}': ${String(err)}`);
+      throw err;
+    }
+    const topics = extractTopicsFromFpf(fpfRaw);
+
+    // Fetch external updates constrained by FPF topics
+    const keywords = topics.slice(0, 5);
+    const results: SourceItem[] = [];
+    for (const kw of keywords) {
+      const [ax, cx] = await Promise.all([fetchArxiv(kw, 3), fetchCrossref(kw, 3)]);
+      results.push(...ax, ...cx);
+    }
+    const unique = dedupeItems(results).slice(0, 12);
+
+    const prompt = buildPrompt(topics, unique);
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: modelName });
