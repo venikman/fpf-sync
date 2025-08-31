@@ -308,20 +308,59 @@ function buildModelFallbackChain(requested: string): string[] {
   return chain;
 }
 
-async function generateWithFallback(genAI: GoogleGenerativeAI, requestedModel: string, prompt: string): Promise<{ usedModel: string; text: string }> {
+function isPermissionError(err: any): boolean {
+  const msg = (err?.message || String(err) || "").toLowerCase();
+  return msg.includes("permission") || msg.includes("denied") || msg.includes("unauthorized");
+}
+
+function readNumberEnv(name: string, def: number): number {
+  const v = getEnv(name);
+  const n = v ? Number(v) : NaN;
+  return Number.isFinite(n) ? n : def;
+}
+
+function extractHeadingsExcerpt(fpfRaw: string, maxChars: number): string | undefined {
+  if (maxChars <= 0) return undefined;
+  const headingRegex = /^#{1,6}\s+.*$/gm;
+  const lines = [...fpfRaw.matchAll(headingRegex)].map(m => m[0]).join("\n");
+  if (!lines) return undefined;
+  return lines.length > maxChars ? lines.slice(0, maxChars) : lines;
+}
+
+async function generateStructuredWithFallback(
+  genAI: GoogleGenerativeAI,
+  requestedModel: string,
+  contents: any,
+  trySearch: boolean,
+  autoDisableSearchOnPermission: boolean,
+  generationConfig?: any
+): Promise<{ usedModel: string; text: string; searchUsed: boolean }> {
   const candidates = buildModelFallbackChain(requestedModel);
   let lastErr: any;
+  let searchEnabled = trySearch;
   for (const m of candidates) {
-    try {
-      const model = genAI.getGenerativeModel({ model: m });
-      const result = await model.generateContent(prompt);
-      const text = result.response.text();
-      if (!text?.trim()) throw new Error("Model returned empty response");
-      return { usedModel: m, text };
-    } catch (err: any) {
-      lastErr = err;
-      continue;
+    // First attempt with search if enabled
+    for (let pass = 0; pass < 2; pass++) {
+      try {
+        const model = genAI.getGenerativeModel({ model: m });
+        const req: any = { contents, generationConfig };
+        if (searchEnabled) req.tools = [{ googleSearchRetrieval: {} }];
+        const result = await model.generateContent(req);
+        const text = result.response.text();
+        if (!text?.trim()) throw new Error("Model returned empty response");
+        return { usedModel: m, text, searchUsed: !!searchEnabled };
+      } catch (err: any) {
+        lastErr = err;
+        if (searchEnabled && autoDisableSearchOnPermission && isPermissionError(err)) {
+          // Disable search and retry same model once without it
+          searchEnabled = false;
+          continue;
+        }
+        break; // move to next model
+      }
     }
+    // Ensure search is disabled for subsequent models if permission error occurred
+    searchEnabled = false;
   }
   throw new Error(`All model attempts failed. Last error: ${lastErr?.message || String(lastErr)}`);
 }
@@ -362,10 +401,39 @@ async function run() {
     const prompt = buildPrompt(topics, unique);
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const { usedModel, text } = await generateWithFallback(genAI, requestedModel, prompt);
+
+    // Grounding preferences
+    const pref = (getEnv("USE_SEARCH_GROUNDING") || "auto").toLowerCase();
+    const trySearch = pref === "1" || pref === "true" || pref === "auto";
+    const autoDisableSearch = pref === "auto";
+
+    // Optional FPF excerpt grounding via headings (free-tier safe). Off by default; enable via GROUND_FPF_EXCERPT_BYTES > 0
+    const excerptBytes = readNumberEnv("GROUND_FPF_EXCERPT_BYTES", 0);
+    const fpfExcerpt = excerptBytes > 0 ? extractHeadingsExcerpt(fpfRaw, excerptBytes) : undefined;
+
+    const parts: any[] = [ { text: prompt } ];
+    if (fpfExcerpt) {
+      parts.push({ text: `FPF headings excerpt (for grounding):\n${fpfExcerpt}` });
+    }
+    const contents = [ { role: 'user', parts } ];
+
+    const generationConfig: any = {
+      temperature: readNumberEnv("GEN_TEMPERATURE", 0.3),
+      topP: readNumberEnv("GEN_TOP_P", 0.9),
+      maxOutputTokens: Math.floor(readNumberEnv("GEN_MAX_TOKENS", 2048)),
+    };
+
+    const { usedModel, text, searchUsed } = await generateStructuredWithFallback(
+      genAI,
+      requestedModel,
+      contents,
+      trySearch,
+      autoDisableSearch,
+      generationConfig
+    );
 
     // Note actual model used (and whether fallback occurred)
-    await writeSummary(`- 🤖 Used model: ${usedModel}${usedModel !== requestedModel ? ` (fallback from ${requestedModel})` : ""}`);
+    await writeSummary(`- 🤖 Used model: ${usedModel}${usedModel !== requestedModel ? ` (fallback from ${requestedModel})` : ""}${searchUsed ? " • 🔎 grounded via Google Search" : ""}`);
 
     await writeSummary(text);
 
