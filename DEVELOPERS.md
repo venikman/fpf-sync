@@ -16,9 +16,14 @@ This document is for contributors working on the code. For setup and usage aimed
 
 ## Install
 
-No runtime dependencies are required.
+No runtime dependencies are required for the core sync functionality.
 
-- Install (noop for now): `bun install`
+- Install dependencies: `bun install`
+
+The project includes additional dependencies for the industry research feature:
+
+- `@google/generative-ai`: Used by `scripts/agentic/industry-research.ts` for AI-powered research report generation
+- `fast-xml-parser`: Used to parse arXiv API responses (XML format) in the industry research script
 
 ## Running the sync locally
 
@@ -48,19 +53,41 @@ Safety:
 
 ## GitHub Actions: configuration
 
-Workflow: `.github/workflows/yadisk-sync.yml` (scheduled and manual dispatch).
+The project includes two workflows:
+
+1. **Sync workflow**: `.github/workflows/yadisk-sync.yml` (scheduled daily at 20:00 MSK and manual dispatch)
+   - Syncs files from Yandex Disk to the repository via Pull Requests
+2. **Industry Research workflow**: `.github/workflows/industry-research.yml` (scheduled daily at 20:00 MSK, manual dispatch, and on PRs)
+   - Generates AI-powered research reports using Gemini API
 
 - Repo settings → Actions → General → Workflow permissions:
-  - “Read and write permissions”: enabled
-  - “Allow GitHub Actions to create and approve pull requests”: enabled
-- Repository Variables (Settings → Variables → Actions):
-  - `YANDEX_PUBLIC_URL` (required): public share URL
-  - `YANDEX_PUBLIC_PATH` (optional): path inside share if link points to a folder
-  - `YANDEX_TARGET_NAME` (optional): filename to select from a folder share
-  - `YANDEX_DEST_FILENAME` (optional): override saved filename
-  - `YANDEX_MAX_BYTES` (optional): max size in bytes (default 10MB)
+  - "Read and write permissions": enabled
+  - "Allow GitHub Actions to create and approve pull requests": enabled
+
+### Sync Workflow Variables
+
+Repository Variables (Settings → Variables → Actions):
+
+- `YANDEX_PUBLIC_URL` (required): public share URL
+- `YANDEX_PUBLIC_PATH` (optional): path inside share if link points to a folder
+- `YANDEX_TARGET_NAME` (optional): filename to select from a folder share
+- `YANDEX_DEST_FILENAME` (optional): override saved filename
+- `YANDEX_MAX_BYTES` (optional): max size in bytes (default 10MB)
 
 These map to env vars read by the script: `PUBLIC_URL`, `PUBLIC_PATH`, `TARGET_NAME`, `DEST_PATH`, `DEST_FILENAME`, `MAX_BYTES`.
+
+### Industry Research Workflow
+
+Repository Secrets (Settings → Secrets → Actions):
+
+- `GOOGLE_AI_API_KEY` (required): API key for Google's Gemini AI
+
+Environment variables (set in workflow):
+
+- `GEMINI_MODEL`: The Gemini model to use (default: gemini-2.5-pro)
+- `USE_SEARCH_GROUNDING`: Enable search grounding (default: "auto")
+- `GROUND_FPF_EXCERPT_BYTES`: Include FPF headings excerpt (default: 0)
+- `GEN_TEMPERATURE`, `GEN_TOP_P`, `GEN_MAX_TOKENS`: Generation parameters
 
 ## Security hardening (implemented)
 
@@ -76,6 +103,86 @@ Potential future enhancements:
 - Git LFS for `yadisk/**` if files are large/update frequently
 - Add structured types for Yandex API responses in the library
 
+## Improved markdown handling
+
+The project now includes a dedicated `scripts/lib/markdown-helpers.ts` module with improved regex patterns and utilities for markdown processing.
+
+### Key improvements implemented
+
+1. **Better regex patterns with clear documentation**
+   - Each pattern has comments explaining its purpose
+   - Handles edge cases like trailing spaces and special characters
+   - Patterns are organized in a single `MarkdownPatterns` object
+
+2. **Dedicated helper functions**
+   - `extractHeadings()` - Extract headings with level and text
+   - `extractTopics()` - Smart topic extraction with stop words
+   - `extractSection()` - Get content between headings
+   - `validateResearchReport()` - Structured validation for reports
+   - `formatDateUTC()` - Date formatting without regex replacement
+   - `parseGitRef()` - Parse git references without regex replacement
+
+3. **MarkdownBuilder class**
+   - Programmatic markdown generation
+   - Type-safe and maintainable
+   - Avoids string concatenation errors
+
+### Example usage
+
+```typescript
+import {
+  extractHeadings,
+  extractTopics,
+  validateResearchReport,
+  MarkdownBuilder,
+  formatDateUTC,
+} from "../lib/markdown-helpers.ts";
+
+// Extract headings from markdown
+const headings = extractHeadings(markdown);
+// Returns: [{ level: 1, text: "Title", raw: "# Title" }, ...]
+
+// Extract topics with smart filtering
+const topics = extractTopics(text, {
+  maxTopics: 8,
+  minWordLength: 4,
+  includeCompounds: true,
+});
+
+// Validate report structure
+const validation = validateResearchReport(markdown);
+if (!validation.valid) {
+  console.error("Validation errors:", validation.errors);
+}
+
+// Build markdown programmatically
+const builder = new MarkdownBuilder();
+const report = builder
+  .heading(1, "Report Title")
+  .paragraph("Introduction text")
+  .bulletList(["Item 1", "Item 2"])
+  .build();
+```
+
+### Why not external libraries?
+
+After evaluation, we decided to keep the implementation lightweight:
+
+1. **No React dependencies needed** - The project is a CLI tool, not a UI application
+2. **Regex patterns work well** - For well-defined patterns like markdown headings
+3. **Maintainability over complexity** - Simple, documented patterns are easier to maintain
+4. **No unnecessary dependencies** - Keeps the project lean and fast
+
+The improved regex patterns in `markdown-helpers.ts` provide:
+
+- Better edge case handling
+- Clear documentation
+- Centralized pattern management
+- Type-safe interfaces
+- Separation of concerns
+
+This approach balances simplicity with functionality, avoiding over-engineering while still improving code quality.
+
 ## Code structure
 
 - `scripts/yadisk-lib.ts` — helpers:
@@ -84,6 +191,18 @@ Potential future enhancements:
   - `enforceSizeCap()`: throws if size exceeds cap
   - `fetchJson<T>()`: generic JSON fetch with error detail
 - `scripts/yadisk-sync.mjs` — CLI wrapper around the helpers
+- `scripts/lib/markdown-helpers.ts` — improved markdown utilities:
+  - `MarkdownPatterns`: Well-documented regex patterns for markdown parsing
+  - `extractHeadings()`, `extractTopics()`, `extractSection()`: Content extraction
+  - `validateResearchReport()`: Structured validation for AI reports
+  - `MarkdownBuilder`: Programmatic markdown generation
+  - `formatDateUTC()`, `parseGitRef()`: String formatting without regex replacement
+- `scripts/agentic/industry-research.ts` — AI-powered research report generator:
+  - Uses markdown-helpers for robust content processing
+  - Extracts topics from the FPF document
+  - Fetches relevant papers from arXiv and Crossref APIs
+  - Generates structured analysis using Google's Gemini AI
+  - Runs daily via GitHub Actions workflow (`.github/workflows/industry-research.yml`)
 
 ## Contributing workflow
 
