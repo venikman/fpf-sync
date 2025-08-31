@@ -370,9 +370,13 @@ async function run() {
     await writeSummary(text);
 
     // Post-generation validation (heuristic) and summary append
-    const validation = buildValidationSummary(text);
-    if (validation.trim()) {
-      await writeSummary("\n\n" + validation);
+    const validation = validateReport(text);
+    if (validation.summary.trim()) {
+      await writeSummary("\n\n" + validation.summary);
+    }
+    if (process.env.VALIDATION_STRICT === '1' && !validation.allOk) {
+      await writeSummary("\n❌ Validation failed (strict mode enabled). Failing the job.");
+      process.exitCode = 2;
     }
   } catch (err: any) {
     await writeSummary(`❌ Failed to generate report: ${err?.message || String(err)}`);
@@ -399,7 +403,9 @@ function countMatches(md: string, re: RegExp): number {
   return m ? m.length : 0;
 }
 
-function buildValidationSummary(md: string): string {
+type ValidationResult = { allOk: boolean; summary: string };
+
+function validateReport(md: string): ValidationResult {
   const checks: { name: string; ok: boolean; details?: string }[] = [];
 
   const hasCitations = /\[\d+\]/.test(md);
@@ -448,7 +454,7 @@ function buildValidationSummary(md: string): string {
     "",
     "</details>",
   ];
-  return lines.join("\n");
+  return { allOk, summary: lines.join("\n") };
 }
 
 run();
