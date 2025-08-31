@@ -194,7 +194,7 @@ function fmtDate(d: Date): string {
   return d.toISOString().replace("T", " ").replace("Z", " UTC");
 }
 
-async function buildPreamble(topics: string[], items: SourceItem[]): Promise<string> {
+async function buildPreamble(topics: string[], items: SourceItem[], requestedModel?: string): Promise<string> {
   const meta = await getGithubMeta();
   const runUrl = meta.repo && meta.runId ? `${meta.serverUrl}/${meta.repo}/actions/runs/${meta.runId}` : undefined;
   const prUrl = meta.repo && meta.prNumber ? `${meta.serverUrl}/${meta.repo}/pull/${meta.prNumber}` : undefined;
@@ -217,6 +217,9 @@ async function buildPreamble(topics: string[], items: SourceItem[]): Promise<str
   }
   if (runUrl) {
     lines.push(`- ▶️ Run: ${runUrl}`);
+  }
+  if (requestedModel) {
+    lines.push(`- 🤖 Requested model: ${requestedModel}`);
   }
   lines.push(`- 📚 Sources: ${items.length} • 🧩 Topics: ${topTopics || "(none)"}`);
   lines.push("");
@@ -294,10 +297,39 @@ End with:
 > AI-generated content via FPF-aligned workflow; may contain mistakes. Unsupported claims were omitted.`;
 }
 
+// Build fallback chain for Gemini models (e.g., 2.5-pro → 2.5-flash → 1.5-pro → 1.5-flash)
+function buildModelFallbackChain(requested: string): string[] {
+  const chain: string[] = [];
+  const add = (m: string) => { if (!chain.includes(m)) chain.push(m); };
+  add(requested);
+  if (/-pro$/.test(requested)) add(requested.replace(/-pro$/, "-flash"));
+  // Generic safety fallbacks
+  ["gemini-2.5-pro","gemini-2.5-flash","gemini-1.5-pro","gemini-1.5-flash"].forEach(add);
+  return chain;
+}
+
+async function generateWithFallback(genAI: GoogleGenerativeAI, requestedModel: string, prompt: string): Promise<{ usedModel: string; text: string }> {
+  const candidates = buildModelFallbackChain(requestedModel);
+  let lastErr: any;
+  for (const m of candidates) {
+    try {
+      const model = genAI.getGenerativeModel({ model: m });
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+      if (!text?.trim()) throw new Error("Model returned empty response");
+      return { usedModel: m, text };
+    } catch (err: any) {
+      lastErr = err;
+      continue;
+    }
+  }
+  throw new Error(`All model attempts failed. Last error: ${lastErr?.message || String(lastErr)}`);
+}
+
 async function run() {
   try {
     const apiKey = getEnv("GOOGLE_AI_API_KEY", true); // required
-    const modelName = getEnv("GEMINI_MODEL") || "gemini-1.5-flash";
+    const requestedModel = getEnv("GEMINI_MODEL") || "gemini-2.5-pro";
 
     // Read FPF file and extract topics
     let fpfRaw = "";
@@ -319,7 +351,7 @@ async function run() {
     const unique = dedupeItems(results).slice(0, 12);
 
     // Write a visual preamble with links/meta at the top of the GH summary
-    const preamble = await buildPreamble(topics, unique);
+    const preamble = await buildPreamble(topics, unique, requestedModel);
     await writeSummary(preamble, { header: true });
 
     if (unique.length === 0) {
@@ -330,14 +362,10 @@ async function run() {
     const prompt = buildPrompt(topics, unique);
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: modelName });
+    const { usedModel, text } = await generateWithFallback(genAI, requestedModel, prompt);
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-
-    if (!text?.trim()) {
-      throw new Error("Model returned empty response");
-    }
+    // Note actual model used (and whether fallback occurred)
+    await writeSummary(`- 🤖 Used model: ${usedModel}${usedModel !== requestedModel ? ` (fallback from ${requestedModel})` : ""}`);
 
     await writeSummary(text);
 
