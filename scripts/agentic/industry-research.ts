@@ -41,7 +41,7 @@ async function writeSummary(text: string, opts?: { header?: boolean }) {
 
 async function ghGet<T = unknown>(endpoint: string, token?: string): Promise<T | null> {
   const repo = getEnv("GITHUB_REPOSITORY", true);
-  const url = `https://api.github.com/repos/${repo}/${endpoint}`;
+  const url = `https://api.github.com/repos/${repo}${endpoint ? `/${endpoint}` : ""}`;
   try {
     const res = await fetch(url, {
       headers: {

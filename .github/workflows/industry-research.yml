@@ -28,10 +28,10 @@ jobs:
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Setup Bun
-        continue-on-error: true # avoid failing the job if post-job cache save has an outage
         uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
         with:
           bun-version: '1.2.3'
+          no-cache: true # disable caching to avoid post-job save outages causing warnings/failures
 
       - name: Install dependencies
         run: |
