@@ -15,7 +15,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { XMLParser } from "fast-xml-parser";
 
 const REQUEST_TIMEOUT_MS = Number.parseInt(process.env.REQUEST_TIMEOUT_MS || "8000", 10);
-const UA = "fpf-sync/industry-research (+https://github.com/venikman/fpf-sync)";
+const ARXIV_CONTACT = process.env.ARXIV_CONTACT || ""; // optional, e.g., email for arXiv policy compliance
+const UA_BASE = "fpf-sync/industry-research (+https://github.com/venikman/fpf-sync)";
+const UA = ARXIV_CONTACT ? `${UA_BASE} (contact: ${ARXIV_CONTACT})` : UA_BASE;
 
 async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}, timeoutMs = REQUEST_TIMEOUT_MS): Promise<Response> {
   const controller = new AbortController();
@@ -91,9 +93,9 @@ function extractTopicsFromFpf(text: string, maxTopics = 8): string[] {
 }
 
 async function fetchArxiv(keyword: string, maxResults = 3): Promise<SourceItem[]> {
-  const url = `http://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(keyword)}&sortBy=submittedDate&sortOrder=descending&start=0&max_results=${maxResults}`;
+  const url = `https://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(keyword)}&sortBy=submittedDate&sortOrder=descending&start=0&max_results=${maxResults}`;
   try {
-    const res = await fetchWithTimeout(url, { headers: { "User-Agent": UA } });
+    const res = await fetchWithTimeout(url, { headers: { "User-Agent": UA, Accept: "application/atom+xml" } });
     if (!res.ok) {
       console.error(`arXiv API failed for '${keyword}': ${res.status} ${res.statusText}`);
       return [];
@@ -203,6 +205,11 @@ async function run() {
       results.push(...ax, ...cx);
     }
     const unique = dedupeItems(results).slice(0, 12);
+
+    if (unique.length === 0) {
+      await writeSummary(`No recent external updates found for FPF topics: ${keywords.join(", ")}.\n\nConsider broadening or adjusting topics, or increasing sources.`);
+      return;
+    }
 
     const prompt = buildPrompt(topics, unique);
 
