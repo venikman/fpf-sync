@@ -199,7 +199,14 @@ async function getGithubMeta(): Promise<GithubMeta> {
   const serverUrl = process.env.GITHUB_SERVER_URL || "https://github.com";
   const repo = process.env.GITHUB_REPOSITORY;
   const runId = process.env.GITHUB_RUN_ID;
-  const refName = process.env.GITHUB_REF_NAME || (process.env.GITHUB_REF?.replace(/^refs\/(heads|tags)\//, "") || undefined);
+  let refName: string | undefined;
+  if (process.env.GITHUB_REF_NAME) {
+    refName = process.env.GITHUB_REF_NAME;
+  } else if (process.env.GITHUB_REF) {
+    refName = process.env.GITHUB_REF.replace(/^refs\/(heads|tags)\//, "");
+  } else {
+    refName = undefined;
+  }
   const sha = process.env.GITHUB_SHA;
   let prNumber: number | undefined;
   let prTitle: string | undefined;
@@ -208,9 +215,11 @@ async function getGithubMeta(): Promise<GithubMeta> {
     try {
       const raw = await readFile(eventPath, "utf8");
       const evt = JSON.parse(raw);
-      if (evt?.pull_request?.number) prNumber = Number(evt.pull_request.number);
-      if (evt?.pull_request?.title) prTitle = String(evt.pull_request.title);
-    } catch {}
+      if (evt?.pull_request?.number) prNumber = evt.pull_request.number;
+      if (evt?.pull_request?.title) prTitle = evt.pull_request.title;
+    } catch (err) {
+      console.warn("Could not read or parse GITHUB_EVENT_PATH: " + eventPath, err);
+    }
   }
   return { serverUrl, repo, runId, refName, sha, prNumber, prTitle };
 }
@@ -382,9 +391,11 @@ async function generateStructuredWithFallback(
         lastErr = err;
         if (searchEnabled && autoDisableSearchOnPermission && isPermissionError(err)) {
           // Disable search and retry same model once without it
+          console.warn("Search grounding permission denied; disabling and retrying without search.");
           searchEnabled = false;
           continue;
         }
+        console.warn("Model '" + m + "' failed, attempting fallback. Error: " + (err?.message || String(err)));
         break; // move to next model
       }
     }
@@ -537,10 +548,6 @@ function between(md: string, startRe: RegExp, endRe: RegExp): string {
   return endIdx === -1 ? tail : tail.slice(0, endIdx);
 }
 
-function countMatches(md: string, re: RegExp): number {
-  const m = md.match(re);
-  return m ? m.length : 0;
-}
 
 type ValidationResult = { allOk: boolean; summary: string };
 
@@ -562,16 +569,17 @@ function validateReport(md: string): ValidationResult {
   const execBullets = execSection
     .split(/\n/)
     .filter((l) => /^\s*[-*]/.test(l));
-  const execBulletCountOk = execBullets.length >= 3 && execBullets.length <= 6;
-  checks.push({ name: "Executive Summary has 3–6 bullets", ok: execBulletCountOk, details: `found ${execBullets.length}` });
+  const execBulletCountOk = execBullets.length >= 3 && execBullets.length <= 5;
+  checks.push({ name: "Executive Summary has 3–5 bullets", ok: execBulletCountOk, details: `found ${execBullets.length}` });
 
-  const execBulletsTagged = execBullets.some((l) => /Audience:\s*(Eng|PM|Research)/i.test(l)) && execBullets.some((l) => /Recency:\s*(New|Recent|Ongoing)/i.test(l));
+  const execBulletsTagged = execBullets.length > 0 && execBullets.every((l) => /Audience:\s*(Eng|PM|Research)/i.test(l) && /Recency:\s*(New|Recent|Ongoing)/i.test(l));
   checks.push({ name: "Exec bullets include Audience and Recency tags", ok: execBulletsTagged });
 
   const hasImpactMap = /\n\s*2\.\s*Impact Map to FPF/i.test(md);
   checks.push({ name: "Impact Map section present", ok: hasImpactMap });
   const impactSection = hasImpactMap ? between(md, /\n\s*2\.\s*Impact Map to FPF/i, /\n\s*3\./) : "";
-  const impactHasLensTime = /Lens:\s*(Meta|Macro|Micro)/i.test(impactSection) && /Time:\s*(design|run)/i.test(impactSection);
+  const impactBullets = impactSection.split(/\n/).filter((l) => /^\s*[-*]/.test(l));
+  const impactHasLensTime = impactBullets.length > 0 && impactBullets.every((l) => /Lens:\s*(Meta|Macro|Micro)/i.test(l) && /Time:\s*(design|run)/i.test(l));
   checks.push({ name: "Impact bullets include Lens and Time tags", ok: impactHasLensTime });
 
   const hasADI = /Abduction/i.test(md) && /Deduction/i.test(md) && /Induction/i.test(md);
