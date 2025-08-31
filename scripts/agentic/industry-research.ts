@@ -7,20 +7,37 @@
  */
 
 import { appendFile, readFile } from "node:fs/promises";
-import { resolve, join } from "node:path";
+import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 
 // Use the official Google Generative AI SDK for Node
 // npm/bun: @google/generative-ai
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { XMLParser } from "fast-xml-parser";
+import {
+  countBullets,
+  extractHeadings,
+  extractSection,
+  extractTopics,
+  formatDateUTC,
+  parseGitRef,
+  validateResearchReport,
+} from "../lib/markdown-helpers.ts";
 
-const REQUEST_TIMEOUT_MS = Number.parseInt(process.env.REQUEST_TIMEOUT_MS || "8000", 10);
+const REQUEST_TIMEOUT_MS = Number.parseInt(
+  process.env.REQUEST_TIMEOUT_MS || "8000",
+  10,
+);
 const ARXIV_CONTACT = process.env.ARXIV_CONTACT || ""; // optional, e.g., email for arXiv policy compliance
-const UA_BASE = "fpf-sync/industry-research (+https://github.com/venikman/fpf-sync)";
+const UA_BASE =
+  "fpf-sync/industry-research (+https://github.com/venikman/fpf-sync)";
 const UA = ARXIV_CONTACT ? `${UA_BASE} (contact: ${ARXIV_CONTACT})` : UA_BASE;
 
-async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}, timeoutMs = REQUEST_TIMEOUT_MS): Promise<Response> {
+async function fetchWithTimeout(
+  input: RequestInfo | URL,
+  init: RequestInit = {},
+  timeoutMs = REQUEST_TIMEOUT_MS,
+): Promise<Response> {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -48,7 +65,11 @@ async function writeSummary(text: string, opts?: { header?: boolean }) {
   if (summaryPath) {
     const path = resolve(summaryPath);
     const prefix = header ? "# Daily Industry Research Report\n\n" : "";
-    await appendFile(path, prefix + text + (text.endsWith("\n") ? "" : "\n"), "utf8");
+    await appendFile(
+      path,
+      prefix + text + (text.endsWith("\n") ? "" : "\n"),
+      "utf8",
+    );
   } else {
     // Fallback to stdout if not in Actions
     if (header) process.stdout.write("# Daily Industry Research Report\n\n");
@@ -62,7 +83,10 @@ let SUMMARY_DRAFT_PATH: string | undefined;
 async function ensureDraft() {
   if (!SUMMARY_DRAFT_PATH) {
     const dir = process.env.RUNNER_TEMP || tmpdir();
-    SUMMARY_DRAFT_PATH = join(dir, `fpf-research-${Date.now()}-${Math.random().toString(36).slice(2)}.md`);
+    SUMMARY_DRAFT_PATH = join(
+      dir,
+      `fpf-research-${Date.now()}-${Math.random().toString(36).slice(2)}.md`,
+    );
     // create empty file
     await appendFile(SUMMARY_DRAFT_PATH, "");
   }
@@ -91,54 +115,61 @@ type SourceItem = {
   source: "arXiv" | "Crossref";
 };
 
-const FPF_PATH = "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md";
+const FPF_PATH =
+  "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md";
 
 function extractTopicsFromFpf(text: string, maxTopics = 8): string[] {
-  const headingRegex = /^#{1,6}\s+(.+)$/gm;
-  const headings: string[] = [];
-  for (const m of text.matchAll(headingRegex)) {
-    headings.push(m[1]);
-  }
-  const words = headings
-    .join(" ")
-    .toLowerCase()
-    .match(/[a-z][a-z\-]{3,}/g) ?? [];
-  const stop = new Set([
-    "with","from","that","this","into","about","within","between","those","these","using","through","their","there",
-    "your","ours","mine","ourselves","itself","it","them","they","also","over","under","have","has","been",
-    "core","conceptual","framework","first","principles","introduction","summary","chapter","section","appendix",
-  ]);
-  const freq = new Map<string, number>();
-  for (const w of words) {
-    if (stop.has(w)) continue;
-    freq.set(w, (freq.get(w) ?? 0) + 1);
-  }
-  const sorted = [...freq.entries()].sort((a, b) => b[1] - a[1]).map(([w]) => w);
+  // Extract headings and combine their text for topic extraction
+  const headings = extractHeadings(text);
+  const headingText = headings.map((h) => h.text).join(" ");
+
+  // Extract topics from the heading text
+  const topics = extractTopics(headingText, {
+    maxTopics,
+    minWordLength: 4,
+    includeCompounds: true,
+  });
+
   // Always include 'holonic' if present in the document
-  if (text.toLowerCase().includes("holonic") && !sorted.includes("holonic")) {
-    sorted.unshift("holonic");
+  if (text.toLowerCase().includes("holonic") && !topics.includes("holonic")) {
+    topics.unshift("holonic");
   }
-  return sorted.slice(0, maxTopics);
+
+  return topics;
 }
 
-async function fetchArxiv(keyword: string, maxResults = 3): Promise<SourceItem[]> {
-  const url = `https://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(keyword)}&sortBy=submittedDate&sortOrder=descending&start=0&max_results=${maxResults}`;
+async function fetchArxiv(
+  keyword: string,
+  maxResults = 3,
+): Promise<SourceItem[]> {
+  const url = `https://export.arxiv.org/api/query?search_query=all:${
+    encodeURIComponent(keyword)
+  }&sortBy=submittedDate&sortOrder=descending&start=0&max_results=${maxResults}`;
   try {
-    const res = await fetchWithTimeout(url, { headers: { "User-Agent": UA, Accept: "application/atom+xml" } });
+    const res = await fetchWithTimeout(url, {
+      headers: { "User-Agent": UA, Accept: "application/atom+xml" },
+    });
     if (!res.ok) {
-      console.error(`arXiv API failed for '${keyword}': ${res.status} ${res.statusText}`);
+      console.error(
+        `arXiv API failed for '${keyword}': ${res.status} ${res.statusText}`,
+      );
       return [];
     }
     const xml = await res.text();
     const parser = new XMLParser({ ignoreAttributes: false });
     const data = parser.parse(xml);
-    const entries = (data?.feed?.entry ?? []) as any[];
+    const rawEntries = data?.feed?.entry;
+    const entries = rawEntries
+      ? (Array.isArray(rawEntries) ? rawEntries : [rawEntries])
+      : [];
     return entries.slice(0, maxResults).map((e) => ({
       title: String(e.title ?? "Untitled").replace(/\s+/g, " ").trim(),
-      url: typeof e.link === "object" ? e.link[0]?.["@_href"] ?? e.link?.["@_href"] ?? "" : "",
+      url: typeof e.link === "object"
+        ? e.link[0]?.["@_href"] ?? e.link?.["@_href"] ?? ""
+        : "",
       date: e.published ?? e.updated ?? undefined,
       source: "arXiv" as const,
-    })).filter(i => i.url);
+    })).filter((i) => i.url);
   } catch (err) {
     console.error(`Error querying arXiv for '${keyword}':`, err);
     return [];
@@ -146,18 +177,28 @@ async function fetchArxiv(keyword: string, maxResults = 3): Promise<SourceItem[]
 }
 
 async function fetchCrossref(keyword: string, rows = 3): Promise<SourceItem[]> {
-  const url = `https://api.crossref.org/works?query=${encodeURIComponent(keyword)}&rows=${rows}&sort=published&order=desc`;
+  const url = `https://api.crossref.org/works?query=${
+    encodeURIComponent(keyword)
+  }&rows=${rows}&sort=published&order=desc`;
   try {
-    const res = await fetchWithTimeout(url, { headers: { "User-Agent": UA, Accept: "application/json" } });
+    const res = await fetchWithTimeout(url, {
+      headers: { "User-Agent": UA, Accept: "application/json" },
+    });
     if (!res.ok) {
-      console.error(`Crossref API failed for '${keyword}': ${res.status} ${res.statusText}`);
+      console.error(
+        `Crossref API failed for '${keyword}': ${res.status} ${res.statusText}`,
+      );
       return [];
     }
     const json = await res.json();
     const items = json?.message?.items ?? [];
     return items.slice(0, rows).map((it: any) => {
-      const title = Array.isArray(it.title) ? it.title[0] : (it.title || "Untitled");
-      const dateParts = it.published?.["date-parts"]?.[0] || it["published-print"]?.["date-parts"]?.[0] || it["published-online"]?.["date-parts"]?.[0] || [];
+      const title = Array.isArray(it.title)
+        ? it.title[0]
+        : (it.title || "Untitled");
+      const dateParts = it.published?.["date-parts"]?.[0] ||
+        it["published-print"]?.["date-parts"]?.[0] ||
+        it["published-online"]?.["date-parts"]?.[0] || [];
       const date = dateParts.length ? dateParts.join("-") : undefined;
       return {
         title: String(title).replace(/\s+/g, " ").trim(),
@@ -176,7 +217,10 @@ function dedupeItems(items: SourceItem[]): SourceItem[] {
   const seen = new Set<string>();
   const out: SourceItem[] = [];
   for (const it of items) {
-    const key = (it.title.toLowerCase() + "|" + it.url.toLowerCase()).slice(0, 500);
+    const key = (it.title.toLowerCase() + "|" + it.url.toLowerCase()).slice(
+      0,
+      500,
+    );
     if (seen.has(key)) continue;
     seen.add(key);
     out.push(it);
@@ -203,7 +247,8 @@ async function getGithubMeta(): Promise<GithubMeta> {
   if (process.env.GITHUB_REF_NAME) {
     refName = process.env.GITHUB_REF_NAME;
   } else if (process.env.GITHUB_REF) {
-    refName = process.env.GITHUB_REF.replace(/^refs\/(heads|tags)\//, "");
+    const ref = parseGitRef(process.env.GITHUB_REF);
+    refName = ref.name;
   } else {
     refName = undefined;
   }
@@ -218,7 +263,10 @@ async function getGithubMeta(): Promise<GithubMeta> {
       if (evt?.pull_request?.number) prNumber = evt.pull_request.number;
       if (evt?.pull_request?.title) prTitle = evt.pull_request.title;
     } catch (err) {
-      console.warn("Could not read or parse GITHUB_EVENT_PATH: " + eventPath, err);
+      console.warn(
+        "Could not read or parse GITHUB_EVENT_PATH: " + eventPath,
+        err,
+      );
     }
   }
   return { serverUrl, repo, runId, refName, sha, prNumber, prTitle };
@@ -229,29 +277,49 @@ function shortSha(sha?: string): string | undefined {
 }
 
 function fmtDate(d: Date): string {
-  return d.toISOString().replace("T", " ").replace("Z", " UTC");
+  return formatDateUTC(d);
 }
 
-async function buildPreamble(topics: string[], items: SourceItem[], requestedModel?: string): Promise<string> {
+async function buildPreamble(
+  topics: string[],
+  items: SourceItem[],
+  requestedModel?: string,
+): Promise<string> {
   const meta = await getGithubMeta();
-  const runUrl = meta.repo && meta.runId ? `${meta.serverUrl}/${meta.repo}/actions/runs/${meta.runId}` : undefined;
-  const prUrl = meta.repo && meta.prNumber ? `${meta.serverUrl}/${meta.repo}/pull/${meta.prNumber}` : undefined;
-  const commitUrl = meta.repo && meta.sha ? `${meta.serverUrl}/${meta.repo}/commit/${meta.sha}` : undefined;
+  const runUrl = meta.repo && meta.runId
+    ? `${meta.serverUrl}/${meta.repo}/actions/runs/${meta.runId}`
+    : undefined;
+  const prUrl = meta.repo && meta.prNumber
+    ? `${meta.serverUrl}/${meta.repo}/pull/${meta.prNumber}`
+    : undefined;
+  const commitUrl = meta.repo && meta.sha
+    ? `${meta.serverUrl}/${meta.repo}/commit/${meta.sha}`
+    : undefined;
   const topTopics = topics.slice(0, 5).join(", ");
   const now = fmtDate(new Date());
 
-  const quickLinks = items.map((i, idx) => `- [${idx + 1}] ${i.title} (${i.source}${i.date ? ", " + i.date : ""}) — ${i.url}`).join("\n");
+  const quickLinks = items.map((i, idx) =>
+    `- [${idx + 1}] ${i.title} (${i.source}${
+      i.date ? ", " + i.date : ""
+    }) — ${i.url}`
+  ).join("\n");
 
   const lines: string[] = [];
   lines.push("## Overview");
   lines.push(`- 🗓️ Date: ${now}`);
   if (meta.refName || meta.sha) {
     const branch = meta.refName ? `🌿 Branch: ${meta.refName}` : "";
-    const commit = commitUrl ? `🧱 Commit: [${shortSha(meta.sha)}](${commitUrl})` : (meta.sha ? `🧱 Commit: ${shortSha(meta.sha)}` : "");
+    const commit = commitUrl
+      ? `🧱 Commit: [${shortSha(meta.sha)}](${commitUrl})`
+      : (meta.sha ? `🧱 Commit: ${shortSha(meta.sha)}` : "");
     lines.push([branch, commit].filter(Boolean).join(" • "));
   }
   if (prUrl) {
-    lines.push(`- 🔗 PR: [#${meta.prNumber}](${prUrl})${meta.prTitle ? ` — ${meta.prTitle}` : ""}`);
+    lines.push(
+      `- 🔗 PR: [#${meta.prNumber}](${prUrl})${
+        meta.prTitle ? ` — ${meta.prTitle}` : ""
+      }`,
+    );
   }
   if (runUrl) {
     lines.push(`- ▶️ Run: ${runUrl}`);
@@ -259,20 +327,28 @@ async function buildPreamble(topics: string[], items: SourceItem[], requestedMod
   if (requestedModel) {
     lines.push(`- 🤖 Requested model: ${requestedModel}`);
   }
-  lines.push(`- 📚 Sources: ${items.length} • 🧩 Topics: ${topTopics || "(none)"}`);
+  lines.push(
+    `- 📚 Sources: ${items.length} • 🧩 Topics: ${topTopics || "(none)"}`,
+  );
   lines.push("");
   if (items.length) {
     lines.push("## Quick links to sources");
     lines.push(quickLinks);
     lines.push("");
   }
-  lines.push("Navigation: [Executive Summary](#executive-summary) • [Impact Map](#impact-map-to-fpf-top-5) • [A→D→I](#abduction-→-deduction-→-induction-b5) • [Recommendations](#recommendations--next-state-b51) • [Sources](#sources)");
+  lines.push(
+    "Navigation: [Executive Summary](#executive-summary) • [Impact Map](#impact-map-to-fpf-top-5) • [A→D→I](#abduction--deduction--induction-b5) • [Recommendations](#recommendations--next-state-b51) • [Sources](#sources)",
+  );
   return lines.join("\n");
 }
 
 function buildPrompt(topics: string[], items: SourceItem[]): string {
   const sourcesList = items
-    .map((i, idx) => `[${idx + 1}] ${i.title} (${i.source}${i.date ? ", " + i.date : ""}) — ${i.url}`)
+    .map((i, idx) =>
+      `[${idx + 1}] ${i.title} (${i.source}${
+        i.date ? ", " + i.date : ""
+      }) — ${i.url}`
+    )
     .join("\n");
 
   return `You are an FPF-aligned research analyst. Produce a concise, high-signal daily research note strictly grounded in the numbered sources and aligned to the First Principles Framework (FPF).
@@ -338,17 +414,21 @@ End with:
 // Build fallback chain for Gemini models (e.g., 2.5-pro → 2.5-flash → 1.5-pro → 1.5-flash)
 function buildModelFallbackChain(requested: string): string[] {
   const chain: string[] = [];
-  const add = (m: string) => { if (!chain.includes(m)) chain.push(m); };
+  const add = (m: string) => {
+    if (!chain.includes(m)) chain.push(m);
+  };
   add(requested);
-  if (/-pro$/.test(requested)) add(requested.replace(/-pro$/, "-flash"));
+  if (requested.endsWith("-pro")) add(requested.replace(/-pro$/, "-flash"));
   // Generic safety fallbacks
-  ["gemini-2.5-pro","gemini-2.5-flash","gemini-1.5-pro","gemini-1.5-flash"].forEach(add);
+  ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-1.5-pro", "gemini-1.5-flash"]
+    .forEach(add);
   return chain;
 }
 
 function isPermissionError(err: any): boolean {
   const msg = (err?.message || String(err) || "").toLowerCase();
-  return msg.includes("permission") || msg.includes("denied") || msg.includes("unauthorized");
+  return msg.includes("permission") || msg.includes("denied") ||
+    msg.includes("unauthorized");
 }
 
 function readNumberEnv(name: string, def: number): number {
@@ -357,10 +437,13 @@ function readNumberEnv(name: string, def: number): number {
   return Number.isFinite(n) ? n : def;
 }
 
-function extractHeadingsExcerpt(fpfRaw: string, maxChars: number): string | undefined {
+function extractHeadingsExcerpt(
+  fpfRaw: string,
+  maxChars: number,
+): string | undefined {
   if (maxChars <= 0) return undefined;
-  const headingRegex = /^#{1,6}\s+.*$/gm;
-  const lines = [...fpfRaw.matchAll(headingRegex)].map(m => m[0]).join("\n");
+  const headings = extractHeadings(fpfRaw);
+  const lines = headings.map((h) => h.raw).join("\n");
   if (!lines) return undefined;
   return lines.length > maxChars ? lines.slice(0, maxChars) : lines;
 }
@@ -371,7 +454,7 @@ async function generateStructuredWithFallback(
   contents: any,
   trySearch: boolean,
   autoDisableSearchOnPermission: boolean,
-  generationConfig?: any
+  generationConfig?: any,
 ): Promise<{ usedModel: string; text: string; searchUsed: boolean }> {
   const candidates = buildModelFallbackChain(requestedModel);
   let lastErr: any;
@@ -389,20 +472,32 @@ async function generateStructuredWithFallback(
         return { usedModel: m, text, searchUsed: !!searchEnabled };
       } catch (err: any) {
         lastErr = err;
-        if (searchEnabled && autoDisableSearchOnPermission && isPermissionError(err)) {
+        if (
+          searchEnabled && autoDisableSearchOnPermission &&
+          isPermissionError(err)
+        ) {
           // Disable search and retry same model once without it
-          console.warn("Search grounding permission denied; disabling and retrying without search.");
+          console.warn(
+            "Search grounding permission denied; disabling and retrying without search.",
+          );
           searchEnabled = false;
           continue;
         }
-        console.warn("Model '" + m + "' failed, attempting fallback. Error: " + (err?.message || String(err)));
+        console.warn(
+          "Model '" + m + "' failed, attempting fallback. Error: " +
+            (err?.message || String(err)),
+        );
         break; // move to next model
       }
     }
     // Ensure search is disabled for subsequent models if permission error occurred
     searchEnabled = false;
   }
-  throw new Error(`All model attempts failed. Last error: ${lastErr?.message || String(lastErr)}`);
+  throw new Error(
+    `All model attempts failed. Last error: ${
+      lastErr?.message || String(lastErr)
+    }`,
+  );
 }
 
 async function run() {
@@ -415,7 +510,9 @@ async function run() {
     try {
       fpfRaw = await readFile(FPF_PATH, "utf8");
     } catch (err) {
-      await writeSummary(`❌ Failed to read FPF document at '${FPF_PATH}': ${String(err)}`);
+      await writeSummary(
+        `❌ Failed to read FPF document at '${FPF_PATH}': ${String(err)}`,
+      );
       throw err;
     }
     const topics = extractTopicsFromFpf(fpfRaw);
@@ -424,7 +521,10 @@ async function run() {
     const keywords = topics.slice(0, 5);
     const results: SourceItem[] = [];
     for (const kw of keywords) {
-      const [ax, cx] = await Promise.all([fetchArxiv(kw, 3), fetchCrossref(kw, 3)]);
+      const [ax, cx] = await Promise.all([
+        fetchArxiv(kw, 3),
+        fetchCrossref(kw, 3),
+      ]);
       results.push(...ax, ...cx);
     }
     const unique = dedupeItems(results).slice(0, 12);
@@ -434,7 +534,11 @@ async function run() {
     await appendDraft(preamble);
 
     if (unique.length === 0) {
-      await appendDraft(`No recent external updates found for FPF topics: ${keywords.join(", ")}.\n\nConsider broadening or adjusting topics, or increasing sources.`);
+      await appendDraft(
+        `No recent external updates found for FPF topics: ${
+          keywords.join(", ")
+        }.\n\nConsider broadening or adjusting topics, or increasing sources.`,
+      );
       await flushDraft();
       return;
     }
@@ -450,13 +554,17 @@ async function run() {
 
     // Optional FPF excerpt grounding via headings (free-tier safe). Off by default; enable via GROUND_FPF_EXCERPT_BYTES > 0
     const excerptBytes = readNumberEnv("GROUND_FPF_EXCERPT_BYTES", 0);
-    const fpfExcerpt = excerptBytes > 0 ? extractHeadingsExcerpt(fpfRaw, excerptBytes) : undefined;
+    const fpfExcerpt = excerptBytes > 0
+      ? extractHeadingsExcerpt(fpfRaw, excerptBytes)
+      : undefined;
 
-    const parts: any[] = [ { text: prompt } ];
+    const parts: any[] = [{ text: prompt }];
     if (fpfExcerpt) {
-      parts.push({ text: `FPF headings excerpt (for grounding):\n${fpfExcerpt}` });
+      parts.push({
+        text: `FPF headings excerpt (for grounding):\n${fpfExcerpt}`,
+      });
     }
-    const contents = [ { role: 'user', parts } ];
+    const contents = [{ role: "user", parts }];
 
     const generationConfig: any = {
       temperature: readNumberEnv("GEN_TEMPERATURE", 0.3),
@@ -464,17 +572,22 @@ async function run() {
       maxOutputTokens: Math.floor(readNumberEnv("GEN_MAX_TOKENS", 2048)),
     };
 
-    const { usedModel, text, searchUsed } = await generateStructuredWithFallback(
-      genAI,
-      requestedModel,
-      contents,
-      trySearch,
-      autoDisableSearch,
-      generationConfig
-    );
+    const { usedModel, text, searchUsed } =
+      await generateStructuredWithFallback(
+        genAI,
+        requestedModel,
+        contents,
+        trySearch,
+        autoDisableSearch,
+        generationConfig,
+      );
 
     // Note actual model used (and whether fallback occurred)
-    await appendDraft(`- 🤖 Used model: ${usedModel}${usedModel !== requestedModel ? ` (fallback from ${requestedModel})` : ""}${searchUsed ? " • 🔎 grounded via Google Search" : ""}`);
+    await appendDraft(
+      `- 🤖 Used model: ${usedModel}${
+        usedModel !== requestedModel ? ` (fallback from ${requestedModel})` : ""
+      }${searchUsed ? " • 🔎 grounded via Google Search" : ""}`,
+    );
 
     await appendDraft(text);
 
@@ -493,13 +606,16 @@ async function run() {
         .filter((l) => l.trim().startsWith("- [ ] "))
         .map((l) => l.replace(/^- \[ \]\s*/, "").trim())
         .join("; ");
-      const repairInstr = `You must repair your own report to satisfy strict formatting checks without changing factual content.\n\nChecks failing: ${failing || "(unspecified)"}.\n\nRepair rules:\n- Keep the same claims and sources; do not invent new sources or facts.\n- Ensure exact section headings and order from the prompt (1..7).\n- Add missing inline [n] citations mapped to the numbered sources list created earlier. If a claim cannot be supported, mark it as “insufficient evidence”.\n- Executive Summary: include 'Bottom line:' and 3–5 bullets with Audience: and Recency: tags.\n- Impact Map bullets must include Lens: and Time: tags.\n- Recommendations must include Confidence and Assurance hints.\n- Do not add YAML. Markdown only.`;
+      const repairInstr =
+        `You must repair your own report to satisfy strict formatting checks without changing factual content.\n\nChecks failing: ${
+          failing || "(unspecified)"
+        }.\n\nRepair rules:\n- Keep the same claims and sources; do not invent new sources or facts.\n- Ensure exact section headings and order from the prompt (1..7).\n- Add missing inline [n] citations mapped to the numbered sources list created earlier. If a claim cannot be supported, mark it as “insufficient evidence”.\n- Executive Summary: include 'Bottom line:' and 3–5 bullets with Audience: and Recency: tags.\n- Impact Map bullets must include Lens: and Time: tags.\n- Recommendations must include Confidence and Assurance hints.\n- Do not add YAML. Markdown only.`;
 
       const repairParts: any[] = [
         { text: repairInstr },
-        { text: "\n\n---\n\nYour report (to be repaired):\n\n" + text }
+        { text: "\n\n---\n\nYour report (to be repaired):\n\n" + text },
       ];
-      const repairContents = [ { role: 'user', parts: repairParts } ];
+      const repairContents = [{ role: "user", parts: repairParts }];
 
       const genCfgRepair: any = {
         temperature: 0.2,
@@ -513,7 +629,7 @@ async function run() {
         repairContents,
         /*trySearch*/ false,
         /*autoDisable*/ false,
-        genCfgRepair
+        genCfgRepair,
       );
 
       if (repaired.text && repaired.text.trim()) {
@@ -525,9 +641,10 @@ async function run() {
         }
       }
     }
-
   } catch (err: any) {
-    await appendDraft(`❌ Failed to generate report: ${err?.message || String(err)}`);
+    await appendDraft(
+      `❌ Failed to generate report: ${err?.message || String(err)}`,
+    );
     process.exitCode = 1;
   } finally {
     await flushDraft();
@@ -540,64 +657,83 @@ async function run() {
 // Keeping this comment as a pointer without adding a hard runtime dependency.
 
 // --- Simple heuristic validator to encourage compliance with the prompt ---
-function between(md: string, startRe: RegExp, endRe: RegExp): string {
-  const start = md.search(startRe);
-  if (start === -1) return "";
-  const tail = md.slice(start);
-  const endIdx = tail.search(endRe);
-  return endIdx === -1 ? tail : tail.slice(0, endIdx);
-}
-
-
 type ValidationResult = { allOk: boolean; summary: string };
 
 function validateReport(md: string): ValidationResult {
-  const checks: { name: string; ok: boolean; details?: string }[] = [];
+  const validation = validateResearchReport(md);
+  const checks: Array<{ name: string; ok: boolean; details?: string }> = [];
 
-  const hasCitations = /\[\d+\]/.test(md);
-  checks.push({ name: "Inline citations present", ok: hasCitations });
+  // Check Executive Summary
+  checks.push({
+    name: "Executive Summary section present",
+    ok: validation.sections.executiveSummary,
+  });
 
-  const hasExec = /\n\s*1\.\s*Executive Summary/i.test(md);
-  checks.push({ name: "Executive Summary section present", ok: hasExec });
+  // Count bullets in Executive Summary
+  const execSection = extractSection(md, "Executive Summary", "Impact Map");
+  const execBulletCount = countBullets(execSection);
+  const execBulletCountOk = execBulletCount >= 3 && execBulletCount <= 5;
+  checks.push({
+    name: "Executive Summary has 3–5 bullets",
+    ok: execBulletCountOk,
+    details: `found ${execBulletCount}`,
+  });
 
-  const execSection = hasExec
-    ? between(md, /\n\s*1\.\s*Executive Summary/i, /\n\s*2\./)
-    : "";
-  const hasBottomLine = /Bottom line:\s*.*\[\d+\]/i.test(execSection);
-  checks.push({ name: "Bottom line with citation", ok: hasBottomLine });
+  // Check for tags in Executive Summary bullets
+  const execBullets = execSection.match(/^\s*[-*]\s+(.+)$/gm) || [];
+  const execBulletsTagged = execBullets.length > 0 &&
+    execBullets.every((l) =>
+      /Audience:\s*(Eng|PM|Research)/i.test(l) &&
+      /Recency:\s*(New|Recent|Ongoing)/i.test(l)
+    );
+  checks.push({
+    name: "Exec bullets include Audience and Recency tags",
+    ok: execBulletsTagged,
+  });
 
-  const execBullets = execSection
-    .split(/\n/)
-    .filter((l) => /^\s*[-*]/.test(l));
-  const execBulletCountOk = execBullets.length >= 3 && execBullets.length <= 5;
-  checks.push({ name: "Executive Summary has 3–5 bullets", ok: execBulletCountOk, details: `found ${execBullets.length}` });
+  // Check Impact Map
+  checks.push({
+    name: "Impact Map section present",
+    ok: validation.sections.impactMap,
+  });
 
-  const execBulletsTagged = execBullets.length > 0 && execBullets.every((l) => /Audience:\s*(Eng|PM|Research)/i.test(l) && /Recency:\s*(New|Recent|Ongoing)/i.test(l));
-  checks.push({ name: "Exec bullets include Audience and Recency tags", ok: execBulletsTagged });
+  // Check A→D→I section
+  checks.push({
+    name: "A→D→I section present",
+    ok: validation.sections.adiSection,
+  });
 
-  const hasImpactMap = /\n\s*2\.\s*Impact Map to FPF/i.test(md);
-  checks.push({ name: "Impact Map section present", ok: hasImpactMap });
-  const impactSection = hasImpactMap ? between(md, /\n\s*2\.\s*Impact Map to FPF/i, /\n\s*3\./) : "";
-  const impactBullets = impactSection.split(/\n/).filter((l) => /^\s*[-*]/.test(l));
-  const impactHasLensTime = impactBullets.length > 0 && impactBullets.every((l) => /Lens:\s*(Meta|Macro|Micro)/i.test(l) && /Time:\s*(design|run)/i.test(l));
-  checks.push({ name: "Impact bullets include Lens and Time tags", ok: impactHasLensTime });
+  // Check Recommendations
+  checks.push({
+    name: "Recommendations & Next State present",
+    ok: validation.sections.recommendations,
+  });
 
-  const hasADI = /Abduction/i.test(md) && /Deduction/i.test(md) && /Induction/i.test(md);
-  checks.push({ name: "A→D→I section present", ok: hasADI });
+  // Check Sources
+  checks.push({
+    name: "Sources section present",
+    ok: validation.sections.sources,
+  });
 
-  const hasRecommendations = /Recommendations\s*&\s*Next State/i.test(md);
-  checks.push({ name: "Recommendations & Next State present", ok: hasRecommendations });
-
-  const hasSources = /\n\s*7\.\s*Sources/i.test(md) || /\n\s*Sources\s*\n/i.test(md);
-  checks.push({ name: "Sources section present", ok: hasSources });
+  // Add any validation errors/warnings as checks
+  for (const error of validation.errors) {
+    checks.push({ name: error, ok: false });
+  }
+  for (const warning of validation.warnings) {
+    checks.push({ name: warning, ok: false });
+  }
 
   const allOk = checks.every((c) => c.ok);
   const lines = [
     "<details><summary><strong>Validation (auto-checks)</strong></summary>",
     "",
-    allOk ? "All key checks passed." : "Some checks failed; consider revising the prompt sections or rerunning.",
+    allOk
+      ? "All key checks passed."
+      : "Some checks failed; consider revising the prompt sections or rerunning.",
     "",
-    ...checks.map((c) => `- ${c.ok ? "[x]" : "[ ]"} ${c.name}${c.details ? ` — ${c.details}` : ""}`),
+    ...checks.map((c) =>
+      `- ${c.ok ? "[x]" : "[ ]"} ${c.name}${c.details ? ` — ${c.details}` : ""}`
+    ),
     "",
     "</details>",
   ];
@@ -605,4 +741,3 @@ function validateReport(md: string): ValidationResult {
 }
 
 run();
-
