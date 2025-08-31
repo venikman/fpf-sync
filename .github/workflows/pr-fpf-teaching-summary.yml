@@ -1,0 +1,96 @@
+name: PR FPF Teaching Summary
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+env:
+  FPF_GLOB: 'yadisk/**/*.md'
+  MARKER: 'FPF-TEACHING-SUMMARY-REQUEST'
+
+jobs:
+  summarize:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: pr-fpf-teaching-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - name: Determine changed files
+        id: files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const glob = process.env.FPF_GLOB;
+            const pr = context.payload.pull_request;
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+            const mm = (await import('https://cdn.skypack.dev/micromatch@4?min')).default;
+            const changed = files.map(f => f.filename);
+            const matched = mm(changed, glob);
+            core.setOutput('matched', JSON.stringify(matched));
+            core.info(`Changed files: ${JSON.stringify(changed)}`);
+            core.info(`Matched files: ${JSON.stringify(matched)}`);
+
+      - name: Skip if no FPF file changed
+        if: ${{ steps.files.outputs.matched == '[]' }}
+        run: echo "No FPF files changed; skipping."
+
+      - name: Check if summary already posted
+        id: check
+        if: ${{ steps.files.outputs.matched != '[]' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              per_page: 100
+            });
+            const exists = comments.some(c => (c.body||'').includes(process.env.MARKER));
+            core.setOutput('exists', exists ? 'true' : 'false');
+
+      - name: Post teaching summary request
+        if: ${{ steps.check.outputs.exists != 'true' && steps.files.outputs.matched != '[]' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const matched = JSON.parse(process.env.MATCHED || '[]');
+            const files = JSON.parse('${{ steps.files.outputs.matched }}');
+            const body = `<!-- ${process.env.MARKER} -->\n` +
+`FPF Teaching Summary Request\n\n` +
+`Please summarize the changes in the FPF document(s) from a teaching/methodical perspective.\n\n` +
+`Context:\n` +
+`- PR: #${pr.number} (${pr.title})\n` +
+`- Changed FPF files: ${files.map(f => '` + '${f}' + `').join(', ')}\n\n` +
+`Instructions:\n` +
+`- Act as an expert instructor using the First Principles Framework (FPF, holonic perspective).\n` +
+`- Explain WHAT changed, WHY it matters, and HOW it affects understanding.\n` +
+`- Use clear sections in this order: TL;DR, Key Concepts, Before vs After, Step-by-step Teaching Notes, Examples/Exercises, Reviewer Focus.\n` +
+`- Prefer short paragraphs and bullet points. Avoid code.\n` +
+`- Call out new/removed definitions, renamed terms, scope changes, and any broken invariants.\n` +
+`- If diff noise is high, focus on conceptual shifts (definitions, relationships, constraints).\n\n` +
+`Assistants:\n` +
+`- /copilot summarize\n` +
+`- /gemini review (focus on teaching perspective; produce the structured summary above).`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body,
+            });
+
