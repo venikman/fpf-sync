@@ -155,6 +155,80 @@ function dedupeItems(items: SourceItem[]): SourceItem[] {
   return out;
 }
 
+// Build a visual preamble with useful links and metadata for the GH summary
+type GithubMeta = {
+  serverUrl: string;
+  repo?: string;
+  runId?: string;
+  refName?: string;
+  sha?: string;
+  prNumber?: number;
+  prTitle?: string;
+};
+
+async function getGithubMeta(): Promise<GithubMeta> {
+  const serverUrl = process.env.GITHUB_SERVER_URL || "https://github.com";
+  const repo = process.env.GITHUB_REPOSITORY;
+  const runId = process.env.GITHUB_RUN_ID;
+  const refName = process.env.GITHUB_REF_NAME || (process.env.GITHUB_REF?.replace(/^refs\/(heads|tags)\//, "") || undefined);
+  const sha = process.env.GITHUB_SHA;
+  let prNumber: number | undefined;
+  let prTitle: string | undefined;
+  const eventPath = process.env.GITHUB_EVENT_PATH;
+  if (eventPath) {
+    try {
+      const raw = await readFile(eventPath, "utf8");
+      const evt = JSON.parse(raw);
+      if (evt?.pull_request?.number) prNumber = Number(evt.pull_request.number);
+      if (evt?.pull_request?.title) prTitle = String(evt.pull_request.title);
+    } catch {}
+  }
+  return { serverUrl, repo, runId, refName, sha, prNumber, prTitle };
+}
+
+function shortSha(sha?: string): string | undefined {
+  return sha ? sha.slice(0, 7) : undefined;
+}
+
+function fmtDate(d: Date): string {
+  return d.toISOString().replace("T", " ").replace("Z", " UTC");
+}
+
+async function buildPreamble(topics: string[], items: SourceItem[]): Promise<string> {
+  const meta = await getGithubMeta();
+  const runUrl = meta.repo && meta.runId ? `${meta.serverUrl}/${meta.repo}/actions/runs/${meta.runId}` : undefined;
+  const prUrl = meta.repo && meta.prNumber ? `${meta.serverUrl}/${meta.repo}/pull/${meta.prNumber}` : undefined;
+  const commitUrl = meta.repo && meta.sha ? `${meta.serverUrl}/${meta.repo}/commit/${meta.sha}` : undefined;
+  const topTopics = topics.slice(0, 5).join(", ");
+  const now = fmtDate(new Date());
+
+  const quickLinks = items.map((i, idx) => `- [${idx + 1}] ${i.title} (${i.source}${i.date ? ", " + i.date : ""}) — ${i.url}`).join("\n");
+
+  const lines: string[] = [];
+  lines.push("## Overview");
+  lines.push(`- 🗓️ Date: ${now}`);
+  if (meta.refName || meta.sha) {
+    const branch = meta.refName ? `🌿 Branch: ${meta.refName}` : "";
+    const commit = commitUrl ? `🧱 Commit: [${shortSha(meta.sha)}](${commitUrl})` : (meta.sha ? `🧱 Commit: ${shortSha(meta.sha)}` : "");
+    lines.push([branch, commit].filter(Boolean).join(" • "));
+  }
+  if (prUrl) {
+    lines.push(`- 🔗 PR: [#${meta.prNumber}](${prUrl})${meta.prTitle ? ` — ${meta.prTitle}` : ""}`);
+  }
+  if (runUrl) {
+    lines.push(`- ▶️ Run: ${runUrl}`);
+  }
+  lines.push(`- 📚 Sources: ${items.length} • 🧩 Topics: ${topTopics || "(none)"}`);
+  lines.push("");
+  if (items.length) {
+    lines.push("## Quick links to sources");
+    lines.push(quickLinks);
+    lines.push("");
+  }
+  lines.push("Navigation: [Executive Summary](#executive-summary) • [Impact Map](#impact-map-to-fpf-top-5) • [A→D→I](#abduction-→-deduction-→-induction-b5) • [Recommendations](#recommendations--next-state-b51) • [Sources](#sources)");
+  return lines.join("\n");
+}
+
 function buildPrompt(topics: string[], items: SourceItem[]): string {
   const sourcesList = items
     .map((i, idx) => `[${idx + 1}] ${i.title} (${i.source}${i.date ? ", " + i.date : ""}) — ${i.url}`)
@@ -225,8 +299,6 @@ async function run() {
     const apiKey = getEnv("GOOGLE_AI_API_KEY", true); // required
     const modelName = getEnv("GEMINI_MODEL") || "gemini-1.5-flash";
 
-    await writeSummary("", { header: true });
-
     // Read FPF file and extract topics
     let fpfRaw = "";
     try {
@@ -245,6 +317,10 @@ async function run() {
       results.push(...ax, ...cx);
     }
     const unique = dedupeItems(results).slice(0, 12);
+
+    // Write a visual preamble with links/meta at the top of the GH summary
+    const preamble = await buildPreamble(topics, unique);
+    await writeSummary(preamble, { header: true });
 
     if (unique.length === 0) {
       await writeSummary(`No recent external updates found for FPF topics: ${keywords.join(", ")}.\n\nConsider broadening or adjusting topics, or increasing sources.`);
@@ -336,10 +412,13 @@ function buildValidationSummary(md: string): string {
 
   const allOk = checks.every((c) => c.ok);
   const lines = [
-    "## Validation (auto-checks)",
+    "<details><summary><strong>Validation (auto-checks)</strong></summary>",
+    "",
     allOk ? "All key checks passed." : "Some checks failed; consider revising the prompt sections or rerunning.",
     "",
-    ...checks.map((c) => `${c.ok ? "✅" : "⚠️"} ${c.name}${c.details ? ` — ${c.details}` : ""}`),
+    ...checks.map((c) => `- ${c.ok ? "[x]" : "[ ]"} ${c.name}${c.details ? ` — ${c.details}` : ""}`),
+    "",
+    "</details>",
   ];
   return lines.join("\n");
 }
