@@ -7,7 +7,8 @@
  */
 
 import { appendFile, readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { resolve, join } from "node:path";
+import { tmpdir } from "node:os";
 
 // Use the official Google Generative AI SDK for Node
 // npm/bun: @google/generative-ai
@@ -53,6 +54,34 @@ async function writeSummary(text: string, opts?: { header?: boolean }) {
     if (header) process.stdout.write("# Daily Industry Research Report\n\n");
     process.stdout.write(text + (text.endsWith("\n") ? "" : "\n"));
   }
+}
+
+// --- Temporary summary draft handling (build full content, then flush once) ---
+let SUMMARY_DRAFT_PATH: string | undefined;
+
+async function ensureDraft() {
+  if (!SUMMARY_DRAFT_PATH) {
+    const dir = process.env.RUNNER_TEMP || tmpdir();
+    SUMMARY_DRAFT_PATH = join(dir, `fpf-research-${Date.now()}-${Math.random().toString(36).slice(2)}.md`);
+    // create empty file
+    await appendFile(SUMMARY_DRAFT_PATH, "");
+  }
+}
+
+async function appendDraft(text: string) {
+  await ensureDraft();
+  const t = text.endsWith("\n") ? text : text + "\n";
+  await appendFile(SUMMARY_DRAFT_PATH!, t, "utf8");
+}
+
+async function flushDraft() {
+  if (!SUMMARY_DRAFT_PATH) {
+    await writeSummary("", { header: true });
+    return;
+  }
+  const buf = await readFile(SUMMARY_DRAFT_PATH, "utf8");
+  await writeSummary(buf, { header: true });
+  SUMMARY_DRAFT_PATH = undefined;
 }
 
 type SourceItem = {
@@ -391,10 +420,11 @@ async function run() {
 
     // Write a visual preamble with links/meta at the top of the GH summary
     const preamble = await buildPreamble(topics, unique, requestedModel);
-    await writeSummary(preamble, { header: true });
+    await appendDraft(preamble);
 
     if (unique.length === 0) {
-      await writeSummary(`No recent external updates found for FPF topics: ${keywords.join(", ")}.\n\nConsider broadening or adjusting topics, or increasing sources.`);
+      await appendDraft(`No recent external updates found for FPF topics: ${keywords.join(", ")}.\n\nConsider broadening or adjusting topics, or increasing sources.`);
+      await flushDraft();
       return;
     }
 
@@ -433,14 +463,14 @@ async function run() {
     );
 
     // Note actual model used (and whether fallback occurred)
-    await writeSummary(`- 🤖 Used model: ${usedModel}${usedModel !== requestedModel ? ` (fallback from ${requestedModel})` : ""}${searchUsed ? " • 🔎 grounded via Google Search" : ""}`);
+    await appendDraft(`- 🤖 Used model: ${usedModel}${usedModel !== requestedModel ? ` (fallback from ${requestedModel})` : ""}${searchUsed ? " • 🔎 grounded via Google Search" : ""}`);
 
-    await writeSummary(text);
+    await appendDraft(text);
 
     // Post-generation validation (heuristic) and summary append
     let validation = validateReport(text);
     if (validation.summary.trim()) {
-      await writeSummary("\n\n" + validation.summary);
+      await appendDraft("\n\n" + validation.summary);
     }
 
     // Auto-repair pass: try to fix formatting to satisfy checks without adding new claims
@@ -476,22 +506,24 @@ async function run() {
       );
 
       if (repaired.text && repaired.text.trim()) {
-        await writeSummary("\n\n🔧 Auto-repair applied (format compliance)");
-        await writeSummary(repaired.text);
+        await appendDraft("\n\n🔧 Auto-repair applied (format compliance)");
+        await appendDraft(repaired.text);
         validation = validateReport(repaired.text);
         if (validation.summary.trim()) {
-          await writeSummary("\n\n" + validation.summary);
+          await appendDraft("\n\n" + validation.summary);
         }
       }
     }
 
     if (process.env.VALIDATION_STRICT === '1' && !validation.allOk) {
-      await writeSummary("\n❌ Validation failed (strict mode enabled). Failing the job.");
+      await appendDraft("\n❌ Validation failed (strict mode enabled). Failing the job.");
       process.exitCode = 2;
     }
   } catch (err: any) {
-    await writeSummary(`❌ Failed to generate report: ${err?.message || String(err)}`);
+    await appendDraft(`❌ Failed to generate report: ${err?.message || String(err)}`);
     process.exitCode = 1;
+  } finally {
+    await flushDraft();
   }
 }
 
