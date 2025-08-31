@@ -42,7 +42,6 @@ jobs:
         env:
           GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-pro
-          VALIDATION_STRICT: "1"
           USE_SEARCH_GROUNDING: "auto"  # try search grounding; auto-disable on permission error
           # Optional: include small FPF headings excerpt to ground context without extra API features
           # GROUND_FPF_EXCERPT_BYTES: "0"

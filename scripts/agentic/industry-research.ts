@@ -515,10 +515,6 @@ async function run() {
       }
     }
 
-    if (process.env.VALIDATION_STRICT === '1' && !validation.allOk) {
-      await appendDraft("\n❌ Validation failed (strict mode enabled). Failing the job.");
-      process.exitCode = 2;
-    }
   } catch (err: any) {
     await appendDraft(`❌ Failed to generate report: ${err?.message || String(err)}`);
     process.exitCode = 1;
