@@ -161,7 +161,7 @@ Draft
 | E.7 | **Archetypal Grounding Principle** | \[D] | full text | Mandates the Tell-Show-Show rule for all [A] patterns, requiring both System and Episteme archetypes. |
 | E.8 | **FPF Authoring Conventions & Style Guide** | \[A] | full text | Defines [A]/[D] templates, stylistic principles (S-rules), and the Narrative Flow Heuristic. |
 | E.9 | **Design-Rationale Record (DRR) Process** | \[D] | full text | Defines the DRR state graph and the Context/Decision/Rationale/Consequences structure for changes. |
-| E.10 | **Lexical Governance & Stratification** | \[A] | full text | Four registers + vertical term disambiguation; includes L-FUNC/L-PROC. |
+| E.10 | **Lexical Discipline & Stratification** | \[A] | full text | Four registers + vertical term disambiguation; includes L-FUNC/L-PROC. |
 | E.10.P | **Conceptual Prefixes (policy & registry)** | \[A] | full text | Provides a registry and minting policy for conceptual prefixes like U., Γ_, ut:, tv:, etc. |
 | E.10.D1| **Lexical Discipline for “Context” (D.CTX)** | \[D] | full text | Makes `Context` unambiguous (≡ U.BoundedContext); bans "anchor". |
 | E.10.D2| **Intension–Description–Specification Discipline (I/D/S)** | \[D] | full text | Separates the thing (Intension) from its description and its testable spec. |
@@ -365,7 +365,7 @@ This architectural approach shifts the focus from the internal, fallible state o
 | Cognitive Failure Mode | The Conventional Approach (Diagnostic) | The FPF Solution (Architectural & Generative) |
 | :--- | :--- | :--- |
 | **Conflation of Plan and Reality** | Reminds us to be aware of the **Planning Fallacy** or **Confirmation Bias**, where we seek evidence that our plan is working and ignore contradictory data. | **`Temporal Duality (A.4)`** and the strict distinction between `design-time` artifacts (`MethodDescription`, `WorkPlan`) and `run-time` artifacts (`Work`). This is not a psychological reminder; it is a **category error** to mix them. The architecture enforces the separation. |
-| **Ambiguity and Equivocation** | Warns against using vague terms or shifting the meaning of a word mid-argument. | **`Lexical Governance (E.10)`** and **`U.BoundedContext (A.1.1)`**. FPF bans overloaded terms like "process" from its core and requires that all domain terms be explicitly projected onto precise FPF concepts within a bounded context. Ambiguity is architecturally constrained, not just advised against. |
+| **Ambiguity and Equivocation** | Warns against using vague terms or shifting the meaning of a word mid-argument. | **`Lexical Discipline (E.10)`** and **`U.BoundedContext (A.1.1)`**. FPF bans overloaded terms like "process" from its core and requires that all domain terms be explicitly projected onto precise FPF concepts within a bounded context. Ambiguity is architecturally constrained, not just advised against. |
 | **Causality Collapse & Lack of Accountability** | Points out the **Fundamental Attribution Error** or describes situations where causes are poorly understood. | **`External Transformer Principle (A.12)`**. FPF makes it an architectural invariant that every change **must** be attributed to an external agent (`System` in a `RoleAssigning`). "It configured itself" is not a cognitive bias; it is a **modeling violation**. Causality is non-negotiable. |
 | **Inconsistent Aggregation & Scope Neglect** | Highlights biases where we incorrectly generalize from parts to a whole or ignore the scale of a problem. | **`Cross-Scale Consistency (A.9)`** and the **`Universal Algebra of Aggregation (Γ)`** with its **Invariant Quintet (B.1)**. FPF provides a formal, conservative algebra (e.g., the Weakest-Link bound) for aggregation, making naive or optimistic roll-ups a **provable error** in the model. |
 
@@ -449,7 +449,7 @@ Classic stacks bundled **knowledge base + inference engine + working memory**. F
 4. **Algebra of aggregation (Γ) with cross‑scale invariants** — conservative composition that generalizes from pumps to proofs (B.1).
 5. **Local meaning, global alignment** — `U.BoundedContext` islands and explicit Bridges with **congruence‑loss** turn “it depends” into a contract (A.1.1; F.9).
 6. **Micro‑kernel + architheories** — CAL/LOG/CHR plug‑ins extend capability without contaminating the core (A.5–A.6; Part C).
-7. **Publication contract & guard‑rails** — Core ↔ Tooling ↔ Pedagogy split, notational independence, and lexical governance prevent conceptual drift (E.5; E.10).
+7. **Publication contract & guard‑rails** — Core ↔ Tooling ↔ Pedagogy split, notational independence, and Lexical Discipline prevent conceptual drift (E.5; E.10).
 8. **Open‑ended evolution by design** — DRR, evidence refresh, and formal/on‑ramp pedagogy keep the system alive without ossification (A.4; B.4; E.6; E.9; B.3.4).
 
 **What FPF is**: a **generative, testable architecture for thinking** that any domain can inhabit.
@@ -837,7 +837,7 @@ To ensure `U.BoundedContext` is used consistently and rigorously, the following 
 | :--- | :--- |
 | **Enables True Modularity:** By encapsulating models, FPF can support large, complex systems where different teams can work on their own bounded contexts in parallel with minimal interference. | **Modeling Overhead:** Requires architects to explicitly think about and define the boundaries of their models, which can feel like extra work initially. *Mitigation:* This upfront effort is a strategic investment that prevents the much higher cost of integration chaos and semantic ambiguity later in the project. |
 | **Resolves Ambiguity and Paradox:** Provides a formal mechanism to manage synonyms, homonyms, and conflicting models (like the Pluto example). It transforms "it depends" into a precise, queryable structure. | **Bridge Maintenance:** As contexts evolve, the bridges between them must be maintained. *Mitigation:* FPF tooling should support "link integrity" checks to automatically flag broken or outdated bridges. |
-| **Makes Governance Explicit:** The `Invariants` component of a context makes the "rules of the game" for a project or theory explicit, documented, and auditable. | - |
+| **Makes Rules Explicit:** The `Invariants` component of a context makes the local rules and invariants for a project or theory explicit, documented, and auditable. | - |
 | **Foundation for Scalable Autonomy:** In multi-agent systems, each agent can operate within its own bounded context, communicating with others through well-defined bridges. This is a prerequisite for building robust, decentralized systems. | - |
 
 #### 8 · Rationale
@@ -915,7 +915,6 @@ U.RoleAssignment {
   role          : U.Role,
   context       : U.BoundedContext,
   timespan?     : Interval,
-  authority?    : U.System,    // who assigned the role
   justification?: U.Episteme,  // why (standard, SOP, evidence)
   provenance?   : U.Method     // how assignment/verification was done
 }
@@ -1054,7 +1053,7 @@ A **set** `{Alice, Bob, 3.14}` has no behaviour; a **team** is a **system** with
 * **Constrains / Used by B‑cluster:**
   **B.1 Universal Algebra of Aggregation (Γ)** (keep order/time in Γ\_ctx/Γ\_time; keep provenance in Γ\_epist), **B.2 Meta‑Holon Transition** (promotion when supervision/closure appears), **B.3 Trust & Assurance** (evidence & congruence).  
 * **Interlocks with E‑cluster (governance & language):**
-  **E.10 Lexical Governance** (registers, tier disambiguation, local aliases like “Transformer”), **E.5.1 DevOps Lexical Firewall** (ban tooling tokens in Core patterns). 
+  **E.10 Lexical Discipline** (registers, tier disambiguation, local aliases like “Transformer”), **E.5.1 DevOps Lexical Firewall** (ban tooling tokens in Core patterns). 
 * **Reinforces:**
   **A.10 Evidence Anchoring** (external transformer; SCR/RSCR), **A.12 External Transformer Principle** (agent externalisation). 
   
@@ -1235,12 +1234,11 @@ Role algebra relates **role types** inside **one** `U.BoundedContext`. It is **n
 * **Use:** Stable expertise ladders, privilege inheritance.
 * **CC‑ALG‑1.** Engines that check `requiredRoles` **MUST** treat `≤` as admissible substitution.
 
-### 6.2 Incompatibility (segregation of duties)
+### 6.2 Incompatibility (conceptual role incompatibility)
 
 * **Notation:** `RoleA ⊥ RoleB`
 * **Semantics (normative):** A single holder **MUST NOT** have overlapping `window`s for assignments to both roles in this Context.
-* **Use:** Independence (developer vs auditor), safety (pilot vs controller).
-* **CC‑ALG‑2.** Validation **MUST** reject overlapping assignments that violate `⊥`.
+* * **CC‑ALG‑2.** Validation **MUST** reject overlapping assignments that violate `⊥`.
 
 ### 6.3 Bundles (conjunctive requirement)
 
@@ -1299,10 +1297,9 @@ Each Role’s **RoleDescription/RoleSpec** defines an **RSG** with named states.
 | **A2** | **Role as part**      | BoM lists “Cooling Function”               | Category error (structure vs role) | Keep BoM structural; model `Pump#Cooling:ThermalMgmt`             |
 | **A3** | **Document acts**     | “The SOP closed the ticket”                | Epistemes don’t enact Work         | Give the doc a **status role**; make a System enact the step      |
 | **A4** | **Role chains**       | “Transformer assigned to be Agent”         | Collapses independent families     | Require **both roles** on Method step; one holder, two badges     |
-| **A5** | **SoD by intent**     | “We promise the auditor is independent”    | Not checkable                      | Declare `Auditor ⊥ Developer`; enforce on windows                 |
-| **A6** | **Hidden state**      | Acting while *Authorized? Active?* unclear | Safety & audit gaps                | Use RSG with **StateAssertions** gating enactment                 |
-| **A7** | **Edition blur**      | Context “ITIL” with no version             | Sense slippage                     | Context card must carry **edition** (E.10.1/F.1)                  |
-| **A8** | **Bridge‑by‑name**    | Equating roles across rooms by label       | Cross‑room drift                   | Use **F.9 Bridge** with CL & loss notes                           |
+| **A5** | **Hidden state**      | Acting while *Authorized? Active?* unclear | Safety & audit gaps                | Use RSG with **StateAssertions** gating enactment                 |
+| **A6** | **Edition blur**      | Context “ITIL” with no version             | Sense slippage                     | Context card must carry **edition** (E.10.1/F.1)                  |
+| **A7** | **Bridge‑by‑name**    | Equating roles across rooms by label       | Cross‑room drift                   | Use **F.9 Bridge** with CL & loss notes                           |
 
 ## 9 · Archetypal grounding (three disparate arenas)
 
@@ -7756,7 +7753,7 @@ In summary, A.17 is the linchpin that turns a loose collection of measurement pr
     
 -   **Coordinates with:** **A.18 (CSLC-KERNEL)**, which defines the minimal **Characteristic/Scale/Level/Coordinate** contract in detail. A.17 provides the vocabulary and basic distinctions (what is a Characteristic, and its arity), while A.18 applies this to ensure each measurement template is well-formed. Also coordinates with **C.KD-CAL** and **C.CHR-CAL** (Knowledge Dynamics Calculus, Characterization Calculus) – those architheories use the Characteristic/Scale constructs to build domain-specific metrics (e.g. knowledge quality scores) and rely on A.17’s canon for consistency.
     
--   **Anticipates:** **E.10 Lexical Governance** rules – A.17’s enforcement of a single term and controlled aliases is a concrete instance of the lexical uniformity mandated in E.10. It also paves the way for **F.7 Concept-Set Bridges** in Unification patterns, since external ontologies for quantities (ISO 80000, QUDT, etc.) can be mapped cleanly onto FPF Characteristics now that the term is fixed. In short, A.17 is a foundational lexicon pattern that a) ensures internal consistency and b) simplifies alignment with external standards for measurable properties.
+-   **Anticipates:** **E.10 Lexical Discipline** rules – A.17’s enforcement of a single term and controlled aliases is a concrete instance of the lexical uniformity mandated in E.10. It also paves the way for **F.7 Concept-Set Bridges** in Unification patterns, since external ontologies for quantities (ISO 80000, QUDT, etc.) can be mapped cleanly onto FPF Characteristics now that the term is fixed. In short, A.17 is a foundational lexicon pattern that a) ensures internal consistency and b) simplifies alignment with external standards for measurable properties.
     
 
 ## A.18 (A.CSLC‑KERNEL) — Minimal CSLC in Kernel (Characteristic ⟷ Scale ⟷ Level ⟷ Coordinate) `[A]`
@@ -8026,7 +8023,7 @@ These overlays are entirely **optional** and have no effect on the core meaning 
 
 Any model of change or dynamics in FPF must declare the state space it operates over. Formally, `U.Dynamics.stateSpace` **SHALL** be specified as a reference to a `CharacteristicSpace`. This creates a typing obligation: the dynamic model can only produce states (and trajectories of states) that lie in the given space. All predicates or predictions in such a dynamics model are understood to **quantify over** sequences of points in that CharacteristicSpace (with time semantics governed by A.3.3’s time base and laws). **Note:** A.19 defines only the structure of the state space; it deliberately **does not** fix any time axis or dynamic law. Those remain the responsibility of the dynamics pattern (A.3.3). A.19 simply ensures there is a well-defined space in which states live, so that dynamics are decoupled from any narrative “stage” and instead treat evolution as movement through this space.
 
-##### 5.1.5 Lexical governance (Normative)
+##### 5.1.5 Lexical discipline (Normative)
 
 In all **normative references, definitions, and identifiers** related to this pattern, the specification uses the canonical measurement terminology: **Characteristic**, **Scale**, **Level**, **Coordinate**, **CharacteristicSpace**, **slot**, **basis**. Legacy terms like “axis”, “dimension”, or “point” are **forbidden** in Technical/Formal registers of the spec (per A.17’s lexical rules). They may appear _at most once_ in explanatory **Plain** language as mapped aliases to aid understanding (and if used, must be explicitly identified as equivalent to the official terms). In this pattern, we consistently use “slot” or “basis element” (never “axis”) to refer to a component of a space, and “Characteristic” (never “dimension”) to refer to the measured aspect. This lexical discipline ensures clarity and consistency across the framework (see A.17 and C.16 L-rules for the formal policy on terminology).
 
@@ -17202,7 +17199,7 @@ Across architheories, people say “score”, “metric”, “rating”, “pro
 
 ---
 
-### 5.1 · Lexical Governance & Registers (Normative)
+### 5.1 · Lexical Discipline & Registers (Normative)
 
 **L1 — Canon.** Use **Characteristic / Scale / Level / Coordinate / Score / Unit / Gauge** in **Tech** register; their `U.*` counterparts in **Formal**; narrative labels (e.g., *axis*, *points*, *stars*) are **didactic only** at first‑mention mapped to canon (E.10). 
 **L1‑bis — “metric”.** The noun *metric* is **not** a Tech‑register canonical token for measurables; use **Characteristic / Scale / Coordinate / Score / Gauge**. It **may** appear in the architheory title and in the Formal names `U.MetricTemplate` / `U.Measure`. Do not use *metric* as a synonym for **Characteristic** or **Score** in normative prose.
@@ -18695,7 +18692,7 @@ constitution and Guard‑Rails, without prescribing tooling workflows.
 * **Interacts with:** `pat:guard/bias‑audit` (E 5.4) via lens check  
 * **Complemented by:** `pat:authoring/code‑of‑conduct` (E 12) – etiquette for DRR debate  
 
-### E.10 — Lexical Governance & Stratification \[A]
+### E.10 — Lexical Discipline & Stratification \[A]
 
 #### Context  
 FPF’s mission is cross‑disciplinary reasoning; that collapses if the same
@@ -19570,7 +19567,7 @@ Think in three layers: **Intension** (what the thing *is*), **Description/Spec**
 # E.10.D3 — *LEX‑BUNDLE*: Unified Lexical Rules for FPF (Registers, Naming, and Forbidden Forms)**
 *Definitional pattern \[D]; normative for all Core/Architheory text and for any Context that claims FPF conformance.*
 
-**Status & placement.** Part E.10 (“Lexical Governance & Stratification”); complements **E.10.D1 (D.CTX)** and **E.10.D2 (I/D/S)** and is referenced by F‑cluster naming practices (F.4–F.8). This bundle consolidates all lexical constraints in one place so authors can cite **“LEX‑BUNDLE”** instead of listing rules scattered across documents.
+**Status & placement.** Part E.10 (“Lexical Discipline & Stratification”); complements **E.10.D1 (D.CTX)** and **E.10.D2 (I/D/S)** and is referenced by F‑cluster naming practices (F.4–F.8). This bundle consolidates all lexical constraints in one place so authors can cite **“LEX‑BUNDLE”** instead of listing rules scattered across documents.
 
 **Builds on.** A.7 **Strict Distinction (Clarity Lattice)**; E.5 Guard‑Rails (DevOps Lexical Firewall; Notational Independence; Unidirectional Dependency); F.5 **Naming Discipline for U‑Types & CRA Templates**.
 **Coordinates with.** A.2/A.15 (Role–Method–Work alignment), A.10 (Evidence Anchoring), B.1/B.3 (Γ‑algebras & assurance), F‑cluster (Rooms of Meaning; Bridges).
@@ -20208,7 +20205,7 @@ Re‑review your prose when any of these change:
 
 #### 1 · Context (The Root of the Ambiguity)
 
-In engineering, management, and software, the lexeme "function" (and its adjective "functional") is one of the most overloaded, context-dependent, and therefore dangerous terms. It can simultaneously refer to a component's purpose, a mathematical mapping, a piece of code, an organizational department, or a behavioral requirement. This ambiguity is a chronic source of miscommunication, leading to flawed designs and integration failures. The **Lexical Governance (E.10)** principle of FPF demands precision. While other terms are managed through registers, the polysemy of "function" is so pervasive that it requires its own explicit, normative discipline to prevent it from corrupting the clarity of the universal kernel.
+In engineering, management, and software, the lexeme "function" (and its adjective "functional") is one of the most overloaded, context-dependent, and therefore dangerous terms. It can simultaneously refer to a component's purpose, a mathematical mapping, a piece of code, an organizational department, or a behavioral requirement. This ambiguity is a chronic source of miscommunication, leading to flawed designs and integration failures. The **Lexical Discipline (E.10)** principle of FPF demands precision. While other terms are managed through registers, the polysemy of "function" is so pervasive that it requires its own explicit, normative discipline to prevent it from corrupting the clarity of the universal kernel.
 
 #### 2 · Problem (The Pathologies of Imprecision)
 
@@ -20266,7 +20263,7 @@ The L-FUNC pattern is not theoretical; it solves concrete, everyday modeling pro
 
 *   **Lenses Tested:** `Gov`, `Arch`, `Epist`, `Prag`, `Did`.
 *   **Scope Declaration:** Universal.
-*   **Rationale:** The L-FUNC micropattern is a core element of FPF's **Lexical Governance (`Gov`)**, enforcing **Architectural (`Arch`)** and **Epistemological (`Epist`)** clarity. It has high **Pragmatic (`Prag`)** value by preventing costly miscommunications and serves a critical **Didactic (`Did`)** purpose by teaching modelers to be precise with their language.
+*   **Rationale:** The L-FUNC micropattern is a core element of FPF's **Lexical Discipline (`Gov`)**, enforcing **Architectural (`Arch`)** and **Epistemological (`Epist`)** clarity. It has high **Pragmatic (`Prag`)** value by preventing costly miscommunications and serves a critical **Didactic (`Did`)** purpose by teaching modelers to be precise with their language.
 
 #### 7 · Conformance Checklist (normative)
 
@@ -20291,7 +20288,7 @@ The L-FUNC micropattern is a direct and pragmatic application of FPF's constitut
 
 #### 10 · Relations
 
-*   **Implements:** `E.10 Lexical Governance & Stratification` by providing a specific, high-stakes example of its application.
+*   **Implements:** `E.10 Lexical Discipline & Stratification` by providing a specific, high-stakes example of its application.
 *   **Reinforces:** `A.7 Strict Distinction` by providing an operational procedure to prevent the conflation of roles, methods, and systems.
 *   **Depends on:** `A.1.1 U.BoundedContext` as the container for all projections, and the full suite of target concepts (`U.Role`, `U.Method`, `U.Work`, etc.).
 *   **Used by:** All FPF modelers and architheory authors as a mandatory style and modeling guide.
@@ -20300,7 +20297,7 @@ The L-FUNC micropattern is a direct and pragmatic application of FPF's constitut
 
 #### 1 · Context (The Root of the Ambiguity)
 
-The word "process," much like "function," is a cornerstone of technical and business communication. However, its meaning is highly unstable. In a single meeting, it can refer to a documented flowchart (like a BPMN diagram), the actual work being done on a factory floor, a physical phenomenon (like heat transfer), or even an entire organizational department. This lexical ambiguity is a significant source of risk, as stakeholders often believe they are agreeing on one thing while actually discussing several different concepts. The **Lexical Governance (E.10)** pillar of FPF demands that such critical terms be disambiguated to ensure the framework's clarity and reliability.
+The word "process," much like "function," is a cornerstone of technical and business communication. However, its meaning is highly unstable. In a single meeting, it can refer to a documented flowchart (like a BPMN diagram), the actual work being done on a factory floor, a physical phenomenon (like heat transfer), or even an entire organizational department. This lexical ambiguity is a significant source of risk, as stakeholders often believe they are agreeing on one thing while actually discussing several different concepts. The **Lexical Discipline (E.10)** pillar of FPF demands that such critical terms be disambiguated to ensure the framework's clarity and reliability.
 
 #### 2 · Problem (The Pathologies of Imprecision)
 
@@ -20384,7 +20381,7 @@ The L-PROC pattern resolves ambiguity in concrete modeling scenarios.
 
 *   **Lenses Tested:** `Gov`, `Arch`, `Epist`, `Prag`, `Did`.
 *   **Scope Declaration:** Universal.
-*   **Rationale:** The L-PROC micropattern is a core element of FPF's **Lexical Governance (`Gov`)**, enforcing **Architectural (`Arch`)** and **Epistemological (`Epist`)** clarity. It has high **Pragmatic (`Prag`)** value by preventing costly miscommunications and serves a critical **Didactic (`Did`)** purpose by teaching modelers to be precise with their language.
+*   **Rationale:** The L-PROC micropattern is a core element of FPF's **Lexical Discipline (`Gov`)**, enforcing **Architectural (`Arch`)** and **Epistemological (`Epist`)** clarity. It has high **Pragmatic (`Prag`)** value by preventing costly miscommunications and serves a critical **Didactic (`Did`)** purpose by teaching modelers to be precise with their language.
 
 #### 7 · Conformance Checklist (normative)
 
@@ -20409,7 +20406,7 @@ The L-PROC micropattern is a direct and pragmatic application of FPF's constitut
 
 #### 10 · Relations
 
-*   **Implements:** `E.10 Lexical Governance & Stratification` by providing a specific, high-stakes example of its application.
+*   **Implements:** `E.10 Lexical Discipline & Stratification` by providing a specific, high-stakes example of its application.
 *   **Reinforces:** `A.7 Strict Distinction` and `A.15 Role-Method-Work Alignment` by providing an operational procedure to prevent the conflation of recipes, executions, and systems.
 *   **Depends on:** `A.1.1 U.BoundedContext` as the container for all projections, and the full suite of target concepts (`U.Method`, `U.Work`, `U.System`, `U.Role`, etc.).
 *   **Used by:** All FPF modelers and architheory authors as a mandatory style and modeling guide.
@@ -20863,7 +20860,7 @@ The **Working‑Model layer remains the canonical publication surface** for auth
 
 * **CT2R‑LOG — Working‑Model Relations & Grounding** — alias rules and `tv:groundedBy` contract for edges grounded in Γₘ.   
 * **Compose‑CAL (Constructional Mereology)** — provides the constructive shoulder (Γₘ: **sum | set | slice**) used to ground structural edges.
-* **E.10 Lexical Governance & Stratification** — ensures naming discipline and register hygiene when the human layer is published.
+* **E.10 Lexical Discipline & Stratification** — ensures naming discipline and register hygiene when the human layer is published.
 
 **Constrains.**
 
