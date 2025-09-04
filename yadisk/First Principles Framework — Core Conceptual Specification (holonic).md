@@ -1,4 +1,3 @@
-Draft
 # Table of Content
 
 **Preface** (non-normative)
@@ -6,9 +5,13 @@ Draft
 | ID & Title | Status | Concise content reminder — “what belongs here” |
 | :--- | :--- | :--- |
 | Introduction: FPF as a Pattern Language and its Historical Roots | full text | Introduces FPF's core mission to solve knowledge silos using a generative pattern language, outlining its intellectual lineage from Aristotle to Constructor Theory. |
+| Intellectual lineage | full text | Traces FPF's key ideas to their roots in various disciplines, from pattern languages and constructor theory to formal methods and trust calculus. |
+| Navigating Uncertainty: Building Closed Worlds within an Open World | full text | Explains how FPF reconciles Open-World and Closed-World assumptions, using Bounded Contexts to create reliable 'islands of closure' for engineering decisions. |
 | FPF as an Evolutionary Architecture for Thought | full text | Positions FPF as an architecture for the reasoning process itself, designed to sustain key characteristics like auditability, evolvability, and falsifiability. |
 | Beyond Cognitive Biases: FPF as a Generative Architecture for Thought | full text | Contrasts FPF's generative, structural approach to avoiding cognitive errors with the traditional corrective, diagnostic approach of hunting for biases. |
 | Descriptive Ontologies vs A Thinking-Oriented Architecture | full text | Differentiates FPF's goal of orchestrating reasoning from classical ontologies' goal of cataloging existence, emphasizing FPF's focus on objectives, trust, and dynamics. |
+| FPF and 1980s Expert Systems: Shared Ambition, Different Contract | full text | Contrasts FPF as an 'architecture for thinking' with classic 'inference engines', highlighting differences in goals, world assumptions, and evolvability. |
+| The “big storylines” unique to FPF (load‑bearing commitments) | full text | Lists the eight core, load-bearing commitments that define FPF's unique architectural and philosophical stance. |
 | Transdisciplinarity as Meta-Theory of Thinking | full text | Explains how FPF treats transdisciplinarity as a meta-theory for designing reasoning, using architheories as generative scaffolds grounded in physical reality. |
 | Artefact Families as a Publication Contract | full text | Defines the three-family architecture (Core, Tooling, Pedagogy) governed by a unidirectional dependency rule to maintain conceptual integrity. |
 | Intellect Stack (informative overview) | full text | Presents a five-layer pedagogical map of cognitive skills (Structure → Knowledge → Action → Strategy → Purpose) and links them to FPF patterns. |
@@ -86,6 +89,7 @@ Draft
 | **B.5** | **Canonical Reasoning Cycle** | \[A] | full text | The Abductive–Deductive–Inductive loop for principled problem-solving. |
 | B.5.1 | **Explore → Shape → Evidence → Operate** | \[D] | full text | The four-state development cycle model for artifacts. |
 | B.5.2 | **Abductive Loop** | \[A] | full text | Structured process for hypothesis generation. |
+| B.5.2.1 | **Creative Abduction with NQD (binding)** | \[A] | full text | Binds the Abductive Loop to NQD-CAL for generating candidate hypotheses and E/E-LOG for managing exploration/exploitation policy. |
 | B.5.3 | **Role-Projection Bridge** | \[A] | full text | Mechanism for integrating domain-specific vocabularies. |
 | **B.6** | **Characterisation Families (CHR-use)** | \[A] | stub | Templates referencing CHR architheories. |
 | **B.7** | **Common Logic Suite (LOG-use)** | \[A] | stub | Modal & trust-propagation rules (imports LOG-CAL). |
@@ -121,6 +125,9 @@ Draft
 | C.14 | **M‑Sys‑CAL** | CAL | stub | Large‑scale infrastructures; multi‑Transformer orchestration. |
 | C.15 | **M‑KD‑CAL** | CAL | stub | Discipline‑level paradigms; meta‑epistemic analytics. |
 | C.16 | **MM‑CHR — Measurement & Metrics Characterization (Architheory)** | \[A] | full text | Infrastructure for: `U.MetricTemplate`, `U.Measure`, `U.Unit`, `U.EvidenceStub`; CSLC‑discipline, polarity of scales, Export types and relations for all architheories. |
+| C.17 | **Creativity‑CHR — Characterising Generative Novelty & Value** | CHR | full text | Exports characteristics for evaluating creative work (Novelty, Use-Value, Surprise, ConstraintFit, etc.). |
+| C.18 | **NQD‑CAL — Open‑Ended Search Calculus** | CAL | full text | Exports Γ_nqd.* operators for open-ended, illumination-style generation of candidate hypotheses. |
+| C.19 | **E/E‑LOG — Explore–Exploit Governor** | LOG | full text | Defines exploration/exploitation policies and selection lenses; exports EmitterPolicy profiles. |
 
 **Part D – Multi-scale Ethics & Conflict-Optimisation**
 
@@ -243,7 +250,7 @@ Modern science and engineering face a chronic ailment: **knowledge silos**. Spec
 
 FPF is designed to serve three primary roles: the Engineer, who builds reliable systems; the Researcher, who grows trustworthy knowledge; and the Learner, who develops robust mental models. 
 
-**This draft also makes explicit the constitutional and publication architecture that governs the language**: **E.1–E.4** (Vision, **Eleven Pillars**, Principle Taxonomy, Artefact Architecture) and the **Guard‑Rails E.5.\*** (Lexical Firewall, Notational Independence, Unidirectional Dependency, Cross‑Disciplinary Bias‑Audit), with evolution driven by **Design Rationale Records (E.9)**. It adopts an **Open‑Ended Kernel with Architheory Layering (A.5–A.6)** and introduces the **Unification Suite (Part F)**—Contextual Lexicon, **SenseCells/Bridges with CL**, **Concept‑Sets**, and the **Unified Term Sheet (UTS)**—as the publication surface for cross‑domain alignment.
+**This draft also makes explicit the constitutional and publication architecture that governs the language**: **E.1–E.4** (Vision, **Eleven Pillars**, Principle Taxonomy, Artefact Architecture) and the **Guard‑Rails E.5.\*** (Lexical Firewall, Notational Independence, Unidirectional Dependency, Cross‑Disciplinary Bias‑Audit), with evolution driven by **Design Rationale Records (E.9)**. It adopts an **Open‑Ended Kernel with Architheory Layering (A.5–A.6)** and introduces the **Unification Suite (Part F)**—Contextual Lexicon, **SenseCells/Bridges with CL**, **Concept‑Sets**, and the **Unified Term Sheet (UTS)**—as the publication surface for cross‑domain alignment. Alongside assurance and compliance, the Core includes **Creativity‑CHR (C.17)**, **NQD‑CAL (C.18)**, and **E/E‑LOG (C.19)**, bound to the **Abductive Loop** via **B.5.2.1**, turning ideation into **instrumented, Pareto‑front exploration**.
 
 ## Intellectual lineage *(non‑normative)*
 
@@ -299,6 +306,34 @@ FPF stands on a deliberately cross‑disciplinary scaffold. What follows traces 
 
 > **Synthesis.** Across these lines, the through‑line is **explicitness**: explicit context, explicit roles, explicit bridges and losses, explicit gauges, explicit proofs. The result is a substrate‑neutral framework where ideas graduate into reliable action without sacrificing scientific humility.
 
+## Assurance *and* Imagination: FPF’s Two Engines *(non‑normative)*
+
+Most frameworks pick a side. They either optimise for **assurance**—audits, evidence, safety gates—or they celebrate **creativity**—ideas, leaps, pivots. **First Principles Framework (FPF)** is built to do both at once. It gives you sturdy rails for trust **and** a disciplined way to generate and mature novel ideas.
+
+**On the assurance rail,** FPF makes trust a first‑class concern. Claims are anchored to evidence; formality can scale from plain checks to machine‑verified proofs; confidence is computed, not intuited. Meaning is kept local to an explicit frame of reference so “the same word” can’t quietly shift under your feet. The result is a reasoning trail that explains *why* a decision is justified—clear enough to audit, conservative enough for safety, and evolvable over time.
+
+**On the imagination rail,** FPF is equally deliberate. It does not treat creativity as a black box or a personality trait. It provides a **named choreography for creative work**:
+
+* **Abduct first.** Start with the *“what could be true?”* move—the **Abductive Loop**—to propose bold candidate explanations or designs before you overfit to today’s data.
+* **Search widely, then focus.** Use an **open‑ended search** style to illuminate “adjacent possibles,” then apply an **explore–exploit governor** to decide when to roam for surprises and when to double‑down on promising directions.
+* **Shape → Evidence → Operate.** Turn a promising sketch into a concrete shape, collect the right evidence to test it, and run it for real. Then loop.
+
+FPF also **measures creative quality**. It distinguishes novelty for its own sake from *valuable* novelty. Work is scored along simple, universal axes—*Is it new?* *Is it useful?* *Does it fit the constraints?*—so that teams can compare options without collapsing into taste or hierarchy.
+
+| Question we must answer         | FPF’s assurance move                                                      | FPF’s creative move                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| *“Why should we trust this?”*   | Tie every claim to explicit evidence; make confidence and scope visible.  | Keep space for hypotheses that stretch the current model, but insist they graduate into evidence.     |
+| *“How do we grow safely?”*      | Evolve in small, auditable steps; record rationale for changes.           | Run **open‑ended** searches early, then **govern** the switch from exploring to refining.             |
+| *“What does ‘good’ look like?”* | Pass/fail against declared acceptance criteria; compute assurance levels. | Score creative candidates on **Novelty, Use‑Value, Surprise, Constraint‑Fit**—not just style points.  |
+
+*In a lab:* a puzzling anomaly isn’t “noise”; it is a **prompt**. You generate alternate explanations, explore them widely, then pick a direction with a clear **explore–exploit** rule. Each candidate must face a **fit‑for‑purpose** test; only those with evidence advance.
+*In a product team:* concept sketches are not meetings in disguise; they are first‑class artifacts that move through **Explore → Shape → Evidence → Operate**. Creativity is expected; untested cleverness is not.
+*In operations:* procedures are safe by design, yet the framework leaves room for **abductive fixes** when reality throws a curve ball—*provided* they are later folded back into the evidence trail.
+
+Assurance without imagination calcifies. Imagination without assurance drifts. FPF’s contract is to **separate the moves cleanly**—so you can be genuinely inventive without losing your audit trail—and to **reconnect them on purpose**—so good ideas survive contact with the world. The framework’s creative patterns make *generation* systematic; its assurance patterns make *selection* and *adoption* reliable. That is how a team becomes both safe and original.
+
+> **Synthesis.** FPF treats creativity as a governed search and assurance as a repeatable reckoning. Together they form an **engine for changing your mind responsibly**—and then changing your world.
+
 ## Navigating Uncertainty: Building Closed Worlds within an Open World *(non-normative)*
 
 A fundamental challenge in any rigorous thinking is how to handle incomplete information. To build reliable systems and make trustworthy claims, we must make decisive judgments based on what we know, while remaining aware of the vast ocean of what we don't. This tension is formally captured by two opposing assumptions about the world: the Open-World Assumption and the Closed-World Assumption. FPF does not force a choice between them; instead, it provides a principled architecture for using both where they are most appropriate.
@@ -313,16 +348,14 @@ The distinction is best understood through a simple analogy:
 
 FPF is a hybrid system, architected to operate within the reality of an open world while enabling the construction of the reliable, locally-closed worlds necessary for engineering.
 
-#### How FPF Embraces the Open World
-
+**How FPF Embraces the Open World?**
 The framework is fundamentally designed to acknowledge that our knowledge is never complete. This OWA stance is embedded in its core principles:
 
 *   **Open-Ended Evolution (P-10):** FPF is built on the premise that any holon—a system, a theory, a method—is perpetually incomplete and can be improved. New evidence can always emerge.
 *   **Open-Ended Kernel (A.5):** The architecture of a minimal kernel with plug-in architheories is an admission that the core cannot and should not attempt to describe everything. The world is too rich for any single, final ontology.
-*   **The Abductive Loop (B.5.2):** The very first step of the reasoning cycle is to generate a new hypothesis. This act is a formal recognition that our current model is insufficient to explain an anomaly—a clear OWA posture.
+*   **The Abductive Loop (B.5.2):** The very first step of the reasoning cycle is to generate a new hypothesis. This act is a formal recognition that our current model is insufficient to explain an anomaly—a clear OWA posture.  It operationalised by **B.5.2.1** via **C.17–C.19**.
 
-#### How FPF Constructs and Manages Closed Worlds
-
+**How FPF Constructs and Manages Closed Worlds?**
 While the universe is open, engineering requires us to build systems that are safe, predictable, and auditable. To do this, we must be able to draw a line and declare that, *for a specific purpose*, our knowledge *within that line* is complete. FPF provides the formal tools to build and govern these "islands of CWA":
 
 *   **`U.BoundedContext` (A.1.1):** This is the primary mechanism for establishing a local CWA. Within a Bounded Context, a specific set of models, rules, and invariants is declared to be authoritative. Any statement that violates an invariant *within that context* is considered false.
@@ -340,15 +373,31 @@ This concept is directly analogous to the modern practice of **Evolutionary Arch
 
 FPF applies this same architectural thinking to the process of reasoning itself. It provides a set of load-bearing patterns and constitutional principles (The Eleven Pillars) that act as the fitness functions for our thoughts. By building our reasoning within this architecture, we are not just seeking a correct answer in the moment; we are creating an intellectual artifact that is designed to last, to be understood, to be challenged, and to evolve.
 
-The value of this architectural approach lies in its ability to explicitly protect and sustain the critical **characteristics of rigorous thought**, holding them from the natural degradation they suffer in complex, long-running projects. Where traditional critical thinking identifies failures in these characteristics, FPF provides the mechanisms to build them in by design.
+The value of this architectural approach lies in its ability to explicitly protect and sustain the critical **characteristics of rigorous thought**, holding them from the natural degradation they suffer in complex, long-running projects. Where traditional critical thinking identifies failures in these characteristics, FPF provides the mechanisms to build them in by design. **Creative generativity** is explicitly instrumented: the **Creativity‑CHR → NQD‑CAL → E/E‑LOG** stack supplies measurable **Novelty/Quality/Diversity** signals and explore–exploit policies.
 
-| Architectural Characteristic of Thought | The FPF Mechanisms that Preserve It |
-| :--- | :--- |
+
+| Architectural Characteristic of Thought | What it protects / why it matters | The FPF Mechanisms that Preserve It |
+| :--- | :--- | :--- |
 | **Auditability & Traceability** | The unbreakable chain from a claim back to its evidence. This is the quality of being able to answer "Why is this true?" at any point. | **`Evidence Anchoring (A.10)`**, the **`Design-Rationale Record (DRR) Process (E.9)`**, and the entire **`Trust & Assurance Calculus (B.3)`**. The architecture makes untraceable claims a modeling violation. |
 | **Evolvability** | The capacity of a model or system to adapt to new information or requirements without losing its conceptual integrity. | The **`Open-Ended Evolution Principle (P-10)`**, the **`Canonical Evolution Loop (B.4)`**, and the **`DRR Process (E.9)`**. Change is not a bug; it is a formally managed, first-class feature of the architecture. |
-| **Composability & Modularity** | The ability to construct complex, reliable ideas from simpler, independently verifiable components. | The **`Open-Ended Kernel (A.5)`**, **`Architheory Signatures (A.6)`**, and the **`Universal Algebra of Aggregation (Γ) (B.1)`**. The architecture provides a formal "API" for ideas, enabling safe, predictable composition. |
-| **Falsifiability** | The quality that every claim is structured in a way that it can be rigorously tested and potentially proven false. | **`Conformance Checklists`** embedded in every pattern and the entire **`Assurance Calculus (B.3)`**. The architecture forces every normative artifact to declare its own success and failure criteria. |
-| **Cross-Scale Coherence** | The guarantee that the same fundamental logic applies to a single component, an integrated system, and a system-of-systems. | **`Cross-Scale Consistency (A.9)`** and the **`Invariant Quintet (IDEM, COMM/LOC, WLNK, MONO)`** that governs all aggregation. The architecture ensures that the "physics" of the model remains stable as you zoom in and out. |
+| **Creativity (Generative Novelty & Value)** | The ability to reliably generate, select, and mature novel hypotheses/designs that are both *new* and *fit to purpose*—exploration without losing auditability or safety. | **`Creativity‑CHR (C.17)`** for measurable **Novelty / Use‑Value / Surprise / Constraint‑Fit**; **`NQD‑CAL (C.18)`** for open‑ended, illumination‑style search; **`E/E‑LOG (C.19)`** to govern explore↔exploit policies; **`Creative Abduction with NQD (B.5.2.1)`** / **`Abductive Loop (B.5.2)`** to structure hypothesis generation; **`Design‑Rationale Record (E.9)`** to capture decisions so creativity stays auditable. |
+| **Composability & Modularity** | The ability to construct complex, reliable ideas from simpler, independently verifiable components. | The **`Open-Ended Kernel (A.5)`**, **`Architheory Signatures (A.6)`**, **`Universal Γ (B.1)`**, plus **Boundary‑Inheritance Contract (BIC)** and the **Cut‑Stable Boundary Axiom** for safe structural cuts, and the **Method Interface Contract (MIC)** for typed method I/O and conservation constraints. Together they make composition predictable and auditable.  |
+| **Falsifiability** | The quality that every claim is structured so it can be rigorously tested and potentially proven false. | **`Conformance Checklists`** embedded in every pattern and the **`Trust & Assurance Calculus (B.3)`**. Every normative artifact must declare success/failure criteria and null tests. |
+| **Cross-Scale Coherence** | The guarantee that the same fundamental logic applies to a single component, an integrated system, and a system‑of‑systems. | **`Cross-Scale Consistency (A.9)`**, **Universal Γ (B.1)** with proof obligations for context/time reasoning (Proof Kit), and declared Γ‑fold policies over WLNK/COMM/LOC/MONO + time policy (no free‑hand averages). These preserve invariants across zoom levels and eras.  |
+| **Design–Run Separation (Temporal Integrity)** | Prevents “design/run chimeras”, keeps assumptions/versioned specs separate from runtime evidence; enables reproducible state over time. | **A.4 design–run split** (used across CHR/creativity), **KD‑CAL CC‑KD‑08** (no episteme mutation in Work), **Γ_time** rules (T‑1..T‑3), **DRR (E.9)** for rationale/versioning, **Canonical Evolution Loop (B.4)** for orderly change.  |
+| **Lexical & Representation Discipline** | Guards against category errors and notation lock‑in; keeps language unambiguous and tool‑neutral across contexts. | **Strict Distinction** (didactic distillation of SD), **LEX‑BUNDLE (E.10.D3)**, and **Guard‑Rails E.5.\*** (DevOps Lexical Firewall, Notational Independence, Unidirectional Dependency, Bias‑Audit). All meanings live in a **`U.BoundedContext`** and cross only via Bridges. |
+| **Measurement Typing & Units** | Ensures metrics are correctly typed (ordinal/interval/ratio), unitful, and safe to operate on; forbids “ordinal averages”. | **A.17/A.18** measurement discipline + **MM‑CHR (C.16)** templates; **KD‑CAL CC‑KD‑12** (units/envelopes/windows). |
+| **Order/Time‑Safe Orchestration** | Separates structure from control‑flow and time; prevents hidden order/time bugs in authored models. | **Γ_ctx** (NC‑1..3) and **Γ_time** (T‑1..T‑3) laws; **CT2R‑LOG** “no order/time in parts”; **E.14** “no order/time in structure” for authoring conformance. |
+| **Trust Calibration & Cross‑Context Integrity** | Keeps claims honest when moved across rooms; reduces over‑optimism via weakest‑link and CL penalties. | **Trust & Assurance Calculus (B.3)** (F‑G‑R axes), **Bridges with CL** (KD‑CAL **CC‑KD‑07**), and creativity rules that lower **R** (not scale) when crossing contexts.  |
+| **Agency & Accountability (SoD)** | Makes “who acts” explicit; enforces Separation‑of‑Duties so evidence isn’t self‑authored. | **A.2 Role suite** & **A.15 run‑alignment** (roles vs evidence/work), SoD gates in creativity flows (“fails SoD — same author as reviewer”). |
+| **Scope Safety & Encapsulation** | Prevents scope‑creep and category bleed; each claim applies only within its declared room/context and exits only via governed bridges. | **Γ_ctx (NC‑1..3)** and **`U.BoundedContext`** for hard context walls; **Bridges with CL** (KD‑CAL **CC‑KD‑07**) for governed crossings; **Vista (A.19)** to declare scope of comparability. |
+| **Reproducibility & Deterministic Replay** | Ability to re‑obtain the same result given the same inputs, model version, and time policy; enables trustworthy debugging and audit. | **A.4 Design–Run split**, **Γ_time (T‑1..T‑3)**, **CT2R‑LOG** (“no order/time in parts”), **E.14** (“no order/time in structure”), **DRR (E.9)** for versioned rationale, **Evidence Anchoring (A.10)**. |
+| **Change‑Impact Predictability (Blast‑Radius Control)** | Changes have bounded, knowable effects; reviewers can see which vistas, bridges, and claims are touched. | **Canonical Evolution Loop (B.4)** with explicit deltas, **DRR (E.9)** change graph and decision record, **Evidence Anchoring (A.10)** for provenance links, **Trust & Assurance Calculus (B.3)** to update risk post‑change, **Vista (A.19)** to localize roll‑ups. |
+| **Exploration Health (Portfolio Coverage)** | Avoids local maxima and groupthink; measures how widely we explore. | **Creativity‑CHR (C.17)** **`Diversity_P`** + coverage maps (illumination), **NQD‑CAL (C.18)** **`IlluminationSummary`**, **E/E‑LOG (C.19)** **`explore_share`/policy. |
+| **Constraint Safety & Ethical Assurance** | Ensures non‑negotiable constraints (safety/ethics/standards) gate enactment; prevents “novelty theft”. | **`ConstraintFit` (C.17 §5.4)** as eligibility, **D‑cluster Bias‑Audit & Ethical Assurance (D.5)**; attribution tracked via **`AttributionIntegrity`**. |
+| **Didactic Clarity & Working‑Model Primacy** | Keeps the human‑readable canon primary; assurance flows downward; readers can reason without tool lock‑in. | **E.12 Didactic Primacy & Cognitive Ergonomics**, **E.14 Human‑Centric Working‑Model** (conformance checklist), **E.7** Tell‑Show‑Show.  |
+| **Typed Reasoning (Kinds & Intent/Extent)** | Prevents category confusions; enables typed, room‑local reasoning and safe cross‑room mappings. | **Kind‑CAL (C.3)** — `U.Kind` & `SubkindOf`, **KindSignature & Extension**, **KindBridge & CL^k** for cross‑room mapping.  |
+| **Comparability & Roll‑up Integrity (Vistas)** | Makes “same number” meaningful across teams; preserves invariants in aggregation. | **Vista (A.19)** comparability modes and explicit Γ‑fold declarations (WLNK/COMM/LOC/MONO + time policy); integrates with **Bridges with CL** for cross‑room moves; benefits include safe roll‑ups and RSG‑ready gates. |
 
 Therefore, FPF should be understood not as a passive library of terms, but as an **engineered method for thinking**. Its patterns are the architectural decisions that shape this method. Its ultimate value is not in any single model it can produce, but in the enduring quality of the reasoning process it sustains—a process that is auditable, evolvable, and coherent by design.
 
@@ -368,10 +417,11 @@ This architectural approach shifts the focus from the internal, fallible state o
 | **Ambiguity and Equivocation** | Warns against using vague terms or shifting the meaning of a word mid-argument. | **`Lexical Discipline (E.10)`** and **`U.BoundedContext (A.1.1)`**. FPF bans overloaded terms like "process" from its core and requires that all domain terms be explicitly projected onto precise FPF concepts within a bounded context. Ambiguity is architecturally constrained, not just advised against. |
 | **Causality Collapse & Lack of Accountability** | Points out the **Fundamental Attribution Error** or describes situations where causes are poorly understood. | **`External Transformer Principle (A.12)`**. FPF makes it an architectural invariant that every change **must** be attributed to an external agent (`System` in a `RoleAssigning`). "It configured itself" is not a cognitive bias; it is a **modeling violation**. Causality is non-negotiable. |
 | **Inconsistent Aggregation & Scope Neglect** | Highlights biases where we incorrectly generalize from parts to a whole or ignore the scale of a problem. | **`Cross-Scale Consistency (A.9)`** and the **`Universal Algebra of Aggregation (Γ)`** with its **Invariant Quintet (B.1)**. FPF provides a formal, conservative algebra (e.g., the Weakest-Link bound) for aggregation, making naive or optimistic roll-ups a **provable error** in the model. |
+| **Creative Mode Collapse (Premature Convergence)** | Advises teams to “brainstorm more,” add ideation checklists, or warn against fixation—creativity is audited post‑hoc. | **`Creative Abduction (B.5.2)`** bound to **`NQD‑CAL (C.18)`** and governed by **`E/E‑LOG (C.19)`** keeps hypothesis generation formally open (illumination‑style emitters, exploration quotas, selection lenses), while **`Creativity‑CHR (C.17)`** scores outputs on `Novelty`, `Use‑Value`, `Surprise`, and `ConstraintFit` inside a `U.BoundedContext`. Premature convergence becomes a **policy/modeling violation** (insufficient exploration or missing lenses), not a soft reminder.  |
 
-FPF does not make a thinker immune to cognitive biases. Rather, it provides a disciplined, external environment for reasoning that channels cognitive effort productively. It provides the **`Canonical Reasoning Cycle (B.5)`**—a constructive path from a novel idea (Abduction) to a validated conclusion (Induction)—rather than just a set of warnings about wrong turns.
+FPF does not make a thinker immune to cognitive biases. Rather, it provides a disciplined, external environment for reasoning that channels cognitive effort productively. It provides the **`Canonical Reasoning Cycle (B.5)`**—a constructive path from a novel idea (Abduction) to a validated conclusion (Induction)—rather than just a set of warnings about wrong turns. **Creative ideation** is first‑class: **B.5.2.1** together with **C.17–C.19** replaces ad‑hoc brainstorming with measurable **Novelty–Quality–Diversity** search, complementing the assurance calculus.
 
-In this way, FPF is not a replacement for critical thinking but its **engineering reinforcement**. It provides the architectural integrity, shared vocabulary, and formal discipline necessary to move from merely avoiding mistakes to reliably generating trustworthy and auditable insights.
+In this way, FPF is not a replacement for critical thinking and creative thinking but its **engineering reinforcement**. It provides the architectural integrity, shared vocabulary, and formal discipline necessary to move from merely avoiding mistakes and generate ad hoc ideas to reliably generating trustworthy and auditable insights.
 
 ## Descriptive Ontologies vs. A Thinking-Oriented Architecture *(non-normative)*
 
@@ -450,7 +500,7 @@ Classic stacks bundled **knowledge base + inference engine + working memory**. F
 5. **Local meaning, global alignment** — `U.BoundedContext` islands and explicit Bridges with **congruence‑loss** turn “it depends” into a contract (A.1.1; F.9).
 6. **Micro‑kernel + architheories** — CAL/LOG/CHR plug‑ins extend capability without contaminating the core (A.5–A.6; Part C).
 7. **Publication contract & guard‑rails** — Core ↔ Tooling ↔ Pedagogy split, notational independence, and Lexical Discipline prevent conceptual drift (E.5; E.10).
-8. **Open‑ended evolution by design** — DRR, evidence refresh, and formal/on‑ramp pedagogy keep the system alive without ossification (A.4; B.4; E.6; E.9; B.3.4).
+8. **Open‑ended evolution by design** — DRR, evidence refresh, **and explicit creative search (NQD + E/E‑LOG)** keep the system alive without ossification (A.4; B.4; **C.18; C.19;** E.6; E.9; B.3.4).
 
 **What FPF is**: a **generative, testable architecture for thinking** that any domain can inhabit.
 **What FPF is not**: a repository of domain facts, a rule‑chaining engine, a methodology du jour, or a notation.
@@ -687,7 +737,7 @@ Showing the **same structural slots** filled by a machine and a theory demonstra
 
 > **When in doubt:** first decide **what is a holon**, then state **its boundary**, then list **what crosses**. Roles and methods come *after* (see A.2 and A.15).
 
-### 5 · Conformance Checklist (normative)
+### 7 · Conformance Checklist (normative)
 
 | ID          | Requirement                                                                                                                                                                    | Purpose / Notes                                                                                                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
@@ -704,7 +754,7 @@ Showing the **same structural slots** filled by a machine and a theory demonstra
 
 ---
 
-### 6 · Consequences (informative)
+### 8 · Consequences (informative)
 
 | Benefits                                                                                                                                                         | Trade‑offs / Mitigations                                                                                                        |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -714,7 +764,7 @@ Showing the **same structural slots** filled by a machine and a theory demonstra
 
 ---
 
-### 7 · Rationale with cross‑domain corroboration (post‑2015, informative)
+### 9 · Rationale with cross‑domain corroboration (post‑2015, informative)
 
 The separation **Entity → Holon → {System, Episteme}** is not only ontologically clean; it is **empirically validated across domains since 2015**:
 
@@ -728,7 +778,7 @@ These streams converge on one point: **make boundaries and composition first‑c
 
 ---
 
-### 8 · Relations
+### 10 · Relations
 
 * **Builds / Grounds:**
 
@@ -7899,8 +7949,6 @@ In essence, A.18 is the _infrastructure of meaning_ for metrics. It may appear a
     
 -   **Constrained by lexical rules:** This pattern’s content is part of the formal lexicon governance. It works within **E.10 LEX-BUNDLE**, which means the terms _Characteristic, Scale, Coordinate, Level,_ etc., are controlled vocabulary. A.18 localizes some generic requirements from A.17 (for example, A.17 mandates polarity in principle; A.18 requires it be declared per template in practice). It also aligns with external standards: by having explicit scale types and units, it dovetails with ISO/IEC measurement terminology and allows straightforward mapping to frameworks like **ISO 80000 (quantities and units)** and **Stevens’s scale types**. This relation to standards is deliberate – it eases **F.9 (Alignment Bridge)** construction to external ontologies by having a clean internal schema (A.18 provides that schema). In effect, A.18 is where FPF’s internal consistency meets external compatibility, ensuring our measurement semantics can relate to those outside FPF when needed.
 
-Проверь, что важное потеряно при переписке текста паттерна A.19, а также какие есть улучшения, кроме более чётко выдержанного формата паттерна (исправленные противоречия и ошибки, новые идеи). Исходный текст лежит в файле спецификации FPF, переписанный текст вот:
-
 ## A.19 (A.CHR‑SPACE) — CharacteristicSpace & Dynamics Hook `[A]`
 
 **Status.** _Normative architectural pattern._  
@@ -12498,6 +12546,169 @@ It directly implements the **Primacy of Abduction** (from ADR-005) by placing hy
 *   **Takes place during:** `B.5.1 Exploration` state.
 *   **Produces:** `AssuranceLevel:L0` artifacts, which become the input for deductive analysis and subsequent progression through `B.3.3 Assurance Subtypes & Levels`.
 *   **Is informed by:** The **Role-Projection Bridge** (Pattern B.5.3), which can provide a rich vocabulary of domain-specific concepts to use in generating hypotheses.
+
+# B.5.2.1 — Creative Abduction with NQD (binding) \[A]
+
+**Status.** Normative **binding** to **B.5.2 Abductive Loop** that delegates candidate generation to **Γ_nqd.generate** (**C.18 NQD-CAL**) and exploration/exploitation policy to **E/E-LOG (C.19)**; the kernel remains unchanged.
+
+**Non‑duplication & parsimony.** “Introduces **no new kernel primitives**; reuses the CHR kit (**A.17/A.18**) to define measurable **Characteristics**. This pattern does not introduce new eligibility conditions. Application is permitted only when USM coverage holds for the target slice and the performer’s RSG state is enactable (eligibility), without prescribing any team workflow. Per **A.11 Ontological Parsimony**, only a room‑local CHR import and a **Method** are added; **no changes to Γ/LOG**. All generation is performed via **Γ_nqd.* (C.18)** and all exploration/exploitation control via **E/E-LOG (C.19)**. 
+**Terminology discipline.** Use **NQD** consistently (Novelty–Quality–Diversity). Treat **S**/**I** as *secondary* metrics unless explicitly promoted by policy (see §3, §5).
+
+**Context**
+* **Conceptual binding:** **B.5.2 Abductive Loop** (this pattern specifies the *how* for Steps 2–3).
+* **Architheory anchor:** a domain‑neutral **Creativity‑CHR** (C‑cluster) that declares the **Characteristics** used here (see §2). (No change to Γ/LOG.) This binding also references **C.18 NQD-CAL** (operators Γ_nqd.*) and **C.19 E/E-LOG** (EmitterPolicy).
+* **Manager’s mental model (informative):** “We add measurable characteristics for *newness*, *spread*, and *fit*, then use a generator that explores widely and returns a **Pareto set** (not a single winner) of non‑dominated options.”
+* **Operational loops:** compatible with **B.4 Canonical Evolution Loop** (ideas generated here flow into Run→Observe→Refine→Deploy) and with **B.5 Canonical Reasoning Cycle** (ADI), preserving abductive primacy. 
+* **Agency note.** Decisions are taken by a **system in role**. **Rooms publish** measurement spaces and admissible policies as **semantic frames**; they do **not** enact choices.
+
+## 1 · Intent & Problem
+
+**Intent.** Turn Step 2 (*generate*) and Step 3 (*filter*) of the Abductive Loop from ad‑hoc brainstorming into a **disciplined, instrumented exploration** that can (i) *produce many* distinct, plausible hypotheses and (ii) *surface the few worth pursuing*—*without* bloating the kernel or forcing a specific creative method.
+
+**Problem.** Unstructured ideation routinely fails on two fronts: it either produces *too little variety* (pet ideas win by seniority) or *too little plausibility* (grand theories with no testable predictions). **B.5.2** names these failure modes; this plug‑in adds a minimal, measurable counter‑mechanism aligned to FPF’s assurance lanes and state machine.
+
+## 2 · The **Creativity‑CHR** (references only; no re‑definitions here)
+
+This binding **references** the room‑local **Creativity‑CHR** (see **C.17**) and **does not** restate measurement templates. The primary coordinates are:
+• **`Novelty@Room`** (C.17 §5.1), • **`ΔDiversity_P`** (marginal; C.17 §5.5), and • **`Q` components** (per A.18).  
+**`Surprise`** and **`Illumination`** are **secondary**: Illumination is a **gauge over Diversity_P**; both act as **tie‑breakers** unless explicitly promoted by policy (C.19).  
+**`Use‑Value`** (*alias:* `ValueGain`) is **informative for decision lenses** (Decsn‑CAL) and **MUST NOT** enter NQD dominance by default (see C.17 §5.2).
+
+All listed **Characteristics** are **room‑local** with explicit units/ranges and **polarity↑**. They are *measurements*, not eligibility conditions; eligibility conditions are supplied by **USM/RSG**. (Complies with **A.18** measurement discipline; does not overload assurance semantics.)
+
+> **Lexical discipline.** The items above are **Characteristics** in the sense of **A.17/A.18**; avoid reserved names such as “validity” or “operation.”
+> **Normalization note.** If a **QualityVector** has heterogeneous units, rooms SHALL normalize or nondimensionalize each component before Pareto analysis (see CC‑B.5.2.1‑7).
+> **D vs I (normative).** **D = ΔDiversity_P** (marginal gain) and is eligible for the primary dominance test. **I** is _portfolio illumination_ (report/visual); it **SHALL NOT** be part of the primary dominance test and is usable **only** as an explicit tie-break per policy.
+> **Measurement invariants.** Distances, grids, and transforms MUST be declared once per run, versioned, and referenced from provenance (§3, §5).
+
+## 3 · Solution — **Binding to Γ_nqd.generate (C.18)**
+
+**Method name (Plain/Unified Tech).** *NQD‑Generate* — a **U.Method** that, given (i) a **HypothesisSpace** and (ii) a **DescriptorSpace** with a **CoverageGrid**, returns a *finite*, **non‑dominated** set of candidate hypotheses that maximize **Quality** (per‑component) while maintaining **Diversity** and encouraging **Novelty**.
+
+**Minimal signature.**
+
+* **Inputs (declared in MethodDescription):**
+ `HypothesisSpace`, `DescriptorSpace`, `Seeds?`, `Budget (time/compute)`, `EmitterPolicy` (**E/E-LOG policy id**), `QualityMeasures (Q components)`, `NoveltyMetric`, `CoverageGrid/Granularity`, `CellCapacity K? (default=1)`, `EpsilonDominance ε? (default=0)`, `TieBreakPolicy? (S/I)`, `DedupThreshold?`, `Policy(TimeWindow)`, `DeterminismSeed?`
+ 
+* **Outputs:**
+  CandidateSet = {h_i: (desc_i, Q_i, N_i, D_i:=ΔDiversity_P(h_i | Pool), S_i, I_i, UseValue_i?), genealogy_i?, provenance_i (including **metricsEdition** and **policyId** from E/E-LOG)} where `Q_i` is a vector and `provenance_i` captures generator settings and evaluation sources. If Use‑Value is present, include the objective id / acceptanceSpec, counterfactual method (if predicted), and model edition per C.17. Note: S and I are tie-breakers only unless promoted by explicit room policy; Use-Value is informative for decision lenses and SHALL NOT enter the dominance set.
+
+**Strategy (notation‑neutral).**
+
+1. **Seeding.** Initialize with seeds (known solutions, random draws, or prior L0 artifacts).
+2. **Iterated illumination.** Propose variations, evaluate **Q** (per‑component); maintain up to **K** elites per cell (or descriptor bucket); compute **N/D/S/I** on the fly; deduplicate by `DedupThreshold` in **DescriptorSpace**.
+3. **Budget‑bounded loop.** Iterate until budget or coverage‑convergence; return the **(ε‑)Pareto front** over `{Q₁…Q_k, D, N, ΔDiversity_P}` (do **not** collapse to a single scalar). Illumination is excluded from the dominance set by default; Surprise and Illumination act only as tie-breakers unless a room policy explicitly promotes them. **Use-Value** may appear as a **side note** for decision discussions **but MUST NOT be mixed into NQD dominance set**.   
+4. **Traceability.** Emit a **Design Rationale Record (DRR)**: grids/metrics versions, seed(s), policy and `TimeWindow`, which cells were filled, why items were dominated (list **Characteristics**), and how the final set was produced (including `ε`, `K`, and dedup). (Lightweight DRR is permitted per B.4 guidance.)
+5. **Algorithmic freedom (informative).** Implementations MAY use MAP‑Elites/illumination, novelty search with local competition, Bayesian/surrogate‑assisted search, or deterministic enumerations; ε‑dominance or knee‑point thinning MAY be used *after* recording the full front in provenance.
+
+> **No kernel growth.** This is a *Method* (C.4 Method‑CAL) plus a CHR import; **no new Γ‑operator** is added (per **A.11**).
+
+## 4 · Implementation & Binding into **B.5.2** (two injection points)
+
+**Step 2 — Generate candidates.** 
+**Precondition (USM+RSG).** Generation is permitted only when the **Claim/Work Scope** covers the TargetSlice (USM) **and** the performer’s **RoleAssignment** is in an **enactable RSG state** (Green-Gate law). 
+
+When the plug‑in is imported, replace or *supplement* freeform brainstorming with **NQD‑Generate**; the output is a *pool* of L0 hypotheses annotated by `{N, D, Q, S, I, V?}` **plus provenance/DRR refs**. The abductive step remains *abduction* (a conjecture), now instrumented and diverse by construction.
+
+**Step 3 — Plausibility filters.** Apply B.5.2’s plausibility criteria, now with explicit hooks:
+
+* **Falsifiability** → filter out ideas with no testable predictions in the **Shaping/Evidence** states (B.5 alignment).
+* **Explanatory power** → prioritize candidates whose *Q‑improvements* (and attached rationales) align with the framed anomaly.
+
+The *selected* “prime hypothesis” proceeds exactly as in B.5.2: formalize it as a new `U.Episteme` at **L0**, then move to Deduction/Induction.
+
+Primary dominance test: compute the (ε-)Pareto front over {Q components, N, ΔDiversity_P}. By default S (Surprise), I (Illumination) are excluded from dominance and may only act as tie-breakers by policy; Use-Value remains non-dominant.
+
+**Defaults (if policy is unspecified)**  
+> **Dominance:** `{Q components, Novelty@Room, ΔDiversity_P}`, with `ConstraintFit=pass` as **eligibility gate**.  
+> **Tie‑breakers:** `Surprise`, `Illumination (gauge over Diversity_P)` only.  
+> **Archive:** `K=1`, `ε=0`, deduplication in `DescriptorSpace`.  
+> **Policy:** UCB‑class with moderate temperature; `explore_share ≈ 0.3–0.5`.  
+> **Provenance (minimum):** record `DescriptorMapRef`, `metricsEdition`, `EmitterPolicyRef`, `TimeWindow`, `Seeds`.
+
+“**Scope‑of‑claim annotation (descriptive).** Record the **BoundedContext** and **TimeWindow** that delimit where each **N/Q/D** measurement is intended to hold; this is for reasoning traceability only (no operational gates).”
+
+Note — Status `Surprise` (scope and default role):
+By default in B.5.2.1, `Surprise` functions solely as a secondary tie‑break among candidates that are otherwise Pareto‑equivalent on the room’s primary characteristics. A room policy MAY elevate `Surprise` into the dominance set, allowing it to enter the CreativitySpace dominance alongside the primary characteristics.  If no room policy is specified, the default tie‑break role applies.
+
+## 5 · Conformance Checklist (normative)
+
+**CC‑B.5.2.1‑1 (CHR discipline).** If a room uses this plug‑in, it **SHALL** declare the Creativity‑CHR **Characteristics** with **A.18**‑style templates (type, unit/range, polarity). No new kernel terms are introduced.
+**CC‑B.5.2.1‑2 (Instrumented generation).** Step 2 of **B.5.2** **SHALL** either (a) invoke *NQD‑Generate* or (b) justify a room‑specific generator of equivalent effect (diversity + quality + novelty with measurable **Characteristics**).
+**CC‑B.5.2.1‑3 (Diversity coupling).** When this plug‑in is used, **D MUST be ΔDiversity_P** computed against the current candidate Pool using the **C.17** definition of **Diversity_P** under the same room, DescriptorSpace, kernel, and TimeWindow.
+**CC‑B.5.2.1‑Eligibility**: Eligibility requires **(i)** `ConstraintFit = pass` for the candidate (Norm‑CAL must‑set), **then (ii)** **USM** coverage for the TargetSlice and **(iii)** an enactable **RSG** state for the performer; only then may calls to `Γ_nqd.*` occur.
+**CC‑B.5.2.1‑4 (Non‑dominated shortlist).** The *CandidateSet* **MUST** include the **Pareto front** over `{Q₁…Q_k, N, D}`; any pruned candidate **MUST** carry a DRR note (“dominated by … on {Characteristics}”).
+**CC‑B5.2.1‑5 (Abductive primacy preserved).** The plug‑in **MUST NOT** bypass the ADI ordering mandated by **B.5**: induction may not start before deduction; abductive L0 creation remains the start.
+**CC‑B.5.2.1‑6 (Normalization for Pareto).** When **Q** has multiple components with different units/scales, rooms **SHALL** normalize or use declared utility‑free monotone transforms before dominance tests.
+**CC‑B.5.2.1‑7 (Use‑Value separation). ** If Use‑Value (C.17 §5.2) is recorded, it SHALL remain outside Assurance scores; it MAY inform decision lenses (Decsn‑CAL). Do not alter **R/G** semantics based on Use‑Value. (see **C.17 §5.2** for `Use-Value / ValueGain` definition)
+**CC‑B.5.2.1‑8 (Provenance).** Each `h_i` in the *CandidateSet* **MUST** reference its `provenance_i` sufficient to reproduce scores given the same `Policy(TimeWindow)`, score/metric versions, and `DeterminismSeed?`.
+**CC‑B.5.2.1‑9 (Secondary metrics).** **I (illumination) and S (surprise)** SHALL be used only for tie‑breaking/reporting unless explicitly promoted by policy; the primary dominance test is over {Q components, Novelty@Room, ΔDiversity_P}.
+**CC‑B.5.2.1‑10 (Cell capacity & ε).** If `K>1` or `ε>0` are used, the values MUST be declared and recorded in provenance; any thinning AFTER recording the front SHALL be documented in the DRR.
+**CC-B.5.2.1-11 (Dominance set).** By default the dominance set SHALL be {Q components, N, ΔDiversity_P}. Any deviation (e.g., adding S) MUST be named by policy and recorded in provenance.
+
+## 6 · Cognitive Load & Kernel Growth Budget
+
+**For engineers/managers (user cognitive load).**
+
+* *Added steps:* selecting descriptor **Characteristics** & granularity; reading a Pareto table (**non‑statisticians tip:** scan the “front” row; ignore dominated rows).
+* *Mitigations:* provide a one‑screen “NQD Cards” template analogous to RSG cards; default grids and metrics per room. (Keep ≤ 7 visible **Characteristics**—mirrors RSG human‑scale guidance.)
+* *Reader quickstart (engineer‑manager):* (1) Pick 2–3 **Q** characteristics aligned to the anomaly + a simple **DescriptorSpace** (2–4 dimensions). (2) Accept defaults for `NoveltyMetric`, grid granularity, and `K=1`. (3) Run **NQD‑Generate** to a fixed budget; read the *front row* first. (4) Apply Step 3 filters; log decisions in the DRR.
+
+**For the framework (kernel growth).**
+
+* *Zero* new primitives; only a CHR import and a **Method**. Passes **A.11** minimal‑sufficiency. 
+
+## 7 · Placement in the Reasoning Cycle (ADI)
+
+This plug‑in **only structures hypothesis exploration** (Abduction) and does not define or imply any **operational** gates. It respects ADI ordering (Abduct → Deduct → Induct) and leaves deployment/readiness concerns to patterns outside this spec.
+
+## 8 · Room‑Level KPIs (optional, informative)
+
+Rooms *may* monitor these—*not* as gates, but to improve practice:
+
+1. **Generativity (Gv).** Fraction of abductive cycles whose selected candidate reaches **L1/L2** within policy windows (time‑to‑L1; time‑to‑evidence). (Maps onto state transitions driven by **B.5**.)
+2. **Frontier‑Hit Rate (FHR).** % of cycles where the chosen candidate lies on the **Pareto front** of `{Q, N, D}` at selection time.
+3. Coverage Gain (ΔI, report). Change in the *illumination summary* (coverage map/%filled cells) per cycle (how much of the descriptor space is now “lit”).
+4. **Exploration Cost Ratio (ECR).** Compute/time spent in NQD‑Generate divided by downstream Shape/Evidence cost saved (tracks whether the plug‑in pays for itself).
+5. **Refutation Learning Yield (RLY).** Among *refuted* candidates, % that added new coverage or raised SurpriseScore—turning “failures” into map‑building.
+
+---
+
+## 9 · Worked micro‑example (abbreviated)
+
+**Framing = Step 1 in B.5.2**
+**Context:** A room using FPF to evolve FPF itself (meta‑improvement). *Anomaly:* “Users perceive FPF as compliance‑heavy; we need first‑principles creativity surfaced.” 
+
+**Step 2 (NQD‑Generate).**
+
+* **DescriptorSpace:** {*creative‑characteristic count*, *explicit novelty metric present?*, *QD operator present?*, *didactic cards present?*}. *(Illustrative; rooms SHALL define their own descriptors per §2.)*
+* **Q‑measures:** {*editor effort↓*, *time‑to‑L1↓*, *reader clarity↑*}.
+* **Output Pareto set (sketch):**
+
+  * `h₁ = “Add Creativity‑CHR + NQD plug‑in (this pattern)”` — high *D*, high *N*, medium *Q*.
+  * `h₂ = “Rename governance terms to arts vocabulary”` — low *N*, low *D*, medium *Q*.
+  * `h₃ = “Add live ideation sandbox (ops tooling)”` — medium *N*, medium *D*, high *Q*.
+
+**Step 3 (Filters).**
+
+* **Falsifiability:** `h₂` weak—no testable prediction → drop.
+* **Scope (USM):** `h₁` scoped to Part B; `TimeWindow = edition 2025‑Q4` → *covers TargetSlice*. `h₃` crosses rooms (tooling) → requires Bridge; the overhead is accounted for in **R** (not **F/G**). *(This plug‑in does not create or alter Bridges.)*
+* **Select prime:** `h₁` → formalize as L0 episteme (this pattern), move to *Shaping* (define checklist), then *Evidence* (track KPIs).
+
+## 10 · Trade‑offs & mitigations
+
+* **Cognitive effort.** Interpreting Pareto sets and coverage maps adds thinking overhead. *Mitigation:* standard “NQD Card” + default grids; keep **Characteristics** small in number (≤ 7). *Manager shortcut:* pick 2–3 **Q** characteristics that reflect the anomaly, then run with defaults.
+* **Locality.** Novelty/diversity are **room‑local**; cross‑room reuse requires **re‑measurement or an explicit mapping**. This pattern **does not define** cross‑room operational controls.
+* **Not a magic idea machine.** Abduction remains human/agentic; the plug‑in *structures* search, it does not automate insight. B.5’s abductive primacy stands.
+* **Metric gaming & collinearity.** Avoid making **N** and **S** redundant by policy; when strong collinearity is detected, freeze one as informative only and record rationale in the DRR.
+
+## 11 · Related Patterns
+
+* **Extends:** **B.5.2 Abductive Loop** (Step 2/3 operationalization). 
+* **Driven by / feeds:** **B.5 Canonical Reasoning Cycle** (Abduction→Deduction→Induction), **B.4 Evolution Loop** (Observe/Refine). 
+* **Uses:** **A.17/A.18** for characteristic discipline and **B.5 ADI ordering**. **May** refer to room‑specific MAP‑Elites/novelty‑search implementations in the MethodDescription. **No operational gating is in scope here.** C.17 (Use‑Value / ValueGain, normative definition).
+* **Respects:** **A.11** (no kernel growth beyond CHR template import + Method).
+  
 
 ### B.5.3 — Role-Projection Bridge \[A]
 
@@ -17445,8 +17656,6 @@ When MM‑CHR is used in change reasoning, movement happens in a **Characteristi
 *Smell:* collapsing heterogeneous Values into a single “points” Score without declared Gauge mapping.
 *Cure:* retain the Value on its Scale; add an explicit Gauge only when there is a justified need for a Score.
 
----
-
 ### 11 · Cross‑Domain Vignettes *(Informative, transdisciplinary)*
 
 > *Each vignette shows an CSLC‑conformant template → measure, without duplicating the A.17/A.18 glossaries.*
@@ -17467,8 +17676,6 @@ Reading: performance P gets **4**; any aggregation uses a declared Gauge that re
 Characteristic: **ParityGap** (difference of positive rates); Scale: interval with symmetric bounds; Unit: percentage points; Polarity: ↓ better (0 is target).
 Reading: model M on cohort C shows **3.2 pp**; evidence points conceptually to the derivation rationale (inputs, reference cohorts).
 
----
-
 ### 12 · Relations & Placement *(Informative)*
 
 **Kernel.** MM‑CHR *imports* the canonical Characteristic vocabulary and the CSLC discipline fixed by A.17 and A.18; it does not redefine them. CharacteristicSpace reasoning (for change) lives in the architheories that consume MM‑CHR readings.
@@ -17476,6 +17683,862 @@ Reading: model M on cohort C shows **3.2 pp**; evidence points conceptually to
 **Using architheories.** KD‑CAL, Arch‑CAL and others *instantiate* templates and produce measures; MM‑CHR remains a neutral measurement substrate. Trade‑off analyses and architectural trajectories operate over coordinates that MM‑CHR makes available, not inside MM‑CHR.
 
 **Unification (F‑cluster).** External standards (e.g., ISO 80000 quantity types; W3C SOSA/SSN observable properties; QUDT units/quantity kinds) are related via Concept‑Set rows and Bridges; MM‑CHR treats those alignments as context supplied by F‑patterns, not as local re‑definitions.
+
+## C.17 — **Creativity‑CHR** — Characterising Generative Novelty & Value 
+
+### 0 · Status, Placement & Exports
+
+**Status.** Architheory specification (**CHR**) — normative where stated.
+**Depends on.** A‑kernel (A.1–A.15), **CHR‑CAL** (C.7), **MM‑CHR** measurement infrastructure (C.16), **KD‑CAL** and **Sys‑CAL** for carriers and holons, **Decsn‑CAL** (utility), **Norm‑CAL** (constraints/ethics).
+**Coordinates with.** **B.5.2.1 NQD** (abductive generator) for search instrumentation, **Agency‑CHR** (C.9) for agential capacity, B‑cluster trust/assurance (B.3), Canonical Evolution Loop (B.4), CRA discipline (Part F).
+**Guard‑rails.** Obeys E‑cluster authoring rules (Notational Independence; DevOps Lexical Firewall; Unidirectional Dependency).
+
+**What this architheory provides (exports):**
+
+This architheory exports **Characteristics** and measurement templates **only**. It **does not** export any Γ\_\* operators, portfolio composition rules, or selection/scalarization policies; those live in **C.18 NQD-CAL** and **C.19 E/E-LOG** (or **Decsn-CAL** for decision lenses). A room _publishes_ the measurement space and admissible policies; a decision is taken by an _agent in role_ using a _named lens_ within that space.
+
+* **`U.CreativitySpace`** — a **CharacteristicSpace** (CHR) with named **Characteristics** and scale metadata for evaluating creative work/outcomes **inside a `U.BoundedContext`**.
+* **`U.CreativityProfile`** — a vector of coordinates in `U.CreativitySpace` attached by a **`U.Evaluation`** to a specific **Outcome** (usually an `U.Episteme` produced by `U.Work`).
+* **Core Characteristics (kernel nucleus; room‑extensible):**
+1. **`Novelty@Room`** — distance from a **`ReferenceBase`** in the current room/time window; ∈ \[0, 1].
+2. **`Use‑Value`** *(alias: `ValueGain`)* — measured or predicted improvement against a **declared objective**; interval/ratio scale per room.
+3. **`Surprise`** — negative log‑likelihood under a **GenerativePrior**; bits or nats.
+4. **`ConstraintFit`** — degree of **must‑constraint** satisfaction (Norm‑CAL / Service acceptance); ∈ \[0, 1].
+5. **Diversity_P (portfolio-level)** — coverage/dispersion (set-level). **Illumination** is a **gauge over Diversity_P** (coverage/QD-score summaries). It is **report-only** and **never** part of the primary dominance test.
+6. **`AttributionIntegrity`** — provenance/licensing discipline for lawful, transparent recombination; ∈ \[0, 1].
+
+* **Supporting types (linking points):**
+
+  * **`U.ReferenceBase`** — the domain‑local corpus (by room & time window) used to compute `Novelty@Room`.
+  * **`U.SimilarityKernel`** — a declared similarity metric class for the room (text/image/design/code/etc.), with invariance notes.
+  * **`U.GenerativePrior`** — a predictive model over the room’s artifacts/behaviours used to compute `Surprise`.
+  * **`U.CreativeEvaluation`** — a specialisation of `U.Evaluation` that yields a `U.CreativityProfile` and the evidence anchors.
+  * **`EffortCost`** *(advisory)* — resource outlay to achieve the outcome; from WorkLedger (Resrc‑CAL). *(For normalization and planning; not itself “creativity.”)*
+
+
+* **Operators (first tranche):** `composeProfiles` (set → portfolio), `dominates` (partial order in space), `frontier` (Pareto set), `normaliseByEffort`. *(Formal laws introduced in Quarter 2.)*
+* **Relations (informative; not exported):** dominance relation (partial order in the space), frontier predicate (Pareto set), portfolio composition view. *C.17 exports no operators; these are mathematical relations only.*
+* 
+> **Scope note.** This architheory **does not** define who is “a creative person.” It characterises **creative outcomes and episodes** as **observed in Work** and **expressed as Epistemes**. Agency (capacity to originate) is measured in **Agency‑CHR (C.9)**; here we measure **what came out** and **how it scores** against stated goals and references.  A **room publishes** the measurement space and admissible policies; a **decision is made by an agentic system in role**, using a named lens within that space. CHR exports **no Γ‑operators** and **no team workflow rules**.
+
+### 1 · Motivation & Intent (manager’s read‑first)
+
+**Problem we solve.** Teams talk past each other about “creativity”: some prize **novelty**, others **business value**, others **originality** or **risk‑managed invention**. Without a shared, context‑local measurement space, reviews derail, portfolios drift, and safety constraints are waived ad‑hoc.
+
+**Intent.** Provide a **small, universal measurement kit** that turns “this is creative” into **checkable, room‑local statements** — grounded in **evidence**, aligned to **objectives**, and **composable** from individuals to portfolios.
+
+**Manager’s one‑screen summary (what you can do with it):**
+
+1. **Score** a design/code/theory change on **Novelty–Value–Surprise–ConstraintFit** with declared references and models.
+2. **Compare** options in a **Pareto sense** (no single magic score forced).
+3. **Consider** constraints as a **coordinate** in the space; compare options on **frontiers** while keeping room for high‑novelty options
+4. **Track** a portfolio’s **Diversity** to avoid local maxima and groupthink.
+5. **Defend** decisions with an auditable **CreativeEvaluation** that cites **what was new relative to which base**, **how value was measured**, and **why this counts here**.
+
+---
+
+### 2 · Forces
+
+| Force                                | Tension we must resolve                                                                                                                 |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Universality vs. domain detail**   | One kit must serve hardware design, software, policy, and science, yet let each room pick similarity kernels, priors, and value models. |
+| **Invention vs. constraint**         | Creative leaps are valuable; safety, ethics, and acceptance are non‑negotiable.                                                         |
+| **Local truth vs. cross‑room reuse** | Meaning is room‑local (A.1.1); yet we need Bridges to compare across organisations/disciplines.                                         |
+| **Single score vs. frontier**        | Management wants a number; reality is multi‑objective.                                                                                  |
+| **Randomness vs. intention**         | Random noise looks “novel” yet useless; planned recombination can be highly creative.                                                   |
+
+**Design answer.** A **room‑local CreativitySpace** with a **small set of characteristics**, each with **clear measurement templates** and **evidence anchors**; composition uses **frontiers and partial orders**, not forced scalarisation.
+
+---
+
+### 3 · Solution Overview — The Room‑Local CreativitySpace
+
+**Idea.** Creativity is **not a type**; it is a **profile** measured on an **outcome** (episteme) or **episode** (set of works) **inside a bounded context**. The context supplies the **ReferenceBase**, **SimilarityKernel**, **GenerativePrior**, **objective function(s)**, and **acceptance constraints**.
+
+**Objects in play (A‑kernel alignment):**
+
+* A **system** (person, team, service) performs **`U.Work`** under a role (A.2).
+* That work yields a **carrier** (doc/model/design/code), i.e., an **`U.Episteme`**.
+* We apply a **`U.CreativeEvaluation`** to that episteme (and linked work) to produce a **`U.CreativityProfile`** with evidence.
+
+**Cre­ativitySpace (first‑class CHR):**
+`U.CreativitySpace(Context) := 〈Novelty@Room, ValueGain, Surprise, ConstraintFit, Diversity_P, AttributionIntegrity, EffortCost?〉`
+with **scale**/**unit** metadata from **MM‑CHR** (C.16), and room‑specific **measurement methods** bound by **MethodDescription**.
+
+**Design/run split (A.4):**
+
+* **Design‑time**: score **concepts** or **specs** against **surrogate value models** and **priors**; record **assumptions** (USM scopes; A.2.6).
+* **Run‑time**: recompute **ValueGain** and **ConstraintFit** from Work evidence (service acceptance, KPIs) and refresh **Surprise** if priors update.
+
+---
+
+### 4 · Vocabulary (CHR terms & D‑stubs)
+
+> Names are **room‑local**; below are kernel terms. Roles like “Designer/Reviewer” are contextual (A.2). **Documents don’t act** (A.7/A.12); they are **evaluated**.
+
+1. **`U.ReferenceBase`** *(D).* A curated, versioned **set of artifacts** (epistemes) and/or behaviours that define “what exists already” **in this room and time window**.
+   **Conformance (RB‑1):** must declare **inclusion criteria**, **time span (`TimeWindow`)**, and **coverage notes**.
+
+2. **`U.SimilarityKernel`** *(D).* A declared **metric family** with invariances (e.g., text: cosine over embeddings, image: LPIPS, code: AST graph edit).
+   **Conformance (SK‑1):** must cite **MethodDescription** and **test corpus**; state **limits**.
+
+3. **`U.GenerativePrior`** *(D).* A model that yields **likelihood** of artifacts given the room’s history (n‑gram/LM, design grammar, trend model).
+   **Conformance (GP‑1):** must publish **training slice**, **fit method**, **perplexity/fit metrics**, and **refresh policy**.
+
+4. **`U.CreativeOutcome`** *(D).* Any **`U.Episteme`** put forward for creative evaluation (e.g., new design, algorithm, spec, policy draft).
+   **Note.** If the outcome is a **system change** without a single carrier, attach the evaluation to a **bundle** (set) of carriers referenced from Work.
+
+5. **`U.CreativeEvaluation`** *(D).* A **`U.Evaluation`** that outputs a **`U.CreativityProfile`** and anchors to **ReferenceBase**, **Kernel/Prior**, **objective(s)**, **acceptance tests**, and **Work evidence**.
+
+6. **`U.CreativityProfile`** *(D).* The **coordinate tuple** in `U.CreativitySpace` with provenance to the above inputs and **USM scopes**.
+   **Conformance (CP‑1):** profile **must** include **scales/units**, **scopes**, **confidence bands** (B.3), and the **edition** of space definitions.
+
+---
+
+### 5 · The Core Characteristics (kernel nucleus)
+
+Each characteristic is specified per **MM‑CHR (C.16)** with: **name**, **intent**, **carrier**, **polarity**, **scale type**, **measurement template**, **evidence**, **scope (USM)**, and **didactic cues**. *Room profiles MAY add characteristics; kernel characteristics MAY NOT be removed without a Bridge.*
+
+#### 5.1 · `Novelty@Room` — “How unlike the known set is this?”
+
+* **Intent.** Quantify **distinctness** of the outcome relative to **`U.ReferenceBase`** (global or targeted slice).
+* **Carrier.** `U.Episteme` (the outcome).
+* **Polarity.** Higher is “more novel.”
+* **Scale.** **\[0, 1]**; ratio (0 = duplicate under kernel; 1 = maximally distant).
+* **Measurement template (normative pattern):**
+
+  1. Declare **ReferenceBase** `B` and **TimeWindow** window.
+  2. Declare **SimilarityKernel** `σ` and its invariances.
+  3. Compute **`Novelty@Room := 1 − max_{b∈B} sim_σ(outcome, b)`**, or a robust variant (top‑k mean).
+  4. Publish **sensitivity note** (how results shift with kernel/`B`).
+* **Evidence.** Kernel/version id; top‑k neighbours with distances; ablation on invariances.
+* **Scope hooks (USM).** `B` **must** be a declared **slice**; cross‑room use needs a **Bridge** with **CL** and **loss notes**.
+* **Didactic cues.**
+
+  * **Not** “randomness.” Noise has high novelty, low value.
+  * **Local, not global.** Novelty is **to this room now**, not timeless originality.
+
+#### 5.2 · `Use‑Value` *(alias: `ValueGain`)* — “What good did this add under our objective?”
+
+* **Intent.** Quantify **benefit** vs a baseline objective (Decsn‑CAL utility, Service acceptance, KPI).
+* **Carrier.** Outcome (episteme) with **Work** evidence.
+* **Polarity.** Higher is better.
+* **Scale.** Interval/ratio, unit **declared by the room** (e.g., ΔSNR, % defects, profit/period).
+* **Measurement templates (pick one):**
+
+  * **Measured:** `ValueGain := metric_after − metric_before` (declare counterfactual method).
+  * **Predicted:** `E[ValueGain | model]` with error bars; update post‑run.
+  * **Evidence.**  Declared **objective/criterion**; measurements or credible predictions; counterfactual method (A/B, back‑test, causal inference).
+  * **Scope.** State the **context window** used for the objective; claims outside that window are **informative only**.
+  * **Didactic cues.**
+
+  * Value is **relative to stated objective**; if the objective is wrong, the value reflects it.
+  * Keep **counterfactual discipline**; otherwise “gain” is storytelling.
+
+#### 5.3 · `Surprise` — “How improbable under our learned world?”
+
+* **Intent.** Capture **unexpectedness** given **`U.GenerativePrior`**.
+* **Carrier.** Outcome.
+* **Polarity.** Higher surprise = more unexpected.
+* **Scale.** **bits** or **nats**: `Surprise := −log p_prior(outcome)`.
+* **Measurement template:**
+
+  1. Declare **GenerativePrior** (training slice, model class).
+  2. Encode outcome for the prior; compute likelihood proxy.
+  3. Publish calibration curve (reliability diagram / PIT histogram).
+* **Evidence.** Model cards; fit metrics; OOD diagnostics; refresh policy.
+* **Scope.** Training slice declared as **ContextSlice**; Bridges penalise **R** (trust), not the value itself (A.2.6).
+* **Didactic cues.**
+
+  * **Novelty vs Surprise:** high novelty under one kernel may be low surprise under a broad prior; publish both.
+
+#### 5.4 · `ConstraintFit` — “Did it honour the non‑negotiables?”
+
+* **Intent.** Ensure **mandatory constraints** (safety, ethics, standards, SLOs) are satisfied.
+* **Carrier.** Outcome + Work evidence.
+* **Polarity.** Higher is **better** (1 = all mandatory satisfied).
+* **Scale.** **\[0, 1]**, ratio or pass/fail.
+* **Measurement template:** declare **set `C_must`** (Norm‑CAL / Service acceptance), compute **`ConstraintFit := |{c∈C_must : pass(c)}| / |C_must|`**; optionally weight per criticality.
+* **Evidence.** Checklists, tests, audits; Who/Role performed the **SpeechActs** (approvals/waivers).
+* **Scope.** Constraints are **room‑local**; cross‑room requires **Bridge**; waivers are **SpeechAct Work** with RSG gates (A.2.5).
+* **Interpretation note.** Low `ConstraintFit` signals tension with declared **must‑constraints** and warrants reframing or redesign; **this pattern does not prescribe go/no‑go rules**.
+
+#### 5.5 · `Diversity_P` *(portfolio‑level)* — “Are we exploring the space?”
+
+* **Intent.** At the **set** level, avoid myopic exploitation; promote **coverage**.
+* **Carrier.** A **set** of outcomes.
+* **Polarity.** Higher means **broader coverage** (not “better” per se).
+* **Scale.** Set‑functional; room defines metric (e.g., **average pairwise distance**, **k‑cover** over features).
+* **Template.** Declare **kernel** and **covering policy**; compute score and **coverage map (illumination)**; relate to **USM ClaimScopes**.
+* **Alignment note.** The **illumination/coverage** view corresponds to *IlluminationScore* used by **B.5.2.1 NQD‑Generate**; no separate characteristic is introduced here—measure it as part of `Diversity_P`.
+* **Evidence.** Distance matrix/cover plots; sensitivity to kernel.
+* **Didactic cue.** Use **Diversity\_P** to **shape portfolios**, not to pick single winners.
+* **Marginal gain (for generators)** — normative. For a candidate h and current set S, ΔDiversity_P(h | S) := Diversity_P(S ∪ {h}) − Diversity_P(S). Rooms using NQD SHALL compute D as this marginal and publish the Diversity_P definition alongside the DescriptorSpace/kernel and TimeWindow.
+
+#### 5.6 · `AttributionIntegrity` — “Did we credit sources and licences correctly?”
+
+* **Intent.** Discourage “novelty theft”; ensure **recombination** is **lawful and transparent**.
+* **Carrier.** Outcome + provenance graph.
+* **Polarity.** Higher is better.
+* **Scale.** **\[0, 1]**; fraction of **required attributions/licence duties** satisfied.
+* **Template.** Trace graph coverage against room policy; licence constraints as **Norm‑CAL** rules.
+* **Evidence.** PROV‑style links; licence scans; acknowledgements.
+* **Didactic cue.** High `AttributionIntegrity` signals lawful and transparent recombination; low values indicate unacceptable practice in most rooms.  
+* **Default role.** `AttributionIntegrity` is **measurable but non‑dominant**. It MAY serve as a **policy filter/tie‑break** (C.19). If certain attribution duties are **must‑constraints**, they belong to **ConstraintFit** (Norm‑CAL) and act as **eligibility gates**. It is **not** part of the default dominance set.
+* **Dominance & gating note (normative).** `AttributionIntegrity` is a measurable **Characteristic**; it is **not** in the default dominance set. Rooms MAY use it as a **filter** or **tie‑break** via policy (C.19). Legal/ethical **must‑fit** checks live in **ConstraintFit** (Norm‑CAL); failing those blocks eligibility **before** dominance.
+
+#### 5.7 · `EffortCost` *(advisory)* — “What did it take?”
+
+* **Intent.** Normalise comparisons by cost; not part of “creativity” per se.
+* **Carrier.** WorkLedger.
+* **Polarity.** Lower is better when used as denominator.
+* **Scale.** Resource units (hours, energy, \$).
+* **Template.** Sum cost categories over Work that produced the outcome.
+* **Evidence.** Time/resource logs; BOM deltas.
+* **Didactic cue.** Use **`CreativityPerCost := f(Novelty@Room, ValueGain, Surprise)/EffortCost`** for operations planning, not for excellence awards.
+
+---
+
+### 6 · Conformance Checklist (first tranche)
+
+| ID                                        | Requirement (normative)                                                                                                                                                                  | Purpose / audit hint                                          |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **CC‑CR‑1 (Room‑locality)**               | Every **CreativityProfile** **MUST** name the **`U.BoundedContext`** and the **edition** of `U.CreativitySpace`.                                                                         | Prevents cross‑room slippage.                                 |
+| **CC‑CR‑2 (Declared bases)**              | **Novelty@room** claims **MUST** declare `ReferenceBase`, `SimilarityKernel`, and `TimeWindow`; **Surprise** claims **MUST** declare `GenerativePrior` and its training slice.                 | Makes “new to whom?” and “unexpected under what?” explicit.   |
+| **CC‑CR‑3 (Objective anchor)**            | **ValueGain** **MUST** reference the **objective** (KPI/utility) and **counterfactual method** (if predicted, the model).                                                                | Stops free‑form value stories.                                |
+| **CC‑CR‑4 (Must‑fit)**                    | If **must** constraints exist, **ConstraintFit** **MUST** be present; enactment decisions **SHALL** treat `ConstraintFit<1` as **fail**, unless an explicit **waiver SpeechAct** exists. | Keeps safety & ethics non‑negotiable.                         |
+| **CC‑CR‑5 (Evidence)**                    | Each coordinate **MUST** have evidence anchors (neighbours, tests, logs, model cards).                                                                                                   | Enables audit & replication.                                  |
+| **CC‑CR‑6 (Scopes)**                      | Profiles **MUST** include **USM scopes** (ClaimScope/WorkScope) relevant to measurement; off‑scope claims are advisory.                                                                  | Ties numbers to where they hold.                              |
+| **CC‑CR‑7 (No scalarisation by default)** | The architheory **SHALL NOT** force a single scalar “creativity score.” If a room defines one, it **MUST** publish the weighting and its drift policy.                                   | Keeps decisions on a Pareto frontier unless a policy opts‑in. |
+| **CC‑CR‑8 (Bridge discipline)**           | Cross‑room comparisons **MUST** use a **Bridge** with **CL** and recorded **losses**; any mapped coordinate **MUST** note penalties in the **R** lane, not silently alter the value.     | Honest portability.                                           |
+
+---
+
+### 7 · Manager’s Quick‑Start (apply in 5 steps)
+
+1. **Name the room** *(context + edition)*.
+2. **Pick measurement defaults** *(kernel, prior, objective, constraints)* from the room’s handbook.
+3. **Score outcome** → `Novelty@Room`, `Use‑Value`, `Surprise`, `ConstraintFit`.
+4. **Decide by frontier**: shortlist **non‑dominated** options; use **ConstraintFit** as a gate; apply **policy** if a scalar is approved.
+5. **Record a CreativeEvaluation** with evidence; if crossing rooms, attach the **Bridge id**.
+
+> **Mental check.** *New to our base? Helpful to our objective? Unexpected under our model? Safe & licenced?*
+> If any answer is “unknown,” you are **not done measuring**.
+
+---
+
+### 8 · Archetypal Grounding (three domains)
+
+**(a) Manufacturing design change)**
+*Outcome.* New impeller geometry for Pump‑37.
+*Room.* `PlantHydraulics_2026`.
+*Novelty@Room* 0.42 (shape‑descriptor kernel vs last 5 years).
+*ValueGain.* +6.8% flow @ same power (bench Work).
+*Surprise.* 1.3 bits (within evolutionary trend prior).
+*ConstraintFit.* 1.0 (materials, safety, noise).
+*Decision.* **Frontier winner**: modest novelty, clear value, safe. Portfolio keeps **Diversity\_P** by also funding one high‑surprise concept for exploration.
+
+**(b) Software architecture refactor)**
+*Outcome.* New concurrency model for ETL.
+*Room.* `DataPlatform_2026`.
+*Novelty\_G.* 0.27 (AST/edit kernel vs internal corpus).
+*ValueGain.* −20% latency, −35% p95 stalls (A/B Work).
+*Surprise.* 0.5 bits (trend prior expected co‑routines).
+*ConstraintFit.* 0.83 (fails SoD—same author as reviewer).
+*Decision.* Return for **SoD fix**; then likely adopt. Creativity is **not** a waiver over governance.
+
+**(c) Scientific hypothesis)**
+*Outcome.* A new scaling law claim.
+*Room.* `GraphDynamics_2026`.
+*Novelty\_G.* 0.66 (formula kernel vs literature base).
+*ValueGain.* Predicted: explains 12 prior anomalies (model check).
+*Surprise.* 3.7 bits (strongly unexpected under prior).
+*ConstraintFit.* 1.0 (ethics N/A; evidence roles bound with decay windows).
+*Decision.* Fund **replication Work**; track **R** decay per policy.
+
+---
+
+### 9 · Anti‑Patterns (fast fixes)
+
+| Anti‑pattern                   | Why it fails                                                                  | Fix with this architheory                                                        |
+| ------------------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **“Creativity = randomness.”** | Noise yields high `Novelty@Room`, low `ValueGain` and often low `ConstraintFit`. | Evaluate **all four** characteristics; require ConstraintFit=1 for musts.                   |
+| **Global originality claims.** | Ignores room‑local meaning and current corpus.                                | Declare **room & ReferenceBase**; cross rooms only via **Bridge**.               |
+| **One magic score.**           | Hides trade‑offs; fragile under drift.                                        | Decide on **Pareto frontier**; publish scalar only with explicit weights/policy. |
+| **Hand‑wavy value.**           | No objective → no audit.                                                      | Tie to **Service/KPI** or **utility**; state **counterfactual**.                 |
+| **Silent borrowing.**          | Legal/ethical risk; reputational damage.                                      | Track **AttributionIntegrity**; licence scans in evidence.                       |
+
+---
+
+### 10 · Relations (where this plugs in)
+
+* **A.2 Role & A.15 Run‑alignment.** Creative **Work** is performed by **systems in roles**; outcomes are **epistemes**. Creativity is **measured by `U.Evaluation`**, not “done by a document.”
+* **B.3 Trust/Assurance.** Coordinates carry **confidence bands**; Bridges lower **R** by **CL**. Evidence roles (A.2.4) bind datasets/benchmarks used in measurements.
+* **C.9 Agency‑CHR.** Agency measures **capacity to originate**; a high‑agency system may still output low‑creativity outcomes (and vice versa with strong scaffolding).
+* **A.2.6 USM (Scope).** All measurements sit on **ContextSlices**; `G‑ladder` is explicitly **not** used (C.17 follows A.2.6’s set‑valued scopes).
+* **D‑cluster ethics.** **ConstraintFit** is where **must** constraints, ethics, and safety bind the evaluation; waivers are explicit **SpeechActs**.
+
+---
+
+### 11 · Authoring Aids (didactic cards)
+
+* **Write the room.** Context + edition on every profile.
+* **Name the base & kernel.** Without them, `Novelty@Room` is undefined.
+* **State the objective.** Value without a KPI is a story.
+* **Publish priors.** Surprise needs a trained model with cards.
+* **Gate by musts.** `ConstraintFit` < 1 blocks enactment unless waived.
+* **Prefer frontiers.** Shortlist non‑dominated options; let governance decide trade‑offs.
+* **Bridge explicitly.** Cross‑room talk needs CL and loss notes.
+
+## 12 · CSLC recap and the Creativity CharacteristicSpace
+
+**Purpose.** Ground “creativity” as a **measurable family of characteristics** (CHR) rather than a role, capability, or virtue. Each characteristic is scoped to a **`U.BoundedContext`**, evaluated on **`U.Work`** (episodes), **artifacts** (epistemes, e.g., design sketches, models), or **holders** (systems/teams) via **MM‑CHR** exports (`U.MetricTemplate`, `U.Measure`, `U.Unit`, `U.EvidenceStub`), using the **CSLC** discipline (*Characteristic / Scale / Level / Coordinate*).
+
+> **Strict Distinction (A.7) reminders.**
+> *Creativity is not a Role* (no one “plays CreativityRole”). It’s a **characterisation** of outcomes/process.
+> *Creativity is not Work* (no resource deltas). Work **produces** artifacts we later characterise.
+> *Creativity is not a Service* (no external promise). Services are judged from Work; creativity may correlate with value.
+
+### 12.1 · The Creativity CharacteristicSpace (CHR‑SPACE)
+
+The core **characteristics** below are **kernel‑portable** names; rooms **specialise** them (rename if needed, but keep semantics). Each characteristic declares: **what we measure**, **on what carrier**, **typical scale**, and **where it lives** in FPF.
+
+| Characteristics (kernel name)       | What it captures (intuitive)                                 | Measured on           | Typical scale (CSLC)                               | Lives with / checked by              |
+| ------------------------ | ------------------------------------------------------------ | --------------------- | -------------------------------------------------- | ------------------------------------ |
+| **Novelty\@Room**        | Distance from known ideas **in this room**                   | Artifact / Work set   | Ratio or bounded \[0..1] via *similarity→distance* | `KD‑CAL` corpus + `U.BoundedContext` |
+| **Use‑Value**            | Benefit vs a **declared objective**                          | Artifact / Evaluation | Ordinal (Fail/Partial/Pass) or scalar KPI          | `B.3` Evidence & `U.Evaluation`      |
+| **Surprise**             | Unexpectedness under the room’s **GenerativePrior**          | Artifact              | bits or nats (−log‑likelihood)                     | Prior cards & calibration            |
+| **ConstraintFit**        | Degree of **must‑constraints** satisfied while exploring     | Work / Artifact       | % satisfied (0–100)                                | `Norm‑CAL` + step guards             |
+| **Diversity_P**          | Portfolio **coverage/dispersion** (incl. coverage map view)  | Set of artifacts      | Set‑functional; coverage index                     | `Γ_ctx` fold + USM ClaimScopes       |
+| **AttributionIntegrity** | Lawful & transparent **provenance/licensing**                | Artifact + provenance | \[0,1]                                              | PROV + Norm‑CAL                      |
+
+> **Locality.** **Every characteristic is context‑local** (e.g., **Novelty\@Room**). Cross‑room claims **must** use a **Bridge** and record **CL** penalties (B.3). No global novelty.
+
+#### 12.2 · Room extensions & policy‑level characteristics (non‑kernel)
+
+The following **room‑local** characteristics remain available but are **not** part of the kernel nucleus; use them as **derived** or **policy** measures:
+
+* **ReframeDelta** — change in the **problem frame** that improves solvability (episteme‑pair; ordinal).
+* **Compositionality** — degree of **re‑use and new relations** among parts (artifact; boolean + structure score).
+* **Transferability\@X** — portability to **Room X** via a Bridge (artifact; ordinal + CL penalty).
+* **DiversityOfSearch** — breadth of **approach classes tried** (work set; count/rate).
+* **Time‑to‑First‑Viable** — elapsed time to first **Use‑Value = Pass** (work; duration).
+* **Risk‑BudgetedExperimentation** — planned vs realized exploration share (workplan vs work; ratio; policy gate).
+
+> **Compatibility note.** This split removes duplicate “core lists” and aligns C.17 with **B.5.2.1 NQD** and **C.16/A.17–A.18**: the **kernel nucleus** captures creativity *qualities*; the items above instrument **process/policy** or **portfolio shaping**.
+
+### 12.3 · Scale choices (CSLC discipline)
+
+For each characteristic, **declare the scale** explicitly (nominal / ordinal / interval / ratio). **Do not** average ordinal scores; fold with medians or distributional summaries. Choose **units** (when applicable) and **coordinate** semantics (e.g., what “distance” means).
+
+* *Novelty\@Room.*
+  Coordinate = `1 − max_similarity(candidate, corpus)` with a declared encoder (text, graph, CAD). Unitless in \[0..1]. Document encoder & corpus freeze (`A.10` evidence anchors).
+* *Use‑Value.*
+  `Pass` iff **acceptanceSpec** (from `U.Service` or Decision KPI) is met from **Work** evidence; else `Partial`/`Fail`. For scalar KPIs, publish mean ± CI and the acceptance threshold; predicted values carry error bars and are updated post‑run.
+* *ConstraintFit.*
+  Ratio = satisfied / declared **must** constraints. Constraints are `Norm‑CAL` rules; **count only declared** ones (no unspoken “norms”).
+
+
+## 12.4 · Metric templates (normative kernels + manager‑ready variants)
+
+> **Template syntax (MM‑CHR):**
+> `U.MetricTemplate { name, context, carrierKind, definition, unit?, scale, evidenceHook, acceptanceHook? }`
+
+### 12.4.1 · Templates (kernel definitions)
+
+1. **`MT.Novelty@Room`**
+
+* **carrierKind:** Artifact|WorkOutput.
+* **definition:** `1 − max_sim(encode(x), encode(y))` over y in **ReferenceSet**@Context.
+* **scale:** ratio \[0..1].
+* **evidenceHook:** `{ReferenceSetId, EncoderId, Version}`; frozen by `A.10`.
+* **notes:** Publish encoder & corpus drift in RSCR.
+
+2. **`MT.Use‑Value`**
+
+* **carrierKind:** Work (fulfillment) → artifact (decision memo).
+* **definition:** Evaluation of an outcome against a declared **objective/criterion** for the current context (or predicted value with explicit model & error).
+* **scale:** ordinal {Fail, Partial, Pass} or scalar KPI.
+* **evidenceHook:** links to `U.Work` that **fulfilsService\`**; cite acceptanceSpec edition.
+
+3. **`MT.ConstraintFit`**
+
+* **carrierKind:** Work / Artifact.
+* **definition:** `|{c∈C_must : pass(c)}| / |C_must|` within the **MethodDescription** scope; optional weighting by criticality allowed if declared.
+* **scale:** ratio \[0..1].
+* **evidenceHook:** constraint list from **Norm‑CAL**; checks from Work telemetry.
+
+4. **`MT.ReframeDelta`**
+
+* **carrierKind:** Episteme pair (ProblemStatement v0→v1).
+* **definition:** Categorise frame change as {None, Local, BoundaryShift, Systemic}; **justify** with a Scope diff (`A.2.6 U.ContextSlice` delta) and causal map simplification.
+* **scale:** ordinal 0–3.
+* **evidenceHook:** diff artifact + Bridge notes if cross‑room.
+
+5. **`MT.DiversityOfSearch`**
+
+* **carrierKind:** Work set (episode).
+* **definition:** Count of **distinct approach classes** tried (domain‑local typology) / time.
+* **scale:** count; derived rate.
+* **evidenceHook:** tagged Work items; typology lives in the room glossary.
+
+6. **`MT.Compositionality`**
+
+* **carrierKind:** Artifact.
+* **definition:** set aggregator (Compose‑CAL) of reused components ≥ K and presence of novel relation among ≥ 2 parts.
+* **scale:** boolean + secondary “structure score” (e.g., depth or edge novelty).
+* **evidenceHook:** component graph + provenance of parts.
+
+7. **`MT.Transferability@X`**
+
+* **carrierKind:** Artifact.
+* **definition:** Applicability in target **Room X** via a **Bridge**; report **CL** and residual scope slice.
+* **scale:** ordinal {not portable, portable with loss, near‑iso}; record CL (0–3).
+* **evidenceHook:** Bridge id + pilot Work in X.
+
+8. **`MT.Time‑to‑First‑Viable`**
+
+* **carrierKind:** Work episode.
+* **definition:** elapsed wall‑clock to first `UsefulnessEvidence = Pass`.
+* **scale:** duration.
+* **evidenceHook:** first passing `U.Work` id.
+
+9. **`MT.Risk‑BudgetedExperimentation`**
+
+* **carrierKind:** WorkPlan vs Work.
+* **definition:** `(Planned exploratory spend) / (Allowed risk budget)` and realised counterpart; flag **overrun**.
+* **scale:** ratio + policy gate (pass/fail).
+* **evidenceHook:** WorkPlan ledger vs `WorkLedger`.
+
+### 12.4.2 · Manager’s quick checks (plain‑language adapters)
+
+* **Novelty** without a **frozen corpus** is **storytelling**—freeze corpus, fix encoder, then score.
+* **Use‑Value** without a **consumer‑facing acceptance** is a **proxy**—bind to a **Service** or explicit Objective.
+* **Diversity** counts **approach classes**, not color‑swap variants—publish your typology.
+
+## 13 · Novelty & transfer are **room‑local** (Bridges mandatory)
+
+**Rule N‑1 (Locality).** `Novelty@Room` is defined **only** within its `U.BoundedContext`. **Never** compare scores across rooms without an **Alignment Bridge** (F.9).
+
+**Rule N‑2 (Directional mapping).** A Bridge may assert a **directional** substitution (e.g., *Novelty\@DesignLab → Novelty\@Manufacturing* with CL = 2, **loss:** aesthetics encoder absent). Reverse mapping is **not** implied.
+
+**Rule N‑3 (Penalty to R, not to G).** Cross‑room novelty **does not** change scope **G**; it **reduces R** (reliability) by the **CL penalty** (B.3), unless validated by pilot Work in the target room.
+
+**Practical pattern.** Publish novelty **with its room tag** and—when reused—attach the **Bridge id** and target‑room **pilot** outcomes.
+
+---
+
+## 14 · Anti‑Goodhart guard (use creativity metrics safely)
+
+> **Goodhart’s Law:** “When a measure becomes a target, it ceases to be a good measure.” — We bake in **guards** so creativity scoring **improves** outcomes instead of gaming them.
+
+### 14.1 · Guard‑rails (normative)
+
+* **G‑1 Paired appraisal.** **Never** assess **Novelty** in isolation; pair it with **Use‑Value** or **ConstraintFit** to avoid proxy myopia
+* **G‑2 Frozen references.** Novelty requires **frozen corpus + encoder**; changes create a **new edition** and **RSCR** rerun. Portfolio/selection heuristics are **policy-level** (see **C.19**); do not “reward” Illumination beyond its role as a report-gauge.
+* **G‑3 Time‑lag sanity.** Include a **post‑fact check** (e.g., 30–90‑day retention or cost‑to‑serve delta) before celebrating “creative wins.”
+* **G‑4 Exploration budget.** Tie **DiversityOfSearch** to **Risk‑BudgetedExperimentation**; flag overspend.
+* **G‑5 No ordinal averaging.** Do not average **ordinal** scales; use distributions/medians or convert only under declared models.
+
+### 14.2 · Conformance Checklist — **CC‑C17‑M (metrics & guards)**
+
+| ID             | Requirement                                                                                                                            | Practical test                                                              |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **CC‑C17‑M.1** | Each metric instance **MUST** cite its **room**, **edition**, and **evidence hooks** (corpus/encoder, acceptanceSpec, constraint set). | Scorecard lists `ContextId`, `Edition`, and hook ids resolvable via `A.10`. |
+| **CC‑C17‑M.2** | **Novelty** scores **MUST NOT** be used to approve Work without a **paired gate** (**Use‑Value** **or** **ConstraintFit**).               | Find decisions referencing novelty; check co‑gate present.                  |
+| **CC‑C17‑M.3** | Cross‑room reuse **MUST** cite a **Bridge** and record **CL**; **R** is penalised accordingly.                                         | Scorecards with foreign room tag lacking Bridge → **fail**.                 |
+| **CC‑C17‑M.4** | Ordinal metrics **MUST** be summarised with medians/distributions, not means, unless a declared model justifies numeric treatment.     | Reports using a mean on ordinal without model → **fail**.                   |
+| **CC‑C17‑M.5** | Metric templates **MUST** be versioned; changing encoder, reference set, or acceptanceSpec **creates a new edition**.                  | Diff shows changed hooks without edition bump → **fail**.                   |
+
+---
+
+## 15 · Worked mini‑cases (engineer‑manager focus)
+
+> **All names are room‑local; bridges and editions are explicit.**
+> We show **(a)** what is measured, **(b)** who acts, **(c)** what is accepted, and **(d)** how evidence flows.
+
+### Case A — Hardware ideation sprint (manufacturing design)
+
+* **Room.** `DesignLab_2026`.
+* **Objective.** Reduce fastener count by ≥ 30 % without tooling changes.
+* **MethodDescription.** “Morphological matrix ideation v2.”
+* **Work.** 1‑day sprint, 6 sessions.
+* **Metrics.** `Novelty@Room` (encoder: CAD‑graph v1; ReferenceSet: in‑house assemblies), `ConstraintFit` (no‑tooling‑change), `Use‑Value` (acceptance: Pass if sim shows ≤ +5 % assembly time).
+* **Roles.** Performers = design cell (#TransformerRole); Observer = methods coach (#ObserverRole ⊥).
+* **Outcome.** 22 candidates; 4 **Pass** usefulness; best `Novelty`=0.41 with **100 %** constraints respected; `Time‑to‑First‑Viable` = 3 h 40 m.
+* **Evidence.** Scorecard episteme holds metrics; links to Work ids; acceptance tied to internal **Service** “Design‑for‑Assembly Simulation”.
+
+**Manager’s read.** “We didn’t just produce ‘novel’ shapes; 4 passed the sim and respected constraints, within the day.”
+
+---
+
+### Case B — Data‑science hypothesis generation (health analytics)
+
+* **Room.** `Cardio_2026`.
+* **Objective.** Find a new risk factor candidate for readmission (< 30 days).
+* **MethodDescription.** “Causal discovery v3 + clinician review.”
+* **Metrics.** `DiversityOfSearch` (approach classes: feature ablation, IVs, DAG‑learners), `Novelty@Room` (text encoder over prior hypotheses), `Use‑Value` (AUROC uplift ≥ 0.03 on hold‑out), `Transferability@Hospital_B` (Bridge CL=2).
+* **Roles.** SRE pipeline (#ObserverRole) computes metrics; clinicians (#ReviewerRole) set acceptance; data squad (#TransformerRole) performs experiments.
+* **Outcome.** Two candidates; one meets AUROC uplift; **Transferability** requires follow‑up (CL penalty).
+* **Evidence.** Episteme bundle: model cards, hold‑out plots, Bridge note.
+
+**Manager’s read.** “One candidate works **here**; plan a pilot at Hospital B (we recorded CL=2).”
+
+---
+
+### Case C — Product squad reframing (software UX)
+
+* **Room.** `SaaS_Onboarding_2026`.
+* **Objective.** Reduce time‑to‑value (TTV) by 20 %.
+* **MethodDescription.** “JTBD interviews + onboarding flow experiments.”
+* **Metrics.** `ReframeDelta` (BoundaryShift: split onboarding into ‘job setup’ and ‘first result’), `Use‑Value` (TTV ‑22 % on A/B), `Risk‑BudgetedExperimentation` (within cap), `Compositionality` (reuse of existing workflow widgets).
+* **Roles.** UX researcher (#ObserverRole), squad (#TransformerRole), product ops (#ReviewerRole).
+* **Outcome.** Frame changed; TTV target passed; experiments within budget.
+* **Evidence.** Reframing episteme with Scope diff + A/B report.
+
+**Manager’s read.** “We changed the problem frame and proved the value drop—within risk limits.”
+
+---
+
+### What these cases illustrate (tie‑backs)
+
+* **Locality.** All novelty/usefulness claims are **room‑tagged**; cross‑room steps use **Bridges** with **CL**.
+* **Dual‑gate.** Novelty never acts alone; usefulness/constraints co‑gate decisions.
+* **SoD & Evidence.** Observers are **separate** from performers; metrics live on **epistemes** with **frozen hooks**; Work proves fulfillment.
+
+
+## 16. Working examples
+
+#### 16.1 · Software (algorithmic/architectural ideation)
+
+**Kernel characteristics (↑/↓/gate).**
+Novelty↑ (algorithmic / compositional), Use‑Value↑ (targeted user/job metric), ConstraintFit=gate (resource/latency envelope), Cost‑to‑Probe↓ (hours to runnable spike), Evidence‑Level↑ (tests/benchmarks confidence), Option‑Value↑ (paths unlocked), RegretRisk↓ (blast radius if wrong).
+
+**Priors.**
+
+* Novelty prior **skeptical** beyond nearest known family (discount by conceptual distance).
+* Evidence prior at **L0** (B.3) until benchmarks exist; regression tests act as **ObserverRole** evidence.
+
+**Room card (one screen).**
+
+* Γ\_bundle: Cost = sum; ConstraintFit = AND; Novelty = subadditive; Evidence = min (chain) / SpanUnion (indep).
+
+#### 16.2 · Hardware (mechanical/electro‑mechanical concepting)**
+
+**Kernel characteristics.**
+Novelty↑ (principle/material), Use‑Value↑ (performance delta), ConstraintFit=gate (manufacturability window), Time‑to‑Probe↓ (bench jig), Cost‑to‑Probe↓, SafetyRisk↓ (hazard), Evidence‑Level↑ (bench data), Option‑Value↑ (platform reuse).
+
+**Priors.**
+
+* SafetyRisk has **WLNK** priority (R must cover hazard chain).
+* ConstraintFit must pass **manufacturing gate** before frontier inclusion.
+
+**Room card.**
+* Γ\_bundle: Hazard = max; ConstraintFit = AND; Cost = sum+coupling; Evidence = min on chain; Scope via **WorkScope** (A.2.6).
+
+#### 16.3 · Policy design (rules/standards/programs)
+
+**Kernel characteristics.**
+Novelty↑ (institutional), Use‑Value↑ (measurable social/operational effect), ConstraintFit=gate (legal/operational), Cost‑to‑Probe↓ (pilot), Evidence‑Level↑ (triangulated), EthicalRisk↓ (D‑cluster), Option‑Value↑ (coalitions/pathways), Scope (ClaimScope G) explicit.
+
+**Priors.**
+* EthicalRisk uses **status‑only** eligibility conditions; Evidence aging (decay) is **fast**; cross‑context Bridges carry **CL** penalties.
+
+**Room card.**
+* Γ\_bundle: EthicalRisk = max; ConstraintFit = AND (legal & operational); Cost = sum; Evidence = min/SpanUnion; Scope = ClaimScope (A.2.6).
+
+## 17 Consequences & fit (for engineer‑managers)
+
+* You can **reason on paper** about creativity: compare with **dominance**, pick along a **frontier**, and steer exploration with a few **policy characteristics**.
+* Changes to the space (**scales, eligibility conditions, operators**) are handled by **RSCR**, so decisions are **explainable over time**.
+* The **room handbooks** are a **thinking OS**: one screen to start ideating without importing tool stacks or management playbooks.
+
+## 18 Relations
+
+* **Builds on**: B.1 Γ‑algebra (WLNK/COMM/IDEM/MONO), B.3 Trust & Assurance (F–G–R, CL), A.2.6 USM (Claim/Work scopes), A.10 Evidence Anchoring.
+* **Coordinates with**: A.2 Role suite (Observer/Evidence roles for probes), A.15 (Work & plans for probes), C.16 MM‑CHR (scale polarity & units). **C.18 NQD-CAL** (generation/illumination operators Γ_nqd.*) and **C.19 E/E-LOG** (policies, selection, and portfolio rules). This CHR remains measurement-only.
+* **Defers to**: F.9 Bridges for cross‑room transfers; D‑cluster for ethical/speech‑act gates.
+
+## 19 Quick reference cards (tear‑out)
+
+* **Dominance test**: apply **signs** + **eligibility conditions** + **trust**; then partial order.
+* **Frontier use**: **show frontier** + **name the lens** that picked your choice.
+* **Portfolio policy**: keep `ExploreShare` and `WildBetQuota`; set `BackstopConfidence`; rebalance on cadence.
+
+## 20 · Conformance Checklist (pattern‑level, normative)
+
+> *Pass these and your CS modelling remains a thinking architecture, not a team‑management manual.*
+
+**CC‑C17‑1 (Room‑local CS).**
+Every **CreativitySpace** (the characteristic set where ideation and selection are measured) **MUST** be defined *inside one* `U.BoundedContext`; all characteristics and their scales are local to that room. (Bridges with CL penalties are required across rooms; see §C.17.16.)
+
+**CC‑C17‑2 (Characteristics, not “characteristics”).**
+Each CS dimension **SHALL** be a named **Characteristic** per **MM‑CHR**, with kind (`qualitative`, `ordinal`, `interval`, `ratio`, or `set‑valued`), unit/scale, polarity, and admissible operations. No free‑floating coordinates. (A.CHR‑NORM / A.CSLC‑Kernel.)
+
+**CC‑C17‑3 (Profile ≠ plan).**
+A **Profile** is a *state description over characteristics* (what the option *is* in CS); a **Plan** or **Method** is *how you will act*. Never encode choices or schedules into the profile.
+
+**CC‑C17‑4 (Portfolio = set + rule).**
+A **Portfolio** is a set of candidate profiles **plus** a selection rule (objective + constraints) declared *in the same room*. Presenting only a scatterplot is non‑conformant.
+
+**CC‑C17‑5 (Dominance operator well‑typed).**
+A dominance claim **MUST** name the **characteristic subset and polarity** under which it is evaluated. Dominance on incomparable scales (or mixed polarities without explicit transformation) is invalid.
+
+**CC‑C17‑6 (Frontier from rule, not from taste).**
+A **Frontier** (Pareto or constraint‑bound) **SHALL** be computed from the declared selection rule; drawing a “nice hull” by eye fails conformance.
+
+**CC‑C17‑7 (Search–Exploit as **dynamics**, not policy dogma).**
+Exploration/exploitation **MUST** be expressed as a **dynamics on the portfolio measure(s)** (e.g., exploration share as a function of marginal value of information), *not* as a prescriptive budget recipe. (Design‑time statements belong to Decsn‑CAL; see §C.17.16.)
+
+**CC‑C17‑8 (Evidence anchoring for scores).**
+Any numeric score in a profile **MUST** cite its **MeasurementTemplate** (MM‑CHR) and the **observation/evaluation** that yielded it. No anonymous numbers.
+
+**CC‑C17‑9 (Separable uncertainty lanes).**
+Keep **aleatory** vs **epistemic** uncertainty separate on characteristics; their combination rule **MUST** be stated (e.g., interval arithmetic, conservative bound).
+
+**CC‑C17‑10 (Time is explicit).**
+Comparisons across iterations **MUST** state `TimeWindow` (snapshot window) and whether *drift* or *refit* occurred (§C.17.14). “Latest” is not a time selector.
+
+**CC‑C17‑11 (No proxy collapse).**
+If a composite “creativity index” is used, its **aggregation algebra** (weights, monotone transforms) **MUST** be declared; the primitive characteristics remain queryable.
+
+**CC‑C17‑12 (Work stays on Work).**
+Resource/time actuals and run logs live on `U.Work`; CS never carries actuals. We reason **about** profiles/portfolios; we do not audit operations here.
+
+
+### 21 · Worked‑Room Handbooks (concept cards, not runbooks)
+
+> *Each room publishes one page per card. These are **thinking kernels**: priors, objectives, admissible characteristics, and example transforms. No staffing, no process charts.*
+
+**(a) Kernel Card — “What is a creative win here?”**
+
+* **Room:** `<Context/Edition>`
+* **Purpose Characteristic(s):** what “win” means (e.g., *Novelty*, *Usefulness*, *Adoptability*), with polarity and admissible ops.
+* **Constraint Characteristics:** *Risk*, *Cost of change*, *Time to learn*, etc.
+* **Objective** *(Decsn‑CAL pointer)*: Maximise `<purpose>` subject to declared constraints.
+* **Frontier Rule:** Pareto over `{purpose ↑, risk ↓, cost ↓, time ↓}`.
+* **Evidence Hooks:** which observations/evaluations populate each characteristic.
+
+**(b) Priors Card — “What we believe before seeing data.”**
+
+* **Default priors** on uncertainty for each characteristic (e.g., Beta for adoption probability).
+* **Bridge policy:** minimal CL acceptable for imported profiles.
+* **Exploration prior:** initial exploration share as a function of prior entropy.
+
+**(c) Objective Variants Card — “Admissible objective shapes.”**
+
+* Catalog the *few* objective forms this room allows (lexicographic tie‑break, ε‑constraint, max‑min fairness), with **didactic pictures** of their frontiers.
+* State when to switch objective (e.g., during bootstrapping vs exploitation).
+
+**(d) Ready‑to‑use transforms** *(MM‑CHR aligned)*
+
+* Monotone maps (e.g., log utility), normalizations, ordinal→interval “do & don’t” (only with evidence of order‑to‑interval validity).
+* **Forbidden transforms** list (e.g., averaging ordinal ranks).
+
+These cards are *conceptual fixtures*; **Tooling** may implement them, **Pedagogy** may teach them, but **C.17** only standardises their content as **thinking affordances**.
+
+### 22 · Placement sanity‑check across the pattern language** *(avoid scope creep)
+
+* **MM‑CHR (C.16):** defines **Characteristic/Scale/Unit/Measure** and the *characterisation discipline*. **All** CS dimensions live there; C.17 **uses** them, never re‑defines scales.
+* **A.CHR‑SPACE (A.19):** exports **CharacteristicSpace & Dynamics hooks**; C.17 is a **roomed specialisation** for creative reasoning (profiles/portfolios/selection).
+* **Decsn‑CAL (C.11):** hosts **objective functions, constraints, preference orders, utility proofs**, and the **search–exploit dynamics** as decision policies. C.17 only **names** the hooks (objective, rule), keeps policy math out.
+* **KD‑CAL (C.2) & B.3 (Trust):** carry **evidence provenance**, **assurance** and **congruence penalties (CL)** for cross‑room reuse. C.17 requires anchors; it does not invent confidence calculus.
+* **Compose‑CAL (C.13):** governs **set/union/slice** aggregation; the portfolio set is a **Γ\_m.set** over profiles; frontier is derived **without** ad‑hoc geometry.
+* **B.4 Canonical Evolution Loop:** where *Run→Observe→Refine→Deploy* sits. C.17 supplies the **view** in which refinement is judged.
+
+**Out of scope here:** team staffing, budgeting workflows, data‑governance procedures, ticket states, any “how to manage people”. This pattern organises **thought**, not **teams**.
+
+### 23 · Anti‑patterns & canonical rewrites (conceptual hygiene)
+
+1. **characteristic‑speak.** “Along the novelty characteristic…” → **Rewrite:** “Along the **Novelty characteristic** (ordinal; higher is better)…”.
+2. **Pretty hulls.** Drawing a convex hull and calling it a frontier → **Rewrite:** compute Pareto under declared characteristic polarities.
+3. **Ordinal arithmetic.** Averaging ranks or Likert values → **Rewrite:** either treat as **ordinal** and use **order‑safe** operators, or justify an interval mapping via MM‑CHR evidence.
+4. **Proxy tyranny.** Single composite index driving choice unseen → **Rewrite:** publish **primitive characteristics**, index formula, and sensitivity.
+5. **Policy‑as‑math.** “10% wild bets” as a rule → **Rewrite:** declare an **exploration dynamics** tied to value‑of‑information; if keeping a heuristic, label it as such.
+6. **Global meaning.** Porting a profile from another room by name → **Rewrite:** attach a **Bridge** with CL and loss notes; adjust trust, not scales.
+7. **Plan‑profile blur.** Putting milestones into profiles → **Rewrite:** move schedules to `U.WorkPlan`; keep CS for *how options compare*, not *how to execute*.
+
+### 24 · Minimal didactic cards (one screen each)
+
+**(1) Profile Card**
+
+* **Option id & room**
+* **Characteristics table** (value, unit/scale, uncertainty split)
+* **Evidence anchors** (Observation/Evaluation ids)
+* **Notes** (bridges used, CL penalties)
+
+**(2) Portfolio‑with‑Rule Card**
+
+* **Set of candidate profiles (refs)**
+* **Objective & constraints** (Decsn‑CAL pointer)
+* **Dominance subset** & **Frontier snapshot** (with TimeWindow)
+* **Delta vs previous** (entered/exited/moved)
+
+**(3) Search–Exploit Card** *(conceptual)*
+
+* **Exploration share** as function of **marginal VOI** (symbolic)
+* **Update cadence** (TimeWindow policy)
+* **Stop conditions** (e.g., VOI below threshold; risk bound reached)
+
+**(4) RSCR Summary Card**
+
+* **What changed?** (refit/Δ±)
+* **Sentinels status**
+* **Frontier churn**
+* **Bridge CL drift**
+
+These cards are **thinking scaffolds**; they do not prescribe org process.
+
+### 25 · Consequences (informative)
+
+| Benefit                    | Why it matters                                                                                                                    |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Room‑local rigour**      | Creative comparison is made decidable *where meaning lives*; cross‑room reuse is explicit and penalised only in trust, not scale. |
+| **Frontier honesty**       | Decisions rest on declared characteristics and polarities; frontiers follow rules, not taste.                                     |
+| **Temporal comparability** | RSCR prevents silent drift; “better/worse” claims retain meaning over iterations.                                                 |
+| **Method independence**    | Any tooling can implement the cards; C.17 remains a conceptual API for thought.                                                   |
+
+**Trade‑offs:** upfront ceremony (declare characteristics, polarity, TimeWindow) and disciplined bridges. The payoff is comparability and explainability.
+
+### 26· Open questions (non‑normative, research hooks)**
+
+* **Information geometry of CS:** can certain rooms justify canonical distance metrics across characteristics without violating MM‑CHR parsimony?
+* **Multi‑agent exploration:** how to couple individual CS frontiers into a *co‑exploration* equilibrium without importing team governance?
+* **Learning‑to‑rank vs measurement:** what minimal evidence suffices to treat an ordinal characteristic as interval for the purpose of frontier estimation?
+
+
+## C.18 — NQD‑CAL — Open‑Ended Search Calculus \[A]
+
+**Status.** Architheory specification (**CAL**). Exports `Γ_nqd.*` operators for open‑ended, illumination‑style generation. **ΔKernel = 0** (no kernel primitives added).
+
+**Depends on.** A‑kernel (A.1–A.15), **MM‑CHR** (C.16) for measurements, **KD‑CAL** for similarity/corpora, **Sys‑CAL** for carriers, **Decsn‑CAL** (objectives; advisory), **Compose‑CAL** (set aggregation; advisory).
+
+**Coordinates with.** **B.5.2.1** (binding), **C.17 Creativity‑CHR** (characteristics & scales), **C.19 E/E‑LOG** (policies: emitter selection, explore/exploit).
+
+**Exports (CAL).**
+- Types: `U.DescriptorMap`, `U.NQDArchive`, `U.Niche`, `U.ArchiveCell`, `U.EmissionSeed?`, `U.EmitterPolicyRef`, `U.IlluminationSummary`.
+- Operators (Γ):
+  - `Γ_nqd.generate(seed?, EmitterPolicyRef, Budget, DescriptorMapRef, QualityMeasures, NoveltyMetricRef, CoverageGrid, CellCapacity K=1, EpsilonDominance ε=0, DedupThreshold?) → CandidateSet`
+  - `Γ_nqd.updateArchive(Archive, CandidateSet) → Archive'`
+  - `Γ_nqd.illuminate(Archive) → IlluminationSummary{coverage, QD-score, occupancyEntropy, filledCells}` (reporting gauge only; not a dominance axis unless a policy explicitly promotes it).
+  - `Γ_nqd.selectFront(Archive|CandidateSet, characteristics={Q components, Novelty@Room, ΔDiversity_P, …}) → ParetoFront`
+
+**Type notes.**
+- `U.DescriptorMap : Hypothesis → ℝ^d` (declares encoder, invariances, version).
+- `U.NQDArchive` holds per‑cell elites and genealogy refs; room‑local.
+- `U.Niche` is a region in DescriptorSpace (grid bucket / CVT centroid / cluster).
+- `U.EmitterPolicyRef` points to a named policy in **C.19 E/E‑LOG**.
+- `U.IlluminationSummary` is a **gauge** over `Diversity_P` (see C.17), not a dominance axis.
+
+**Operator specs (normative).**
+- `Γ_nqd.generate(...)` SHALL:
+  (a) respect **Budget**,  
+  (b) compute `{Q_i}` (vector), `N_i` (Novelty@Room), `D_i := ΔDiversity_P(h_i | Pool)` under the same DescriptorSpace & TimeWindow as the Pool, and optional `S_i` (Surprise),
+  (c) deduplicate by `DedupThreshold` in DescriptorSpace,  
+  (d) record `metricsEdition`, `DescriptorMapRef`, `EmitterPolicyRef`, `ε`, `K`, `Seeds`, and genealogy references (parent/seed ids) to enable SSU measurement.
+- `Γ_nqd.updateArchive` SHALL apply local competition per cell (keep up to K elites) and preserve genealogy.
+- `Γ_nqd.illuminate` SHALL return coverage and QD‑score computed against the declared grid and archive edition.
+- `Γ_nqd.selectFront` SHALL compute the (ε‑)Pareto front over the declared axes; **Illumination** is excluded by default (report‑only).  
+  **Pipeline:** apply **Eligibility (ConstraintFit=pass)** → **Dominance (default set)** → **Tie‑breakers (Surprise, Illumination gauge)**.
+- **Pure academic QD-mode:** Rooms MAY elect a _pure‑QD_ mode (dominance on `Q` only; `N/ΔD` used via archive occupancy and tie‑breakers). Deviation SHALL be declared by policy id and recorded in provenance.
+
+**Reproducibility & editions.** Each call SHALL emit provenance sufficient for replay: `{metricsEdition, DescriptorMapRef (encoder+corpus edition), EmitterPolicyRef (params), ε, K, Seeds, TimeWindow}`. Changing encoder/corpus/policy parameters creates a **new edition**.
+
+**Measurement alignment.** `Novelty@Room`, `Use‑Value (ValueGain)`, `Surprise`, `Diversity_P` SHALL be measured per **C.17** (MM‑CHR templates). **IlluminationSummary** is a gauge over `Diversity_P` (coverage/QD‑score).
+
+**Conformance (C.18/Γ).**
+- **C18‑1** Declare `DescriptorMap` (encoder, invariances, corpus edition) before generation.
+- **C18‑2** Record `EmitterPolicyRef` (policy id from C.19) and parameter set.
+- **C18‑3** Compute `D = ΔDiversity_P(h | Pool)` under the same DescriptorMap & TimeWindow as the Pool (see C.17).
+- **C18‑4** Exclude Illumination from dominance unless policy explicitly promotes it.
+- **C18‑5** Keep `Use‑Value` separate from assurance scores; do not alter `F/G/R` semantics (see B.3, C.17 §Use‑Value).
+- **C18‑6** Emit full provenance; thinning after front computation MUST be recorded.
+- **C18‑7** Before computing any front, apply **ConstraintFit = pass** as a hard eligibility filter.
+- **C18‑8** `Γ_nqd.selectFront` SHALL exclude **Illumination** from the dominance axes unless the room policy explicitly promotes it (see C.19).
+
+**Defaults (if policy is unspecified)**  
+>  **Dominance:** `{Q components, Novelty@Room, ΔDiversity_P}`, with `ConstraintFit=pass` as **eligibility gate**.  
+> **Tie‑breakers:** `Surprise`, `Illumination (gauge over Diversity_P)`.   > **Archive:** `K=1`, `ε=0`, deduplication in `DescriptorSpace`.  
+> **Policy:** UCB‑class with moderate temperature; `explore_share ≈ 0.3–0.5`.  
+> **Provenance (minimum):** record `DescriptorMapRef`, `metricsEdition`, `EmitterPolicyRef`, `TimeWindow`, `Seeds`.
+
+**Didactic quickstart (room).**
+1) Pick 2–4 Quality coordinates and a simple DescriptorMap (2–4 dims).  
+2) Set defaults: `K=1`, `ε=0`, a conservative `EmitterPolicy`.  
+3) Run `Γ_nqd.generate` to fixed Budget; inspect the front; log coverage (IlluminationSummary).  
+4) Apply abductive plausibility filters; promote prime hypothesis to L0.
+
+## C.19 — E/E‑LOG — Explore–Exploit Governor
+
+**Status.** Architheory specification (**LOG**). Defines exploration/exploitation policies and selection lenses. **No Γ operators** are exported; policies parameterize calls in **C.18 NQD‑CAL**.
+**Agency note.** Decisions are taken by a **system in role**. **Rooms publish** measurement spaces and admissible policies as **semantic frames**; LOG profiles lenses and policies but does **not** enact choices.
+**Depends on.** **C.18 NQD‑CAL** (generators), **C.17 Creativity‑CHR** (measurements), **Decsn‑CAL** (objectives/constraints, scalarization lenses), **B.3** (trust adjustments), **Compose‑CAL** (set aggregation; advisory).
+
+**EmitterPolicy (named profile).** A room‑local, versioned policy with fields:
+`{ name, class ∈ {UCB, Thompson, BO‑EI, GP‑UCB, PES, …}, params, explore_share∈[0,1], temperature τ≥0, rebalance_period, wild_bet_quota≥0, backstop_confidence (assurance level), epsilon_dominance ε, cell_capacity K }`.
+Policies are referenced as `U.EmitterPolicyRef` by NQD generator call (C.18) and are conceptual lenses, not staffing/budget instructions.
+
+**Defaults (if policy is unspecified):**  
+• **Dominance:** `{Q components, Novelty@Room, ΔDiversity_P}`, with `ConstraintFit=pass` as **eligibility gate**.  
+• **Tie‑breakers:** `Surprise`, `Illumination (gauge over Diversity_P)`.  
+• **Archive:** `K=1`, `ε=0`, deduplication in `DescriptorSpace`.  
+• **Policy:** UCB‑class with moderate temperature; `explore_share ≈ 0.3–0.5`.  
+• **Provenance (minimum):** record `DescriptorMapRef`, `metricsEdition`, `EmitterPolicyRef`, `TimeWindow`, `Seeds`.
+
+**Scalarization lenses (policy‑level).** A lens `J_ℓ` declares: (a) hard eligibility conditions (e.g., ConstraintFit=pass), (b) soft aggregation (weights/curves), (c) trust policy (how assurance/CL discounts enter).  
+**Conformance.** A room MUST name the lens used to pick from a frontier; scalarized rankings MUST NOT be presented as “the frontier”; the **`lens id MUST be recorded in provenance of each selection`**.
+
+
+**Promotion rules (policy).**  
+- **Tie‑breaks.**  `Surprise` and `Illumination` MAY act as tie‑breakers; **promotion into the dominance set MUST be declared by lens or policy id** and captured in provenance.
+- **Graduation.** Profiles graduate from Explore→Exploit when **backstop_confidence** (B.3 level) and eligibility conditions are met.  
+- **Sunset/Pivot.** Profiles failing VOI/backstop thresholds are sunset or pivoted at `rebalance_period`.
+
+**Explore/Exploit loop (per rebalance_period).**
+1) Recompute frontier with trust discounts.  
+2) Enforce `explore_share` (minimum attention on high‑Novelty, not‑yet‑proven profiles).  
+3) Update generator `temperature τ` / emitter mix.  
+4) Apply `backstop_confidence` to graduate; sunset stale probes.  
+5) Satisfy `wild_bet_quota` by seeding fresh high‑Novelty candidates.
+
+**Named lenses (heuristics; policy‑level, not norms)**
+The following **lens profiles** are **illustrative heuristics**. Rooms MAY reuse/modify them; they are **not** normative.
+• **Frontier‑sweeper** — maintain attention on the full front; promote only when `backstop_confidence` holds.  
+• **Barbell** — enforce `explore_share ≥ θ` with a `wild_bet_quota`; otherwise exploit top‑trust region.  
+• **Spike‑first** — pick highest **Use‑Value** subject to `ConstraintFit=pass` and a small **Cost‑to‑Probe** cap.  
+• **Safety‑first** — minimize **SafetyRisk** subject to `Use‑Value ≥ θ` and `ConstraintFit=pass`.  
+• **Platform‑option** — maximize **Option‑Value** under probe cost bounds.  
+• **Pilot‑then‑scale** — optimize **Use‑Value** on pilot scope with `BackstopConfidence ≥ L1`; widen `G` once **R** holds.  
+**Conformance (lens recording).** A decision that uses any lens **MUST** record its **lens id** alongside `EmitterPolicyRef`. (This restates and localizes C19‑3.)
+
+**Conformance (C.19/LOG).**
+- **C19‑1** Each NQD generator call (C.18) **SHALL** cite `U.EmitterPolicyRef` (policy id + params).
+- **C19‑2** The characteristic set & signs used for dominance **MUST** be declared; eligibility conditions applied first. *(References to C.18 generator operators are descriptive only; LOG exports no Γ.)*
+- **C19‑3** If a lens is used, its id MUST be recorded; do not label scalarized top‑1 as “frontier”.  
+- **C19‑4** Promotion of Surprise/Illumination into dominance MUST be explicit in policy.  
+- **C19‑5** USM/RSG gate applies: policy actions SHALL operate within the room’s scope and enactable RSG states.
+- **C19‑6** Each selection lens **MUST** implement and document the pipeline` Eligibility (ConstraintFit=pass) → Dominance (declared set) → Tie‑breakers (declared)`. Any **promotion** of Surprise/Illumination into the dominance set **MUST** be named by lens/policy id and recorded in provenance.
+
+**Illumination & Diversity_P.** Illumination is a **gauge over Diversity_P** (coverage/QD‑score). It informs exploration health and tie‑breaks; it is **not** a dominance axis by default.
+
+**Baseline profile (informative, room‑local template).**
+`EmitterPolicy#NQD-Default-2025`:
+    class=`UCB`, explore_share=`0.3–0.5`, temperature `τ=moderate`,
+    rebalance_period=`room default`, wild_bet_quota=`≥0`,
+    backstop_confidence=`policy L1`, epsilon_dominance=`ε=0`,
+    cell_capacity=`K=1`.
+Rooms MAY clone/adjust; if used, record its id in provenance.
+
+**Didactic quickstart (room).**
+- Start with policy class = `UCB` or `Thompson`; set `explore_share≈0.3–0.5`, `τ` moderate.  
+- Name the dominance set: `{Q components, Novelty@Room, ΔDiversity_P}` with `ConstraintFit=pass` as gate.  
+  *(Use‑Value / Cost‑to‑Probe may appear in **lenses** or **constraints**; they are **not** in the default dominance set.)*
+- Pick a lens for the final choice (or stick to frontier if undecided); record the lens id in the decision memo.
+
+
+
+
+
 
 # **Part D – Multi-scale Ethics & Conflict‑Optimisation**
 
