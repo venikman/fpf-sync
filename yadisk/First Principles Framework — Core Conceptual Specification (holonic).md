@@ -21862,7 +21862,7 @@ The **Working‑Model layer remains the canonical publication surface** for auth
 
 > **Notes across the examples**
 > • Everyday aliases (*Component Of, Member Of, Aspect Of*) remain the only labels engineers need to see; their truth is anchored by prior constructional choices.  
-> • Structural links (Tier‑1) draw on **Constructive** grounding; epistemic links (Tier‑2)—like “Representation Of” or “Usage Of”—may instead rely on **Empirical Validation** (evidence bundles) or **Logical** grounding appropriate to the claim.  :contentReference[oaicite:16]{index=16} :contentReference[oaicite:17]{index=17}
+> • Structural links (Tier‑1) draw on **Constructive** grounding; epistemic links (Tier‑2)—like “Representation Of” or “Usage Of”—may instead rely on **Empirical Validation** (evidence bundles) or **Logical** grounding appropriate to the claim.  
 
 **F — Resulting Context (after you apply the pattern)**
 
