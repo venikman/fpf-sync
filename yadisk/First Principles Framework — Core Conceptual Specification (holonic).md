@@ -390,14 +390,14 @@ The value of this architectural approach lies in its ability to explicitly prote
 | **Order/Time‑Safe Orchestration** | Separates structure from control‑flow and time; prevents hidden order/time bugs in authored models. | **Γ_ctx** (NC‑1..3) and **Γ_time** (T‑1..T‑3) laws; **CT2R‑LOG** “no order/time in parts”; **E.14** “no order/time in structure” for authoring conformance. |
 | **Trust Calibration & Cross‑Context Integrity** | Keeps claims honest when moved across rooms; reduces over‑optimism via weakest‑link and CL penalties. | **Trust & Assurance Calculus (B.3)** (F‑G‑R axes), **Bridges with CL** (KD‑CAL **CC‑KD‑07**), and creativity rules that lower **R** (not scale) when crossing contexts.  |
 | **Agency & Accountability (SoD)** | Makes “who acts” explicit; enforces Separation‑of‑Duties so evidence isn’t self‑authored. | **A.2 Role suite** & **A.15 run‑alignment** (roles vs evidence/work), SoD gates in creativity flows (“fails SoD — same author as reviewer”). |
-| **Scope Safety & Encapsulation** | Prevents scope‑creep and category bleed; each claim applies only within its declared room/context and exits only via governed bridges. | **Γ_ctx (NC‑1..3)** and **`U.BoundedContext`** for hard context walls; **Bridges with CL** (KD‑CAL **CC‑KD‑07**) for governed crossings; **Vista (A.19)** to declare scope of comparability. |
+| **Scope Safety & Encapsulation** | Prevents scope‑creep and category bleed; each claim applies only within its declared room/context and exits only via governed bridges. | **Γ_ctx (NC‑1..3)** and **`U.BoundedContext`** for hard context walls; **Bridges with CL** (KD‑CAL **CC‑KD‑07**) for governed crossings; **CG‑frame (A.19)** to declare scope of comparability. |
 | **Reproducibility & Deterministic Replay** | Ability to re‑obtain the same result given the same inputs, model version, and time policy; enables trustworthy debugging and audit. | **A.4 Design–Run split**, **Γ_time (T‑1..T‑3)**, **CT2R‑LOG** (“no order/time in parts”), **E.14** (“no order/time in structure”), **DRR (E.9)** for versioned rationale, **Evidence Anchoring (A.10)**. |
-| **Change‑Impact Predictability (Blast‑Radius Control)** | Changes have bounded, knowable effects; reviewers can see which vistas, bridges, and claims are touched. | **Canonical Evolution Loop (B.4)** with explicit deltas, **DRR (E.9)** change graph and decision record, **Evidence Anchoring (A.10)** for provenance links, **Trust & Assurance Calculus (B.3)** to update risk post‑change, **Vista (A.19)** to localize roll‑ups. |
+| **Change‑Impact Predictability (Blast‑Radius Control)** | Changes have bounded, knowable effects; reviewers can see which CG‑frames, bridges, and claims are touched. | **Canonical Evolution Loop (B.4)** with explicit deltas, **DRR (E.9)** change graph and decision record, **Evidence Anchoring (A.10)** for provenance links, **Trust & Assurance Calculus (B.3)** to update risk post‑change, **CG‑frame (A.19)** to localize roll‑ups. |
 | **Exploration Health (Portfolio Coverage)** | Avoids local maxima and groupthink; measures how widely we explore. | **Creativity‑CHR (C.17)** **`Diversity_P`** + coverage maps (illumination), **NQD‑CAL (C.18)** **`IlluminationSummary`**, **E/E‑LOG (C.19)** **`explore_share`/policy. |
 | **Constraint Safety & Ethical Assurance** | Ensures non‑negotiable constraints (safety/ethics/standards) gate enactment; prevents “novelty theft”. | **`ConstraintFit` (C.17 §5.4)** as eligibility, **D‑cluster Bias‑Audit & Ethical Assurance (D.5)**; attribution tracked via **`AttributionIntegrity`**. |
 | **Didactic Clarity & Working‑Model Primacy** | Keeps the human‑readable canon primary; assurance flows downward; readers can reason without tool lock‑in. | **E.12 Didactic Primacy & Cognitive Ergonomics**, **E.14 Human‑Centric Working‑Model** (conformance checklist), **E.7** Tell‑Show‑Show.  |
 | **Typed Reasoning (Kinds & Intent/Extent)** | Prevents category confusions; enables typed, room‑local reasoning and safe cross‑room mappings. | **Kind‑CAL (C.3)** — `U.Kind` & `SubkindOf`, **KindSignature & Extension**, **KindBridge & CL^k** for cross‑room mapping.  |
-| **Comparability & Roll‑up Integrity (Vistas)** | Makes “same number” meaningful across teams; preserves invariants in aggregation. | **Vista (A.19)** comparability modes and explicit Γ‑fold declarations (WLNK/COMM/LOC/MONO + time policy); integrates with **Bridges with CL** for cross‑room moves; benefits include safe roll‑ups and RSG‑ready gates. |
+| **Comparability & Roll‑up Integrity (CG‑frames)** | Makes “same number” meaningful across teams; preserves invariants in aggregation. | **CG‑frame (A.19)** comparability modes and explicit Γ‑fold declarations (WLNK/COMM/LOC/MONO + time policy); integrates with **Bridges with CL** for cross‑room moves; benefits include safe roll‑ups and RSG‑ready gates. |
 
 Therefore, FPF should be understood not as a passive library of terms, but as an **engineered method for thinking**. Its patterns are the architectural decisions that shape this method. Its ultimate value is not in any single model it can produce, but in the enduring quality of the reasoning process it sustains—a process that is auditable, evolvable, and coherent by design.
 
@@ -1405,7 +1405,7 @@ A `U.Work` entry `W#Seam134` is valid only if `performedBy = Robot_SN789#WelderR
 
 **Assignments.**
 
-* `svc_ci_bot#DeployerRole:CD_Pipeline_v7@2025‑04‑01..open`
+* `sCG‑Spec_ci_bot#DeployerRole:CD_Pipeline_v7@2025‑04‑01..open`
 * `Alex#IncidentCommanderRole:SRE_Prod@2025‑04‑10T08:00..2025‑04‑10T20:00`
 
 **StateAssertions (via checklists).**
@@ -1415,7 +1415,7 @@ A `U.Work` entry `W#Seam134` is valid only if `performedBy = Robot_SN789#WelderR
 
 **Enactment.**
 
-* A deployment `Work` is valid only with `performedBy: svc_ci_bot#DeployerRole:CD_Pipeline_v7` **and** `Active` state asserted for the moment of start.
+* A deployment `Work` is valid only with `performedBy: sCG‑Spec_ci_bot#DeployerRole:CD_Pipeline_v7` **and** `Active` state asserted for the moment of start.
 * Declaring `Incident SEV‑1` is a **SpeechAct Work** performed by `Alex#IncidentCommanderRole:SRE_Prod` in **Engaged** state; it changes deontic conditions (e.g., elevates `RollbackAuthority`).
 
 ---
@@ -2493,7 +2493,8 @@ Roles never hold roles; there is no chaining of behavioural sub-roles into non-b
 **CC-ER-12 (Terminology)**
 Use *specialisation* for role refinements; reserve *sub* for mereology of systems or artefacts only.
 
----
+**CC-ER-13 (Lane declaration)**
+Every binding **SHALL** declare `assuranceUse ∈ {TA | VA | LA}` and, for **empirical** (LA) bindings, expose `timespan/valid_until` and `decayPolicy` so that SCR can report lane‑separated contributions and freshness (B.3).
 
 ### 11 · Anti-patterns and remedies
 
@@ -7696,7 +7697,7 @@ In summary, projects lacking a canonical terminology for metrics risk miscommuni
     
 -   **F4 – Composition discipline.** In complex evaluations, multiple measurements may need to be combined. Without a disciplined approach, people might perform ad-hoc math on apples and oranges (adding scores from unrelated axes, etc.). A proper pattern must require any combination to go through a defined monotonic **Gauge** (e.g. a weighted formula) instead of arbitrary aggregation.
     
--   **F5 – Transdisciplinarity.** The measurement framework should work for **any domain**. The same conceptual scaffold must serve physical science (e.g. lab temperature readings), software engineering (e.g. module cohesion ratings), and even subjective assessments (e.g. figure-skating scores) without bias. One vocabulary, many vistas.
+-   **F5 – Transdisciplinarity.** The measurement framework should work for **any domain**. The same conceptual scaffold must serve physical science (e.g. lab temperature readings), software engineering (e.g. module cohesion ratings), and even subjective assessments (e.g. figure-skating scores) without bias. One vocabulary, many CG‑frames.
     
 -   **F6 – Open-endedness.** As systems evolve, their performance or quality metrics also evolve. Rigid life-cycle stage labels (“Phase 1, Phase 2…”) don’t capture iterative improvement. The pattern should favor an **open-ended state-space** view (revisiting states via checklists, as in an RSG – **RoleStateGraph** with re-entry) over any fixed lifecycle with “terminal” stages.
     
@@ -7987,7 +7988,7 @@ FPF’s kernel already standardizes **what** is measured (a **Characteristic**, 
     
 -   **P2 — Lifecycle bias.** Absent a formal state space, system change tends to be described in terms of fixed **stages or phases** (design phases, maturity levels, etc.). This conflicts with FPF’s **open-ended** stance: in FPF a role’s state model (RSG) allows re-entry and refinement of states rather than one-way lifecycle stages with an “end.” We need a space model that treats evolution as continuous movement, not a one-directional sequence.
     
--   **P3 — Incoherence across vistas.** Different modeling “vistas” (architecture vs. epistemic vs. operational) often choose different sets of qualities to measure (different sets of axes/Characteristics). Later, however, we may need to **compose** these models or **project** one into another. Without a kernel notion of how one state space can be a **subspace** of or **embedded** in another, any integration of models will be ad hoc and error-prone.
+-   **P3 — Incoherence across CG‑frames.** Different modeling “CG‑frames” (architecture vs. epistemic vs. operational) often choose different sets of qualities to measure (different sets of axes/Characteristics). Later, however, we may need to **compose** these models or **project** one into another. Without a kernel notion of how one state space can be a **subspace** of or **embedded** in another, any integration of models will be ad hoc and error-prone.
     
 -   **P4 — Relational measurements.** Some Characteristics are inherently **relational** (e.g. a _Coupling_ between two components, or _Distance_ between points). Naïvely forcing such traits into a single-object feature vector loses critical information (arity, symmetry). The kernel already distinguishes single-entity vs multi-entity Characteristics (A.17); we must preserve that distinction in the state space so that a relational metric isn’t treated as an intrinsic one by mistake.
     
@@ -8006,7 +8007,7 @@ FPF’s kernel already standardizes **what** is measured (a **Characteristic**, 
     
 -   **F4 – Minimal core, extensible further.** The kernel should provide only the **bare essentials**: a carrier for state with proper typing. It should be possible to impose additional structure like order, topology, or metrics _if and when needed_ by downstream theories, but these must be **optional overlays**. The core space definition should be minimalistic to allow broad use, yet capable of extension for advanced needs.
     
--   **F5 – Composability of spaces.** We need well-defined operations to **project** a state space to a subspace (dropping some Characteristics), **embed** one space into a larger space (mapping coordinates from one context to another), and take **products** of spaces (combining different state spaces into a joint space). These operations are crucial for composing sub-models, comparing alternatives, or aligning different “vistas” (for example, linking an architectural model’s state space with a metrics model’s space). The approach must support such composition in a principled way.
+-   **F5 – Composability of spaces.** We need well-defined operations to **project** a state space to a subspace (dropping some Characteristics), **embed** one space into a larger space (mapping coordinates from one context to another), and take **products** of spaces (combining different state spaces into a joint space). These operations are crucial for composing sub-models, comparing alternatives, or aligning different “CG‑frames” (for example, linking an architectural model’s state space with a metrics model’s space). The approach must support such composition in a principled way.
     
 -   **F6 – Alignment with RSG (state machines).** In FPF, formal **state certification** is done via checklists on RoleStateGraphs (A.2.5). Our state space concept must complement that: i.e. the **state** of a holon remains an **intensional** concept (defined by criteria), but those criteria are evaluated against the measurable **coordinates** in a CharacteristicSpace. The design must allow checklists to map observed coordinates to named states and enable re-certification as states evolve, rather than locking states into a static progression.
     
@@ -8091,7 +8092,7 @@ Use the **weakest safe structure** required by the argument (pre‑order → sem
 *Minimal obligations:*
 1) **Coordinate declaration.** Every numeric coordinate declares scale‑type, unit and polarity (reuse A.18/ C.16); categorical/ordinal declare admissible order if used.
 2) **Distance with bounds.** Any distance used in acceptance/state tests **MUST** carry max tolerated error and (where claimed) a **Lipschitz bound** w.r.t. the referenced normalization.
-3) **Calibration trace.** Cross‑vista inputs **SHALL** name the calibration transform (affine / monotone mapping / LUT) and its **validity window** (range and dates), with trace to carriers.
+3) **Calibration trace.** Cross‑CG‑frame inputs **SHALL** name the calibration transform (affine / monotone mapping / LUT) and its **validity window** (range and dates), with trace to carriers.
 
 #### 5.2 State Spaces & Comparability
 
@@ -8105,7 +8106,7 @@ To make state-space reasoning practical across different contexts and models, th
     
 3.  **RSG integration** – how formal **state certification** (via checklists in a Role’s state graph) ties into the CharacteristicSpace: ensuring that whenever we declare a system “Ready” or “Degraded”, it’s based on snapshot coordinates in a space. We also outline how to push or pull state definitions along space embeddings (so different contexts can translate states).
     
-4.  **Archetypal examples** – “worked mini-schemas” illustrating typical usage in complementary vistas (Operational, Assurance, Alignment). These examples show minimal models mixing entity and relational slots, how data might be structured, and how cross-context alignment works in practice.
+4.  **Archetypal examples** – “worked mini-schemas” illustrating typical usage in complementary CG‑frames (Operational, Assurance, Alignment). These examples show minimal models mixing entity and relational slots, how data might be structured, and how cross-context alignment works in practice.
     
 
 > **Terminology note:** We often denote a CharacteristicSpace abstractly as **CS**. Formally, one can describe a CS as a tuple `⟨I, basis⟩` where _I_ is the index set of slots and _basis_ is the set (or ordered list) of `slot_i` pairs. When a CharacteristicSpace is attached to a specific **Role** in a specific **Context** (see A.2, A.2.5), we may call it an **RCS** (Role CharacteristicSpace) – essentially the state space for that role’s state machine within that bounded context. Individual **states** of a role live in an RSG (RoleStateGraph, A.2.5), and a **StateAssertion** is a certified claim that at a given time window, the holon’s RCS coordinates satisfy the checklist for a particular state.
@@ -8242,7 +8243,7 @@ The following checklist summarizes the normative requirements introduced by Patt
 **Metric discipline & calibration (MET)**
 **CC‑A19.14.** Acceptance predicates/KPIs over a CS **SHALL** be **non‑expansive** (Lipschitz ≤ 1) under the declared normalization, or declare a compensating margin.
 **CC‑A19.15.** Any distance used in state/acceptance checks **MUST** carry max tolerated error and (where claimed) a **Lipschitz bound** for the normalization in use.
-**CC‑A19.16.** Cross‑vista inputs **SHALL** name the **calibration transform** and its **validity window**; expired transforms are invalid for gating unless waived explicitly.
+**CC‑A19.16.** Cross‑CG‑frame inputs **SHALL** name the **calibration transform** and its **validity window**; expired transforms are invalid for gating unless waived explicitly.
 
 **Dynamics & time (DYN/TIME)**
 **CC‑A19.17.** Every temporal guard **MUST** specify the window `[t_from, t_to]` and `evidence_kind ∈ {observation, prediction}`; if `prediction` is used for gating, § 5.2.6 conditions **MUST** hold.
@@ -8277,18 +8278,18 @@ _The following are common modeling mistakes (“anti-patterns”) related to mea
     ✓ **Never alter historical assertions:** **Leave history as-is.** If criteria change, issue new assertions under the new criteria going forward, and if needed, explicitly **version** the gauge or checklist. Past assertions remain valid for the old version and their time; new ones apply henceforth. This ensures auditability and avoids erasing or rewriting what was true under earlier standards.
 
 
-# **A.19.D1 — Vista Algebra & Gauge Discipline** \[D]
+# **A.19.D1 — CG‑frame (comparability & Gauge)** \[D]
 
-> **Scope** This Vista Algebra & Gauge Discipline A.19 by freezing the **governance contract** for vistas, defining a **conformance checklist** and **regression harness**, and giving **didactic one‑pagers** and **anti‑patterns** so teams can introduce vistas without tool lock‑in. The mandatory pattern structure and authoring discipline referenced from **Part E** (Style Guide, Tell‑Show‑Show, checklists, DRR, guard‑rails) are applied throughout.
+> **Scope** This CG‑frame Algebra & Gauge Discipline A.19 by freezing the **governance contract** for CG‑frames, defining a **conformance checklist** and **regression harness**, and giving **didactic one‑pagers** and **anti‑patterns** so teams can introduce CG‑frames without tool lock‑in. The mandatory pattern structure and authoring discipline referenced from **Part E** (Style Guide, Tell‑Show‑Show, checklists, DRR, guard‑rails) are applied throughout.
 
 ## 1 · Context
 
 A.19 established a substrate‑neutral picture:
 
-* a **vista** = *(Context‑local)* **Characterisation Space (CS)** + **chart** (coordinate patch + units) + **gauge** (admissible re‑parameterisations that preserve meaning);
+* a **CG‑frame** = *(Context‑local)* **Characterisation Space (CS)** + **chart** (coordinate patch + units) + **gauge** (admissible re‑parameterisations that preserve meaning);
 * **operators** (subspace, product, pullback/pushforward) and **comparability** (coordinatewise vs **gauge‑based**);
 * **RSG touch‑points**: role readiness (**RSG** states) are **certified** against CS via **checklists** over observable axes;
-* **entity/relational mixtures** across vistas via minimal schemas and bridges.
+* **entity/relational mixtures** across CG‑frames via minimal schemas and bridges.
 
 A.19.D1 makes this *operational and auditable*.
 
@@ -8300,8 +8301,8 @@ Absent a governance layer, four failure modes recur:
 
 1. **Chartless numbers.** Measures move between teams without units, reference states, or declared gauge → **illusory comparability**.
 2. **Hidden gauge flips.** Re‑parameterisations (e.g., normalising by batch size) silently alter meaning; trend lines lie.
-3. **Vista sprawl.** Every initiative mints a new “dashboard dimension”; semantics diverge; assurance collapses.
-4. **Un‑bridgeable reports.** Cross‑team roll‑ups average **incongruent** vistas, violating the **weakest‑link (WLNK)** discipline from Γ and B.3.
+3. **CG‑frame sprawl.** Every initiative mints a new “dashboard dimension”; semantics diverge; assurance collapses.
+4. **Un‑bridgeable reports.** Cross‑team roll‑ups average **incongruent** CG‑frames, violating the **weakest‑link (WLNK)** discipline from Γ and B.3.
 
 ---
 
@@ -8311,20 +8312,20 @@ Absent a governance layer, four failure modes recur:
 | ----------------------------- | ------------------------------------------------------------------------------------ |
 | **Universality vs nuance**    | One contract for robotics, safety, finance — yet leave each context’s idioms intact. |
 | **Speed vs audit**            | Light ceremony for on‑ramp; hard guarantees for assurance and SoD.                   |
-| **Local truth vs federation** | Keep vistas meaning‑local; still enable **explicit** bridging across rooms.          |
+| **Local truth vs federation** | Keep CG‑frames meaning‑local; still enable **explicit** bridging across rooms.          |
 | **Minimalism vs safety**      | Few mandatory slots; enough structure to forbid silent gauge drift.                  |
 
 ---
 
-## 4 · Solution — **The Vista Contract** (VC) + **Registry** + **Bridges**
+## 4 · Solution — **The CG‑Spec** (CG‑Spec) + **Registry** + **Bridges**
 
-### 4.1 The **Vista Contract** (per vista, in one `U.BoundedContext`)
+### 4.1 The **CG‑Spec** (comparability&gauge specification per CG‑frame, in one `U.BoundedContext`)
 
-A **vista** is governed by a compact, notation‑free card:
+A **CG‑frame** is governed by a compact, notation‑free card:
 
 ```
-VistaContract VC {
-  name            : VistaName        // local to Context
+CG‑Spec {
+  name            : CG‑frameName        // local to Context
   context         : U.BoundedContext // edition/version included
   cs_basis      : [{
       slot_id       : <tech-token>,           // стабильный id слота (basis name)
@@ -8343,26 +8344,26 @@ VistaContract VC {
 }
 ```
 
-**Reading:** *A vista is a room‑local lens with declared axes, units, a chart to read them, a gauge that states what “doesn’t matter,” and explicit rules for when a datum counts and how many can be safely folded.*
+**Reading:** *A CG‑frame is a room‑local lens with declared axes, units, a chart to read them, a gauge that states what “doesn’t matter,” and explicit rules for when a datum counts and how many can be safely folded.*
 
-`GaugeKinds`, `MetricSpec` and `QuotientSpec` are **vista‑level** governance metadata; per **A19‑CS‑5** the kernel `CharacteristicSpace` carries **no gauges** or composition; gauges/normalizations live in **MM‑CHR**.
+`GaugeKinds`, `MetricSpec` and `QuotientSpec` are **CG‑frame‑level** governance metadata; per **A19‑CS‑5** the kernel `CharacteristicSpace` carries **no gauges** or composition; gauges/normalizations live in **MM‑CHR**.
 
-**L‑VC‑BASIS‑META**: each element in  cs_basis\[\*\] includes at least {characteristic, scale.type, polarity}; for interval/ratio unit is mandatory.
+**L‑CG‑Spec‑BASIS‑META**: each element in  cs_basis\[\*\] includes at least {characteristic, scale.type, polarity}; for interval/ratio unit is mandatory.
 
-### 4.2 **Vista Registry** (per Context)
+### 4.2 **CG‑frame Registry** (per Context)
 
-Each `U.BoundedContext` keeps a **Vista Registry** (VR):
+Each `U.BoundedContext` keeps a **CG‑frame Registry** (VR):
 
 * **canonical names** and **editions**;
-* **SoD hooks** (who can edit VC, who can certify admission);
+* **SoD hooks** (who can edit CG‑Spec, who can certify admission);
 * **deprecation map** (what replaces what, when).
 
 ### 4.3 **Bridges** (across contexts)
 
-Cross‑context reuse occurs **only** via explicit **Alignment Bridges** (F.9) between vista contracts:
+Cross‑context reuse occurs **only** via explicit **Alignment Bridges** (F.9) between CG‑Specs:
 
 ```
-Bridge VistaA@Context1  →  VistaB@Context2
+Bridge CG‑frameA@Context1  →  CG‑frameB@Context2
   CL: {3|2|1|0}
   kept_axes: [...]
   lost_axes: [...]
@@ -8376,9 +8377,9 @@ Bridge VistaA@Context1  →  VistaB@Context2
 
 ## 5 · Conformance Checklist (normative)
 
-> **Pass these and your vistas are fit for assurance and cross‑team composition.**
+> **Pass these and your CG‑frames are fit for assurance and cross‑team composition.**
 
-**CC‑A19.D1‑1 (Local scope).** Every vista **MUST** live inside a declared `U.BoundedContext` (with edition). Names are **local**; same label in another room ≠ same vista.
+**CC‑A19.D1‑1 (Local scope).** Every CG‑frame **MUST** live inside a declared `U.BoundedContext` (with edition). Names are **local**; same label in another room ≠ same CG‑frame.
 
 **CC‑A19.D1‑2 (Units & polarity).** Each characteristic in `cs_charasteristics` **MUST** declare **unit/scale** and **polarity** (↑ better / ↓ better / target range). No unlabeled magnitudes.
 
@@ -8388,21 +8389,21 @@ Bridge VistaA@Context1  →  VistaB@Context2
 
 **CC‑A19.D1‑5 (Comparability mode).** `comparability.mode` **MUST** be either **coordinatewise** (same chart & units) or **gauge‑based** (after normalisation by the declared gauge). Mixed/implicit modes are prohibited.
 
-**CC‑A19.D1‑6 (Admission checklist).** `acceptance.checklist_for_admission` **MUST** be observable and time‑bounded; each datum admitted to the vista **SHALL** cite a **StateAssertion** or equivalent `U.Evaluation`.
+**CC‑A19.D1‑6 (Admission checklist).** `acceptance.checklist_for_admission` **MUST** be observable and time‑bounded; each datum admitted to the CG‑frame **SHALL** cite a **StateAssertion** or equivalent `U.Evaluation`.
 
 **CC‑A19.D1‑7 (Aggregation discipline).** `aggregation.Γ_fold` **MUST** specify WLNK/COMM/LOC/MONO choices and the **time policy** (e.g., average of rates vs integral of counts). No free‑hand averages.
 
 **CC‑A19.D1‑8 (Bridge‑only reuse).** Cross‑context consumption **MUST** cite a **Bridge** with CL and **loss notes**; coordinate‑by‑name without a Bridge **fails**.
 
-**CC‑A19.D1‑9 (SoD & roles).** Editing VC and admitting data **MUST** be performed by **different** roles (⊥ enforced): `VistaStewardRole ⊥ VistaCertifierRole` inside the same context.
+**CC‑A19.D1‑9 (SoD & roles).** Editing CG‑Spec and admitting data **MUST** be performed by **different** roles (⊥ enforced): `CG‑frameStewardRole ⊥ CG‑frameCertifierRole` inside the same context.
 
-**CC‑A19.D1‑10 (Lifecycle & DRR).** Every VC **MUST** carry an **owner role**, a **deprecation plan**, and links to **DRR** entries for rationale and changes (Part E.9).
+**CC‑A19.D1‑10 (Lifecycle & DRR).** Every CG‑Spec **MUST** carry an **owner role**, a **deprecation plan**, and links to **DRR** entries for rationale and changes (Part E.9).
 
-**CC‑A19.D1‑11 (Notation independence).** VC content **MUST NOT** depend on a tool or file format; semantics precede notation (E.5.2 Notational Independence).
+**CC‑A19.D1‑11 (Anchors & lanes for comparability).** Any **admission** into a CG‑frame that is later **used for comparison/aggregation** **SHALL** cite the corresponding **A.10 EvidenceRole** anchors for each axis, with **assuranceUse lane** tags {TA, VA, LA} and **validity windows** (where applicable), so that the **SCR** can report lane‑separated contributions and freshness (B.3). Absence of anchors for a required axis renders items **incomparable**.
 
-**CC‑A19.D1‑12 (Lexical guard‑rails).** Axis names and role labels **MUST** follow the Part E lexical discipline (registers, twin labels; no overloaded “process/service/function”).
+**CC‑A19.D1‑12 (Notation independence).** CG‑Spec content **MUST NOT** depend on a tool or file format; semantics precede notation (E.5.2 Notational Independence).
 
----
+**CC‑A19.D1‑13 (Lexical guard‑rails).** Axis names and role labels **MUST** follow the Part E lexical discipline (registers, twin labels; no overloaded “process/service/function”).
 
 ## 6 · Consequences (informative)
 
@@ -8411,13 +8412,13 @@ Bridge VistaA@Context1  →  VistaB@Context2
 | **Auditable comparability**       | Chart + gauge make “same number” meaningful; silent re‑basings become explicit, reviewable choices.                   |
 | **Safe roll‑ups**                 | Γ‑folds with WLNK/COMM/LOC/MONO stop optimistic averaging and preserve invariants.                                    |
 | **Pluralism without incoherence** | Bridges with CL and loss notes allow federation without pretending to global sameness.                                |
-| **RSG‑ready**                     | Admission checklists let **RSG** states reference **vista‑backed** facts (e.g., *Ready* requires axes within bounds). |
+| **RSG‑ready**                     | Admission checklists let **RSG** states reference **CG‑frame‑backed** facts (e.g., *Ready* requires axes within bounds). |
 
 ---
 
 ## 7 · Rationale (informative)
 
-The VC aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, Conformance Checklists, and DRR‑backed change, while honouring **DevOps Lexical Firewall**, **Unidirectional Dependency**, and **Notational Independence** so that semantics never depend on tooling.  It also operationalises B.3 **Trust & Assurance** by making CL penalties and WLNK folds first‑class.
+The CG‑Spec aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, Conformance Checklists, and DRR‑backed change, while honouring **DevOps Lexical Firewall**, **Unidirectional Dependency**, and **Notational Independence** so that semantics never depend on tooling.  It also operationalises B.3 **Trust & Assurance** by making CL penalties and WLNK folds first‑class.
 
 ---
 
@@ -8425,16 +8426,16 @@ The VC aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, Conforma
 
 > **Same slots, three arenas; no tooling implied.**
 
-### 8.1 **Industrial line** — *Weld‑quality vista* (`AssemblyLine_2026`)
+### 8.1 **Industrial line** — *Weld‑quality CG‑frame* (`AssemblyLine_2026`)
 
 * `cs_basis`: *BeadWidth\[mm] (target 6.0±0.2)*, *Porosity\[ppm] (↓)*, *SeamRate\[1/min] (↑ until limit)*
 * `chart`: reference jig, fixture ID, torch type; `MethodDescription#Weld_MIG_v3`
 * `gauge`: affine rescale on gray‑level calibration → invariant = physical porosity
 * `comparability`: **gauge‑based** (calibration tables applied)
 * `aggregation`: WLNK on quality (min‑bound), COMM on counts, time = per‑shift histograms
-* **RSG hook**: `WelderRole.Ready` requires *Porosity ≤ 500 ppm* & *BeadWidth within ±0.2 mm* admitted by this vista.
+* **RSG hook**: `WelderRole.Ready` requires *Porosity ≤ 500 ppm* & *BeadWidth within ±0.2 mm* admitted by this CG‑frame.
 
-### 8.2 **Software/SRE line** — *Latency vista* (`SRE_Prod_Cluster_EU_2026`)
+### 8.2 **Software/SRE line** — *Latency CG‑frame* (`SRE_Prod_Cluster_EU_2026`)
 
 * `cs_basis`: *P50Latency\[ms] (↓)*, *P99Latency\[ms] (↓)*, *Load\[req/s]*
 * `chart`: client vantage, trace sampler v4; `MethodDescription#HTTP_probe_v4`
@@ -8443,7 +8444,7 @@ The VC aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, Conforma
 * `aggregation`: MONO on latency (max of mins), WLNK across services
 * **RSG hook**: `DeployerRole.Active` gated if **P99** < declared SLO over admission window.
 
-### 8.3 **Clinical/episteme line** — *Trial‑outcome vista* (`Cardio_2026`)
+### 8.3 **Clinical/episteme line** — *Trial‑outcome CG‑frame* (`Cardio_2026`)
 
 * cs_basis:
   - slot_id: ΔBP
@@ -8462,14 +8463,14 @@ The VC aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, Conforma
 * `gauge`: case‑mix adjustment (propensity score); invariant = adjusted ΔBP
 * `comparability`: **gauge‑based** (post‑adjustment)
 * `aggregation`: LOC on subcohorts; WLNK on safety outcomes
-* **RSG hook**: `EvidenceRole.Validated` admission requires vista acceptance; **Assurance** pulls CL from any Bridge used.
+* **RSG hook**: `EvidenceRole.Validated` admission requires CG‑frame acceptance; **Assurance** pulls CL from any Bridge used.
 
 
-##### 8.4 Worked mini-schemas (entity/relational mixtures across vistas, informative)
+##### 8.4 Worked mini-schemas (entity/relational mixtures across CG‑frames, informative)
 
-To illustrate how CharacteristicSpace is used in practice, below are simplified schema snippets for three typical **vistas**: an **Operations** view (run-time state and action gating), an **Assurance** view (evidence and cross-context comparison), and an **Alignment** view (design-time consistency across contexts). These examples mix entity-based and relational Characteristics and demonstrate how state spaces, gauges, and bridges appear in a model. (The notation is mix of a graph/entity diagram and a relational table outline for clarity. **PK** = primary key, **FK** = foreign key.)
+To illustrate how CharacteristicSpace is used in practice, below are simplified schema snippets for three typical **CG‑frames**: an **Operations** view (run-time state and action gating), an **Assurance** view (evidence and cross-context comparison), and an **Alignment** view (design-time consistency across contexts). These examples mix entity-based and relational Characteristics and demonstrate how state spaces, gauges, and bridges appear in a model. (The notation is mix of a graph/entity diagram and a relational table outline for clarity. **PK** = primary key, **FK** = foreign key.)
 
-**8.4.1 Operations Vista — Run-time gating & enactment**
+**8.4.1 Operations CG‑frame — Run-time gating & enactment**
 
 _Entity graph view:_
 
@@ -8494,7 +8495,7 @@ _Relational stub:_ (illustrating how data might be stored)
 
 In this schema: an RCS snapshot table might log individual coordinate values (`VALUE`) for each Characteristic (`CHAR_ID`) in a given RoleAssignment, with their units and scale type noted (to ensure we know what the number means). The StateAssertion ties a RoleAssignment to a state checklist and says whether it passed, including references to any gauge or bridge if cross-context or scaled comparisons were involved. The gate logic for enactment can then be a query like: “Is Work W admissible now?” – which joins through ROLE\_ASSIGNMENT to find the latest StateAssertion for that RA where `ENACTABLE=true` and `VERDICT=pass`.
 
-**8.4..2 Assurance Vista — Evidence freshness & mapped comparisons**
+**8.4..2 Assurance CG‑frame — Evidence freshness & mapped comparisons**
 
 _Entity graph view:_
 
@@ -8521,7 +8522,7 @@ _Relational stub:_
 
 In this stub, GAUGE\_MAP defines each cross-scale mapping that has to be accounted for (with `FORMULA_SPEC` describing how to compute the target value from the source). The Bridge table enumerates official Bridges between contexts (for example, bridging a “Ready” state in an engineering context to “Ready” in an operations context, with CL indicating how fully comparable they are). An ASSURANCE\_EVENT log could record when a penalty was applied due to a low-CL Bridge or when an assertion was refreshed or invalidated due to new evidence or time lapse. (For instance, policy might say if a critical state assertion uses a Bridge with CL < 2 in a safety context, a special waiver or secondary approval is needed – that could be represented as an event requiring a **Waiver** action.)
 
-**8.4.3 Alignment Vista — Design-time reuse of states across rooms**
+**8.4.3 Alignment CG‑frame — Design-time reuse of states across rooms**
 
 _Entity graph view:_
 
@@ -8546,14 +8547,14 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 
 ## 9 · Anti‑patterns (and the fix)
 
-| Anti‑pattern            | Symptom                                   | Why it hurts                 | Fix (VC slot)                           |
+| Anti‑pattern            | Symptom                                   | Why it hurts                 | Fix (CG‑Spec slot)                           |
 | ----------------------- | ----------------------------------------- | ---------------------------- | --------------------------------------- |
 | **Chartless number**    | “Latency = 120”                           | No unit/vantage → untestable | Fill `cs_charasteristics` + `chart`                |
 | **Gauge smuggling**     | Quiet “per‑unit” normalisation mid‑stream | Trend reversal               | Declare `gauge` + keep invariant        |
 | **Bridge‑by‑name**      | Reusing labels across rooms               | False comparability          | Author **Bridge** with CL + loss        |
 | **Free‑hand averaging** | Arithmetic mean on bounded risks          | Violates WLNK                | Declare `Γ_fold` with WLNK              |
-| **Vista sprawl**        | Ten nearly‑identical vistas               | Cognitive debt               | Use Registry + DRR; prefer reuse        |
-| **Role conflation**     | Same person edits VC & certifies data     | SoD breach                   | Enforce `VistaSteward ⊥ VistaCertifier` |
+| **CG‑frame sprawl**        | Ten nearly‑identical CG‑frames               | Cognitive debt               | Use Registry + DRR; prefer reuse        |
+| **Role conflation**     | Same person edits CG‑Spec & certifies data     | SoD breach                   | Enforce `CG‑frameSteward ⊥ CG‑frameCertifier` |
 
 ---
 
@@ -8562,12 +8563,12 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 1. **Numbers travel with their room.** Always cite `Context@Edition`.
 2. **If the gauge is not written, the trend is fiction.**
 3. **WLNK beats wishful means.** Use weakest‑link folds for safety.
-4. **Admit → Assert → Act.** (Vista admission → RSG StateAssertion → Method step).
+4. **Admit → Assert → Act.** (CG‑frame admission → RSG StateAssertion → Method step).
 5. **Bridge or bust.** Cross‑room = Bridge with CL and loss notes.
 6. **Steward writes, Certifier admits.** (SoD by design.)
 7. **Charts are recipes.** Name the `MethodDescription` that made the number.
-8. **Deprecate in the open.** Vista cards carry DRR & retirement plans.
-9. **Keep axes few, meanings sharp.** Prefer ≤ 7 axes per vista.
+8. **Deprecate in the open.** CG‑frame cards carry DRR & retirement plans.
+9. **Keep axes few, meanings sharp.** Prefer ≤ 7 axes per CG‑frame.
 10. **No tooling names in Core.** Semantics first; notation later.
 
 ---
@@ -8578,11 +8579,12 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 
 ### 11.1 **SCR — Acceptance (first introduction)**
 
-* **SCR‑A19.4‑S01 (Completeness).** VC has **all** mandatory slots; `cs_basis` include **unit/scale/polarity**; `chart` references a `MethodDescription`.
+* **SCR‑A19.4‑S01 (Completeness).** CG‑Spec has **all** mandatory slots; `cs_basis` include **unit/scale/polarity**; `chart` references a `MethodDescription`.
 * **SCR‑A19.4‑S02 (Gauge clarity).** `gauge` lists admissible transforms **and** named invariants.
 * **SCR‑A19.4‑S03 (Comparability test).** Provide one worked example showing **coordinatewise** or **gauge‑based** comparison end‑to‑end (with evidence anchors).
 * **SCR‑A19.4‑S04 (Γ‑fold audit).** Aggregation rule spells out WLNK/COMM/LOC/MONO choices; reviewer reconstructs result on a toy set.
-* **SCR‑A19.4‑S05 (SoD).** Distinct `RoleAssignments` for `VistaStewardRole` and `VistaCertifierRole` exist; windows do not overlap.
+* **SCR‑A19.4‑S05 (SoD).** Distinct `RoleAssignments` for `CG‑frameStewardRole` and `CG‑frameCertifierRole` exist; windows do not overlap.
+* **SCR‑A19.4‑S06 (Aboutness & anchors surfaced).** For each CG‑Spec characteristic used in the worked example, cite the corresponding CHR Characteristic name and the evidence anchor(s) (A.10) that make the reading observable in this room.
 
 ### 11.2 **RSCR — Regression (on change)**
 
@@ -8591,23 +8593,23 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 * **RSCR‑A19.4‑R03 (Chart drift).** Updating measurement protocol bumps edition; **historic Work** keeps old edition link.
 * **RSCR‑A19.4‑R04 (Fold change).** Any change to `Γ_fold` invalidates cached roll‑ups; re‑compute or mark as superseded.
 * **RSCR‑A19.4‑R05 (Bridge health).** After either side’s edition change, **re‑validate** Bridge CL and loss notes before accepting cross‑room data.
-* **RSCR‑A19.4‑R06 (Deprecation rule).** On deprecating a vista, Registry lists its successor; bridges re‑targeted or retired.
+* **RSCR‑A19.4‑R06 (Deprecation rule).** On deprecating a CG‑frame, Registry lists its successor; bridges re‑targeted or retired.
 
 ---
 
 ## 12 · Interaction summary (wiring to the rest of the kernel)
 
-* **A.2 / A.2.5 (Roles / RSG).** RSG **checklists** quote **VC.acceptance**; enactment gates rely on **admitted** vista data.
-* **B.1 (Γ‑algebra).** VC’s `Γ_fold` instantiates Γ\_ctx/Γ\_time/WLNK/MONO choices explicitly.
+* **A.2 / A.2.5 (Roles / RSG).** RSG **checklists** quote **CG‑Spec.acceptance**; enactment gates rely on **admitted** CG‑frame data.
+* **B.1 (Γ‑algebra).** CG‑Spec’s `Γ_fold` instantiates Γ\_ctx/Γ\_time/WLNK/MONO choices explicitly.
 * **B.3 (Assurance).** Bridge CL enters the **R** term; WLNK protects safety roll‑ups.
 * **C.6 / C.7 (LOG‑CAL / CHR‑CAL).** Units, scales, and measurement templates come from CHR; proofs about folds live in LOG‑CAL.
 
 ---
 
-## 13 · Minimal VC template (copy/paste, informational)
+## 13 · Minimal CG‑Spec template (copy/paste, informational)
 
 ```
-Vista: <Name>      Context: <Room/Edition>
+CG‑frame: <Name>      Context: <Room/Edition>
 Axes:
   - <CharacteristicName> : <Unit/Scale>  [Polarity: up|down|target-range]
 Chart:
@@ -8639,7 +8641,7 @@ Lifecycle:
 
 ### Close
 
-A.19.D1 gives A.19 some **teeth**: a *Vista Contract* you can put on one page, a **Registry** that stops sprawl, **Bridges** that carry explicit loss, and a **checklist + harness** that make comparability **auditable**. It obeys the **mandatory pattern structure** of Part E (style, checklists, DRR, guard‑rails) while remaining tool‑agnostic and context‑local.
+A.19.D1 gives A.19 some **teeth**: a *CG‑Spec* you can put on one page, a **Registry** that stops sprawl, **Bridges** that carry explicit loss, and a **checklist + harness** that make comparability **auditable**. It obeys the **mandatory pattern structure** of Part E (style, checklists, DRR, guard‑rails) while remaining tool‑agnostic and context‑local.
 
 # Part B – Trans‑disciplinary Reasoning Cluster
 
@@ -11132,7 +11134,7 @@ The emergence of a new, composite `U.Method` is a universal pattern of learning 
 
 | Domain | Constituent `U.Method`s | Emergent Composite `U.Method` ("Meta-Method") | Key Trigger Evidence (B-O-S-C) |
 | :--- | :--- | :--- | :--- |
-| **Software Engineering** | A set of discrete developer methods: `WriteCode`, `RunUnitTests`, `CommitToVCS`, `ManualDeploy`. | An **automated Continuous Integration/Continuous Delivery (CI/CD) Pipeline**. | **B:** A single interface ("trigger pipeline") now executes the entire sequence. **O:** A new objective emerges: "maintain the main branch in a perpetually deployable state." **S:** The CI/CD orchestrator (e.g., GitHub Actions, Jenkins) acts as the supervisor, automatically sequencing steps and handling failures. **C:** The overhead of manual coordination became a bottleneck to frequent releases. |
+| **Software Engineering** | A set of discrete developer methods: `WriteCode`, `RunUnitTests`, `CommitToCG‑SpecS`, `ManualDeploy`. | An **automated Continuous Integration/Continuous Delivery (CI/CD) Pipeline**. | **B:** A single interface ("trigger pipeline") now executes the entire sequence. **O:** A new objective emerges: "maintain the main branch in a perpetually deployable state." **S:** The CI/CD orchestrator (e.g., GitHub Actions, Jenkins) acts as the supervisor, automatically sequencing steps and handling failures. **C:** The overhead of manual coordination became a bottleneck to frequent releases. |
 | **Cognitive Science (Learning)** | A novice driver's individual methods: `CheckMirrors`, `PressClutch`, `ChangeGear`, `Steer`. | The expert driver's fluid, integrated **`Method` of "Driving"**. | **B:** The actions become a single, seamless behavior. **O:** A new, holistic objective appears: "navigate traffic smoothly and safely," replacing the focus on individual mechanical steps. **S:** The driver's cerebellum and basal ganglia form a "supervisor," coordinating the motor actions subconsciously. **C:** Conscious management of each step is too slow for real-world traffic. |
 | **Organizational Design**| Separate, siloed methods in a company: `MarketingCampaign`, `SalesPitch`, `CustomerOnboarding`. | An **Integrated "Go-to-Market" `Method`**. | **B:** A single cross-functional team now owns the entire customer journey from lead to active user. **O:** A new objective is set: "maximize customer lifetime value (LTV)." **S:** A shared set of KPIs and a weekly cross-functional sync meeting act as the supervisory loop. **C:** The "leaky bucket" problem, where customers were lost in the hand-offs between departments, became too costly. |
 
@@ -11424,9 +11426,9 @@ Any Γ‑flavour that claims an **Assurance** result **must** adopt the followin
    * *Monotone:* increasing any `R_i` or any `CL` cannot lower `R_eff`.
 
 4. **SCR and Notes:**
-
-   * The aggregate **SHALL** produce a **SCR** listing all contributing nodes and edges, with their `F, G, R, CL`, scopes, and evidence links (A.10).
-   * If order/time mattered for the claim, attach the **OrderSpec** or **TimeWindow** identifiers (B.1.4).
+   * The aggregate SHALL produce a SCR listing all contributing nodes and edges, with their F, G, R, CL, scopes, and evidence links (A.10).  
+   * The SCR SHALL additionally surface the **aboutness** (`about(Object→TopicHolon)`) and the **ObjectMode** for the claim, and present a **separable TA/VA/LA table** of evidence contributions with **valid_until/decay** marks and the **Epistemic‑Debt** per § B.3.4.  
+   * If order/time mattered for the claim, attach the OrderSpec or TimeWindow identifiers (B.1.4).
 
 This skeleton is **mandatory**. Domain‑specific architheories may add **refinements** (e.g., separate epistemic “replicability” vs. “calibration”) as long as they **do not violate** WLNK or MONO and preserve scale kinds.
 
@@ -11605,11 +11607,9 @@ These obligations refine the generic Proof Kit from **B.1.1 §6** for **assuranc
 | **CC‑B3.3** | The **Congruence Level** `CL` **SHALL** live on **edges**; the penalty `Φ(CL)` **SHALL** be **monotone decreasing** and **bounded** (`R_eff ≥ 0`).                            | Make integration quality first‑class.        |                                   |
 | **CC‑B3.4** | `R_eff` **SHALL** be computed as `R_eff = max(0, min_i R_i − Φ(CL_min))` for the relevant integration path(s), unless a stricter domain‑specific rule is justified.           | Enforce WLNK and penalize weak integrations. |                                   |
 | **CC‑B3.5** | `F_eff = min_i F_i`; `G_eff = SpanUnion({G_i})` **constrained by support**.                                                                                                   | Prevent over‑generalization.                 |                                   |
-| **CC‑B3.6** | An **Assurance SCR** **SHALL** be produced, listing node/edge values, evidence anchors, and any OrderSpec/TimeWindow identifiers.                                        | Provide auditability (A.10).                 |                                   |
+| **CC‑B3.6** | An **Assurance SCR** **SHALL** be produced, listing node/edge values, evidence anchors, and any OrderSpec/TimeWindow identifiers, **and SHALL also display**:  (i) the **aboutness binding** `about(Object→TopicHolon)` for the claim and the declared **ObjectMode ∈ {coincident, external}** (cf. C.2.3 **CC‑UE‑06**); (ii) a **TA/VA/LA breakdown** of anchored evidence **kept separable** per **CC–KD‑08**, with **decay/valid‑until** indicators on empirical bindings (A.10), and the **Epistemic‑Debt** tally as computed in **§ B.3.4**. | Provide auditability (A.10).                 |                      
 | **CC‑B3.7** | **Agency‑CHR** values (A.13) **SHALL NOT** override WLNK or `Φ(CL)` penalties; if agency grade change alters capabilities, model it as a **Meta‑Holon Transition**.           | Preserve safety; keep agency separate.       |                                   |
 | **CC‑B3.8** | Design‑time and run‑time assurance **SHALL NOT** be mixed in one tuple; compare them side‑by‑side if needed.                                                                  | Avoid design/run mixing.                     |                                   |
-
----
 
 ### 8) Anti‑patterns and repairs
 
@@ -13186,7 +13186,7 @@ Preview kernel-level:
 * **CC‑EPI‑2 (Triangle present).** Every U.Episteme MUST expose the three components `{Object, Concept, Symbol}` and the two external links `about(Object→TopicHolon)` and `isCarriedBy(Episteme→Carrier)`. `ClaimGraph`, `JustificationGraph`, and `EditionSeries` are attached/internal structures, not triangle vertices.
 * **CC‑EPI‑3 (Strict Distinction).** It is **non‑conformant** to treat carriers or notations as the episteme, or to place Work/execution facts inside `ClaimGraph`.
 * **CC‑EPI‑4 (No self‑evidence).** Edges in `JustificationGraph` that rely on evidence **MUST** point to **external Work** and **evidence roles**; self‑support is forbidden.
-* **CC‑EPI‑5 (Aboutness explicit).** `about` **MUST** name **topic holons** (systems or epistemes).
+* **CC‑EPI‑5 (Aboutness explicit).** `about` **MUST** name **topic holons** (systems or epistemes). **Note (assurance gating).** Epistemes lacking `about(Object→TopicHolon)` **or** a declared **ObjectMode** (C.2.3 **CC‑UE‑06**) may be published as didactic/template, but **do not satisfy Effective guards** in assurance (see B.3 SCR duties).
 * **CC‑EPI‑6 (Phase discipline).** Content change implies a **new phase** in `EditionSeries`; carrier changes without content change are not new phases.
 
 Normative:
@@ -13278,6 +13278,12 @@ This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemi
 
 **12.1 Exports to KD‑CAL (normative)**
 
+* Export‑E0 (Aboutness minimum).** Every U.Episteme that is consumed by KD‑CAL / Assurance MUST surface:
+(a) an explicit `about` edge to its TopicHolon (Object component),
+(b) `ObjectMode ∈ {coincident | external | meta}`, and
+(c) declared evidence lanes (TA/LA/VA) intended to support R.
+These fields MUST be readable to SCR/RSCR consumers.
+
 * **Export‑E1 (M‑mode minimal).** A resolvable **`ConceptHandle`** (may be a single root claim or a short list); **BoundedContext** declared.
 * **Export‑E2 (Assurance L1+).** **claim scope** and **evaluation templates** from the **Object** component; **Evidence slots** exposed for `supports|refutes|constrains`. # Maps to L1 “Substantiated”. 
 * **Export‑E3 (Assurance L2/F‑mode).** **`ClaimGraphRoot`** with typed nodes, **JustificationGraph** hooks, **EditionSeries** fence, and decay policy on empirical bindings (B.3.4). 
@@ -13333,6 +13339,7 @@ This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemi
 * **CC‑UE‑12 (Plug‑in layering, P‑5).** Normative semantics **MUST** be interpretable without Tooling or Pedagogy assets; mentions of notations, file types, or toolchains are **informative only**. Cross‑layer dependencies **MUST** obey **E.5.3 Unidirectional Dependency**.
 
 **Assurance‑gated Norms**
+**CC‑UE‑A0 (Aboutness surfaced).** KD‑CAL consumers MUST be able to read `about` and `ObjectMode` directly on the episteme edition; absence of either makes the episteme non‑conformant for assurance consumption.
 * **CC‑UE‑A1 (L1+).** Export **Envelope handle** and **Evaluation templates**; expose evidence slots with polarity.
 * **CC‑UE‑A2 (F‑mode/L2).** Export **ClaimGraphRoot**, **JustificationGraph**, **EditionSeries**; provide decay policies for empirical bindings; compute ⟨F,G,R⟩ per B.3 skeleton. 
 * **CC‑UE‑A3 (Cross‑room).** Any export used outside the room must name **Bridge** and **CL**; KD‑CAL applies **R** penalties accordingly.
@@ -17353,7 +17360,7 @@ Correctness‑by‑sequence and temporal coverage are orthogonal to **parthood**
 ## 1 · Intent (Normative)
 
 **Name.** *Measurement & Metrics Characterization (MM‑CHR).* This is user-oriented name: in user‑facing narrative we say ‘metrics’; in Tech register we speak `U.MetricTemplate`/`U.Measure`.
-**Intent.** Provide a **transdisciplinary substrate for measurement** that any architheory can rely on: a small, stable set of intensional constructs and relations—**`U.MetricTemplate`**, **`U.Measure`**, **`U.Unit`**, **`U.EvidenceStub`**—disciplined by **CSLC** (*Characteristic / Scale / Level / Coordinate*) so that every recorded value is **interpretable** and **comparable** across vistas (physics lab time‑of‑flight, figure‑skating judging, architectural modularity, etc.). **C.16** does **not** re‑define **Characteristic** (A.17) nor the CSLC kernel contract (A.18); instead, it **exports** the measurement substrate that *binds* an architheory’s metric notions to **one Characteristic and one Scale** and frames a **conceptual link to evidence**. This characterization is **notation‑neutral**, **tool‑agnostic**, and **open‑ended** (no “lifecycle” narrative; evolution proceeds via **RSG** moves with checklists). 
+**Intent.** Provide a **transdisciplinary substrate for measurement** that any architheory can rely on: a small, stable set of intensional constructs and relations—**`U.MetricTemplate`**, **`U.Measure`**, **`U.Unit`**, **`U.EvidenceStub`**—disciplined by **CSLC** (*Characteristic / Scale / Level / Coordinate*) so that every recorded value is **interpretable** and **comparable** across CG‑frames (physics lab time‑of‑flight, figure‑skating judging, architectural modularity, etc.). **C.16** does **not** re‑define **Characteristic** (A.17) nor the CSLC kernel contract (A.18); instead, it **exports** the measurement substrate that *binds* an architheory’s metric notions to **one Characteristic and one Scale** and frames a **conceptual link to evidence**. This characterization is **notation‑neutral**, **tool‑agnostic**, and **open‑ended** (no “lifecycle” narrative; evolution proceeds via **RSG** moves with checklists). 
 
 **Outcomes.**
 (1) A uniform way for architheories to *declare* what is measured and *read* what has been measured; (2) explicit **Characteristic anchoring** and **Scale typing** per CSLC; (3) principled **comparability** and **polarity** (declared at the template level); (4) **traceability** via conceptual evidence stubs; (5) seamless alignment with cross‑domain quantity notions (ISO 80000, ISO/IEC 25024, QUDT, SOSA/SSN, Verspoor) through Unification rows (Part F). 
@@ -17362,7 +17369,7 @@ Correctness‑by‑sequence and temporal coverage are orthogonal to **parthood**
 
 **Scope.** **C.16** specifies the **measurement substrate** for FPF architheories: the roles of `U.MetricTemplate`, `U.Measure`, `U.Unit`, `U.EvidenceStub`; their **CSLC discipline**; the notions of **Scale type**, **polarity**, **comparability**, and **evidence sufficiency** at the level of *conceptual conditions*. It **exports** these constructs for all architheories (KD‑CAL, Arch‑CAL, etc.) without prescribing domain formulae or procedures. 
 
-**Status.** **Normative architheory.** C.16 **depends on** A.17 (canonical **Characteristic**) and A.18 (minimal **CSLC** in Kernel). Where C.16 cites external vistas, the stance is through **Part F** rows and **Bridges** (with CL and loss notes), not by vocabulary import. 
+**Status.** **Normative architheory.** C.16 **depends on** A.17 (canonical **Characteristic**) and A.18 (minimal **CSLC** in Kernel). Where C.16 cites external CG‑frames, the stance is through **Part F** rows and **Bridges** (with CL and loss notes), not by vocabulary import. 
 
 **Out of scope.** No computational recipes, no workflow prescriptions, no governance/process guidance. C.16 concerns **objects of thought** (intensions) and their **validity conditions**, not records or tooling. (Implementation guidance, if any, belongs outside Part C.)
 
@@ -17511,7 +17518,7 @@ R‑ME‑6 (MAY):** “`UncertaintyStub` — optional conceptual pointer to the 
 
 **R‑ER‑2 (Relation scale).** Relation‑valued scales **SHALL** fix their symmetry/antisymmetry and directionality (e.g., distance symmetric; influence directional), at the **template** level.
 
-**R‑ER‑3 (Bridge to vistas).** In architectural vistas, **Coupling/Cohesion** are Characteristics over **modules** (structure) or **roles** (function). Their measures are relational (**Coupling**) or unary (**Cohesion** within an element), but both live in the same MM‑CHR substrate. (Alignment hinted in the old mapping rows across contexts. )
+**R‑ER‑3 (Bridge to CG‑frames).** In architectural CG‑frames, **Coupling/Cohesion** are Characteristics over **modules** (structure) or **roles** (function). Their measures are relational (**Coupling**) or unary (**Cohesion** within an element), but both live in the same MM‑CHR substrate. (Alignment hinted in the old mapping rows across contexts. )
 
 ---
 
@@ -21039,7 +21046,7 @@ Post‑run **Evaluation** shows the **Service** acceptance **passed** (pressure 
 
 **LEX rewrite.**
 `ProductLead#AuthorizerRole:Rollout_2025` **performed a SpeechAct** “approve feature flag change”.
-`svc_ci_bot#DeployerRole:CD_Pipeline_v7` **performed Work** `Deploy‑F123`.
+`sCG‑Spec_ci_bot#DeployerRole:CD_Pipeline_v7` **performed Work** `Deploy‑F123`.
 The **API** is `accessSpec : MethodDescription#REST_v12`; the **Service** “Feature Access” declares acceptance; telemetry **Work** shows **fulfilsService**.
 
 **13.3 Research (model validation)**
@@ -21249,7 +21256,7 @@ Re‑review your prose when any of these change:
 
 * **Messy phrasing:** “The storage service wrote logs and the deployment process failed after 2 min.”
 * **ULR rewrite:**
-  *“`svc_ci_bot#DeployerRole:CD_v7` performed **Work** ‘Deploy r4711’ (failed at T+120 s).
+  *“`sCG‑Spec_ci_bot#DeployerRole:CD_v7` performed **Work** ‘Deploy r4711’ (failed at T+120 s).
   The platform offers **Service** ‘Object Storage’ (access = `S3_API_Spec_vX`; **acceptance** = durability/availability targets).
   `LogWriter` is a **System** bearing `TransformerRole` that wrote the records; *the service did not act*.”*
 
@@ -21862,7 +21869,7 @@ The **Working‑Model layer remains the canonical publication surface** for auth
 
 > **Notes across the examples**
 > • Everyday aliases (*Component Of, Member Of, Aspect Of*) remain the only labels engineers need to see; their truth is anchored by prior constructional choices.  
-> • Structural links (Tier‑1) draw on **Constructive** grounding; epistemic links (Tier‑2)—like “Representation Of” or “Usage Of”—may instead rely on **Empirical Validation** (evidence bundles) or **Logical** grounding appropriate to the claim.  :contentReference[oaicite:16]{index=16} :contentReference[oaicite:17]{index=17}
+> • Structural links (Tier‑1) draw on **Constructive** grounding; epistemic links (Tier‑2)—like “Representation Of” or “Usage Of”—may instead rely on **Empirical Validation** (evidence bundles) or **Logical** grounding appropriate to the claim.  
 
 **F — Resulting Context (after you apply the pattern)**
 
@@ -27829,16 +27836,17 @@ Each **column family** shows **how this concept appears** in chosen **rooms of m
 
 Two **canonical layouts** are allowed (pick one or publish both):
 
-* **Layout A — Kernel‑first**: rows keyed by **FPF U‑Type**; columns = rooms.
-* **Layout B — Base‑concept**: rows keyed by **Base concept** (EN/RU), then unified to **U‑Type**; columns = discipline vistas.
+* **Layout A — Kernel‑first**: rows keyed by **FPF U‑Type**; **Bounded‑Context Columns (BCC)**.
+* **Layout B — Base‑concept**: rows keyed by **Base concept** (EN/RU) of a discipline, then unified to **U‑Type**; **Discipline Columns (DC)**.
 
-Both layouts are normative; choose based on audience. In Layout A, comparability is by **Context**; in Layout B, comparability is by **Vista**; never conflate the two
+Both layouts are normative; choose based on audience. In Layout A, comparability is by **BCC** (*Bounded‑Context Column*); in Layout B, comparability is by **DC** (*Discipline Column*); never conflate the two.
 
 ## 5 · Minimal Vocabulary (for this pattern)
 
 * **UTS (Unified Term Sheet).** The published, human‑readable table per thread.
 * **Context.** Alias in Tech register for **`U.BoundedContext`** (E.10.1). Normative unit of meaning; every SenseCell is scoped to a Context _(name + edition)._  
-* **Vista.** A _discipline vantage_ used **only in Layout B** (e.g., _Operational Management_, _IT/Software_, _Physics_). A Vista is **not** a Context and does not carry editions.  
+* **Bounded‑Context Column (BCC).** A didactic column used **only in Layout A**; one column per **Context (`U.BoundedContext`)** from the F.1 cut; **not a model element**; carries **no editions**.  
+* **Discipline Column (DC).** A _discipline vantage_ used **only in Layout B** (e.g., _Operational Management_, _IT/Software_, _Physics_). A DC is **not** a **Bounded‑Context Column** and does not carry editions.  
 * **Concept‑Set (CSR).** One unified concept with pointers to its SenseCells.  
 * **SenseCell.** _(Context × Local‑Sense)_ address—how a Context “says that thing”.  
 * **Bridge / CL.** Explicit cross‑Context mapping (F.9) with Congruence Level and Loss note.  
@@ -27887,28 +27895,26 @@ A UTS **MUST** declare a **Block Plan**—the sequence of blocks that group rows
 **Columns:**
 
 * `FPF U‑Type · Tech · Plain · FPF Description` (left rail)
-* **Per‑Context columns** (one column per Context from the F.1 cut; each header shows _name + edition_): e.g., **OMG BPMN 2.0**, **W3C PROV‑O**, **ITIL 4**, **NIST RBAC**, **W3C SOSA/SSN**, **OMG Essence (Language)**, **DEMO/DEMO‑EO**, **PMBOK 7**, **CM/BPM (CMMN/BPMN)**, **IEC 61131‑3**, **ODRL 2.2**, **ISO 80000‑1 / Metrology** … *(your chosen 12 contexts*
+* **Bounded‑Context Columns (BCC)** — one column per **Context (`U.BoundedContext`)** from the F.1 cut; each header shows _name + edition_: e.g., **OMG BPMN 2.0**, **W3C PROV‑O**, **ITIL 4**, **NIST RBAC**, **W3C SOSA/SSN**, **OMG Essence (Language)**, **DEMO/DEMO‑EO**, **PMBOK 7**, **CM/BPM (CMMN/BPMN)**, **IEC 61131‑3**, **ODRL 2.2**, **ISO 80000‑1 / Metrology** … *(your chosen 12 Contexts)*
 * `Bridges (CL/Loss)`
 * `Unification Rationale`
 * `Notes`
   
-  Do not mix **Vistas** in Layout A. Columns here are only **Contexts (U.BoundedContext)**.
+Do not mix **Discipline Columns (DC)** in Layout A. Columns here are only **Bounded‑Context Columns (BCC)**.
 
-### 8.2 Layout B — Base‑concept pivot (discipline vistas)
+### 8.2 Layout B — Base‑concept pivot (discipline columns)
 
-**Columns:** Base concept · Scale‑map · Unified Tech name · Formal U‑Type · **Vistas (discipline vantage columns, e.g., Operational Management / IT/Software / Physics / …)** · Rationale · Notes.
+**Columns:** Base concept · Scale‑map · Unified Tech name · Formal U‑Type · **Discipline Columns (DC)** (e.g., Operational Management / IT/Software / Physics / …) · Rationale · Notes.
 
 * `Base concept (EN / RU)`
 * `Scale‑map (Σ / Π / μ)` *(optional; see §9.4)*
 * `Unified Tech name`
 * `Formal U‑Type`
-* **Per Discipline vistas columns** (choose 3–5): e.g., **Operational Management**, **IT/Software**, **Physics**, **Science/Theory**, **Math/Proof**, **Literature**, **Religion** *(or other vistas suited to the thread)*
+* **Discipline Columns (DC)** (choose 3–5): e.g., **Operational Management**, **IT/Software**, **Physics**, **Science/Theory**, **Math/Proof**, **Literature**, **Religion** *(or other discipline columns suited to the thread)*
   `Unification Rationale`
 * `Notes`
  
 > **Guidance.** Publish **Layout A** for kernel users and spec authors; publish **Layout B** for cross‑disciplinary onboarding and teaching.
-
----
 
 ## 9 · Invariants (normative constraints)
 
@@ -27925,7 +27931,7 @@ A UTS **MUST** declare a **Block Plan**—the sequence of blocks that group rows
 6. **Dual register.** Every row has **Tech** and **Plain** labels per F.5.
 7. **One‑breath rationale.** The `Unification Rationale` is a **single sentence** explaining the conceptual sameness despite local wording.
 8. **9.7 Unified naming neutrality.** The **Unified Tech name** is the neutral FPF choice per F.5; it is **not** lifted wholesale from any single Context unless the Concept‑Set justification (F.7) shows identity.  
-**9.8 Column discipline.** Layout A uses **Context** columns only; Layout B uses **Vista** columns only. Mixing is non‑conformant.
+**9.8 Column discipline.** Layout A uses **Bounded‑Context Columns (BCC)** only; Layout B uses **Discipline Columns (DC)** only. Mixing is non‑conformant.
 
 ## 10 · How to Compile (conceptual moves, not a workflow)
 
@@ -27953,7 +27959,7 @@ A UTS **MUST** declare a **Block Plan**—the sequence of blocks that group rows
 * **SCR‑UTS‑07 (Block parsimony).** Block Plan uses **≤ 7 blocks**; each block’s rows can be recited from memory by a careful reader.
 * **SCR‑UTS‑08 (Strict Distinction).** No row description conflates Method↔MethodDescription, Work↔WorkDescription, Role↔RoleCharacterisation.
 * **CR‑UTS‑09 (Unified naming).** Each row’s **Unified Tech name** complies with F.5 rules (dual register, minimal generality, morphology); it is not a mere alias of one Context unless justified by an F.9 Bridge with **CL=3**.
-* **SCR‑UTS‑10 (Column discipline).** **Layout A:** all non‑left‑rail columns are **Contexts** with editions. **Layout B:** all non‑left‑rail columns are **Vistas** (discipline vantages). No cross‑use.
+* **SCR‑UTS‑10 (Column discipline).** **Layout A:** all non‑left‑rail columns are **Contexts** with editions. **Layout B:** all non‑left‑rail columns are **discipline columns**. No cross‑use.
 
 ### 11.2 Regression Rules (RSCR‑UTS)
 
@@ -27962,13 +27968,13 @@ A UTS **MUST** declare a **Block Plan**—the sequence of blocks that group rows
 * **RSCR‑UTS‑C (Coverage drift).** Adding/removing rows **must not** reduce family heterogeneity below §9.3.
 * **RSCR‑UTS‑D (Loss drift).** If new evidence changes a Bridge’s CL/Loss, the row updates both the CL and the 2–6 word loss note.
 
-## 12 · Canonical Heading Templates (fill with your Contexts/Vistas)
+## 12 · Canonical Heading Templates (fill with your Contexts/Discipline columns)
 
 **Layout A — Kernel‑first**
 
 ```
 # | Block | FPF U‑Type | Unified Tech name | Unified Plain name | FPF Description
-  | Context‑1 (name, edition) | Context‑2 (name, edition) | Context‑3 (name, edition) | … (more Contexts from the F.1 cut)
+  | BCC‑1 (Context name, edition) | BCC‑2 (Context name, edition) | BCC‑3 (Context name, edition) | … (more BCCs from the F.1 cut)
   | Bridges (CL/Loss) | Unification Rationale | Notes
 ```
 
@@ -27981,11 +27987,11 @@ _(Use the actual Contexts from your F.1 cut; always include the edition.)_
 ```
 # | Block | Base concept (EN / RU) | Scale‑map (Σ/Π/μ)
   | Unified Tech name | Formal U‑Type
-  | Vista‑1 (discipline) | Vista‑2 (discipline) | Vista‑3 (discipline) | Vista‑4 (discipline) | Vista‑5 (discipline)
+  | DisciplineColumn‑1 (discipline) | DisciplineColumn-2 (discipline) | DisciplineColumn‑3 (discipline) | DisciplineColumn‑4 (discipline) | DisciplineColumn‑5 (discipline)
   | Unification Rationale | Notes
 ```
 
-**Examples of Vistas (illustrative):** Operational Management · IT/Software · Physics · Science/Theory · Mathematics · Literature · Religion.  
+**Examples of Discipline Columns (illustrative):** Operational Management · IT/Software · Physics · Science/Theory · Mathematics · Literature · Religion.  
 _(Choose 3–5 that fit the thread; do not place Contexts here.)_
 
 ## 13 · Didactic Aids
@@ -28006,7 +28012,7 @@ _(Choose 3–5 that fit the thread; do not place Contexts here.)_
 `Tech=MethodDescription · Plain=recipe` — “Recorded specification guiding executions.”
 **BPMN 2.0 (2011)**: *Process model* · **PROV‑O (2013)**: `prov:Plan` · **ITIL4**: *SOP / Work instruction* · **Essence (Language)**: *Activity space/Practice description* · **Bridges**: CL=2 (loss: control‑flow vs intent) · **Rationale**: *All cells denote the codified ‘how’, distinct from both the performer and the run.*
 
-> These rows are examples only; your UTS MUST be compiled from your chosen contexts or vistas and SenseCells.
+> These rows are examples only; your UTS MUST be compiled from your chosen **Contexts** (Layout A) or **Discipline Columns (DC)** (Layout B) and SenseCells.
 
 ## 15 · Relations
 
@@ -28466,7 +28472,7 @@ Letting a Working-Name accumulate extra meanings absent in the Concept-ID. **Fix
 
 **CC‑F18‑7 (Sheet‑level coverage).** Within a thread’s UTS, the **set of rows** carrying unified names **SHALL** collectively cite **≥ 3 distinct Contexts**, ensuring breadth of evidence. Coverage is a property of the **sheet**, not of every single row. See F.17 §6 constraint.
 
-**CC‑F18‑8 (No global words).** In Core text, **“Context” always means `U.BoundedContext`**; “vista” may be used in teaching layouts but **is not** a bearer of meaning. Do not write context‑free claims of sameness. See E.10 and F.17 §5.
+**CC‑F18‑8 (No global words).** In Core text, **“Context” always means `U.BoundedContext`**; **discipline columns** may be used in teaching layouts but **is not** a bearer of meaning. Do not write context‑free claims of sameness. See E.10 and F.17 §5.
 
 **CC‑F18‑9 (Didactic primacy).** A unified name **SHALL** be teachable on **one page**: its **UTS row** + a short narrative that a careful reader can replay (F.16 template). If it cannot be taught concisely, the naming attempt is premature.
 
@@ -28552,7 +28558,7 @@ Letting a Working-Name accumulate extra meanings absent in the Concept-ID. **Fix
 **A.** Only if its form is **already neutral** and does **not** smuggle in that Context’s private commitments. When in doubt, pick a fresh neutral Tech label and keep the Source term in **SenseCells**. (F.5.)
 
 **Q3. Where do we put discipline‑vantage views like “Operations” vs “Research”?**
-**A.** Use the **Vista** columns in a teaching layout if helpful, but remember: **vistas are not Contexts** and carry no editions. (F.17 §5.)
+**A.** Use the **discipline columns** in a teaching layout if helpful, but remember: **discipline columns are not Context columns** and carry no editions. (F.17 §5.)
 
 **Q4. How do we keep names stable while the story evolves?**
 **A.** Keep **row ids** stable; evolve placement via the **Block Plan** and record moves in **Notes**. Use F.13 for renames/splits/merges. (F.17 §16; F.13.)
@@ -28819,22 +28825,22 @@ All patterns that propose or consume unified names and rows in Part F; any Part
 
 ---
 
-#### 2) “Vista” — permitted didactic use only
+#### 2) “discipline column” — permitted didactic use only
 
-**Vista** is a **didactic label** for table groupings or pedagogic “views” (e.g., the column groups in F.17 one‑pagers). A **Vista is not a model element** and **never** an anchor of meaning.
+**discipline column** is a **didactic label** for table groupings or pedagogic “views” (e.g., the column groups in F.17 one‑pagers). A **discipline column is not a model element** and **never** an anchor of meaning.
 
 **Allowed (didactic):**
 
-* Headings in teaching bundles: *Vista — Service & Deontics*, *Vista — Sensing & Measurement*.
+* Headings in teaching bundles: *Discipline Column — Service & Deontics*, *Discipline Column — Sensing & Measurement*.
 * Column groups that collect multiple **Contexts** for readability.
 
 **Forbidden (normative):**
 
-* “The meaning is local to a *Vista*.”
-* “Define a *Vista* before harvesting terms.”
-* Using *Vista* where **Context** is required (e.g., for SenseCells, bridges, invariants).
+* “The meaning is local to a *Discipline Column*.”
+* “Define a *Discipline Column* before harvesting terms.”
+* Using *Discipline Column* where **Context** is required (e.g., for SenseCells, bridges, invariants).
 
-**Lint rule:** If a sentence can be read as giving semantic force to *Vista*, rewrite it to **Context**.
+**Lint rule:** If a sentence can be read as giving semantic force to *Discipline Column*, rewrite it to **Context Column**.
 
 ---
 
@@ -28844,7 +28850,7 @@ Pick the right noun—every time:
 
 * **You need the formal place where meaning lives?** → **`U.BoundedContext`** (Context).
 * **You need a friendly metaphor in a sidebar/tutorial?** → *room (of meaning)* **only in didactic callouts**, with “(Context)” on first mention.
-* **You are laying out columns/rows for a one‑pager?** → *Vista* (layout label only).
+* **You are laying out columns/rows for a one‑pager?** → *Discipline Column* (layout label only).
 * **You need cross‑local mapping?** → **Alignment Bridge** (with **CL/Loss**).
 * **You need the atomic address of a local sense?** → **SenseCell** (Context × Local‑Sense).
 
@@ -28873,8 +28879,8 @@ Pick the right noun—every time:
   *After:* “**Cross‑context** equivalence is asserted via an **Alignment Bridge** (with **CL/Loss**).”
 
 * **One‑pager layout caption (didactic):**
-  *Allowed:* “**Vista — Workflow/Provenance** (columns group Contexts BPMN and PROV‑O).”
-  *Not allowed:* “Meaning is defined per Vista.”
+  *Allowed:* “**Discipline Column — Workflow/Provenance** (columns group Contexts BPMN and PROV‑O).”
+  *Not allowed:* “Meaning is defined per Discipline Column.”
 
 ---
 
@@ -28884,7 +28890,7 @@ Pick the right noun—every time:
 * **CC‑LD‑ROOM‑2**: All normative mentions of local meaning, boundaries, glossaries, or sets use **Context** / **Bounded Context**.
 * **CC‑LD‑ROOM‑3**: Any “anchor” phrasing is replaced with **SenseCell** and/or **Concept‑Set Table**; no “room anchor” remains.
 * **CC‑LD‑ROOM‑4**: Any cross‑local relation is expressed as an **Alignment Bridge**; no “inter‑room” wording remains.
-* **CC‑LD‑ROOM‑5**: *Vista* appears **only** in teaching bundles (F.17) or annexed tutorials; never as a semantic anchor.
+* **CC‑LD‑ROOM‑5**: *Discipline Column* appears **only** in teaching bundles (F.17) or annexed tutorials; never as a semantic anchor.
 
 ---
 
@@ -28892,7 +28898,7 @@ Pick the right noun—every time:
 
 * **Parts A–F (normative):** headings, clauses, figures, tables, examples.
 * **F.1:** retain the metaphor *only* inside the introductory **Didactic box**, with “(Context)” on first mention; elsewhere use **Context** exclusively.
-* **F.17:** keep *Vista* solely as layout labels; columns list **Contexts** explicitly.
+* **F.17:** keep *Discipline Column* solely as layout labels; columns list **Contexts** explicitly.
 * **Annex G:** record *room (of meaning)* as a **deprecated metaphor** with a pointer to this section.
 
 ---
@@ -28903,14 +28909,14 @@ Pick the right noun—every time:
 * **F.1 — Domain Landscape Survey:** “Context‑first cut”, **Context Card**, heterogeneity across **domain families** (informative shelf labels).
 * **F.3/F.7 — SenseCell / Concept‑Set Table:** local sense addressing and unification rows.
 * **F.9 — Alignment & Bridge:** only place for cross‑context relations (with **CL/Loss**).
-* **F.17 — Unified Term Sheet:** *Vista* allowed **only** as a layout label; populate with **Contexts**.
+* **F.17 — Unified Term Sheet:** *Discipline Column* allowed **only** as a layout label; populate with **Contexts**.
 
 ---
 
 #### 8) Minimal editing procedure (self‑service)
 
 1. **Search** for `\broom(s)?\b` and “room‑” compounds.
-2. **Classify** each hit: semantic (must become **Context**) vs layout (may become **Vista**) vs didactic note (keep metaphor, add “(Context)”).
+2. **Classify** each hit: semantic (must become **Context**) vs layout (may become **Discipline Column**) vs didactic note (keep metaphor, add “(Context)”).
 3. **Replace** using §1; adjust adjacent words (local → context‑local; boundary → context boundary).
 4. **Relink** Sense/anchor mentions to **SenseCell**/**Concept‑Set Table**; bridges to **Alignment Bridge**.
 5. **Validate** with §5 checklist.
