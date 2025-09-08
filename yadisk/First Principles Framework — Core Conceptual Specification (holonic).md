@@ -25,9 +25,9 @@
 | ***Cluster A.I · Foundational Ontology*** | | | | |
 | A.1 | **Holonic Foundation: Entity → Holon** | \[A] | full text | Defines the root `U.Holon`, distinguishing it from `U.Entity`, and introduces `U.System` and `U.Episteme` as archetypes. |
 | A.1.1 | **`U.BoundedContext`: The Semantic Frame** | \[D] | full text | Defines the container for local models, roles, and invariants. Enables contextual reasoning. |
-| A.2 | **Role Taxonomy** | \[A] | full text | Establishes the universal split between a material object and its contextual role. Introduces Contextual Role Assignment (CRA). |
+| A.2 | **Role Taxonomy** | \[A] | full text | Establishes the universal split between a material object and its contextual role. Introduces U.RoleAssignment. |
 | A.2.1 | **`U.RoleAssignment`: Contextual Role Assignment** | \[D] | full text | Formalizes the `Holder#Role:Context` contract, introduces `RoleEnactment`, and hooks for RCS/RSG. |
-| A.2.2 | **`U.Capability`: The Ability Axis** | \[D] | full text | Defines a system's ability to act, separate from its assignment (Role) or execution (Work). |
+| A.2.2 | **`U.Capability`: The Ability characteristic** | \[D] | full text | Defines a system's ability to act, separate from its assignment (Role) or execution (Work). |
 | A.2.3 | **`U.Service`: The External Promise** | \[D] | full text | Defines a service as a consumer-facing commitment, distinct from internal capability or execution. |
 | A.2.4 | **`U.EvidenceRole`: The Evidential Stance** | \[D] | full text | Defines how an episteme serves as evidence for a claim within a bounded context. |
 | A.2.5 | **`U.RoleStateGraph`: The Named State Space of a Role**| \[D] | full text | Defines the state machine (RSG) of a Role that governs its enactability. |
@@ -100,7 +100,7 @@
 | :--- | :--- | :--- | :--- | :--- |
 | **Cluster C.I – Core CALs / LOGs / CHRs** | | | | |
 | C.1 | **Sys‑CAL** | CAL | stub | Physical holon composition; conservation invariants; resource hooks. |
-| C.2 | **KD‑CAL** | \[A] | full text | Epistemic holon composition; F-G-R axes; provenance graph. |
+| C.2 | **KD‑CAL** | \[A] | full text | Epistemic holon composition; F-G-R characteristics; provenance graph. |
 | C.2.1 | **U.Episteme — Semantic Triangle via Components** | \[A] | full text | Defines the episteme's structure (Object, Concept, Symbol) and its external links (about, isCarriedBy). |
 | C.2.3 | **Unified Formality Characteristic F** | \[A] | full text | Defines Formality (F) as an ordinal characteristic (F0–F9) for measuring rigor. |
 | C.3 | **Kind‑CAL — Kinds, Intent/Extent, and Typed Reasoning** | \[A] | full text | Establishes `U.Kind` for "what a statement is about," separating intent from extent. |
@@ -178,7 +178,7 @@
 | E.13 | **Pragmatic Utility & Value Alignment** | \[A] | full text | Guards against solving the wrong problem; introduces the Proxy-Audit Loop & MVE Mandate. |
 | E.14 | **Human-Centric Working-Model** | \[A] | full text | Establishes a human-readable publication surface with a downward-only grounding to assurance layers. |
 
-**Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual RoleAssignment**
+**Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment**
 
 | § | ID & Title | Tag | Status | Concise content reminder — “what belongs here” |
 | :--- | :--- | :--- | :--- | :--- |
@@ -187,12 +187,12 @@
 | F.1 | **Domain Landscape Survey** | \[A] | full text | Fix a finite, versioned set of **U.BoundedContext** (“rooms of meaning”) with scope notes and lexical caveats; no cross‑context claims. |
 | F.2 | **Term Harvesting & Normalisation** | \[A] | full text | Extract **surface terms inside one Context**; mint local lexical units with **per‑Context normal forms**, provenance, and twin labels (tech/plain). |
 | F.3 | **Intra‑Context Sense Clustering** | \[A] | full text | Consolidate local lexical units into **Local‑Senses** **within the same Context only**; record counter‑examples; no cross‑room merging. |
-| **Cluster F.II — Concept‑Sets & CRA (definition, naming, decision)** | | | | |
-| F.4 | **CRA Template Definition** | \[A] | full text | Define **Role/Status** templates that reference **SenseCell** (Context × Local‑Sense), with invariants and design/run stance. |
-| F.5 | **Naming Discipline for U‑Types & CRA Templates** | \[D] | full text | Lexical rules: minimal generality, twin registers, morphology, allowed suffixes; forbidden forms; testable naming checks. |
-| F.6 | **Six‑Move CRA Reasoning** | \[A] | full text | The canonical **six conceptual moves** for soundly assigning a Role or asserting a Status within a single context. |
+| **Cluster F.II — Concept-Sets & Role Assignment/Description (definition, naming, decision)** | | | | |
+| F.4 | **Role Description (RCS + RoleStateGraph + Checklists)** | \[A] | full text | Define **Role/Status** templates that reference **SenseCell** (Context × Local‑Sense), with invariants and design/run stance. |
+| F.5 | **Naming Discipline for U‑Types & Roles** | \[D] | full text | Lexical rules: minimal generality, twin registers, morphology, allowed suffixes; forbidden forms; testable naming checks. |
+| F.6 | **Role Assignment & Enactment Cycle (Six-Step)** | \[A] | full text | The canonical **six conceptual moves** for soundly assigning a Role or asserting a Status within a single context. |
 | F.7 | **Concept‑Set Table Construction** | \[A] | full text | Build a **row = Concept‑Set** with columns = **SenseCell** from multiple Contexts; annotate relation (≡/⋈/⊂/⟂) and loss notes. |
-| F.8 | **Mint or Reuse? (U‑Type vs Concept‑Set vs CRA vs Alias)** | \[A] | full text | A decision lattice to prevent type/role explosion: **new U‑Type? new Concept‑Set row? CRA template? alias?** |
+| F.8 | **Mint or Reuse? (U-Type vs Concept-Set vs Role Description vs Alias)** | \[A] | full text | A decision lattice to prevent type/role explosion: **new U‑Type? new Concept‑Set row? Role Description? alias?** |
 | **Cluster F.III — Cross‑Context Alignment & Applied Bindings** | | | | |
 | F.9 | **Alignment & Bridge Across Rooms** | \[A] | full text | Declare **bridges** between **SenseCell** across Contexts with explicit relation kind and **congruence‑loss (CL) policies**. |
 | F.10 | **Status Families Mapping (Evidence • Standard • Requirement)** | \[A] | full text | Map status families to **SenseCell**; define claim/polarity/applicability windows; KD‑CAL/Norm‑CAL hooks without importing global meaning. |
@@ -201,7 +201,7 @@
 | **Cluster F.IV — Lexical Development Cycle, Growth Control, Tests & Examples** | | | | |
 | F.13 | **Lexical Continuity & Deprecation** | \[A] | full text | Unified discipline for evolving names (`renames`, `splits`, `merges`, `retires`) **without** cross‑context conflation. |
 | F.14 | **Anti‑Explosion Control (Roles & Statuses)** | \[A] | full text | Guard‑rails against combinatorial growth: bundles, separation‑of‑duties, reuse of **Concept‑Set** rows before minting new. |
-| F.15 | **SCR/RSCR Harness for Unification** | \[A] | full text | Static/regression checks for **Contexts, SenseCell, Concept‑Sets, CRA templates, Bridges**; notation‑agnostic acceptance tests. |
+| F.15 | **SCR/RSCR Harness for Unification** | \[A] | full text | Static/regression checks for **Contexts, SenseCell, Concept‑Sets, Role Descriptions, Bridges**; notation‑agnostic acceptance tests. |
 | F.16 | **Worked‑Example Template (Cross‑Domain)** | \[A] | full text | Canonical one‑page example: **one Concept‑Set row** + links to roles/methods/observations; consistent didactic layout across domains. |
 | F.17 | **Unified Term Sheet (UTS)** | \[A] | full text | A single, normative table that distils the output of F.1–F.12 into human-readable rows for each architheory thread. |
 | F.18 | **Local-First Unification Naming Protocol** | \[A] | full text | Provides a human-legible, context-anchored naming protocol for all unification artifacts, including the "Name Card" template. |
@@ -318,7 +318,7 @@ Most frameworks pick a side. They either optimise for **assurance**—audits, ev
 * **Search widely, then focus.** Use an **open‑ended search** style to illuminate “adjacent possibles,” then apply an **explore–exploit governor** to decide when to roam for surprises and when to double‑down on promising directions.
 * **Shape → Evidence → Operate.** Turn a promising sketch into a concrete shape, collect the right evidence to test it, and run it for real. Then loop.
 
-FPF also **measures creative quality**. It distinguishes novelty for its own sake from *valuable* novelty. Work is scored along simple, universal axes—*Is it new?* *Is it useful?* *Does it fit the constraints?*—so that teams can compare options without collapsing into taste or hierarchy.
+FPF also **measures creative quality**. It distinguishes novelty for its own sake from *valuable* novelty. Work is scored along simple, universal characteristics—*Is it new?* *Is it useful?* *Does it fit the constraints?*—so that teams can compare options without collapsing into taste or hierarchy.
 
 | Question we must answer         | FPF’s assurance move                                                      | FPF’s creative move                                                                                   |
 | ------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
@@ -388,7 +388,7 @@ The value of this architectural approach lies in its ability to explicitly prote
 | **Lexical & Representation Discipline** | Guards against category errors and notation lock‑in; keeps language unambiguous and tool‑neutral across contexts. | **Strict Distinction** (didactic distillation of SD), **LEX‑BUNDLE (E.10.D3)**, and **Guard‑Rails E.5.\*** (DevOps Lexical Firewall, Notational Independence, Unidirectional Dependency, Bias‑Audit). All meanings live in a **`U.BoundedContext`** and cross only via Bridges. |
 | **Measurement Typing & Units** | Ensures metrics are correctly typed (ordinal/interval/ratio), unitful, and safe to operate on; forbids “ordinal averages”. | **A.17/A.18** measurement discipline + **MM‑CHR (C.16)** templates; **KD‑CAL CC‑KD‑12** (units/envelopes/windows). |
 | **Order/Time‑Safe Orchestration** | Separates structure from control‑flow and time; prevents hidden order/time bugs in authored models. | **Γ_ctx** (NC‑1..3) and **Γ_time** (T‑1..T‑3) laws; **CT2R‑LOG** “no order/time in parts”; **E.14** “no order/time in structure” for authoring conformance. |
-| **Trust Calibration & Cross‑Context Integrity** | Keeps claims honest when moved across rooms; reduces over‑optimism via weakest‑link and CL penalties. | **Trust & Assurance Calculus (B.3)** (F‑G‑R axes), **Bridges with CL** (KD‑CAL **CC‑KD‑07**), and creativity rules that lower **R** (not scale) when crossing contexts.  |
+| **Trust Calibration & Cross‑Context Integrity** | Keeps claims honest when moved across rooms; reduces over‑optimism via weakest‑link and CL penalties. | **Trust & Assurance Calculus (B.3)** (F‑G‑R characteristics), **Bridges with CL** (KD‑CAL **CC‑KD‑07**), and creativity rules that lower **R** (not scale) when crossing contexts.  |
 | **Agency & Accountability (SoD)** | Makes “who acts” explicit; enforces Separation‑of‑Duties so evidence isn’t self‑authored. | **A.2 Role suite** & **A.15 run‑alignment** (roles vs evidence/work), SoD gates in creativity flows (“fails SoD — same author as reviewer”). |
 | **Scope Safety & Encapsulation** | Prevents scope‑creep and category bleed; each claim applies only within its declared room/context and exits only via governed bridges. | **Γ_ctx (NC‑1..3)** and **`U.BoundedContext`** for hard context walls; **Bridges with CL** (KD‑CAL **CC‑KD‑07**) for governed crossings; **CG‑frame (A.19)** to declare scope of comparability. |
 | **Reproducibility & Deterministic Replay** | Ability to re‑obtain the same result given the same inputs, model version, and time policy; enables trustworthy debugging and audit. | **A.4 Design–Run split**, **Γ_time (T‑1..T‑3)**, **CT2R‑LOG** (“no order/time in parts”), **E.14** (“no order/time in structure”), **DRR (E.9)** for versioned rationale, **Evidence Anchoring (A.10)**. |
@@ -415,7 +415,7 @@ This architectural approach shifts the focus from the internal, fallible state o
 | :--- | :--- | :--- |
 | **Conflation of Plan and Reality** | Reminds us to be aware of the **Planning Fallacy** or **Confirmation Bias**, where we seek evidence that our plan is working and ignore contradictory data. | **`Temporal Duality (A.4)`** and the strict distinction between `design-time` artifacts (`MethodDescription`, `WorkPlan`) and `run-time` artifacts (`Work`). This is not a psychological reminder; it is a **category error** to mix them. The architecture enforces the separation. |
 | **Ambiguity and Equivocation** | Warns against using vague terms or shifting the meaning of a word mid-argument. | **`Lexical Discipline (E.10)`** and **`U.BoundedContext (A.1.1)`**. FPF bans overloaded terms like "process" from its core and requires that all domain terms be explicitly projected onto precise FPF concepts within a bounded context. Ambiguity is architecturally constrained, not just advised against. |
-| **Causality Collapse & Lack of Accountability** | Points out the **Fundamental Attribution Error** or describes situations where causes are poorly understood. | **`External Transformer Principle (A.12)`**. FPF makes it an architectural invariant that every change **must** be attributed to an external agent (`System` in a `RoleAssigning`). "It configured itself" is not a cognitive bias; it is a **modeling violation**. Causality is non-negotiable. |
+| **Causality Collapse & Lack of Accountability** | Points out the **Fundamental Attribution Error** or describes situations where causes are poorly understood. | **`External Transformer Principle (A.12)`**. FPF makes it an architectural invariant that every change **must** be attributed to an external agent (`System` in a `U.RoleAssignment`). "It configured itself" is not a cognitive bias; it is a **modeling violation**. Causality is non-negotiable. |
 | **Inconsistent Aggregation & Scope Neglect** | Highlights biases where we incorrectly generalize from parts to a whole or ignore the scale of a problem. | **`Cross-Scale Consistency (A.9)`** and the **`Universal Algebra of Aggregation (Γ)`** with its **Invariant Quintet (B.1)**. FPF provides a formal, conservative algebra (e.g., the Weakest-Link bound) for aggregation, making naive or optimistic roll-ups a **provable error** in the model. |
 | **Creative Mode Collapse (Premature Convergence)** | Advises teams to “brainstorm more,” add ideation checklists, or warn against fixation—creativity is audited post‑hoc. | **`Creative Abduction (B.5.2)`** bound to **`NQD‑CAL (C.18)`** and governed by **`E/E‑LOG (C.19)`** keeps hypothesis generation formally open (illumination‑style emitters, exploration quotas, selection lenses), while **`Creativity‑CHR (C.17)`** scores outputs on `Novelty`, `Use‑Value`, `Surprise`, and `ConstraintFit` inside a `U.BoundedContext`. Premature convergence becomes a **policy/modeling violation** (insufficient exploration or missing lenses), not a soft reminder.  |
 
@@ -563,7 +563,7 @@ Conceptually, the Intellect Stack is formalized as a non-normative **Characteriz
 | Layer                          | Core question                          | Key patterns & exemplary domains                                                                                                                            |
 | ------------------------------ | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **1 · Structure & Reality**    | *What exists and how is it bounded?*   | **Type‑CAL** for universal categories; **Sys‑CAL** for system boundaries. <br>Physics (control volumes), Software (static types), Ecology (trophic levels). |
-| **2 · Knowledge & Reasoning**  | *Why should we trust this claim?*      | **KD‑CAL** (F‑G‑R axes), **Arg‑LOG** for formal argument. <br>AI (model validation), Evidence‑based policy.                                                 |
+| **2 · Knowledge & Reasoning**  | *Why should we trust this claim?*      | **KD‑CAL** (F‑G‑R characteristics), **Arg‑LOG** for formal argument. <br>AI (model validation), Evidence‑based policy.                                                 |
 | **3 · Action & Execution**     | *How do we turn intent into change?*   | **Agent‑CHR**, **Method‑CAL**, **Resrc‑CAL**. <br>Robotics (action plans), DevOps (pipelines), Urban planning (resource flows).                             |
 | **4 · Strategy & Rationality** | *Which option wins under uncertainty?* | **Decsn‑CAL**—`U.Decision`, causal models. <br>Finance (risk fronts), Military wargaming.                                                                   |
 | **5 · Governance & Purpose**   | *Why act at all; what is permissible?* | **Norm‑CAL**—`U.Objective`, value conflicts. <br>Bioethics, Sustainability metrics.                                                                         |
@@ -750,7 +750,7 @@ Showing the **same structural slots** filled by a machine and a theory demonstra
 | **CC‑A1.7** | The universal aggregation operator **Γ** **SHALL** be applied **only** to sets of `U.Holon` within a single declared temporal scope (design **or** run) and context.           | Prevents “chimera” graphs; routes order/time to Γ\_ctx / Γ\_time (B.1.4).                                              |
 | **CC‑A1.8** | Prose and diagrams **SHALL** follow the naming guideline: use **Holon** for meta‑level discourse; prefer **System / Episteme** in practitioner‑level statements.               | Reduces jargon friction; keeps signatures precise and text readable.                                                   |
 
-> *Audit tip.* CC‑A1.5 is frequently violated when authors write “holon bearing TransformerRole”. Rewrite to “**system** bearing TransformerRole” or provide the explicit `RoleAssigning`. See A.2/A.15 for role mechanics.
+> *Audit tip.* CC‑A1.5 is frequently violated when authors write “holon bearing TransformerRole”. Rewrite to “**system** bearing TransformerRole” or provide the explicit `U.RoleAssignment`. See A.2/A.15 for role mechanics.
 
 ---
 
@@ -782,7 +782,7 @@ These streams converge on one point: **make boundaries and composition first‑c
 
 * **Builds / Grounds:**
 
-  * **A.2 Role Taxonomy** — A.1 provides the substantial axis (`Holon`), A.2 introduces the functional axis (`Role` and `RoleAssigning`). Together they prevent role/type explosion and keep agency contextual.
+  * **A.2 Role Taxonomy** — A.1 provides the substantial characteristic (`Holon`), A.2 introduces the functional characteristic (`Role` and `U.RoleAssignment`). Together they prevent role/type explosion and keep agency contextual.
   * **A.7 Strict Distinction (Clarity Lattice)** — A.1 supplies the *slots* (Entity/Holon/System/Episteme); A.7 guards their separation in prose and models, stopping Object ≠ Description ≠ Carrier conflations.
   * **A.14 Advanced Mereology: Portions & Phases** — A.1’s holon substrate is the target of A.14’s edge discipline (`ComponentOf`, `ConstituentOf`, `PortionOf`, `PhaseOf`); only mereological subtypes build holarchies.
 
@@ -828,7 +828,7 @@ The concept of a `U.BoundedContext`, inspired by Domain-Driven Design (DDD) but 
 
 1.  **To Manage Complexity:** Real-world systems are too complex to be described by a single, monolithic model. A `U.BoundedContext` allows us to break down this complexity into manageable parts. Inside a context (e.g., "Air Traffic Control"), the term "flight" has a precise, unambiguous meaning. Outside, it could mean many things.
 2.  **To Enable Pluralism:** Different teams, disciplines, or even historical eras have different models of reality. A `U.BoundedContext` allows these different worldviews to coexist without contradiction. As demonstrated in A.2, Pluto can be a `PlanetRole` in the context of `Early20thCenturyAstronomy` and a `DwarfPlanetRole` in the context of `IAU_2006_Definition`. The context is what resolves the apparent paradox.
-3.  **To Make Roles Meaningful:** As established in the Contextual Role-assignment (CRA) pattern (A.2), a `U.Role` is only meaningful *inside* a context. The role of "Lead Engineer" is defined by the rules and expectations of "Project Phoenix," not by some universal law of engineering. The context provides the "stage" upon which the role is performed.
+3.  **To Make Roles Meaningful:** As established in A.2.1 `U.RoleAssignment`, a `U.Role` is only meaningful *inside* a context. The role of "Lead Engineer" is defined by the rules and expectations of "Project Phoenix," not by some universal law of engineering. The context provides the "stage" upon which the role is performed.
 
 In short, a `U.BoundedContext` is not just a "scope" or a "namespace." It is a **holon of meaning**, a self-contained universe of discourse with its own local truth.
 
@@ -879,7 +879,7 @@ To ensure `U.BoundedContext` is used consistently and rigorously, the following 
 | **CC-A1.1.2 (Role Localization)**| Every `U.Role` **MUST** be defined within the `Roles` taxonomy of at least one `U.BoundedContext`. A "global" role is forbidden. | Ensures that roles are never context-free. Prevents ambiguity by forcing every role to be anchored to a specific semantic frame. |
 | **CC-A1.1.3 (Invariant Scope)** | An `Invariant` defined within a context **MUST** only apply to holons and processes operating *within* that context. | Prevents the leakage of local rules into the global space, which is critical for modularity and managing complexity. |
 | **CC-A1.1.4 (Bridge Explicitness)** | Any interaction or mapping between two `U.BoundedContext`s **MUST** be modeled as an explicit `Bridge` artifact. | Forbids "backdoor" or implicit communication between contexts. Makes all inter-context dependencies visible and auditable. |
-| **CC-A1.1.5 (CRA Anchor)** | Every `U.RoleAssignment` **MUST** reference exactly one `U.BoundedContext` in its `context` field. | Guarantees that every role assignment is unambiguous and its meaning is fully determined by a single, authoritative context. |
+| **CC-A1.1.5 (RoleAssignment Context Anchor)** | Every `U.RoleAssignment` **MUST** reference exactly one `U.BoundedContext` in its `context` field. | Guarantees that every role assignment is unambiguous and its meaning is fully determined by a single, authoritative context. |
 
 #### 7 · Consequences
 
@@ -902,14 +902,14 @@ FPF generalizes the proven DDD idea of a **Bounded Context** from software into 
 | Context Map | **Bridges/Alignment** between contexts | Cross‑context relations are modeled explicitly rather than assumed globally. |
 
 **Why this matters here.**  
-`U.BoundedContext` gives CRA (A.2.1) its footing: role meanings are **local by design**, conflicts are checked **inside** the same context, and differences **across** contexts are handled by *explicit bridges** instead of “global truth.”
+`U.BoundedContext` gives `U.RoleAssignment` (A.2.1) its footing: role meanings are **local by design**, conflicts are checked **inside** the same context, and differences **across** contexts are handled by *explicit bridges** instead of “global truth.”
 
 The introduction of `U.BoundedContext` as a first-class holon is a direct implementation of several core FPF principles and is strongly supported by contemporary practice.
 
 *   **Philosophical Grounding:** The idea that meaning is always local and context-dependent is a cornerstone of late 20th-century philosophy of language (e.g., Wittgenstein's "language-games"). FPF operationalizes this insight.
 *   **Domain-Driven Design (DDD):** The concept is a direct borrowing and generalization from Eric Evans' seminal work on DDD, where the Bounded Context is the central strategic pattern for managing complexity in large-scale software. Its success over the past two decades in the software industry provides powerful empirical validation for its utility. FPF elevates it from a software design pattern to a universal ontological primitive.
 *   **Architectural Necessity:** For FPF to fulfill its promise of being an "operating system for thought," it needs a mechanism analogous to an OS's "process separation." A `U.BoundedContext` is precisely that: a protected "memory space" for a model, preventing different models from corrupting each other.
-*   **Enabler for Key Patterns:** The `Contextual Role-assignment` pattern (A.2) would be incoherent without a formal definition of "Context." This pattern provides that necessary foundation, making the entire role-based architecture sound.
+*   **Enabler for Key Patterns:** The `Contextual Role Assignment` pattern (A.2.1) would be incoherent without a formal definition of "Context." This pattern provides that necessary foundation, making the entire role-based architecture sound.
 
 In essence, `U.BoundedContext` is the architectural pattern that allows FPF to be both **universal** in its core principles and **specific** and **pluralistic** in its applications. It is the mechanism that tames complexity and makes large-scale, multi-paradigm modeling possible.
 
@@ -929,7 +929,7 @@ In essence, `U.BoundedContext` is the architectural pattern that allows FPF to b
 
 ### Context
 
-Pattern A.1 established the **substantial** axis of the core (`Entity → Holon → {System, Episteme, …}`), cleanly separating identity from structure and aggregation. The present pattern introduces the **functional** axis: how a holon participates in purposes **within a bounded context** and for some interval. This extends the early sketch of A.2 and tightens its alignment with A.7 (Strict Distinction): roles are *not* parts and *not* behaviours; they are contextual **masks** that a holon wears while behaviours are handled by **Method**/**Work**. 
+Pattern A.1 established the **substantial** characteristic of the core (`Entity → Holon → {System, Episteme, …}`), cleanly separating identity from structure and aggregation. The present pattern introduces the **functional** characteristic: how a holon participates in purposes **within a bounded context** and for some interval. This extends the early sketch of A.2 and tightens its alignment with A.7 (Strict Distinction): roles are *not* parts and *not* behaviours; they are contextual **masks** that a holon wears while behaviours are handled by **Method**/**Work**. 
 
 ### Problem
 
@@ -1037,9 +1037,7 @@ A **set** `{Alice, Bob, 3.14}` has no behaviour; a **team** is a **system** with
 
 4. **“Context leakage.”**
    ✗ *“Pluto is Planet and DwarfPlanet.”* (in one tacit space)
-   ✓ *“`Pluto#Planet:Early20thCenturyAstronomy`; `Pluto#DwarfPlanet:IAU_2006_Definition`.”* No contradiction—different bounded contexts. (Illustrative of CRA semantics carried forward from the A.2 plan.)
-
----
+   ✓ *“`Pluto#Planet:Early20thCenturyAstronomy`; `Pluto#DwarfPlanet:IAU_2006_Definition`.”* No contradiction—different bounded contexts. (Illustrative of `U.RoleAssignment` semantics carried forward from the A.2.1.)
 
 ### Authoring guidance (for engineers and leads)
 
@@ -1210,7 +1208,7 @@ Role Enactment is the occurrence of `U.Work` performed by a `holder` while a val
 
 These are **intensional facets** of a **Role**, not containers “inside” the Role. They are **recorded in** the **RoleDescription** (or **RoleSpec** once harnessed), per E.10.D2.
 
-* **RCS (Role Characterisation Space).** A set of named axes that parameterise how the Role is understood in a Context (e.g., *AgencyLevel ∈ {None, Assisted, Delegated, Autonomous}*; *SafetyCriticality ∈ {SC0…SC3}*).
+* **RCS (Role Characterisation Space).** A set of named characteristics that parameterise how the Role is understood in a Context (e.g., *AgencyLevel ∈ {None, Assisted, Delegated, Autonomous}*; *SafetyCriticality ∈ {SC0…SC3}*).
 * **RSG (Role State Graph).** A directed graph of **named states** (nodes) and **admissible transitions** (edges) for the Role **within the Context** (e.g., *{Eligible → Authorized → Active → Suspended → Revoked}*).
 
   * Each **state** has a **Conformance Checklist** (set of observable cues) supporting **Evaluations** (“X ∈ *Authorized*@Room in W”).
@@ -1255,7 +1253,7 @@ A Role’s **family** constrains **who can wear its badge**. Eligibility is part
 
 | Role family (examples)                                                 | May be held by `U.System` | May be held by `U.Episteme` | Notes (eligibility refinements live in Context)                                                                                |
 | ---------------------------------------------------------------------- | :-----------------------: | :-------------------------: | ------------------------------------------------------------------------------------------------------------------------------ |
-| **Agential** (e.g., *Agent*, *Decision‑Maker*, *Approver*)             |           **✓**           |              ✗              | Requires RCS axis *AgencyLevel*; RSG must expose *Authorized/Active* states.                                                   |
+| **Agential** (e.g., *Agent*, *Decision‑Maker*, *Approver*)             |           **✓**           |              ✗              | Requires RCS characteristic *AgencyLevel*; RSG must expose *Authorized/Active* states.                                                   |
 | **Transformer/Constructor** (e.g., *Welder*, *ETL‑Runner*)             |           **✓**           |              ✗              | Performs Methods; produces Work; often requires *Capability* evidence.                                                         |
 | **Observer/Measurer** (e.g., *Observer*, *Monitor*)                    |           **✓**           |              ✗              | Produces `U.Observation`; may be passive (probe) or active (test rig).                                                         |
 | **Communicator/Speech** (e.g., *Authorizer*, *Notifier*)               |           **✓**           |              ✗              | A subtype of behavioral roles; produces `U.Work` typed as SpeechAct.                                                           |
@@ -1360,7 +1358,7 @@ Natural systems note. Spontaneous physical phenomena (e.g., Moon orbiting Earth)
 ### 9.1 Industrial operations (welding cell)
 
 **Role (family).** `WelderRole` *(Transformer)*
-\**RCS (illustrative axes).*
+\**RCS (illustrative characteristics).*
 
 * `ProcessClass ∈ {MIG, TIG, Spot}`
 * `QualifiedMaterial ∈ {Al, SS, Ti, …}`
@@ -1592,7 +1590,7 @@ A `U.Work` record must carry:
 
 A Bridge may assert, *directionally*:
 
-* **`substitutesFor(Role_B@B → Role_A@A)`** with a CL and a list of **kept** and **lost** RCS axes / RSG nuances.
+* **`substitutesFor(Role_B@B → Role_A@A)`** with a CL and a list of **kept** and **lost** RCS characteristics / RSG nuances.
 * The reverse direction **does not** follow unless declared.
 
 ### 14.2 CL → gating policy (normative thresholds)
@@ -1624,7 +1622,7 @@ A Bridge may assert, *directionally*:
 
 * **Local first.** Substitution never overrides in‑room `⊥`, `⊗`, or `≤`.
 * **Evidence trail.** Every cross‑room enactment relying on a Bridge **shall** reference its Bridge id in the `U.Work` justification.
-* **Loss visibility.** The Bridge **must** state which **RCS axes** are preserved vs dropped; if a dropped axis is required by the step, substitution is **invalid**, regardless of CL.
+* **Loss visibility.** The Bridge **must** state which **RCS characteristics** are preserved vs dropped; if a dropped characteristic is required by the step, substitution is **invalid**, regardless of CL.
 
 ---
 
@@ -1708,7 +1706,7 @@ In real projects we must answer two different questions:
 * **“Can this system do X?”** — this is about an **ability** inherent to the system.
 * **“Is this system assigned to do X here and now?”** — this is about an **assignment** (a **Role assignment**) inside a bounded context.
 
-Teams frequently blur the two, and then further mix them with **how** the work is done (the **Method**) and **what actually happened** (the **Work**). `U.Capability` isolates the **ability axis** so that you can plan realistically, staff responsibly, and audit cleanly.
+Teams frequently blur the two, and then further mix them with **how** the work is done (the **Method**) and **what actually happened** (the **Work**). `U.Capability` isolates the **ability characteristic** so that you can plan realistically, staff responsibly, and audit cleanly.
 
 ---
 
@@ -1732,7 +1730,7 @@ Teams frequently blur the two, and then further mix them with **how** the work i
 
 ---
 
-## 4 · Solution — define the ability axis explicitly
+## 4 · Solution — define the ability characteristic explicitly
 
 ### 4.1 Definition
 
@@ -1829,7 +1827,7 @@ This is not a formal notation—just a consistent way to keep the five prompts i
 
 * **Lenses tested:** `Arch`, `Prag`, `Did`, `Epist`.
 * **Scope declaration:** Universal; holder constrained to `U.System`.
-* **Rationale:** Gives the kernel a clean, reusable **ability axis** so Role (assignment), Method (recipe), Work (execution), and Service (promise) do not collapse into each other. Keeps planning talk truthful and checkable without introducing governance machinery here.
+* **Rationale:** Gives the kernel a clean, reusable **ability characteristic** so Role (assignment), Method (recipe), Work (execution), and Service (promise) do not collapse into each other. Keeps planning talk truthful and checkable without introducing governance machinery here.
 
 ## 8 · Conformance Checklist (normative)
 
@@ -1982,7 +1980,7 @@ In the Role–Method–Work alignment, **service** must say something **external
 
 #### Lexical note (L‑SERV)
 
-The words *service/service‑level/service use/service access* are **ambiguous** across domains. In the kernel we reserve **`U.Service`** for the unified concept below. Other senses (department, server, microservice binary, help‑desk ticket, etc.) **must** be mapped via **CRA** to roles (`…#ServiceProviderRole:Context`), to **`U.System`**, **`U.Method/MethodDescription`**, or **`U.Work`**, inside the appropriate `U.BoundedContext`. (A short lexical rule **L‑SERV** will be added to E.10 alongside L‑FUNC/L‑PROC/L‑SCHED/L‑ACT.)
+The words *service/service‑level/service use/service access* are **ambiguous** across domains. In the kernel we reserve **`U.Service`** for the unified concept below. Other senses (department, server, microservice binary, help‑desk ticket, etc.) **must** be mapped via `U.RoleAssignment` to roles (`…#ServiceProviderRole:Context`), to **`U.System`**, **`U.Method/MethodDescription`**, or **`U.Work`**, inside the appropriate `U.BoundedContext`. (A short lexical rule **L‑SERV** will be added to E.10 alongside L‑FUNC/L‑PROC/L‑SCHED/L‑ACT.)
 
 ---
 
@@ -2043,7 +2041,7 @@ U.Service {
 
 #### 4.2 · What `U.Service` is **not**
 
-* **Not a provider:** use `System#ServiceProviderRole:Context` (CRA).
+* **Not a provider:** use `System#ServiceProviderRole:Context` `U.RoleAssignment`.
 * **Not a method/recipe:** that is `U.Method/MethodDescription`.
 * **Not a run/incident/ticket:** that is `U.Work`.
 * **Not a schedule:** that is `U.WorkPlan`.
@@ -2082,13 +2080,13 @@ U.Service {
 
 The popular service diagrams (provider ↔ access ↔ use ↔ capability/activity) map to FPF as follows:
 
-* **Agent (as Service Provider)** → `System#ServiceProviderRole:Context` (**CRA**).
+* **Agent (as Service Provider)** → `System#ServiceProviderRole:Context` (`U.RoleAssignment`).
 * **Service Agreement / SLA** → `U.Service.acceptanceSpec` (+ optional `WorkPlan` for windows).
 * **Service Presence / Access** → `accessSpec : MethodDescription` (interface/eligibility); actual endpoints are **systems** playing interface roles.
 * **Individual Service Use** → **consumer and provider `U.Work`** instances linked to the `U.Service` they fulfil.
 * **Service‑Enabled Capability / Activity** → effects on the consumer side: either a **Capability** gained/used, or **Work** performed; do **not** reify as a new kernel type.
 
-(Where a domain needs richer structures—catalogs, exposure layers, charging, entitlement—model them **in the domain context** and relate them to `U.Service` via CRA and bridges.)
+(Where a domain needs richer structures—catalogs, exposure layers, charging, entitlement—model them **in the domain context** and relate them to `U.Service` via `U.RoleAssignment` and alignment bridges.)
 
 ## 7 · Conformance Checklist (normative)
 
@@ -2120,7 +2118,7 @@ If the context requires provider abilities, it **MUST** express them as `bindsCa
 Services **MAY** carry `version`/`timespan`. A `U.Work` that claims/fulfils a Service **MUST** record which Service version it used.
 
 **CC‑A2.3‑10 (Lexical rule).**
-Unqualified uses of *service* (server/team/API/process/ticket) **MUST** be disambiguated per **L‑SERV** (E.10), mapping to `System`/`RoleAssigning`/`Method[Spec]`/`Work` as appropriate.
+Unqualified uses of *service* (server/team/API/process/ticket) **MUST** be disambiguated per **L‑SERV** (E.10), mapping to `System`/`U.RoleAssignment`/`Method[Spec]`/`Work` as appropriate.
 
 **CC‑A2.3‑11 (No mereology).**
 Do **not** place a Service in PBS/SBS or treat it as a part/component. Structural assemblies live in PBS/SBS; Service is a promise.
@@ -2305,7 +2303,7 @@ The **normative properties** of the role (e.g., `claimRef`, `claimScope`, `polar
 * **`CalibrationEvidenceRole`** — evidence about the measurement chain (instrument validity), typically **constraining** claims.
 * **`BenchmarkEvidenceRole`** — standardised tasks or suites producing comparable scores.
 
-**Semantics.** Experimental roles require a **claim‑scope** and a **relevance timespan**. Their contribution to confidence is **graded** and may **decay**; the same artefact may carry multiple bindings for different claims or scopes (distinct role‑bindings).
+**Semantics.** Experimental roles require a **claim‑scope** and a **relevance timespan**. Their contribution to confidence is **graded** and may **decay**; the same artefact may carry multiple bindings for different claims or scopes (distinct role assignments).
 
 > **Specialisation, not stacking.** Do not build chains like “transformer‑agent‑observer role.” A system enacts behavioural roles (e.g., `TransformerRole`) to **perform work**; an episteme enacts `U.EvidenceRole` to **classify** its evidential function. Keep enactment lines separate.
 
@@ -2543,7 +2541,7 @@ These operators extend E.6.1 citation graph capabilities for evidence analysis i
 A.2 `U.Role`, A.2.1 `U.RoleAssignment` (role as mask, binding as assignment), A.10 Evidence Anchoring (EPV-DAG), B.3 Trust & Assurance Calculus.
 
 **Coordinates with:**
-A.3.2 `U.MethodDescription` (protocols, proof obligations), E.6.1 Epistemic Roles via CRA (didactic gateway).
+A.3.2 `U.MethodDescription` (protocols, proof obligations), E.6.1 Epistemic Roles via `U.RoleAssignment` (didactic gateway).
 
 **Informs:**
 KD-CAL (knowledge dynamics, assurance cases), Norm-CAL (policy claims with evidence), planned `U.ServiceEvaluation` (services judged from work and reported as epistemes with evidence bindings).
@@ -2581,7 +2579,7 @@ Assert: `holder` is `U.Episteme`; `context` present; `claimRef` resolves; `times
 Assert: if `weight.score` present → `weight.modelRef` present and all required inputs provided; recompute to check.
 
 **SCR-A2.4-E3 (Traceability)**
-For empirical bindings: binding → `fromWorkSet` → each `U.Work` has performer `RoleAssigning` and timestamps; no missing hops.
+For empirical bindings: binding → `fromWorkSet` → each `U.Work` has performer `U.RoleAssignment` and timestamps; no missing hops.
 
 **RSCR-A2.4-R1 (Regression on version bump)**
 When `claimRef` or holder episteme versions change, ensure **new** bindings are created; no in-place mutation.
@@ -2654,7 +2652,7 @@ The RSG is the **gate** between *assignment* (`U.RoleAssignment`) and *action* (
 Think of a **Role** as a **mask**, and the **RSG** as the **traffic lights for that mask** inside one room of meaning.
 
 * The **nodes** are **named states** (*Ready*, *Degraded*, *Suspended*, *Approved*, *Obsolete*…).
-* The **edges** are **transitions** with **guards** (checkable conditions over RCS axes and contextual events, e.g., *CalibrationAge ≤ 30d*; *AuthorizationSpeechAct recorded*).
+* The **edges** are **transitions** with **guards** (checkable conditions over RCS characteristics and contextual events, e.g., *CalibrationAge ≤ 30d*; *AuthorizationSpeechAct recorded*).
 * Each **state** is paired with a **Checklist** (criteria you test to issue a **StateAssertion** for a given **Window**).
 * Some states are **enactable = true** (green lights); others are **not enactable** (status lights) and therefore can **gate decisions** but **cannot** directly authorize `U.Work`.
 
@@ -2669,8 +2667,8 @@ Think of a **Role** as a **mask**, and the **RSG** as the **traffic lights for t
 
   * `enactable ∈ {true,false}` — whether being in this state authorizes enactment of steps that require this role.
   * `initial?`, `terminal?` — optional markers for lifecycle reasoning.
-* **RSG.Transition.** Edge `state_i → state_j` with **Guard** (predicate over RCS axes and/or contextual events such as `U.SpeechAct`, `U.Observation`, `U.Evaluation` results).
-* **RCS (Role Characterisation Space).** The **axis bundle** that characterises this role in this Context (e.g., *CalibrationAge*, *AuthorizationScope*, *FatigueIndex*, *IndependenceFlag*, *EvidenceFreshness*). *(Defined in A.2 Role Taxonomy / RoleDescription.)*
+* **RSG.Transition.** Edge `state_i → state_j` with **Guard** (predicate over RCS characteristics and/or contextual events such as `U.SpeechAct`, `U.Observation`, `U.Evaluation` results).
+* **RCS (Role Characterisation Space).** The **characteristic bundle** that characterises this role in this Context (e.g., *CalibrationAge*, *AuthorizationScope*, *FatigueIndex*, *IndependenceFlag*, *EvidenceFreshness*). *(Defined in A.2 Role Taxonomy / RoleDescription.)*
 * **State Checklist (description).** A **RoleDescription** component that enumerates **criteria** to test whether a holder can legitimately be treated as **in** a given state for a **Window**. *(Description, not the state itself.)*
 * **`U.Evaluation` → StateAssertion (verdict).** The **result** of applying the state’s Checklist to a **concrete holder** at a **time window**, yielding a **verdict** “IN‑STATE(S) @Window” with provenance to observations/evidence.
 * **Window.** Temporal interval to which the StateAssertion applies (e.g., `[2025‑05‑01, 2025‑06‑01]`).
@@ -2712,7 +2710,7 @@ Think of a **Role** as a **mask**, and the **RSG** as the **traffic lights for t
 * **`T ⊆ S × S`** — a set of **typed transitions** `sᵢ → sⱼ`. Transitions are optional; the RSG may be acyclic or cyclic.
 * **`Guard`** — for each transition (and optionally for state maintenance), a **predicate over**:
 
-  * the role’s **RCS snapshot** at a **Window** (values on named axes; see A.2.3), and
+  * the role’s **RCS snapshot** at a **Window** (values on named characteristics; see A.2.3), and
   * **Context events** (e.g., presence of a `U.SpeechAct`, freshness of `U.Observation`, validity of a prior `U.Evaluation`).
 * **`init? : S → {true,false}`** — optionally marks **initial** state(s). (Useful for lifecycles; not required for gating.)
 
@@ -2734,7 +2732,7 @@ For each `s ∈ S`, the **RoleDescription** (A.2.3) includes a **State Checklist
 
 * **Criterion kinds (illustrative):**
 
-  * **Threshold over RCS axis:** `CalibrationAge ≤ 30 days`.
+  * **Threshold over RCS characteristic:** `CalibrationAge ≤ 30 days`.
   * **Presence of act:** `AuthorizationSpeechAct exists within 90 days`.
   * **Evidence freshness:** `Evidence(type=SafetyTest).age ≤ 12 months`.
   * **SoD flag:** `IndependenceFlag = true`.
@@ -2768,7 +2766,7 @@ RSG transitions **express how eligibility changes** when guards fire. Guards are
 
 * **RSG‑G1 (Checklists vs guards).** Checklists decide **recognition** (“am I in `s` now?”). Guards describe **change** (“what moves me in/out of `s`?”). They may reuse the **same predicates**; their roles are distinct.
 * **RSG‑G2 (No control‑flow).** Guards may refer to **events** (e.g., “Calibration completed”), but RSG is **not a task graph**; it does not prescribe task order.
-* **RSG‑G3 (Observable basis).** Every guard references **observable** RCS axes or recorded events (no hidden timers).
+* **RSG‑G3 (Observable basis).** Every guard references **observable** RCS characteristics or recorded events (no hidden timers).
 
 ### 8.4 The **Green‑Gate Law** (enactment gating)
 
@@ -2833,7 +2831,7 @@ To keep RSGs **operational** but **not procedural**, guards draw on **observable
 
 **Guard types (non‑exhaustive).**
 
-1. **Threshold guards** over RCS axes
+1. **Threshold guards** over RCS characteristics
    `FatigueIndex < 0.8`, `CalibrationAge ≤ 30d`, `EvidenceFreshness(role=Tester) ≤ 90d`.
 2. **Event guards** (occurrence since last Window)
    `exists SpeechAct(type=Authorization)`, `exists Evaluation(verdict=Pass, checklist=SafetyKit)`.
@@ -2885,7 +2883,7 @@ Below are **didactic, reusable** RSG skeletons for the three principal **behavio
 ### 12.1 AgentialRole (decision‑capable actor)
 
 **Context sketch:** `Ops_ChangeManagement_2025`.
-**RCS (axes, examples):** *CompetenceLevel, FatigueIndex, IndependenceFlag, AuthorizationValidity, IncidentLoad, RiskClass.*
+**RCS (characteristics, examples):** *CompetenceLevel, FatigueIndex, IndependenceFlag, AuthorizationValidity, IncidentLoad, RiskClass.*
 
 **States `S`**
 
@@ -3005,7 +3003,7 @@ Keep each RSG **teachable on one screen**. Use the following **notation‑neutra
 
 ```
 RSG for: <RoleName>   Context: <ContextName/Edition>
-RCS axes (gist): <Axis1>, <Axis2>, ...
+RCS characteristics (gist): <characteristic1>, <characteristic2>, ...
 States (◉ = enactable):
   - [◉] <StateName> — checklist gist; typical admission/maintenance/exit
   - [  ] <StateName> — ...
@@ -3107,13 +3105,13 @@ When you define or revise an RSG, check these **concept‑level** rules. They ar
 
 ## 16 · Extended grounding across four disciplines
 
-Each vignette shows **(i)** the **Context**, **Role**, **RCS axes**, **States** (◉ = enactable), **Green‑Gate** condition, and **how a `U.Work` is gated** by a `U.RoleAssignment`+RSG. Names are **context‑local**.
+Each vignette shows **(i)** the **Context**, **Role**, **RCS characteristics**, **States** (◉ = enactable), **Green‑Gate** condition, and **how a `U.Work` is gated** by a `U.RoleAssignment`+RSG. Names are **context‑local**.
 
 ### 16.1 Clinical surgery (medicine)
 
 **Context.** `Hospital.OR_2026`
 **Role.** `SurgeonRole` (AgentialRole)
-**RCS axes.** *CompetenceLevel, FatigueIndex, AuthorizationValidity, CaseComplexityBand, TeamSoD*.
+**RCS characteristics.** *CompetenceLevel, FatigueIndex, AuthorizationValidity, CaseComplexityBand, TeamSoD*.
 
 **States.**
 
@@ -3136,7 +3134,7 @@ Each vignette shows **(i)** the **Context**, **Role**, **RCS axes**, **States** 
 
 **Context.** `SRE_Prod_Cluster_EU_2026`
 **Role.** `IncidentCommanderRole` (AgentialRole)
-**RCS axes.** *OnCallStatus, PageFreshness, AuthorityToken, CognitiveLoad, ConflictSoD*.
+**RCS characteristics.** *OnCallStatus, PageFreshness, AuthorityToken, CognitiveLoad, ConflictSoD*.
 
 **States.**
 
@@ -3159,7 +3157,7 @@ Each vignette shows **(i)** the **Context**, **Role**, **RCS axes**, **States** 
 
 **Context.** `Metrology_Thermo_2026`
 **Role.** `ThermometerObserverRole` (ObserverRole)
-**RCS axes.** *CalibrationAge, DriftRate, TraceabilityChainOK, CleanlinessScore, SyncError*.
+**RCS characteristics.** *CalibrationAge, DriftRate, TraceabilityChainOK, CleanlinessScore, SyncError*.
 
 **States.**
 
@@ -3241,7 +3239,7 @@ Use when **adding/removing states**, **changing criteria**, or **bridging** acro
 
 > \*“A role assignment says **who wears which mask where** (A.2.1). The **RoleStateGraph** says **when that mask is actually wearable**. Each role’s RSG is a **small named state space** with **checklists** for each state. Some states are **enactable** (◉): they open the **Green‑Gate** for `Work`. Others are **status‑only**: they gate decisions, never execution.
 >
-> A **RoleDescription** (A.2.3) is where you publish the role’s **RCS** (axes), its **RSG** (states + checklists + guards), and any **role algebra** (≤, ⊥, ⊗) specific to your context.
+> A **RoleDescription** (A.2.3) is where you publish the role’s **RCS** (characteristics), its **RSG** (states + checklists + guards), and any **role algebra** (≤, ⊥, ⊗) specific to your context.
 >
 > In practice: a `MethodDescription` step lists **required roles**; at runtime, a `Work` record is valid only if its **performer** is a `RoleAssignment` whose RSG asserts an **enactable** state at the **Window**. That’s the Green‑Gate.
 >
@@ -3505,7 +3503,7 @@ What teams often want to “compress into a G number” is actually (a) the **qu
 
 **Rule T‑BRIDGE.** To use a scope in a different bounded context (room), an explicit **Bridge** MUST be declared with:
 
-* **Mapping.** A documented mapping from source to target `U.ContextSlice` vocabulary/axes.
+* **Mapping.** A documented mapping from source to target `U.ContextSlice` vocabulary/characteristics.
 * **Congruence Level (CL).** A rating of mapping congruence.
 * **Loss notes.** Any known losses, assumptions, or non‑isomorphisms.
 
@@ -3801,7 +3799,7 @@ Implicit “latest” is not allowed. If multiple contributors declare different
 * **Factor common conditions.** Use Refit to normalize units and factor shared predicates; do not widen by stealth.
 * **Partition support lines.** If you plan a **SpanUnion**, document independence up front.
 * **Keep scope thin & honest.** Publish what you can support; add slices as support appears (ΔG+).
-* **Design Bridges early.** When interop is planned, sketch mapping axes and **expected CL**; plan **R** penalties.
+* **Design Bridges early.** When interop is planned, sketch mapping characteristics and **expected CL**; plan **R** penalties.
 
 ### 13.3 · Review anti‑patterns & fixes
 
@@ -4097,7 +4095,7 @@ Legacy phrasing (“actor / process / blueprint”) causes recurrent failures:
 
 ## 5 · Solution — The Transformer Quartet
 
-A.3 defines four anchors, tied together by **Contextual Role‑Binding (CRA)** and aligned with **Temporal Duality**.
+A.3 defines four anchors, tied together by **Role Assignment (`U.RoleAssignment`)** and aligned with **Temporal Duality**.
 
 ### 5.1 The four anchors (terms & types)
 
@@ -4112,9 +4110,9 @@ A.3 defines four anchors, tied together by **Contextual Role‑Binding (CRA)** a
 > **Safe memory line:** *MethodDescription → (enacted as) Method → (produces) Work.*
 > Roles are **masks** (A.2/A.7); methods/work are **behaviour**.
 
-### 5.2 Contextual Role‑Binding (CRA) for transformations
+### 5.2 Contextual Role Assignmnent (`U.RoleAssignment`) for transformations
 
-Use the universal binding to state **who plays which role where and when**:
+Use the universal assignment to state **who plays which role where and when**:
 
 ```
 U.RoleAssignment(
@@ -4164,13 +4162,13 @@ Split into **Regulator** (calibration module, acting side) and **Regulated** (se
 
 ### 6 · Conformance Checklist (normative)
 
-**CC‑A3‑0 · CRA presence.**
-Every claim that a holon “performs a transformation” MUST be backed by at least one **Role‑Binding** triple:
+**CC‑A3‑0 · U.RoleAssgnment presence.**
+Every claim that a holon “performs a transformation” MUST be backed by at least one **RoleAssignment** triple:
 `U.RoleAssignment(holder: U.Holon, role: U.Role=TransformerRole, context: U.BoundedContext, timespan?)`.
-This is the canonical way to say *who acts, in which role, where (semantically), and when*. See A.2 for the universal CRA pattern and its invariants.
+This is the canonical way to say *who acts, in which role, where (semantically), and when*. See **A.2.1** for the universal **`U.RoleAssignment`** contract and its invariants.
 
 **CC‑A3‑1 · External transformer discipline.**
-The **bearer** of `TransformerRole` MUST NOT be the same model instance as the **object‑under‑change** within the same binding. Self‑modification is modelled via two CRAs (same carrier playing two roles) or via an explicit controller–plant split. This upholds **Agent Externalization** (A.12).
+The **bearer** of `TransformerRole` MUST NOT be the same model instance as the **object‑under‑change** within the same assignment. Self-modification is modelled via two **`U.RoleAssignment`s** (same holder playing two roles) or via an explicit controller–plant split. This upholds **Agent Externalization** (A.12).
 
 **CC‑A3‑2 · Design–Run separation.**
 `U.MethodDescription` (recipe, definition) is a **design‑time** artefact; `U.Method` (mask‑of‑work) and `U.Work` (executed work) are **run‑time**. It is non‑conformant to mutate a `MethodDescription` inside a `Work` log or to treat a `Work` as a `MethodDescription`. This enforces the kernel’s **Temporal Duality** (A.4) and the A.15 alignment.
@@ -4194,7 +4192,7 @@ For each `U.RoleAssignment` and `U.Work`, the following fields are REQUIRED: `{a
 If the transformer bearer is agentic, the log MUST separate `D.Policy → U.PlannedAction → U.Action` (A.15/A.13), preserving where failure occurred (strategy, plan, or execution).
 
 **CC‑A3‑9 · Context‑local conflicts.**
-Conflicts among roles (including `TransformerRole`) are only **within the same bounded context**; cross‑context differences are admissible if bridges are declared. Non‑conformance arises only when a context’s own incompatibility rules are violated. (A.2 CRA invariants.)
+Conflicts among roles (including `TransformerRole`) are only **within the same bounded context**; cross‑context differences are admissible if bridges are declared. Non‑conformance arises only when a context’s own incompatibility rules are violated. (A.2.1 `U.RoleAssignment` invariants.)
 
 **CC‑A3‑10 · Γ‑compatibility.**
 Descriptions MUST be sufficient for the relevant Γ‑aggregations to run: Γ\_method for recipe composition, Γ\_work for resource deltas, Γ\_sys for boundary integration, Γ\_time for ordering. Each Γ flavour declares its A.14 hooks (Portion/Phase) and inherits B‑invariants.
@@ -4205,14 +4203,14 @@ Descriptions MUST be sufficient for the relevant Γ‑aggregations to run: Γ\_m
 
 **Benefits**
 
-* **Explainability by construction.** Every transformative claim carries *who/what/when/why/how* via CRA + provenance fields; audits become mechanical rather than heroic. (B‑invariants and Γ tables do the heavy lifting.)
+* **Explainability by construction.** Every transformative claim carries *who/what/when/why/how* via **`U.RoleAssignment`** + provenance fields; audits become mechanical rather than heroic. (B‑invariants and Γ tables do the heavy lifting.)
 * **No category errors.** Keeping methods/roles out of mereology and enforcing design/run separation prevents the usual “process‑as‑part” and “version‑as‑component” mistakes. (A.14 + A.15.)
 * **Composable analytics.** With measures and boundary folds explicit, cross‑scale proofs (Σ/Π/min/∧/∨) are predictable.
 * **Contextual pluralism without chaos.** Divergent domain practices coexist as distinct bounded contexts with bridges; disagreements are localised and tractable.
 
 **Trade‑offs**
 
-* **More declarations up‑front.** CRA + units + policy/plan/action feels verbose, but yields deterministic Γ‑runs and reproducible audits.
+* **More declarations up‑front.**  `U.RoleAssignment` + units + policy/plan/action feels verbose, but yields deterministic Γ‑runs and reproducible audits.
 * **Discipline for “self‑modifiers.”** Modellers must split controller vs plant or dual‑role the same carrier; this adds one line but avoids hidden identity conflations.
 
 ---
@@ -4226,7 +4224,7 @@ Our **Transformer Principle** mirrors constructor theory’s shift from *dynamic
 Where transformers are *agentic*, A.3’s policy–plan–action split and boundary‑centred accounting dovetail with **active inference** and **free‑energy** formulations of self‑organising systems (Markov blankets; Bayesian mechanics). This legitimises `U.Objective`/cost function links and makes design–run duality natural (prior vs posterior policies). ([MIT Press Direct][4], [PubMed][5], [arXiv][6])
 
 **Provenance and FAIR packaging (2016→).**
-Provenance minima in CC‑A3‑7 reflect **FAIR** principles (machine‑actionable reuse), **RO‑Crate** (methods+data+context packaged together), and operational lineage standards such as **OpenLineage** and **ML Metadata (TFX)** that treat *artefacts, runs, and jobs* as first‑class, with typed facets and versioning — exactly what CRA + Γ\_work need. ([Nature][7], [researchobject.org][8], [SAGE Journals][9], [openlineage.io][10], [GitHub][11], [arXiv][12])
+Provenance minima in CC‑A3‑7 reflect **FAIR** principles (machine‑actionable reuse), **RO‑Crate** (methods+data+context packaged together), and operational lineage standards such as **OpenLineage** and **ML Metadata (TFX)** that treat *artefacts, runs, and jobs* as first‑class, with typed facets and versioning — exactly what enactment + Γ\_work need. ([Nature][7], [researchobject.org][8], [SAGE Journals][9], [openlineage.io][10], [GitHub][11], [arXiv][12])
 
 Together, these lines of work argue for **explicit role‑bearing transformers**, **recipe/run separation**, **boundary‑grounded deltas**, and **traceable contexts** — the four pillars that CC‑A3 enforces.
 
@@ -4242,7 +4240,7 @@ A.3 operationalises A.7 by keeping **object ≠ description ≠ observation**:
 A.3’s CC‑A3‑1 is the mechanical guard‑rail for A.12: even in self‑modification, the *modelling split* keeps the agent (transformer bearer) distinct from the object‑under‑change.
 
 **A.13 Agential Role.**
-When the bearer is an **Agent**, A.3 defers identity and states management to Agent‑CAL (`U.Agent`, `U.Intent`, `U.Action`), while still requiring CRA + Γ compatibility. This is where policy/plan/action pipelines live.
+When the bearer is an **Agent**, A.3 defers identity and states management to Agent‑CAL (`U.Agent`, `U.Intent`, `U.Action`), while still requiring `RoleAssigning` + Γ compatibility. This is where policy/plan/action pipelines live.
 
 **A.15 Role–Method–Work Alignment.**
 A.3 relies on A.15’s vocabulary guard‑rails (roles are not parts; methods are masks of work; specs are recipes). CC‑A3‑2/‑4 are enforceable precisely because A.15 fixes the naming discipline.
@@ -4629,9 +4627,9 @@ Not a schema—these are **content prompts** for reviewers:
 
 > **Didactic guardrail:** A MethodDescription **does not** embed a schedule, assignees, or BoM. Calendars → `U.WorkPlan`; people/units → `U.RoleAssignment`; product structure → PBS/SBS.
 
-### 4.4 CRA for MethodDescriptions (epistemic roles)
+### 4.4 Epistemic roles for MethodDescriptions (via `U.RoleAssignment`)
 
-Being an **Episteme**, a MethodDescription may itself play **epistemic roles** via CRA in a context (classification, not action), e.g.:
+Being an Episteme, a MethodDescription may itself play epistemic roles via `U.RoleAssignment` in a context (classification, not action), e.g.:
 
 * `ApprovedProcedureRole`, `RegulatedProcedureRole`, `SafetyCriticalProcedureRole`, `De‑factoStandardRole`.
 * These **do not** make the spec an actor; they classify its **status** within the context (who may use it, in which settings).
@@ -4678,7 +4676,7 @@ This keeps software and “wet lab” on equal footing.
 * **MethodDescription:** MILP model + solver config; admissible solution definition.
 * **Execution:** `PlannerService_v4#TransformerRole:Plant_2025` produces **Work** `Run_2025‑W32‑P1`.
 
-### 6.3 Clinical guideline (epistemic, status via CRA)
+### 6.3 Clinical guideline (epistemic, status via RoleStateGraph + State Assertion)
 
 * **Method:** `AcuteAppendicitis_Triage`.
 * **MethodDescription:** clinical decision rule set; **Epistemic Role**: `RegulatedProcedureRole:Hospital_Context`.
@@ -4727,7 +4725,7 @@ Claims such as “sound but incomplete” or “complete but potentially unsound
 **CC‑A3.2‑11 (Executable specs).**
 Executability does **not** change status: an executable artifact (program, script) is still a **MethodDescription**. Its runs are **Work**; its semantics are the **Method** it denotes.
 
-**CC‑A3.2‑12 (Epistemic roles via CRA).**
+**CC‑A3.2‑12 (Epistemic roles via `U.RoleAssignment`).**
 A MethodDescription **MAY** play **epistemic roles** via `U.RoleAssignment` (e.g., `ApprovedProcedureRole`, `RegulatedProcedureRole`) that classify its status. Such bindings **do not** make the spec an actor.
 
 **CC‑A3.2‑13 (Non‑determinism declaration).**
@@ -4834,7 +4832,7 @@ Two specs are observationally equivalent for stakeholders **if**, under declared
 
 * **Builds on:** A.3.1 `U.Method` (the semantic way it describes); A.1.1 `U.BoundedContext`.
 * **Coordinates with:** A.2 `U.Role`, A.2.1 `U.RoleAssignment` (who enacts it); A.2.2 `U.Capability` (ability thresholds); A.15 Role–Method–Work (linking `isExecutionOf` to runs).
-* **Informs:** `U.WorkPlan` (plans reference MethodDescriptions); `U.Dynamics` (models that specs may assume); Epistemic Role patterns (status of specs via CRA).
+* **Informs:** `U.WorkPlan` (plans reference MethodDescriptions); `U.Dynamics` (models that specs may assume); Epistemic Role patterns (status of specs RoleStateGraph + State Assertion).
 * **Lexical guards:** E.10.y **L‑PROC** (do not call MethodDescription “process” when you mean Work/WorkPlan); E.10.x **L‑FUNC** (avoid “function/functionality” confusion).
 
 ---
@@ -4920,7 +4918,7 @@ U.Dynamics {
 }
 ```
 
-* **`stateSpace`** uses FPF **characteristics** (not “axes”) so we can talk about **architecture fitness** (e.g., latency, MTBF, cost) just like temperature/pressure/volume in physics.
+* **`stateSpace`** uses FPF **characteristics** (not “characteristics”) so we can talk about **architecture fitness** (e.g., latency, MTBF, cost) just like temperature/pressure/volume in physics.
 * **`transitionLaw`** is paradigm‑agnostic: ODE/PDE, finite‑state relation, Petri net firing, queueing kernel, Bayesian update, etc.
 * **`observation`** separates what exists from what we *measure* (key for monitoring/assurance).
 
@@ -5328,7 +5326,7 @@ Architheories therefore form the **“fat top & bottom”** of the hour‑glass:
 | Element of the Pattern                 | **Archetype 1 – `U.System`**<br>(industrial water‑pump)                                                                                                                 | **Archetype 2 – `U.Episteme`**<br>(scientific theory of gravitation)                                                                                                           |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Kernel concepts used**               | `U.System`, `U.Holon`, `TransformerRole`                                                                                                                                | `U.Episteme`, `U.Holon`, `transformerRole`                                                                                                                                        |
-| **Domain CAL that extends the Kernel** | **Sys‑CAL** adds conservation laws, port semantics, resource/work hooks                                                                                                 | **KD‑CAL** adds F‑G‑R axes, provenance graph, trust metrics                                                                                                                    |
+| **Domain CAL that extends the Kernel** | **Sys‑CAL** adds conservation laws, port semantics, resource/work hooks                                                                                                 | **KD‑CAL** adds F‑G‑R characteristics, provenance graph, trust metrics                                                                                                                    |
 | **Resulting instance**                 | A fully specified CAD model of the pump that can be aggregated by Γ\_sys, analysed by LOG‑CAL, and costed by Resrc‑CAL – **without ever mutating the Kernel** | A fully formalised theory object that can be cited, aggregated, and challenged by KD‑CAL, validated by LOG‑CAL, scored by the Trust calculus – **again without Kernel change** |
 
 This table demonstrates the *hour‑glass* architecture in action:
@@ -6353,7 +6351,7 @@ Result: steep learning curves, fragile integrations, eroded trust in “first‑
 | **Expressiveness vs Simplicity** | Fine granularity helps static checks ↔ fewer nouns aid cognition.  |
 | **Inclusivity vs Purity**        | New domains want vocabulary ↔ kernel must not be a dumping ground. |
 | **Evolution vs Stability**       | Framework grows ↔ users depend on a stable core.                   |
-| **Prestige vs Utility**          | Authors enjoy naming things ↔ every name taxes everyone else.      |
+| **Prestige vs Utility**          | Authors enjoy naming things ↔ every name tcharacteristics everyone else.      |
 
 ---
 
@@ -6446,7 +6444,7 @@ The principle of causality is the bedrock of engineering and scientific reasonin
 
 This pattern operationalizes the **Agent Externalization Principle (C-2)**. It builds directly upon:
 *   **A.3 (Transformer Constitution):** Which defines the core quartet of action: the `Agent` (who acts), the `MethodDescription` (the recipe), the `Method` (the capability), and the `Work` (the event).
-*   **A.2 (Contextual Role-assignment):** Which provides the universal syntax `Holder#Role:Context` for defining agents.
+*   **A.2 (Contextual Role Assignment):** Which provides the universal syntax `Holder#Role:Context` for defining agents.
 
 The intent of this pattern is twofold:
 1.  To mandate that every transformation is modeled as an interaction between a distinct **Agent** (playing a `TransformerRole`) and a distinct **Target** across a defined **Boundary**.
@@ -6476,11 +6474,11 @@ The solution is a two-part architectural mandate: **(1)** all transformations mu
 
 Every transformation in FPF is a `U.Work` event that is the result of an **Agent** acting upon a **Target**.
 
-*   **The Agent:** The agent is a **Contextual Role-assignment** of the form `System#TransformerRole:Context`. This is the cause, the "doer."
+*   **The Agent:** The agent is a **Contextual Role Assignment** of the form `System#TransformerRole:Context`. This is the cause, the "doer."
 *   **The Target:** The target is the `U.Holon` being changed. This can be another `U.System` or the **symbol carrier** of a `U.Episteme`.
 *   **The Boundary:** The agent and the target are always separated by a `U.Boundary` and interact through a `U.Interaction`.
 
-**Crucial Rule:** The `holder` of the Agent's `RoleAssigning` **cannot** be the same holon instance as the Target.
+**Crucial Rule:** The `holder` of the Agent's `U.RoleAssignment` **cannot** be the same holon instance as the Target.
 > `holder(Agent) ≠ Target`
 
 This simple inequality is the core of the externalization principle. It constitutionally forbids self-magic.
@@ -6556,7 +6554,7 @@ By mandating externalization, FPF is not adding bureaucratic overhead. It is enf
 *   **Directly Implements:** `C-2 Agent Externalization Principle`.
 *   **Builds Upon:**
     *   `A.1 Holonic Foundation`: Provides the `U.System` and `U.Episteme` holons that act as agents and targets.
-    *   `A.2 Role Taxonomy`: Provides the `Contextual Role-assignment (CRA)` mechanism to define the Agent.
+    *   `A.2 Role Taxonomy`: Provides the Contextual Role Assignment (`U.RoleAssignment`) mechanism to define the Agent.
     *   `A.3 Transformer Constitution`: Defines the `TransformerRole` that the Agent plays.
 *   **Enables and Constrains:**
     *   `A.10 Evidence Anchoring`: Provides the causal structure (who did what) that evidence must be anchored to.
@@ -6571,10 +6569,10 @@ By mandating externalization, FPF is not adding bureaucratic overhead. It is enf
 
 The concept of "agency"—the capacity of an entity to act purposefully—is central to engineering, biology, and AI, yet it remains one of the most overloaded and ambiguous terms. Without a precise, falsifiable, and substrate-neutral definition, models of autonomous systems risk descending into "self-magic," where actions have no clear cause and accountability is lost.
 
-This pattern builds directly upon the foundations laid in the FPF Kernel to provide that definition. A.1 established that only a **`U.System`** can be the bearer (`holder`) of behavioral roles. A.2 introduced the universal **Contextual Role-assignment (CRA)** pattern (`Holder#Role:Context`) as the canonical way to assign roles. A.3 and A.12 defined the `TransformerRole` and the principle of the external agent.
+This pattern builds directly upon the foundations laid in the FPF Kernel to provide that definition. A.1 established that only a **`U.System`** can be the bearer (`holder`) of behavioral roles.  A.2.1 defined the universal `U.RoleAssignment` (`Holder#Role:Context`) as the canonical way to assign roles. A.3 and A.12 defined the `TransformerRole` and the principle of the external agent.
 
 The intent of this pattern is to:
-1.  Formally define **agency** not as an intrinsic *type* of holon, but as a **contextual Role-assignment**.
+1.  Formally define **agency** not as an intrinsic *type* of holon, but as a **contextual Role Assignment**.
 2.  Introduce a measurable, multi-dimensional **spectrum of agency** via a dedicated Characterization (`Agency-CHR`), moving beyond a simple binary "agent/not-agent" switch.
 3.  Provide a clear, **didactic grading system** that allows engineers and managers to assess and communicate the level of autonomy of any system in a consistent, evidence-backed manner.
 
@@ -6598,11 +6596,11 @@ If agency is treated as a monolithic, intrinsic property or a mere label, four c
 
 ### 4 · Solution
 
-FPF's solution is threefold: it defines an Agent through the **CRA pattern**, makes agency **measurable** with a dedicated Characterization, and provides a **didactic summary** via a graded scale.
+FPF's solution is threefold: it defines an Agent via `U.RoleAssignment` (A.2.1), makes agency measurable with a dedicated Characterization, and provides a didactic summary via a graded scale.
 
-#### 4.1 The Core Definition: Agent as a Contextual Role-assignment
+#### 4.1 The Core Definition: Agent as a Contextual Role Assignment
 
-An **"Agent"** in FPF is not a fundamental type. It is a convenience term (a Register 1 / Register 2 label) for a specific kind of **Contextual Role-assignment (CRA)**:
+An **"Agent"** in FPF is not a fundamental type. It is a convenience term (a Register 1 / Register 2 label) for a specific kind of **Contextual Role Assignment (`U.RoleAssignment`)**:
 
 > `Agent ≍ U.RoleAssignment(holder: U.System, role: U.AgentialRole, context: U.BoundedContext)`
 
@@ -6648,7 +6646,7 @@ While the multi-dimensional `Agency-CHR` profile is essential for formal assuran
 
 #### 5 · Archetypal Grounding
 
-The universal pattern of agency, defined as a `Contextual Role-assignment` and measured by the `Agency-CHR`, manifests across all domains. The following table demonstrates its application to the FPF's two primary archetypes: a `U.System` and a collective `U.System` (a team), while explicitly showing why a `U.Episteme` cannot be an agent.
+The universal pattern of agency, defined as a `Contextual Role Assignment` and measured by the `Agency-CHR`, manifests across all domains. The following table demonstrates its application to the FPF's two primary archetypes: a `U.System` and a collective `U.System` (a team), while explicitly showing why a `U.Episteme` cannot be an agent.
 
 | Archetype | Holder (`U.System`) | Role & Context (`#Role:Context`) | `Agency-CHR` Profile Sketch | Resulting Agency Grade |
 | :--- | :--- | :--- | :--- | :--- |
@@ -6668,7 +6666,7 @@ To ensure the agency model is applied rigorously and consistently, all FPF artif
 | ID | Requirement (Normative Predicate) | Purpose / Rationale |
 | :--- | :--- | :--- |
 | **CC-A13.1 (Holder Type)** | The `holder` of a `U.RoleAssignment` with `role: U.AgentialRole` **MUST** be a `U.System`. | Prevents the "episteme-as-actor" category error. Enforces **Strict Distinction (A.7)**. |
-| **CC-A13.2 (CRA Mandate)** | Any claim of agency **MUST** be represented by a complete `U.RoleAssignment` instance, including an explicit `holder`, `role`, and `context`. | Ensures that agency is always modeled as contextual and bound to a specific bearer, not as a free-floating property. |
+| **CC-A13.2 (RoleAssignment Mandate)** | Any claim of agency **MUST** be represented by a complete `U.RoleAssignment` instance, including an explicit `holder`, `role`, and `context`. | Ensures that agency is always modeled as contextual and bound to a specific bearer, not as a free-floating property. |
 | **CC-A13.3 (CHR Evidence)** | Any claim about an Agent's grade or level of autonomy **MUST** be substantiated by an auditable `Agency-CHR` profile with evidence anchors (A.10). | Makes claims of agency falsifiable and prevents "agency by marketing." |
 | **CC-A13.4 (Grade is Didactic)**| The **Agency Grade (0-4)** **SHALL NOT** be used as a normative input for formal reasoning. It is a didactic summary of the `Agency-CHR` profile. | Prevents oversimplification in formal models. The detailed profile, not the summary grade, must be used for assurance cases. |
 | **CC-A13.5 (Collective as System)** | To claim agency for a collective (e.g., a team, a swarm), the collective **MUST** first be modeled as a `U.System` with a defined `U.Boundary` and a coordination `U.Method`. | Prevents the error of assigning agency to a mere set or collection (`MemberOf`). Aligns with **A.1** and **A.14**. |
@@ -6688,7 +6686,7 @@ To ensure the agency model is applied rigorously and consistently, all FPF artif
 This pattern's strength comes from its synthesis of contemporary, post-2015 research into a single, operational model.
 
 *   **Grounded in Science:** The move away from a binary, type-based view of agency towards a **graded, spectrum-based model** is directly aligned with modern research in Active Inference (Friston et al.), Basal Cognition (Fields, Levin), and evolutionary cybernetics. The `Agency-CHR` provides a direct, practical implementation of these ideas.
-*   **Ontologically Sound:** By defining an Agent as a **Contextual Role-assignment**, the pattern avoids the ontological pitfalls of creating a new base type. It fully embraces the FPF's core architectural principle of separating **substance (`holder`)** from **function (`role`)** within a **context**. This aligns with best practices from foundational ontologies (like UFO) and the principles of **Strict Distinction (A.7)**.
+*   **Ontologically Sound:** By defining an Agent as a **Contextual Role Assignment**, the pattern avoids the ontological pitfalls of creating a new base type. It fully embraces the FPF's core architectural principle of separating **substance (`holder`)** from **function (`role`)** within a **context**. This aligns with best practices from foundational ontologies (like UFO) and the principles of **Strict Distinction (A.7)**.
 *   **Pragmatic and Actionable:** The pattern is designed for engineers and managers. The `Agency Grade` provides a quick communication tool, while the underlying `Agency-CHR` provides the detailed, auditable data needed for formal assurance and risk management. This duality satisfies both **Didactic Primacy (P-2)** and **Pragmatic Utility (P-7)**.
 
 In essence, this pattern does not *invent* a new theory of agency. It **distills and operationalizes** the emerging scientific consensus, packaging it into a rigorous, falsifiable, and practical tool for the FPF ecosystem.
@@ -6697,7 +6695,7 @@ In essence, this pattern does not *invent* a new theory of agency. It **distills
 
 *   **Builds on:**
     *   `A.1 Holonic Foundation`: Establishes that only `U.System`s can be bearers of behavioral roles.
-    *   `A.2 Role Taxonomy`: Provides the universal `Contextual Role-assignment (CRA)` mechanism.
+    *   `A.2 Role Taxonomy`: Provides the universal  Contextual Role Assignment (`U.RoleAssignment`) mechanism.
     *   `A.12 External Transformer`: The actions of an Agent are modeled using the external transformer principle.
 *   **Coordinates with:**
     *   `B.2 Meta-Holon Transition (MHT)`: A significant jump in the `Agency-CHR` of a collective can trigger an MHT.
@@ -6990,7 +6988,7 @@ Each edited heading should carry the badge **“► decided‑by: A.14 Advanced 
 In any complex system, from a software project to a biological cell, there is a fundamental distinction between **what something is** (its structure), **what it is supposed to do** (its role and specified capability), and **what it actually does** (its work). Confusing these layers is a primary source of design flaws, budget overruns, and failed projects. Teams argue about a "process" without clarifying if they mean the documented procedure, the team's ability to execute it, or a specific execution that happened last Tuesday.
 
 This pattern provides the canonical alignment for modeling contextual enactment in FPF, serving as the ultimate implementation of the **Strict Distinction Principle (A.7)**. It weaves together several foundational concepts into a single, coherent model of how intention becomes action:
-*   **A.2 (Contextual Role-assignment):** Provides the `Holder#Role:Context` structure for assigning roles.
+*   **A.2 (Contextual Role Assignment):** Provides the `Holder#Role:Context` structure for assigning roles.
 *   **A.4 (Temporal Duality):** Provides the strict separation between `design-time` and `run-time`.
 *   **A.12 (External Transformer):** Ensures that all actions are attributed to an external agent.
 
@@ -7020,8 +7018,7 @@ Without this formal framework, models suffer from a cascade of category errors:
 | **Accountability vs. Complexity** | The need for a complete, end-to-end audit trail for every action vs. the desire to keep models simple and avoid excessive documentation. |
 
 #### 4 · Solution
-
-The solution is a stratified alignment that cleanly separates the `design-time` and `run-time` for contextual **enactment**. The bridge between these worlds is the **Contextual Role-assignment (CRA)**.
+The solution is a stratified alignment that cleanly separates the `design-time` and `run-time` for contextual **enactment**. The bridge between these worlds is the **`U.RoleAssignment`**.
 
 #### 4.1 The Core Entities: A Strict Distinction
 
@@ -7036,8 +7033,7 @@ FPF mandates the use of the following distinct, non-overlapping entities to mode
 * **`U.WorkPlan`:** An **`U.Episteme`** declaring **intended `U.Work` occurrences** (windows, dependencies, intended performers as role kinds, budgets) — see **A.15.2**.
 * 
 **B) The Bridge Entity:**
-
-*   **`U.RoleAssignment` (CRA):** The formal assertion `Holder#Role:Context` that links a specific `U.Holon` to a `U.Role` within a `U.BoundedContext`. This binding is what "activates" the requirements associated with a role.
+*   **`U.RoleAssignment`:** The formal assertion `Holder#Role:Context` that links a specific `U.Holon` to a `U.Role` within a `U.BoundedContext`. This binding is what "activates" the requirements associated with a role.
 
 **C) Run-Time Entity (The World of Actuality):**
 
@@ -7073,7 +7069,7 @@ graph TD
         A[U.BoundedContext] -- defines --> B(U.Role)
         M[U.Method] -- isDescribedBy --> D[U.MethodDescription]
         Cap[U.Capability] -- supports --> M
-        H(U.System as Holder) --> RB(U.RoleAssignment · CRA)
+        H(U.System as Holder) --> RB(U.RoleAssignment)
         B -- is the role in --> RB
         A -- is the context for --> RB
         A -- bindsCapability(Role,Capability) --> Cap
@@ -7114,7 +7110,7 @@ The Contextual Action Framework is universal. It applies identically to the mode
 | **`BoundedContext`** | `FactoryFloor:ProductionLine_B` | `Journal:PhysicsLetters_A` |
 | **`Role`** | `WeldingRobotRole` | `ReviewerRole` |
 | **`Holder`** | `ABB_Robot_Model_IRB_6700` (`U.System`) | `Dr_Alice_Smith` (modeled as a `U.System`) |
-| **`RoleAssigning` (CRA)** | `ABB_Robot#WeldingRobotRole:Line_B` | `Dr_Smith#ReviewerRole:PhysicsLetters_A` |
+| **`U.RoleAssignment`** | `ABB_Robot#WeldingRobotRole:Line_B` | `Dr_Smith#ReviewerRole:PhysicsLetters_A` |
 | **`MethodDescription` (`U.Episteme`)**| `Welding_Procedure_WP-28A.pdf` (SOP) | `Peer_Review_Guidelines_v3.docx` |
 | **`Capability` (Attribute of Holder)** | `executeWeldingSeam(Type: 3F)` | `evaluateManuscript(Field: QuantumOptics)` |
 | **`Work` (`Occurrence`)** | Manufacturing Work: `Weld_Job_#78345` (15:32-15:34 UTC, consumed 1.2 kWh, 5g Argon) — **isExecutionOf** `Welding_Procedure_WP‑28A.pdf` | Peer‑review Work: `Review_of_Manuscript_#PL-2025-018` (Completed 2025-08-15, took 4 hours) — **isExecutionOf** `Peer_Review_Guidelines_v3.docx` |
@@ -7130,7 +7126,7 @@ To ensure the integrity of action modeling, all FPF-compliant models must adhere
 | :--- | :--- | :--- |
 | **CC-A15-1 (Entity Distinction)** | The entities `U.Role`, **`U.Method`**, **`U.MethodDescription`**, `U.Capability`, **`U.WorkPlan`**, and `U.Work` **MUST** be modeled as distinct, non‑overlapping types. | This is the core enforcement of **Strict Distinction (A.7)**. It prevents the category errors outlined in the "Problem" section. |
 | **CC-A15-2 (Temporal Scope)** | `U.Method`/`U.MethodDescription`/`U.WorkPlan` exist in **design‑time**; `U.Work` exists in **run‑time**. Design artifacts are not mutated by operational events. | Enforces **Temporal Duality (A.4)**. Blueprints cannot be mutated by operational events. |
-| **CC-A15-3 (RoleAssigning Mandate)**| Every `U.Work` **MUST** be linked via `performedBy` to a valid `U.RoleAssignment` (CRA). | Guarantees that every action has a clearly identified, context-bound actor, ensuring accountability. |
+| **CC-A15-3 (RoleAssignment Mandate)**| Every `U.Work` **MUST** be linked via `performedBy` to a valid `U.RoleAssignment`. | Guarantees that every action has a clearly identified, context-bound actor, ensuring accountability. |
 | **CC-A15-4 (Traceability Chain)**| For every `U.Work`, an unbroken chain **MUST** exist: `Work —performedBy→ RoleAssigning` and `Work —isExecutionOf→ MethodDescription —describes→ Method`. Capability checks are evaluated against the holder at run time. | Ensures end-to-end auditability from a specific action back to the "recipe" that governed it. |
 | **CC-A15-5 (No Roles in Mereology)** | A `U.Role` or `U.Capability` **SHALL NOT** be part of a mereological (`partOf`) hierarchy. | The "Role-as-Part" anti-pattern is a violation. Roles and capabilities are functional, not structural. Enforces **A.14**. |
 | **CC-A15-6 (Resource Honesty)** | Resource consumption (`U.Resource`) **MUST** only be associated with `U.Work`, never with `U.MethodDescription` or `U.Capability`. | Enforces that costs are tied to actual events, not to plans or potential. Aligns with **Resrc-CAL (C.5)**. |
@@ -7162,7 +7158,7 @@ By creating this clean, stratified alignment for enactment, FPF provides a stabl
 #### 9 · Relations
 
 *   **Directly Implements:** `A.7 Strict Distinction`.
-*   **Builds Upon:** `A.2 (CRA)`, `A.4 (Temporal Duality)`, `A.12 (External Transformer)`.
+*   **Builds Upon:** `A.2 (U.Role)`, `A.2.1 (U.RoleAssignment)`, `A.4 (Temporal Duality)`, `A.12 (External Transformer)`.
 *   **Is Used By / Provides Foundation For:**
     *   `C.4 Method-CAL`: Provides the formal definition of `U.MethodDescription` and the `Γ_method` operator for composing them.
     *   `C.5 Resrc-CAL`: Provides the `U.Work` entity to which resource consumption is attached.
@@ -7276,7 +7272,7 @@ Two Work records refer to the **same Work** iff, in the relevant context:
 
 * their **time–space extent** is the same (within declared tolerance),
 * they link to the **same `MethodDescription`**,
-* they have the **same performer** (`RoleAssigning`), and
+* they have the **same performer** (`U.RoleAssignment`), and
 * they bind the **same parameters** (or declared‑equivalent values).
 
 If any of these differ (or the context declares equivalence absent), they are **distinct** Work instances (e.g., a retry).
@@ -7695,7 +7691,7 @@ In summary, projects lacking a canonical terminology for metrics risk miscommuni
     
 -   **F3 – Scale integrity.** Different kinds of scales permit different operations – e.g. you can average temperatures (ratio scale) but not ranks or grades (ordinal scale) without losing meaning. If one mixes values without regard to scale type or units, the result is nonsense (**pseudo-arithmetic**).
     
--   **F4 – Composition discipline.** In complex evaluations, multiple measurements may need to be combined. Without a disciplined approach, people might perform ad-hoc math on apples and oranges (adding scores from unrelated axes, etc.). A proper pattern must require any combination to go through a defined monotonic **Gauge** (e.g. a weighted formula) instead of arbitrary aggregation.
+-   **F4 – Composition discipline.** In complex evaluations, multiple measurements may need to be combined. Without a disciplined approach, people might perform ad-hoc math on apples and oranges (adding scores from unrelated characteristics, etc.). A proper pattern must require any combination to go through a defined monotonic **Gauge** (e.g. a weighted formula) instead of arbitrary aggregation.
     
 -   **F5 – Transdisciplinarity.** The measurement framework should work for **any domain**. The same conceptual scaffold must serve physical science (e.g. lab temperature readings), software engineering (e.g. module cohesion ratings), and even subjective assessments (e.g. figure-skating scores) without bias. One vocabulary, many CG‑frames.
     
@@ -7822,7 +7818,7 @@ We often need to **characterize some aspect** of a subject (be it a single artef
 -   accommodate both **ordered tiers** (qualitative levels like Low/Medium/High) and **numeric magnitudes** (continuous or interval values) without mixing them up.
     
 
-In FPF’s kernel, the **CSLC pattern** (Axis–Scale–Level–Coordinate) provides the minimal vocabulary and constraints to achieve this. It defines how one **Characteristic** ties to one **Scale**, and how any measured **value** can be treated as a **Coordinate** on that scale (with an optional named **Level** if the scale is discrete or tiered). The context here is the need for a _unified contract_ so that every single measurement in any architheory can be interpreted and compared on common grounds.
+In FPF’s kernel, the **CSLC pattern** (CG‑frame–Scale–Level–Coordinate) provides the minimal vocabulary and constraints to achieve this. It defines how one **Characteristic** ties to one **Scale**, and how any measured **value** can be treated as a **Coordinate** on that scale (with an optional named **Level** if the scale is discrete or tiered). The context here is the need for a _unified contract_ so that every single measurement in any architheory can be interpreted and compared on common grounds.
 
 ### 2\. Problem
 
@@ -7856,7 +7852,7 @@ Without a strict contract, one team might treat “High” and “Medium” as h
 
 Concretely, the parts of this clause are defined as follows:
 
--   **Characteristic:** the aspect or feature being measured (the “axis” along which comparison is made). It answers “_What are we measuring?_” – e.g. _Distance, Temperature, Quality, Reliability_.
+-   **Characteristic:** the aspect or feature being measured (the “CG‑frame” along which comparison is made). It answers “_What are we measuring?_” – e.g. _Distance, Temperature, Quality, Reliability_.
     
 -   **Scale:** the organized set of possible values that the Characteristic can take, including the type of scale (_ordinal_, _interval_, or _ratio_), the measurement **Unit** (if applicable), and any bounds or structure. The Scale defines “_How do we measure it?_” – e.g. “meters on a linear scale from 0 up to 1000” or “ratings 1 through 5 with ordering only”.
     
@@ -7984,11 +7980,11 @@ FPF’s kernel already standardizes **what** is measured (a **Characteristic**, 
 
 ### 3 · Problem (Informative)
 
--   **P1 — “Feature vector” drift.** In practice, teams often assemble state vectors or “feature” lists with implicit or mismatched units and scales. Without a formal space, one coordinate’s value can’t safely be compared or combined with another’s (e.g. mixing degrees Celsius with percentages). **CSLC** guarantees consistency **per Characteristic**, but a bundle of multiple “axes” remains under-specified if we lack a unified space definition.
+-   **P1 — “Feature vector” drift.** In practice, teams often assemble state vectors or “feature” lists with implicit or mismatched units and scales. Without a formal space, one coordinate’s value can’t safely be compared or combined with another’s (e.g. mixing degrees Celsius with percentages). **CSLC** guarantees consistency **per Characteristic**, but a bundle of multiple “characteristics” remains under-specified if we lack a unified space definition.
     
 -   **P2 — Lifecycle bias.** Absent a formal state space, system change tends to be described in terms of fixed **stages or phases** (design phases, maturity levels, etc.). This conflicts with FPF’s **open-ended** stance: in FPF a role’s state model (RSG) allows re-entry and refinement of states rather than one-way lifecycle stages with an “end.” We need a space model that treats evolution as continuous movement, not a one-directional sequence.
     
--   **P3 — Incoherence across CG‑frames.** Different modeling “CG‑frames” (architecture vs. epistemic vs. operational) often choose different sets of qualities to measure (different sets of axes/Characteristics). Later, however, we may need to **compose** these models or **project** one into another. Without a kernel notion of how one state space can be a **subspace** of or **embedded** in another, any integration of models will be ad hoc and error-prone.
+-   **P3 — Incoherence across CG‑frames.** Different modeling “CG‑frames” (architecture vs. epistemic vs. operational) often choose different sets of qualities to measure (different sets of characteristics). Later, however, we may need to **compose** these models or **project** one into another. Without a kernel notion of how one state space can be a **subspace** of or **embedded** in another, any integration of models will be ad hoc and error-prone.
     
 -   **P4 — Relational measurements.** Some Characteristics are inherently **relational** (e.g. a _Coupling_ between two components, or _Distance_ between points). Naïvely forcing such traits into a single-object feature vector loses critical information (arity, symmetry). The kernel already distinguishes single-entity vs multi-entity Characteristics (A.17); we must preserve that distinction in the state space so that a relational metric isn’t treated as an intrinsic one by mistake.
     
@@ -7999,7 +7995,7 @@ FPF’s kernel already standardizes **what** is measured (a **Characteristic**, 
 
 ### 4 · Forces (Informative)
 
--   **F1 – CSLC integrity at scale.** When combining multiple measurements into a state, we must uphold the **CSLC discipline** for each component: each coordinate has a defined Characteristic, Scale type, unit, and (if applicable) polarity. We need to do this without redefining or duplicating that single-axis integrity – the multi-dimensional space should simply enforce CSLC per slot.
+-   **F1 – CSLC integrity at scale.** When combining multiple measurements into a state, we must uphold the **CSLC discipline** for each component: each coordinate has a defined Characteristic, Scale type, unit, and (if applicable) polarity. We need to do this without redefining or duplicating that single-characteristic integrity – the multi-dimensional space should simply enforce CSLC per slot.
     
 -   **F2 – Transdisciplinarity & lexical clarity.** The state space framework must work for **quantitative physical metrics** (ratio scales, continuous units), **qualitative assessments** (ordinal scales, tiers), and mixtures thereof. It must not be biased toward one domain’s notion of measurement. At the same time, to avoid confusion, the **lexicon must remain canonical**: we use _Characteristic_ (not “axis/dimension”) as the formal term for a measured aspect, regardless of domain, per A.17’s naming convention.
     
@@ -8173,7 +8169,7 @@ This is a conceptual sketch: given a **snapshot** of all relevant coordinates fo
 
 **5.2.3.2 Translating state definitions across embeddings.** If we have an **embedding** ι: RCS₁ ↪ RCS₂ (for example, RCS₁ is a subspace or a different version of RCS₂), we might want to reuse or compare state definitions between the two. There are two directions to consider:
 
--   **Pulling a checklist** (reuse state criteria from a larger space in a smaller space): Given a checklist defined on RCS₂ (the larger or target space), we can **pull it back** via the gauge map _G_ of the embedding to get a predicate on RCS₁. This derived checklist (Checklist₂ ∘ G) lets us apply the RCS₂’s state definition to a holon that only has RCS₁ measurements. This is useful when a consumer context wants to evaluate whether a producer (with fewer axes or different units) meets the consumer’s state definitions. Essentially, the consumer asks: “If I map the producer’s metrics into my space, does it satisfy my state criteria _s_?”
+-   **Pulling a checklist** (reuse state criteria from a larger space in a smaller space): Given a checklist defined on RCS₂ (the larger or target space), we can **pull it back** via the gauge map _G_ of the embedding to get a predicate on RCS₁. This derived checklist (Checklist₂ ∘ G) lets us apply the RCS₂’s state definition to a holon that only has RCS₁ measurements. This is useful when a consumer context wants to evaluate whether a producer (with fewer characteristics or different units) meets the consumer’s state definitions. Essentially, the consumer asks: “If I map the producer’s metrics into my space, does it satisfy my state criteria _s_?”
     
 -   **Pushing an assertion** (honor a producer’s certified state in a larger space): If a holon has a StateAssertion for state s’ in RCS₁, can we treat it as evidence for state s in RCS₂? This is only valid under a strict condition: the checklist for state s in the larger space, when composed with the gauge mapping G, must logically imply the checklist s’ in the smaller space (or vice versa, depending on which state corresponds to which). In practice, this often requires a proof of refinement: that meeting state s (in big space) guarantees state s’ (in small space), or that state s’ (in small) is sufficient for state s (in big) given the gauge translations. If that condition is met (or a policy waiver is granted in lieu of proof), then an assertion in the smaller space can be **pushed up** to count as an assertion in the larger space. This mechanism allows, for example, a component’s certified state to satisfy a system-level state requirement, provided the relationship is formally established.
   
@@ -8288,7 +8284,7 @@ A.19 established a substrate‑neutral picture:
 
 * a **CG‑frame** = *(Context‑local)* **Characterisation Space (CS)** + **chart** (coordinate patch + units) + **gauge** (admissible re‑parameterisations that preserve meaning);
 * **operators** (subspace, product, pullback/pushforward) and **comparability** (coordinatewise vs **gauge‑based**);
-* **RSG touch‑points**: role readiness (**RSG** states) are **certified** against CS via **checklists** over observable axes;
+* **RSG touch‑points**: role readiness (**RSG** states) are **certified** against CS via **checklists** over observable characteristics;
 * **entity/relational mixtures** across CG‑frames via minimal schemas and bridges.
 
 A.19.D1 makes this *operational and auditable*.
@@ -8344,7 +8340,7 @@ CG‑Spec {
 }
 ```
 
-**Reading:** *A CG‑frame is a room‑local lens with declared axes, units, a chart to read them, a gauge that states what “doesn’t matter,” and explicit rules for when a datum counts and how many can be safely folded.*
+**Reading:** *A CG‑frame is a room‑local lens with declared characteristics, units, a chart to read them, a gauge that states what “doesn’t matter,” and explicit rules for when a datum counts and how many can be safely folded.*
 
 `GaugeKinds`, `MetricSpec` and `QuotientSpec` are **CG‑frame‑level** governance metadata; per **A19‑CS‑5** the kernel `CharacteristicSpace` carries **no gauges** or composition; gauges/normalizations live in **MM‑CHR**.
 
@@ -8365,8 +8361,8 @@ Cross‑context reuse occurs **only** via explicit **Alignment Bridges** (F.9) b
 ```
 Bridge CG‑frameA@Context1  →  CG‑frameB@Context2
   CL: {3|2|1|0}
-  kept_axes: [...]
-  lost_axes: [...]
+  kept_characteristics: [...]
+  lost_characteristics: [...]
   transform: {pullback | pushforward | re-scaling | re-binning}
   extra_guards: {additional evidence / reviewer role / waiver speech-act}
 ```
@@ -8399,11 +8395,11 @@ Bridge CG‑frameA@Context1  →  CG‑frameB@Context2
 
 **CC‑A19.D1‑10 (Lifecycle & DRR).** Every CG‑Spec **MUST** carry an **owner role**, a **deprecation plan**, and links to **DRR** entries for rationale and changes (Part E.9).
 
-**CC‑A19.D1‑11 (Anchors & lanes for comparability).** Any **admission** into a CG‑frame that is later **used for comparison/aggregation** **SHALL** cite the corresponding **A.10 EvidenceRole** anchors for each axis, with **assuranceUse lane** tags {TA, VA, LA} and **validity windows** (where applicable), so that the **SCR** can report lane‑separated contributions and freshness (B.3). Absence of anchors for a required axis renders items **incomparable**.
+**CC‑A19.D1‑11 (Anchors & lanes for comparability).** Any **admission** into a CG‑frame that is later **used for comparison/aggregation** **SHALL** cite the corresponding **A.10 EvidenceRole** anchors for each characteristic, with **assuranceUse lane** tags {TA, VA, LA} and **validity windows** (where applicable), so that the **SCR** can report lane‑separated contributions and freshness (B.3). Absence of anchors for a required characteristic renders items **incomparable**.
 
 **CC‑A19.D1‑12 (Notation independence).** CG‑Spec content **MUST NOT** depend on a tool or file format; semantics precede notation (E.5.2 Notational Independence).
 
-**CC‑A19.D1‑13 (Lexical guard‑rails).** Axis names and role labels **MUST** follow the Part E lexical discipline (registers, twin labels; no overloaded “process/service/function”).
+**CC‑A19.D1‑13 (Lexical guard‑rails).** characteristic names and role labels **MUST** follow the Part E lexical discipline (registers, twin labels; no overloaded “process/service/function”).
 
 ## 6 · Consequences (informative)
 
@@ -8412,7 +8408,7 @@ Bridge CG‑frameA@Context1  →  CG‑frameB@Context2
 | **Auditable comparability**       | Chart + gauge make “same number” meaningful; silent re‑basings become explicit, reviewable choices.                   |
 | **Safe roll‑ups**                 | Γ‑folds with WLNK/COMM/LOC/MONO stop optimistic averaging and preserve invariants.                                    |
 | **Pluralism without incoherence** | Bridges with CL and loss notes allow federation without pretending to global sameness.                                |
-| **RSG‑ready**                     | Admission checklists let **RSG** states reference **CG‑frame‑backed** facts (e.g., *Ready* requires axes within bounds). |
+| **RSG‑ready**                     | Admission checklists let **RSG** states reference **CG‑frame‑backed** facts (e.g., *Ready* requires characteristics within bounds). |
 
 ---
 
@@ -8505,7 +8501,7 @@ StateAssertion ── uses ──> {GaugeMap, Bridge}   (if a state comparison c
 
 This view highlights that in the assurance context, we keep track of how we mapped or compared states:
 
--   A **GaugeMap** entity (analogous to what was called GaugeAxis) represents a monotonic mapping from one Characteristic’s scale to another’s.
+-   A **GaugeMap** entity (analogous to what was called Gaugecharacteristic) represents a monotonic mapping from one Characteristic’s scale to another’s.
     
 -   A **Bridge** between Context B and Context A (for corresponding roles or states) carries a CL rating and possibly notes on what is “lost in translation.”
     
@@ -8568,7 +8564,7 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 6. **Steward writes, Certifier admits.** (SoD by design.)
 7. **Charts are recipes.** Name the `MethodDescription` that made the number.
 8. **Deprecate in the open.** CG‑frame cards carry DRR & retirement plans.
-9. **Keep axes few, meanings sharp.** Prefer ≤ 7 axes per CG‑frame.
+9. **Keep characteristics few, meanings sharp.** Prefer ≤ 7 characteristics per CG‑frame.
 10. **No tooling names in Core.** Semantics first; notation later.
 
 ---
@@ -8610,7 +8606,7 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 
 ```
 CG‑frame: <Name>      Context: <Room/Edition>
-Axes:
+characteristics:
   - <CharacteristicName> : <Unit/Scale>  [Polarity: up|down|target-range]
 Chart:
   reference_state: <text>
@@ -8630,7 +8626,7 @@ Acceptance:
   window: <ISO 8601 interval>
   evidence_anchors: [<Observation/Evaluation ids>...]
 Alignment (optional):
-  bridges: [<BridgeId, CL, kept/lost axes, extra guards>...]
+  bridges: [<BridgeId, CL, kept/lost characteristics, extra guards>...]
 Lifecycle:
   owner_role: <Role>
   DRR_links: [<DRR ids>...]
@@ -8977,7 +8973,7 @@ Notes capture boundary tags (A.14), scope (`design|run`), and any independence d
 * **IDEM** — singleton fold returns the part unchanged.  
 * **COMM/LOC** — results are invariant under re‑order and local factorisation given an independence declaration (IND‑LOC).  
 * **WLNK** — aggregate cannot exceed the weakest limiting attribute among parts; synergy escalates via **B.2 Meta‑Holon Transition**.  
-* **MONO** — improving a part on a monotone axis cannot worsen the whole, ceteris paribus.
+* **MONO** — improving a part on a monotone characteristic cannot worsen the whole, ceteris paribus.
 
 **Exclusions and routing (A.15/A.14).**  
 No `parallel` or `temporalSlice` constructor is introduced here; **sequence/parallelism** live in `Γ_ctx/Γ_method`, and **temporal parts** in `Γ_time`. This preserves the firewall between structure, order and time mandated by A.15/A.14.
@@ -9000,7 +8996,7 @@ Each Γ flavour (Γ\_sys / Γ\_epist / Γ\_method / Γ\_time / Γ\_work) **must*
 * **IDEM**: singleton fold = identity.
 * **COMM/LOC**: independence conditions + invariance under local reorder/factorisation.
 * **WLNK**: weakest‑link bound (e.g., critical input caps, weakest claim).
-* **MONO**: explicit monotone axes (what “cannot get worse” means here).
+* **MONO**: explicit monotone characteristics (what “cannot get worse” means here).
 
 ### 5) Didactic mini‑examples 
 
@@ -9036,9 +9032,9 @@ Examples:
 #### 6.3 Monotone coordinates (MONO)
 
 > **Obligation MONO‑AX.**
-> Declare the **monotone axes** (attributes whose improvement cannot worsen the whole) **for this call**. Specify *how* “improvement” is recognized.
+> Declare the **monotone characteristics** (attributes whose improvement cannot worsen the whole) **for this call**. Specify *how* “improvement” is recognized.
 
-**Claim:** If only monotone axes change in the direction of improvement while all else is fixed, the aggregate’s target value cannot degrade.
+**Claim:** If only monotone characteristics change in the direction of improvement while all else is fixed, the aggregate’s target value cannot degrade.
 
 Examples:
 • Γ\_sys → increased component reliability, tighter tolerance;
@@ -9116,7 +9112,7 @@ Attach the row(s) you use as the **Proof Kit** to the Γ call record.
 | **CC‑B1.1.5**  | Every top‑level holon **SHALL** declare a `U.Boundary`; if Γ\_work will be used, a Boundary Ledger **SHALL** be produced.                                  | Make results comparable/auditable.  |
 | **CC‑B1.1.6**  | If COMM/LOC is claimed, an **IND‑LOC** independence declaration **SHALL** be attached.                                                                     | Make locality explicit.             |
 | **CC‑B1.1.7**  | A **WLNK‑CUT** set **SHALL** be stated for the chosen Γ‑flavour.                                                                                           | Make caps explicit; avoid optimism. |
-| **CC‑B1.1.8**  | **MONO‑AX** **SHALL** enumerate the monotone axes used by the Γ‑flavour.                                                                                   | Avoid hidden regress.               |
+| **CC‑B1.1.8**  | **MONO‑AX** **SHALL** enumerate the monotone characteristics used by the Γ‑flavour.                                                                                   | Avoid hidden regress.               |
 | **CC‑B1.1.9**  | A **IDEM‑WIT** singleton case **SHALL** be shown or referenced.                                                                                            | Ground identity.                    |
 | **CC‑B1.1.10** | Order/time/resource **SHALL NOT** be encoded via structural edges; they must be routed to Γ\_ctx/Γ\_method, Γ\_time, Γ\_work respectively.                   | Maintain A.15 Strict Distinction.   |
 | **CC‑B1.1.11** | If a cycle or a locality violation persists, the modeller **SHALL** either refactor or declare a **Meta‑Holon Transition (B.2)**.                          | Make emergence explicit.            |
@@ -9167,7 +9163,7 @@ This pattern operationalizes **A.14 (Mereology Extension)** and **A.15 (Strict D
 * **Constrained by:** B.1 **Universal Γ** and the **Invariant Quintet**.
 * **Used by:** B.1.2 **Γ\_sys**, B.1.3 **Γ\_epist**, B.1.4 **Γ\_ctx/Γ\_time**, B.1.5 **Γ\_method**, B.1.6 **Γ\_work**.
 * **Triggers:** B.2 **Meta‑Holon Transition (MHT): Recognizing Emergence and Re‑identifying Wholes** when cycles or WLNK violations indicate a new emergent whole.
-* **Feeds:** B.3 **Trust & Assurance Calculus (F–G–R with Congruence)** via explicit declaration of monotone axes and provenance.
+* **Feeds:** B.3 **Trust & Assurance Calculus (F–G–R with Congruence)** via explicit declaration of monotone characteristics and provenance.
 
 ---
 
@@ -9742,7 +9738,7 @@ Both flavours **keep** IDEM, WLNK, MONO from B.1. They **replace** COMM/LOC by d
 * **T‑3 — Coverage.** The union of phase intervals equals the declared `τ`, with **no overlaps** and **no unexplained gaps**. Gaps/overlaps require explicit justification (e.g., measurement resolution or MHT).
 
 > **Why we keep WLNK and MONO.**
-> Even with order/time, the whole cannot be safer or more reliable than the bottleneck step/phase (WLNK), and improving a step/phase on declared monotone axes cannot make the whole worse (MONO).
+> Even with order/time, the whole cannot be safer or more reliable than the bottleneck step/phase (WLNK), and improving a step/phase on declared monotone characteristics cannot make the whole worse (MONO).
 
 ---
 
@@ -9801,9 +9797,9 @@ This Proof Kit instantiates the generic obligations from **B.1.1 §6** for the o
   Identify the **critical path** (or a cutset) whose weakest step caps the property of the whole: throughput, safety, assurance, etc.
   *Claim:* The whole is bounded by the weakest element along the critical path (WLNK).
 
-* **CTX‑MONO (Monotone Axes).**
-  List the axes that cannot degrade the whole when improved: e.g., ↓ step duration, ↓ error rate, ↑ step reliability, ↑ join soundness.
-  *Claim:* Improving only monotone axes cannot make the aggregated process worse (MONO).
+* **CTX‑MONO (Monotone characteristics).**
+  List the characteristics that cannot degrade the whole when improved: e.g., ↓ step duration, ↓ error rate, ↑ step reliability, ↑ join soundness.
+  *Claim:* Improving only monotone characteristics cannot make the aggregated process worse (MONO).
 
 * **CTX‑IDEM (Singleton).**
   Provide the one‑step singleton witness: Γ\_ctx of a single `SerialStepOf`‑free node returns that step unchanged (IDEM).
@@ -9829,7 +9825,7 @@ This Proof Kit instantiates the generic obligations from **B.1.1 §6** for the o
   Identify time‑critical constraints: missing essential phases, minimal sampling resolution, minimal integrity of a crucial epoch.
   *Claim:* The property of the whole (over τ) is capped by the weakest phase/epoch.
 
-* **TIME‑MONO (Monotone Axes).**
+* **TIME‑MONO (Monotone characteristics).**
   List monotone improvements: ↑ coverage, ↑ timestamp precision, ↑ measurement accuracy, ↑ calibration quality.
   *Claim:* Such improvements cannot degrade the aggregate.
 
@@ -9884,7 +9880,7 @@ Use these as templates; each fits on a page and references the obligations above
 | **CC‑B1.4.2** | **OrderSpec `σ`** (for Γ\_ctx) or **TimeWindow `τ`** (for Γ\_time) SHALL be explicitly declared.                                                                                | Determinism and auditability (NC‑1/2, T‑2/3). |
 | **CC‑B1.4.3** | An **independence declaration** (Γ\_ctx) or **coverage declaration** (Γ\_time) SHALL be attached, with join‑soundness statements (Γ\_ctx) and non‑overlap proof (Γ\_time).      | Make replaced COMM/LOC discipline explicit.   |
 | **CC‑B1.4.4** | **WLNK cutset** SHALL be identified (critical path for Γ\_ctx; critical epoch for Γ\_time).                                                                                     | Conservative bounds.                          |
-| **CC‑B1.4.5** | **MONO axes** SHALL be listed and justified for the call.                                                                                                                       | Prevent hidden regress.                       |
+| **CC‑B1.4.5** | **MONO characteristics** SHALL be listed and justified for the call.                                                                                                                       | Prevent hidden regress.                       |
 | **CC‑B1.4.6** | All nodes SHALL share the same `temporalScope` (`design` or `run`) in a single fold.                                                                                            | Ban design/run chimeras.                      |
 | **CC‑B1.4.7** | Structural inclusion, mappings, and resource spending SHALL NOT be encoded as order/time edges; route to **Γ\_sys / Γ\_epist**, value‑level links or **Γ\_work** respectively. | Enforce A.15 Strict Distinction.              |
 | **CC‑B1.4.8** | If coverage breaks or identity changes, the modeller SHALL refactor the graph or declare a **Meta‑Holon Transition** (B.2).                                                     | Make emergence explicit.                      |
@@ -10483,7 +10479,7 @@ Let `R` factor into independent subgraphs `{Rᵢ}` whose boundary partitions `{B
 Let **Q\*** be the critical input set with availability caps `Avail_B(q*)`. Since the delta definition measures **net** consumption across B (inflow–outflow–Δstock), and no external creation is allowed, each `Work_B(q*)` cannot exceed `Avail_B(q*)`. If the plan suggests more, you have either (a) a measurement error, (b) a missing equivalence declaration in `M_spec`, or (c) a true emergent synergy that must be modelled as **MHT** (new redundancy/substitution capability).
 
 **8.4 MONO (monotonicity)**
-Monotonicity is interpreted along three axes; in all cases “improvement” never makes the whole **worse** (i.e., never increases required Work nor decreases feasibility):
+Monotonicity is interpreted along three characteristics; in all cases “improvement” never makes the whole **worse** (i.e., never increases required Work nor decreases feasibility):
 
 * **Availability monotonicity:** Increasing `Avail_B(q)` for any non‑critical q leaves `Work_B(q)` unchanged (availability is not auto‑consumed); increasing it for a critical q cannot increase `Work_B(q)` and weakly increases feasibility.
 * **Yield monotonicity (η):** For a fixed output target, increasing declared or measured **η** weakly **decreases** the required `Work_B(q)` in the inputs, never increases it.
@@ -11497,8 +11493,8 @@ These obligations refine the generic Proof Kit from **B.1.1 §6** for **assuranc
 * **ASS‑MAN (SCR).**
   Produce a **SCR** listing all contributing nodes and edges with `(F, G, R)` and `CL` values, their **temporalScope**, and evidence anchors (A.10). If order or time were material, include the **OrderSpec** or **TimeWindow** identifiers from **B.1.4**.
 
-* **ASS‑MONO (Declared monotone axes).**
-  List the axes along which local improvement cannot reduce the aggregate (this supports future evolution, B.4).
+* **ASS‑MONO (Declared monotone characteristics).**
+  List the characteristics along which local improvement cannot reduce the aggregate (this supports future evolution, B.4).
 
 #### 5.2 Γ\_sys (systems) — additional obligations
 
@@ -12865,7 +12861,7 @@ Teams routinely entangle **programs, specifications, proofs, and datasets**; a �
  **Congruence Level (CL), pairwise ladder.**
  `CL‑0` **Opposed/Disjoint** (contrastive; no substitution); `CL‑1` **Comparable / Naming‑only** (label similarity; no substitution); `CL‑2` **Translatable / RoleAssignment‑eligible** (structure‑preserving mapping in a declared fragment with **stated loss**; theorems may transport); `CL‑3` **Near‑identity / Type‑structure‑safe** (invariants match; type‑structure substitution allowed). *CL is a characteristic of a relation between two epistemes; it is not a fourth axis of epistemic characteristic space.* **Norm:** *substitution is permitted only if plane‑preserving and **CL ≥ 2**; substituting **type‑structure** requires **CL = 3***.
 
-**Triangle link.** The axes live on the **Concept↔Object** side: *F* by the internal claim‑graph structure; *G* by the **ClaimScope** (scope & assumptions); *R* by evaluation templates and evidence bindings. The **Symbol** vertex hosts notation; **carriers are outside** the episteme and link via `isCarriedBy`. Multiple notations are allowed under a **single Symbol component**; authors SHOULD register `NotationBridge(n₁,n₂)` with an associated **CL** to make conversion loss explicit.
+**Triangle link.** The characteristics live on the **Concept↔Object** side: *F* by the internal claim‑graph structure; *G* by the **ClaimScope** (scope & assumptions); *R* by evaluation templates and evidence bindings. The **Symbol** vertex hosts notation; **carriers are outside** the episteme and link via `isCarriedBy`. Multiple notations are allowed under a **single Symbol component**; authors SHOULD register `NotationBridge(n₁,n₂)` with an associated **CL** to make conversion loss explicit.
 
 ### 4.2 · Four Δ‑moves (epistemic motion)
 
@@ -13274,7 +13270,7 @@ Aggregates `U.Work` KPIs; binds as `supports` a policy claim “service meets ta
 
 ## 12 · KD‑CAL Interfaces — What `U.Episteme` Must Export/Obey
 
-This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemic holons into **well‑formed participants** of the knowledge calculus: composition, F‑G‑R scoring, provenance, and decay. *(KD‑CAL is listed in Part C as the calculus for epistemic holon composition, F‑G‑R axes, and provenance; this pattern provides its structural “shape”.)*
+This pattern sits as the **front door** of **KD‑CAL (C.2)**: it turns epistemic holons into **well‑formed participants** of the knowledge calculus: composition, F‑G‑R scoring, provenance, and decay. *(KD‑CAL is listed in Part C as the calculus for epistemic holon composition, F‑G‑R characteristics, and provenance; this pattern provides its structural “shape”.)*
 
 **12.1 Exports to KD‑CAL (normative)**
 
@@ -13666,7 +13662,7 @@ On adding/renaming/removing a **state** in an Episteme ESG, re‑evaluate: (i) g
 After a merge event (Γ\_time), verify that **all provenance paths** from both parents are preserved or explicitly loss‑noted; recompute **R\_eff** on affected claims.
 
 **RSCR‑KD‑03 — Bridge drift.**
-If any side of a Bridge changes checklists or state criteria, **do not carry CL forward by default**. Re‑score CL with a one‑line rationale and capture **lost/added** RCS axes.
+If any side of a Bridge changes checklists or state criteria, **do not carry CL forward by default**. Re‑score CL with a one‑line rationale and capture **lost/added** RCS characteristics.
 
 **RSCR‑KD‑04 — Weight model change.**
 When the context changes the KD weight model, snapshot the former model; re‑compute scores for a sample to detect discontinuities; publish migration guidance.
@@ -13706,7 +13702,7 @@ Post‑2015 practice converges on **explicit provenance**, **externalized action
 
 * **Builds on:** A.1 Holon (episteme as holon), A.2 Role & A.2.4 EvidenceRole (status roles for epistemes), A.14 (PhaseOf/PortionOf), A.15 (Role–Method–Work), B.1 (Γ family), B.3 (Assurance).
 * **Coordinates with:** C.6 LOG‑CAL (modal & proof operators), C.7 CHR‑CAL (measurement templates), C.13 Compose‑CAL (structural aggregation), D‑cluster ethics (deontic bindings to evidence).
-* **Feeds:** C.15 M‑KD‑CAL (discipline‑level analytics), MM‑CHR (metrics), F‑cluster (UTS, Bridges, CRA templates).
+* **Feeds:** C.15 M‑KD‑CAL (discipline‑level analytics), MM‑CHR (metrics), F‑cluster (UTS, Bridges, Role Descriptions).
 
 ## 33 · Authoring quick cards (KD‑CAL)
 
@@ -14380,7 +14376,7 @@ Raising or (exceptionally) lowering **F** constitutes a **content change** (ΔF)
 **What you get.**
 
 1. A **neutral typed layer**: name *what* a claim quantifies over (**Kinds**) without binding to any particular “type technology” (OWL, PL types, shapes…).
-2. A clean **split of axes**:
+2. A clean **split of characteristics**:
    – **Scope (G)** = *where* a claim holds (USM, set‑valued over **Context slices**).
    – **Kind extent** = *which instances* belong to a kind **inside** a given slice.
    – **F** = *how strictly* content is expressed (C.2.3).
@@ -14444,9 +14440,9 @@ A facet (not a Characteristic) that helps plan **ΔF/ΔR** and forecast bridge s
 **C.3‑D7 — Guard shapes are standardized and fail‑closed.**
 Typed compatibility first (same‑room **`⊑`** or **KindBridge**), then **Scope coverage** (USM), then **R** penalties and freshness. *(See C.3.A.)*
 
-> **Manager’s picture — Two axes (keep them separate).**
-> – **Axis 1 (USM, G):** *Where* the claim holds → set of **Context slices**; composed by ∈ (membership) / ∩ (intersection) / **SpanUnion** (union across independent lines) / translate (scope mapping).
-> – **Axis 2 (Kind extent):** *Which instances* in a **given slice** belong to the kind → `MemberOf(e, k, slice)`.
+> **Manager’s picture — Two characteristics (keep them separate).**
+> – **characteristic 1 (USM, G):** *Where* the claim holds → set of **Context slices**; composed by ∈ (membership) / ∩ (intersection) / **SpanUnion** (union across independent lines) / translate (scope mapping).
+> – **characteristic 2 (Kind extent):** *Which instances* in a **given slice** belong to the kind → `MemberOf(e, k, slice)`.
 > **Never “widen G” by abstract wording; widen only by ΔG with support.**
 
 ---
@@ -14536,7 +14532,7 @@ Typed compatibility first (same‑room **`⊑`** or **KindBridge**), then **Scop
 
 ---
 
-### 6.7 · Quick examples (two‑axis awareness)  \[I]
+### 6.7 · Quick examples (two‑characteristic awareness)  \[I]
 
 **E‑Sketch 1 — Policy over `Vehicle`.**
 Claim: “For all `x ∈ Vehicle`: brakeDistance(x) ≤ 50 m (dry), ≤ 40 m (wet).”
@@ -15091,7 +15087,7 @@ Apply **Φ(2)** and **Ψ(1)** to **R**; restrict groups to mapped subset; requir
 | **“Kind scope” block attached to a Kind.**                       | Kinds don’t carry Scope; they carry **intent/extent**.                                          | Remove the block. Scope stays on claims/capabilities (USM). If you meant classifier definedness, state it via **K‑07** (C.3.2).                       |
 | **Inferring scope from extension size.**                         | **Scope ≠ Extension**; extension is “which instances in a slice,” not “where the claim holds.”  | Keep **G** set‑valued over `U.ContextSlice` (USM). Use `MemberOf` only inside the typed quantifier.                                                   |
 | **Mask used as a hidden kind (“just call it the masked kind”).** | Opaque drift; reviewers can’t see constraints.                                                  | Register a **RoleMask** (C.3.4). If reused across guards, **promote to subkind** with `⊑`.                                                            |
-| **Cross‑room reuse with only one bridge.**                       | Rooms differ on two axes: Scope **and** Kind.                                                   | Apply the **two‑bridge rule**: Scope Bridge (**CL** → Φ) **and** KindBridge (**`CL^k`** → Ψ). Both penalties land in **R**.                           |
+| **Cross‑room reuse with only one bridge.**                       | Rooms differ on two characteristics: Scope **and** Kind.                                                   | Apply the **two‑bridge rule**: Scope Bridge (**CL** → Φ) **and** KindBridge (**`CL^k`** → Ψ). Both penalties land in **R**.                           |
 | **Using AT (K0…K3) as a gate/threshold.**                        | AT is an **informative facet**, not a Characteristic; gating on AT recreates a G‑ladder.        | Remove AT from guards. Use it only to **aim ΔF/ΔR** and to set **bridge expectations** (C.3.5).                                                       |
 | **“Automated execution success proves the type claim.”**                            | Execution success (F5/6) is not proof (F7+); also confuses **R** with **F**.                    | If you need proof‑grade properties, raise **F** for the claim/KindSignature (C.2.3) or restrict the claim. Keep **R** as evidence freshness/coverage. |
 | **Hidden “latest” in membership or scope checks.**               | Non‑deterministic evaluation; unverifiable audit trail.                                         | Declare **Γ\_time** explicitly in Scope (USM). Membership must be **deterministic** (C.3.2 K‑05/K‑07).                                                |
@@ -15206,7 +15202,7 @@ Scope answers **“where the claim holds”** (set of Context slices, USM); kind
 
 ### 15.2 · Why **two bridges** (Scope vs Kind)
 
-Rooms diverge along **context** (contracts, parameters, time) and **classification** (what counts as a member). A single bridge hides which axis is mismatched. Two explicit bridges keep fixes targeted: **ΔG / narrowing** for context misfit; **subkind/adapter** for classification misfit. Both risks land in **R** as separate penalties (**Φ/Ψ**).
+Rooms diverge along **context** (contracts, parameters, time) and **classification** (what counts as a member). A single bridge hides which characteristic is mismatched. Two explicit bridges keep fixes targeted: **ΔG / narrowing** for context misfit; **subkind/adapter** for classification misfit. Both risks land in **R** as separate penalties (**Φ/Ψ**).
 
 ### 15.3 · Why **AT is a facet**
 
@@ -15734,7 +15730,7 @@ A **KindBridge** connects **source** room **A** and **target** room **B** for a 
 2. **Order preservation**: which `⊑` links are preserved (monotone), which are **collapsed**, and which are **unknown** (not claimed).
 3. **Type‑congruence `CL^k`**: reuses the **same anchors/labels** as **CL** (Part B) but applies to kind intent/order (not to Scope). *Gloss:* higher `CL^k` ⇒ closer preservation of kind intent and declared `⊑` links.
 4. **Loss notes**: human‑readable list of invariants and subkinds **not preserved**.
-5. **Definedness area**: the subset of `U.ContextSlice` axes where the mapping is **intended** to be used (e.g., certain contracts/versions).
+5. **Definedness area**: the subset of `U.ContextSlice` characteristics where the mapping is **intended** to be used (e.g., certain contracts/versions).
 6. **Determinism**: fixed versions + mapping rules ⇒ deterministic result (no “latest”).
 
 **Effect on assurance.** When a **claim** in B depends on classification that goes through this bridge, **reduce R** by a monotone penalty **Ψ(`CL^k`)**. **Do not** change **F** or **G**.
@@ -17413,7 +17409,7 @@ Across architheories, people say “score”, “metric”, “rating”, “pro
 
 **S3 — Evidence stance.** A measure that, by its template, **requires** evidence, is **inadmissible** without a meaningful `U.EvidenceStub`. C.16 defines **what it means conceptually** for evidence to “connect” the subject, the Characteristic, and its symbolic description; mechanisms are out of scope. (Details: §9 in later parts.)
 
-**S4 — RSG framing (open‑endedness).** Readiness, calibration, and revision of metric notions are expressed as **RSG node moves with checklists** (e.g., “Axis anchored”, “Scale typed”, “Unit coherent”, “Gauge declared”), allowing **re‑entry** when distinctions change; there is no terminal “lifecycle”. (Details: §10, later.)
+**S4 — RSG framing (open‑endedness).** Readiness, calibration, and revision of metric notions are expressed as **RSG node moves with checklists** (e.g., “characteristic anchored”, “Scale typed”, “Unit coherent”, “Gauge declared”), allowing **re‑entry** when distinctions change; there is no terminal “lifecycle”. (Details: §10, later.)
 
 ---
 
@@ -18427,7 +18423,7 @@ These cards are **thinking scaffolds**; they do not prescribe org process.
 - Operators (Γ):
   - `Γ_nqd.generate(seed?, EmitterPolicyRef, Budget, DescriptorMapRef, QualityMeasures, NoveltyMetricRef, CoverageGrid, CellCapacity K=1, EpsilonDominance ε=0, DedupThreshold?) → CandidateSet`
   - `Γ_nqd.updateArchive(Archive, CandidateSet) → Archive'`
-  - `Γ_nqd.illuminate(Archive) → IlluminationSummary{coverage, QD-score, occupancyEntropy, filledCells}` (reporting gauge only; not a dominance axis unless a policy explicitly promotes it).
+  - `Γ_nqd.illuminate(Archive) → IlluminationSummary{coverage, QD-score, occupancyEntropy, filledCells}` (reporting gauge only; not a dominance characteristic unless a policy explicitly promotes it).
   - `Γ_nqd.selectFront(Archive|CandidateSet, characteristics={Q components, Novelty@Room, ΔDiversity_P, …}) → ParetoFront`
 
 **Type notes.**
@@ -18435,7 +18431,7 @@ These cards are **thinking scaffolds**; they do not prescribe org process.
 - `U.NQDArchive` holds per‑cell elites and genealogy refs; room‑local.
 - `U.Niche` is a region in DescriptorSpace (grid bucket / CVT centroid / cluster).
 - `U.EmitterPolicyRef` points to a named policy in **C.19 E/E‑LOG**.
-- `U.IlluminationSummary` is a **gauge** over `Diversity_P` (see C.17), not a dominance axis.
+- `U.IlluminationSummary` is a **gauge** over `Diversity_P` (see C.17), not a dominance characteristic.
 
 **Operator specs (normative).**
 - `Γ_nqd.generate(...)` SHALL:
@@ -18445,7 +18441,7 @@ These cards are **thinking scaffolds**; they do not prescribe org process.
   (d) record `metricsEdition`, `DescriptorMapRef`, `EmitterPolicyRef`, `ε`, `K`, `Seeds`, and genealogy references (parent/seed ids) to enable SSU measurement.
 - `Γ_nqd.updateArchive` SHALL apply local competition per cell (keep up to K elites) and preserve genealogy.
 - `Γ_nqd.illuminate` SHALL return coverage and QD‑score computed against the declared grid and archive edition.
-- `Γ_nqd.selectFront` SHALL compute the (ε‑)Pareto front over the declared axes; **Illumination** is excluded by default (report‑only).  
+- `Γ_nqd.selectFront` SHALL compute the (ε‑)Pareto front over the declared characteristics; **Illumination** is excluded by default (report‑only).  
   **Pipeline:** apply **Eligibility (ConstraintFit=pass)** → **Dominance (default set)** → **Tie‑breakers (Surprise, Illumination gauge)**.
 - **Pure academic QD-mode:** Rooms MAY elect a _pure‑QD_ mode (dominance on `Q` only; `N/ΔD` used via archive occupancy and tie‑breakers). Deviation SHALL be declared by policy id and recorded in provenance.
 
@@ -18461,7 +18457,7 @@ These cards are **thinking scaffolds**; they do not prescribe org process.
 - **C18‑5** Keep `Use‑Value` separate from assurance scores; do not alter `F/G/R` semantics (see B.3, C.17 §Use‑Value).
 - **C18‑6** Emit full provenance; thinning after front computation MUST be recorded.
 - **C18‑7** Before computing any front, apply **ConstraintFit = pass** as a hard eligibility filter.
-- **C18‑8** `Γ_nqd.selectFront` SHALL exclude **Illumination** from the dominance axes unless the room policy explicitly promotes it (see C.19).
+- **C18‑8** `Γ_nqd.selectFront` SHALL exclude **Illumination** from the dominance characteristics unless the room policy explicitly promotes it (see C.19).
 
 **Defaults (if policy is unspecified)**  
 >  **Dominance:** `{Q components, Novelty@Room, ΔDiversity_P}`, with `ConstraintFit=pass` as **eligibility gate**.  
@@ -18526,7 +18522,7 @@ The following **lens profiles** are **illustrative heuristics**. Rooms MAY reuse
 - **C19‑5** USM/RSG gate applies: policy actions SHALL operate within the room’s scope and enactable RSG states.
 - **C19‑6** Each selection lens **MUST** implement and document the pipeline` Eligibility (ConstraintFit=pass) → Dominance (declared set) → Tie‑breakers (declared)`. Any **promotion** of Surprise/Illumination into the dominance set **MUST** be named by lens/policy id and recorded in provenance.
 
-**Illumination & Diversity_P.** Illumination is a **gauge over Diversity_P** (coverage/QD‑score). It informs exploration health and tie‑breaks; it is **not** a dominance axis by default.
+**Illumination & Diversity_P.** Illumination is a **gauge over Diversity_P** (coverage/QD‑score). It informs exploration health and tie‑breaks; it is **not** a dominance characteristic by default.
 
 **Baseline profile (informative, room‑local template).**
 `EmitterPolicy#NQD-Default-2025`:
@@ -18938,7 +18934,7 @@ The FPF ecosystem is formally stratified into three canonical **artefact familie
     *   **Pedagogical Companion:** Provides a tutorial on how to model a water pump using that profile.
 
 *   **For an `U.Episteme`:**
-    *   **Conceptual Core:** Defines `U.Episteme` and the F-G-R axes.
+    *   **Conceptual Core:** Defines `U.Episteme` and the F-G-R characteristics.
     *   **Tooling Reference:** Provides the reference linting tool to automatically score epistemes.
     *   **Pedagogical Companion:** Provides a case study on how a scientific theory's R-score evolves over time.
 
@@ -19186,7 +19182,7 @@ drift—or ignore FPF altogether.
 
 | Scenario | `U.System` example | `U.Episteme` example |
 |----------|-------------------|----------------------|
-| Definition | Boundary of a pump is expressed in prose plus set notation; a diagram is illustrative. | F‑G‑R axes defined textually; a triple‑store serialisation is illustrative. |
+| Definition | Boundary of a pump is expressed in prose plus set notation; a diagram is illustrative. | F‑G‑R characteristics defined textually; a triple‑store serialisation is illustrative. |
 | Alternate rendering | Same pump semantics rendered in a lattice diagram or a tabular sheet remain valid. | R‑scores plotted in a heatmap or listed in CSV remain equivalent. |
 
 ##### Conformance Checklist
@@ -19260,8 +19256,8 @@ Pedagogical Companion  ⟶  Tooling Reference  ⟶  Conceptual Core
 
 | Layer | `U.System` illustration | `U.Episteme` illustration |
 |-------|------------------------|---------------------------|
-| Core | Definition of `U.System` and boundary invariant. | Definition of F‑G‑R axes. |
-| Tooling | “Reference system‑profile” that checks boundary flow; *imports* Core invariants. | “Episteme‑scoring routine” that calculates R‑score; *imports* Core axes. |
+| Core | Definition of `U.System` and boundary invariant. | Definition of F‑G‑R characteristics. |
+| Tooling | “Reference system‑profile” that checks boundary flow; *imports* Core invariants. | “Episteme‑scoring routine” that calculates R‑score; *imports* Core characteristics. |
 | Pedagogy | Tutorial using the system‑profile to model a pump; *imports* profile and Core term. | Case study explaining R‑score evolution; *imports* scoring routine and Core term. |
 | **Forbidden** | Core pattern importing measurement script. | Core pattern importing R‑score web dashboard. |
 
@@ -19376,7 +19372,7 @@ while securing Pillars **P‑2, P‑7 Pragmatic Utility, P‑8**.
 ### E.6 · Didactic Architecture of the Specification \[D]
 
 #### Context  
-FPF addresses readers from at least two axes of diversity:
+FPF addresses readers from at least two characteristics of diversity:
 
 * **Disciplinary** – systems engineers, knowledge scientists, ethicists.  
 * **Experience** – newcomers need intuition; experts need rigour.
@@ -19791,9 +19787,9 @@ Without a formal lexicon grid:
 
 #### Solution — 2 × 4 × 3 Governance Grid  
 
-FPF governs terminology along **two axes** plus a disambiguation lens.
+FPF governs terminology along **two characteristics** plus a disambiguation lens.
 
-##### Axis 1 – Stability Registers  
+##### characteristic 1 – Stability Registers  
 
 | Register | Scope & Mutability | Example |
 |----------|-------------------|---------|
@@ -19802,7 +19798,7 @@ FPF governs terminology along **two axes** plus a disambiguation lens.
 | **R‑local** | Defined inside a single pattern’s Solution. | `Risk_Bias_Index` |
 | **R‑alias** | Deprecated or provisional term; carries sunset note. | `Physical_System` → `U.System` |
 
-##### Axis 2 – Representation Registers  
+##### characteristic 2 – Representation Registers  
 
 For every R‑core or R‑domain term authors **MUST** document four
 audience‑specific surfaces:
@@ -19901,7 +19897,7 @@ domains can innovate (`R‑domain`) without destabilising the Core.
 
 **Status.** Discipline \[D], architheory‑agnostic.
 **Depends on.** C‑6 *Strict Distinction*; C‑7 *Temporal Duality*; G‑1 *Minimal Generality*; G‑2 *Contextual Specification*.
-**Coordinates with.** E.10.U1 *Domain Landscape Survey*; E.10.U2 *Term Harvesting & Normalisation*; E.10.U7 *Concept‑Set Table*; E.10.U9 *Alignment/Bridge*; CRA patterns (e.g., E.10.U4).
+**Coordinates with.** E.10.U1 *Domain Landscape Survey*; E.10.U2 *Term Harvesting & Normalisation*; E.10.U7 *Concept‑Set Table*; E.10.U9 *Alignment/Bridge*; `RoleAssigning` patterns (e.g., E.10.U4).
 **Aliases (informative).** Context Discipline; No‑Anchor Rule.
 
 ---
@@ -20017,7 +20013,7 @@ domains can innovate (`R‑domain`) without destabilising the Core.
 
 * Use `BPMN_2_0:process` and `PROV_O_2013:activity` as **SenseCell**s.
 * In a Concept‑Set row, code the provisional relation `⋈` (overlap), not an equality.
-* CRA templates later reference **the specific SenseCell**, not “an anchor”.
+* Role Descriptions later reference **the specific SenseCell**, not “an anchor”.
 
 **9.2 Roles — behavioural mask vs access status.**
 
@@ -20065,7 +20061,7 @@ domains can innovate (`R‑domain`) without destabilising the Core.
 * **E.10.U2** — Seeds and Occurrences are **always** Context‑anchored; references use forms from Sec. 5.
 * **E.10.U7** — Columns are **SenseCell**s; row notes never call them “anchors”.
 * **E.10.U9** — All cross‑context relations live here; no implicit equivalences elsewhere.
-* **CRA patterns (E.10.U4, …)** — CRA points to **SenseCell** or **Concept‑Set columns**, never to “anchors”.
+* **`RoleAssigning` patterns (E.10.U4, …)** — Context points to **SenseCell** or **Concept‑Set columns**, never to “anchors”.
 
 ---
 
@@ -20178,7 +20174,7 @@ If any condition is missing, the artefact **must be** a `…Description`.
 ### 4.3 Where RCS/RSG and evaluations sit
 
 * **`U.RCS` (Role Characterisation Space)** and **`U.RSG` (Role State Graph)** are **intensional** types that structure the space of role characteristics and permissible state transitions.
-* Their **human presentation** (axes, dimensions, node labels, admissible transitions) lives in the **RoleDescription**, and becomes part of **RoleSpec** only when the transitions and state predicates are made **testable** and harness‑bound.
+* Their **human presentation** (characteristics, dimensions, node labels, admissible transitions) lives in the **RoleDescription**, and becomes part of **RoleSpec** only when the transitions and state predicates are made **testable** and harness‑bound.
 * **`U.Evaluation`** operates on **evidence** against the conformance checklist (from the Description/Spec) to produce a **state attestation** (“X is in state S @Context within window W”).
 * **Epistemic/deontic statuses** (e.g., *Evidence*, *Requirement*, *Standard*) are **roles over KUs** (not states of the role). They are governed elsewhere (F‑R family) and must not be conflated with `U.RSG` state names.
 
@@ -20201,7 +20197,7 @@ If any condition is missing, the artefact **must be** a `…Description`.
   *Never* a document, *never* an event, *never* a file.
 
 * **`U.TDescription(@Context)` — the Description KU.**
-  Context‑local characterisation of `U.T`: Tech/Plain labels, gloss, notes; for roles, may **characterise** with an `U.RCS` (axes/traits), an `U.RSG` (states/transitions), and **state conformance checklists** (per state). *Readable; precise; not yet a set of testable “shall”s.*
+  Context‑local characterisation of `U.T`: Tech/Plain labels, gloss, notes; for roles, may **characterise** with an `U.RCS` (characteristics/traits), an `U.RSG` (states/transitions), and **state conformance checklists** (per state). *Readable; precise; not yet a set of testable “shall”s.*
 
 * **`U.TSpec(@Context)` — the Specification KU.**
   Context‑local, **testable** invariant set for `U.T`, explicitly **bound to an acceptance harness** (SCR/RSCR matrices per F.15). Use **–Spec** only through the Spec‑gate (Sec. 4.2).
@@ -20245,7 +20241,7 @@ Texts **MUST** say: *“`U.Role` is **characterised by** `U.RCS`/`U.RSG` in the 
 They **MUST NOT** say: *“the role **contains** the RCS/RSG”*.
 
 **IDS‑5 (RCS/RSG scope).**
-`U.RCS`/`U.RSG` are **intensional structures**. Their **presentations** (axes, state names, admissible transitions, checklists) live in the **RoleDescription**, and in **RoleSpec** only when transitions and state predicates are fully testable.
+`U.RCS`/`U.RSG` are **intensional structures**. Their **presentations** (characteristics, state names, admissible transitions, checklists) live in the **RoleDescription**, and in **RoleSpec** only when transitions and state predicates are fully testable.
 
 **IDS‑6 (Evaluation semantics).**
 `U.Evaluation` **MUST** operate over evidence against conformance checklists from the Description/Spec and **MUST** produce a **state attestation** (who/what is in state *S* @Context within window *W*). Evaluation **does not** mutate the intensional object.
@@ -20370,7 +20366,7 @@ A RoleDescription **SHOULD** fit on one screen per state graph plus one screen o
 **RoleDescription\@ITIL4.**
 
 * **Tech/Plain.** *ChangeAuthority* / “change approver”.
-* **RCS (axes).** CredentialLevel ∈ {L1,L2}; Scope ∈ {Service, Platform}; SeparationOfDuty ∈ {Clean, Violates}.
+* **RCS (characteristics).** CredentialLevel ∈ {L1,L2}; Scope ∈ {Service, Platform}; SeparationOfDuty ∈ {Clean, Violates}.
 * **RSG (states).** `Proposed → Designated → Authorized → Active → Suspended → Revoked`.
 * **State checklists (sketch).**
 
@@ -20399,7 +20395,7 @@ A RoleDescription **SHOULD** fit on one screen per state graph plus one screen o
 
 * **Tech/Plain.** *BacklogRefinement* / “tidy backlog”.
 * **Inputs/Outputs (informative).** Work items (ideas) → clarified items (ready/not‑ready tags).
-* **RCS (axes).** Cadence ∈ {weekly, continuous}; CollaborationMode ∈ {sync, async}.
+* **RCS (characteristics).** Cadence ∈ {weekly, continuous}; CollaborationMode ∈ {sync, async}.
 * **RSG (states).** `Sketched → Defined → Adopted`.
 * **State checklist (Adopted).** { team agreed practice note exists, cadence set, entry/exit criteria published }.
 
@@ -20602,7 +20598,7 @@ Think in three layers: **Intension** (what the thing *is*), **Description/Spec**
 * *Intension.* `U.Role :: <TechName> in <RoomId>`.
 * *RoleDescription\@Room.* Tech/Plain: **`<TechName> / <PlainName>`**.
 
-* **RCS axes.** `<Axis₁ ∈ {...}>; <Axis₂ ∈ {...}>`.
+* **RCS characteristics.** `<characteristic₁ ∈ {...}>; <characteristic₂ ∈ {...}>`.
 * **RSG nodes (→).** `<S₀ → S₁ → ... → Sₙ>`.
 * **State checklist (one node).** `<StateX : {criterion₁, …}>`.
 * *Evaluation attestation.* `subject=<Holder> ∈ <StateX>@<RoomId> in <Window> (evidence: <cue₁,…>)`. 
@@ -20639,7 +20635,7 @@ Think in three layers: **Intension** (what the thing *is*), **Description/Spec**
 
 **Status & placement.** Part E.10 (“Lexical Discipline & Stratification”); complements **E.10.D1 (D.CTX)** and **E.10.D2 (I/D/S)** and is referenced by F‑cluster naming practices (F.4–F.8). This bundle consolidates all lexical constraints in one place so authors can cite **“LEX‑BUNDLE”** instead of listing rules scattered across documents.
 
-**Builds on.** A.7 **Strict Distinction (Clarity Lattice)**; E.5 Guard‑Rails (DevOps Lexical Firewall; Notational Independence; Unidirectional Dependency); F.5 **Naming Discipline for U‑Types & CRA Templates**.
+**Builds on.** A.7 **Strict Distinction (Clarity Lattice)**; E.5 Guard‑Rails (DevOps Lexical Firewall; Notational Independence; Unidirectional Dependency); F.5 **Naming Discipline for U‑Types & Roles**.
 **Coordinates with.** A.2/A.15 (Role–Method–Work alignment), A.10 (Evidence Anchoring), B.1/B.3 (Γ‑algebras & assurance), F‑cluster (Rooms of Meaning; Bridges).
 
 ---
@@ -20742,7 +20738,7 @@ Below are the **normative clauses**
 
 **MG‑1 (Test: tri‑domain witness).** For any **U‑Type** or **Context‑Role** name you mint, maintain a note (in DRR or Glossary) listing **three concrete, dissimilar domains** where the name’s invariants hold (e.g., manufacturing, healthcare, cloud ops). If you cannot supply such witnesses, **rename** to a narrower Context‑Role or move the qualifier into **RCS** (Role Characterisation Space).
 
-**MG‑2 (Ban parochial qualifiers in Kernel).** Kernel names **MUST NOT** contain domain nouns (e.g., *Ticket, Microservice, Patient, Developer*). Those belong in **Context** roles/types or as **RCS axes**.
+**MG‑2 (Ban parochial qualifiers in Kernel).** Kernel names **MUST NOT** contain domain nouns (e.g., *Ticket, Microservice, Patient, Developer*). Those belong in **Context** roles/types or as **RCS characteristics**.
 
 **MG‑3 (Ban vacuity).** Names like *Thing, Event, Process, Resource* are **forbidden** in Kernel and Architheory because they erase distinctions. Use `U.Holon`, `U.Work`, `U.Method`, `U.Resrc` (from Resrc‑CAL), etc.
 
@@ -20947,7 +20943,7 @@ Each rule is stated as **Ban → Prefer → Map → Red/Green tests**. “Ban”
 
 ### 10.1 · **Principle MG (Minimal Generality)**
 
-When minting a **kernel name** (`U.Type`, role kind, CRA template), **choose the minimally general term** that:
+When minting a **kernel name** (`U.Type`, role kind, Role Description), **choose the minimally general term** that:
 
 1. stays stable across ≥ 3 heterogeneous domains (C‑1 universality),
 2. does **not** smuggle in implementation details or a local method, and
@@ -21409,7 +21405,7 @@ This decision table provides the normative mapping. When a domain expert says "p
 | ...a **plan or schedule** for future execution. | **`Work Plan` / `WorkDescription`** | An `Episteme` that constrains future `Work`. | Is it about what *will* or *should* happen, not what *did* happen? → **`Work Plan`** |
 | ...the **physical path of state changes**, like a thermodynamic cycle. | **`Dynamics`** / **`Work`** | The execution (`Work`) and its formal description (`Dynamics` Episteme). | Is it a trajectory in a state space (e.g., on a P-V diagram)? → **`Dynamics`** |
 | ...an **organizational area of capability**, like "Procure-to-Pay." | **`System` (OrgUnit)** / **`Service`** | An organizational holon that provides a service. | Is it a department or a team with a defined business capability? → **`System`** |
-| ...the **person in charge** of it, the "process owner." | **`Role`** → **`RoleAssigning`** | The formal assignment of responsibility. | Is it about a person's title and responsibilities? → **`Role`** |
+| ...the **person in charge** of it, the "process owner." | **`Role`** → **`U.RoleAssignment`** | The formal assignment of responsibility. | Is it about a person's title and responsibilities? → **`Role`** |
 | ...a **formal requirement**, like a "CMMI Process Area." | **`Episteme`** with a **`RequirementRole`** | A normative document defining a standard to be met. | Is it a standard or a requirement we must comply with? → **`Episteme`** |
 
 ##### L‑ACT — Activity/Action Disambiguation [L]
@@ -21445,7 +21441,7 @@ The L-PROC pattern resolves ambiguity in concrete modeling scenarios.
 | :--- | :--- | :--- |
 | **Business Process Management:** "The order fulfillment process." | A single, monolithic object called "Order Fulfillment Process." | **Projection to Method/Work:** The `Glossary` of `OM_2025_Context` states: "'process' ≍ `MethodDescription` for the recipe, `Work` for the execution." The model shows: `OrderFulfillment.bpmn#MethodDescription` and specific executions like `Work_Order_123`. |
 | **Physics:** "An isothermal process." | A `U.Method` called "Isothermal Process." | **Projection to Work + Dynamics:** The `Glossary` of `ThermoLab_Context` states: "'thermodynamic process' ≍ `Work` whose path is described by a `Dynamics` Episteme." Model shows: `Work_Run_789` is justified by `IsothermalPath.epi`. The lab protocol to achieve it is a separate `Method`. |
-| **Enterprise Architecture:** "The Procure-to-Pay process." | A `U.Method` or a vague `Role`. | **Projection to System + Role:** The `Glossary` of `OperatingModel_2025` states: "'process area' ≍ `System (OrgUnit)`" and "'process owner' ≍ `Role`." Model shows: `ProcureToPay_Dept` (a `U.System`) provides the `Service`, and `Alice#ProcessOwnerRole` is the responsible `RoleAssigning`. |
+| **Enterprise Architecture:** "The Procure-to-Pay process." | A `U.Method` or a vague `Role`. | **Projection to System + Role:** The `Glossary` of `OperatingModel_2025` states: "'process area' ≍ `System (OrgUnit)`" and "'process owner' ≍ `Role`." Model shows: `ProcureToPay_Dept` (a `U.System`) provides the `Service`, and `Alice#ProcessOwnerRole` is the responsible `U.RoleAssignment`. |
 
 #### 6 · Bias-Annotation
 
@@ -21941,7 +21937,7 @@ The **Working‑Model layer remains the canonical publication surface** for auth
 * Part F unification practices (rooms of meaning, bridges, fit levels) by reinforcing the preference for human‑readable labels with explicit alignment notes rather than silent formal substitutions.
 
 
-### **Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual RoleAssignment**
+### **Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment**
 
 #### Cluster F.I — Rooms of Meaning & Raw Material
 
@@ -22296,14 +22292,14 @@ An artefact is **ready** with respect to F.0.1 when:
 **“Fix the rooms of meaning before you name anything.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; **F.0.1 Contextual Lexicon Principles**; A.7 **Strict Distinction (Clarity Lattice)**; A.11 **Ontological Parsimony**.
-**Coordinates with.** F.2 **Term Harvesting & Normalisation**; F.3 **Intra‑Context Sense Clustering**; F.4 **CRA Template Definition**; F.9 **Alignment & Bridge Across Contexts**.  *(Bridges live only in F.9.)*
+**Coordinates with.** F.2 **Term Harvesting & Normalisation**; F.3 **Intra‑Context Sense Clustering**; F.4 **Role Description**; F.9 **Alignment & Bridge Across Contexts**.  *(Bridges live only in F.9.)*
 **Aliases (informative).** *Rooms‑first survey*; *Context cut*.
 
 ## 1 · Intent & applicability
 
-**Intent.** Establish a **finite set of U.BoundedContext** (“**rooms of meaning**”), each tied to an authoritative source or canon within a **domain family**, so that all later moves (term harvesting, clustering, CRA naming, cross‑context bridges) operate on **local meanings** rather than on drifting, globalised words.
+**Intent.** Establish a **finite set of U.BoundedContext** (“**rooms of meaning**”), each tied to an authoritative source or canon within a **domain family**, so that all later moves (term harvesting, clustering, role naming, cross‑context bridges) operate on **local meanings** rather than on drifting, globalised words.
 
-**Applicability.** Use **at the start** of any unification effort for **any architheory** (Enactment/CRA, Sys‑CAL, KD‑CAL, Type‑CAL, LCA‑CAL…) and **whenever** a discipline canon materially changes (new edition, re‑framing, seminal result).
+**Applicability.** Use **at the start** of any unification effort for **any architheory** (Enactment (`U.RoleAssignment` + `U.RoleEnactment`), Sys-CAL, KD-CAL, Type-CAL, LCA-CAL…) and **whenever** a discipline canon materially changes (new edition, re-framing, seminal result).
 
 **Non‑goals.** No tooling, workflow, or editorial roles. No global ontology. No cross‑context equations. This pattern describes **how to think**, not how to store.
 
@@ -22350,7 +22346,7 @@ A *room of meaning* is a **U.BoundedContext** (per D.CTX) that encloses a cohere
 ## 6 · Solution — the rooms‑first survey (conceptual, notation‑free)
 
 **Step 1 — Declare your unification line(s).**
-State which architheory threads are in play (e.g., *Enactment/CRA + KD‑CAL sensing + Sys‑CAL execution*). This keeps the cut purposeful.
+State which architheory threads are in play (e.g., *Enactment + KD‑CAL sensing + Sys‑CAL execution*). This keeps the cut purposeful.
 
 **Step 2 — Cut the landscape by domain families.**
 For each line, **select at least three distinct domain families** (heterogeneity guard). Examples:
@@ -22423,7 +22419,7 @@ Everything you need to *think correctly later* fits on an eight‑line card. No 
 
 ## 10 · Micro‑examples (illustrative only)
 
-> *One unification line: Enactment/CRA with sensing and execution.*
+*One unification line: Enactment (`U.RoleAssignment` + `U.RoleEnactment`) with sensing and execution.*
 
 * **BPMN 2.0 (2011)** — *workflow family*.
   *Scope gist:* flow nodes, sequence flows, participants (design‑time).
@@ -22466,9 +22462,9 @@ Everything you need to *think correctly later* fits on an eight‑line card. No 
 
 > Each example shows **the cut** (the rooms you keep in view) and the **thinking pay‑off** you get *before* any harvesting, clustering, or bridging.
 
-### 12.1 Enactment/CRA with sensing & execution (service acceptance)
+### 12.1 Enactment (`U.RoleAssignment` + `U.RoleEnactment`) with sensing & execution (service acceptance)
 
-**Unification line.** Enactment/CRA + KD‑CAL (sensing) + Sys‑CAL (execution).
+**Unification line.** Enactment + KD‑CAL (sensing) + Sys‑CAL (execution).
 
 **Rooms (six Cards).**
 
@@ -22577,7 +22573,7 @@ A.11 **Ontological Parsimony** — motivates the small cut.
 **Constrains.**
 **F.2** (Term Harvesting): harvest **inside** rooms named here; every occurrence carries a room name.
 **F.3** (Intra‑Context Sense Clustering): cluster **per room**; no cross‑room sense claims.
-**F.4** (CRA Templates): any role/status template must cite a **SenseCell** that lives in a room from this cut.
+**F.4** (Role Descriptions): any role/status template must cite a **SenseCell** that lives in a room from this cut.
 **F.9** (Alignment & Bridge): only F.9 may relate rooms; never F.1–F.4.
 
 **Used by.**
@@ -22626,7 +22622,7 @@ Architheories in Part C (Sys‑CAL, KD‑CAL, Type‑CAL, Method‑CAL, LCA‑
 **“Harvest words *inside rooms*, name them in the room’s own idiom, and stop there.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; **F.0.1 Contextual Lexicon Principles** (Source · Local Meaning · Bridge‑Only Crossing); A.7 **Strict Distinction**; A.11 **Ontological Parsimony**.
-**Coordinates with.** F.1 **Domain Landscape Survey**; F.3 **Intra‑Context Sense Clustering**; F.4 **CRA Template Definition**; F.9 **Alignment & Bridge Across Contexts**.
+**Coordinates with.** F.1 **Domain Landscape Survey**; F.3 **Intra‑Context Sense Clustering**; F.4 **Role Description**; F.9 **Alignment & Bridge Across Contexts**.
 **Aliases (informative).** *Room‑local harvesting*; *Local normalisation*.
 
 ---
@@ -22635,7 +22631,7 @@ Architheories in Part C (Sys‑CAL, KD‑CAL, Type‑CAL, Method‑CAL, LCA‑
 
 **Intent.** Provide a **conceptual** (notation‑free) discipline for turning *room‑internal usage* into **room‑local lexical units** ready for later reasoning—without cross‑room merging and without slipping into governance or tooling. The result is a **small, auditable set of room‑local names and glosses** that faithfully reflect how the canon speaks.
 
-**Applicability.** Use whenever a unification line (from F.1) needs **actual words** to be referenced by patterns in Part C (architheories) or by CRA templates (F.4). Re‑enter F.2 when a canon/edition changes or when a new room is admitted in F.1.
+**Applicability.** Use whenever a unification line (from F.1) needs **actual words** to be referenced by patterns in Part C (architheories) or by Role Descriptions (F.4). Re‑enter F.2 when a canon/edition changes or when a new room is admitted in F.1.
 
 **Non‑goals.** No global labels; no cross‑room equivalence; no workflow or role descriptions; no storage/API talk. F.2 specifies **how to think**, not how to “run a pipeline”.
 
@@ -22786,7 +22782,7 @@ For every room (a **U.BoundedContext** from F.1), you gather **attested phrases*
 | **A11** | **Temporal fudge**           | Using run‑time words in design Rooms (or vice versa).                | Category drift; later contradictions.                        | Respect the Room’s **design/run stance** from its Card (F.1 §7.2).                                      |
 | **A12** | **Cross‑language collapse**  | Merging bilingual terms as one unit.                                 | Erases idiom‑specific signals; hides normative mapping gaps. | Treat each language edition as its **own Room** unless the canon declares a normative mapping.          |
 | **A13** | **Alias inflation**          | Inventing new local names “for clarity”.                             | Strays from the canon; hinders bridging.                     | Prefer the canon’s idiom; keep invented phrasings to the **Plain** register only.                       |
-| **A14** | **Role/status conflation**   | RBAC “role” glossed as behavioural role.                             | Cross‑family bleed; wrong CRA later.                         | Call out the Room in the label: **access‑role (RBAC)** vs **participant (BPMN)**; keep senses disjoint. |
+| **A14** | **Role/status conflation**   | RBAC “role” glossed as behavioural role.                             | Cross‑family bleed; wrong assignment later.                         | Call out the Room in the label: **access‑role (RBAC)** vs **participant (BPMN)**; keep senses disjoint. |
 
 ---
 
@@ -22795,7 +22791,7 @@ For every room (a **U.BoundedContext** from F.1), you gather **attested phrases*
 > Each line is a **local lexical unit** *(Room, LNF, Tech, Plain, Gloss)*.
 > No cross‑room relation is implied. Later clustering (F.3) and bridges (F.9) may connect them.
 
-### 11.1 Enactment/CRA + sensing
+### 11.1 Enactment + sensing
 
 * **Room:** *BPMN 2.0 (2011)* — **LNF:** `process`
   **Tech:** `process` · **Plain:** `workflow process`
@@ -22909,7 +22905,7 @@ For every room (a **U.BoundedContext** from F.1), you gather **attested phrases*
 
 **Constrains.**
 **F.3** (Intra‑Context Sense Clustering): operates **only** on units **from one Room**; produces Local‑Senses and addressable **SenseCells**.
-**F.4** (CRA Template Definition): may **cite SenseCells**, not raw strings.
+**F.4** (Role Description Definition): may **cite SenseCells**, not raw strings.
 **F.9** (Alignment & Bridge): consumes **homonymy signals**; declares explicit cross‑room mappings with loss policies.
 
 **Used by.**
@@ -22959,14 +22955,14 @@ Architheories in Part C when referencing domain idioms (labels stay **room‑l
 **“Within one Room, decide what ‘the same sense’ really is—before you ever cross Rooms.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Depends on.** F.1 **Domain Landscape Survey**; F.2 **Term Harvesting & Normalisation**; E.10.1 **Lexical Discipline for “Context” (D.CTX)**; A.7 **Strict Distinction**; A.11 **Ontological Parsimony**.
-**Coordinates with.** F.4 **CRA Template Definition**; F.7 **Concept‑Set Table**; F.8 **Mint or Reuse Decision**; F.9 **Alignment & Bridge Across Contexts**.
+**Coordinates with.** F.4 **Role Description**; F.7 **Concept‑Set Table**; F.8 **Mint or Reuse Decision**; F.9 **Alignment & Bridge Across Contexts**.
 **Aliases (informative).** *Room‑local clustering*; *Sense consolidation*.
 
 ---
 
 ## 1 · Intent & applicability
 
-**Intent.** Consolidate the **room‑local lexical units** from F.2 into a **small set of Local‑Senses** that actually operate in that **one Room (U.BoundedContext)**. Each Local‑Sense receives a crisp, didactic label pair (Tech/Plain) and a short sense statement. The result is an **addressable basis** for later uses (CRA, tables, bridges) that is **still strictly room‑local**.
+**Intent.** Consolidate the **room‑local lexical units** from F.2 into a **small set of Local‑Senses** that actually operate in that **one Room (U.BoundedContext)**. Each Local‑Sense receives a crisp, didactic label pair (Tech/Plain) and a short sense statement. The result is an **addressable basis** for later uses (Role Assignment, tables, bridges) that is **still strictly room‑local**.
 
 **Applicability.** Apply **after** F.2 for any Room that will feed naming (F.4/F.5), decision gates (F.8), cross‑Room bridges (F.9), or exemplars in Part C. Use again whenever the canon (edition) **shifts usage** enough to split or merge senses **within the same Room**.
 
@@ -22994,9 +22990,7 @@ F.3 repairs this **inside the Room** by clustering “same sense” and distingu
 | **Parsimony vs fidelity** | Few Local‑Senses ease teaching; too few dilute real distinctions the canon relies on.                            |
 | **Usage vs definition**   | Glosses should reflect **how the canon uses the word**, not an imported dictionary definition.                   |
 | **Labels vs idiom**       | Tech label must stay in the canon’s idiom; Plain label must help newcomers—without inventing a new sense.        |
-| **Stability vs openness** | Consolidated senses must be stable enough for CRA and tables, yet revisable when the canon’s use clearly splits. |
-
----
+| **Stability vs openness** | Consolidated senses must be stable enough for Role Descriptions and tables, yet revisable when the canon’s use clearly splits. |
 
 ## 4 · Core idea (didactic)
 
@@ -23044,7 +23038,7 @@ If two candidate Local‑Senses never lead to **different conclusions** in the R
 Tech label stays as the canon speaks; Plain label conveys the **function** of the sense to a careful newcomer. Neither label may **broaden** the sense beyond usage.
 
 **6.6 Name only as much as you will use.**
-If a fine‑grained split has **no downstream consequence** (CRA, tables, bridges), prefer the coarser Local‑Sense. Fewer SenseCells teach better.
+If a fine-grained split has **no downstream consequence** (Role Descriptions, tables, bridges), prefer the coarser Local-Sense.
 
 ---
 
@@ -23267,7 +23261,7 @@ F.1 **Domain Landscape Survey** (Rooms fixed); F.2 **Term Harvesting** (Units re
 
 **Constrains.**
 
-* **F.4 CRA Template Definition.** CRA notions **cite SenseCells**; they do **not** invent senses.
+* **F.4 Role Description.** Role Descriptions **cite SenseCells**; they do **not** invent senses.
 * **F.7 Concept‑Set Table.** Rows are built from **SenseCells** (later cross‑Room assembly); intra‑Room clarity here prevents row bloat.
 * **F.8 Mint or Reuse Decision.** Decisions compare proposed names to **existing SenseCells** to avoid type inflation.
 * **F.9 Alignment & Bridge.** Bridges connect **SenseCell ↔ SenseCell** across Rooms; F.3 provides the stable endpoints.
@@ -23311,15 +23305,15 @@ Part C architheories to ground examples and invariants in **Room‑true** lang
 
 ## 17 · Didactic close (60‑second recap)
 
-> **Within one Room,** collect how the canon actually **uses** a head, not how we wish it did. **Merge** aliases that never lead to different conclusions; **split** uses that do. Give each consolidated use a crisp **Tech** label in the Room’s idiom and a faithful **Plain** label. The pair *(Room, Local‑Sense)* is your **SenseCell**—the address later cited by CRA, tables, and bridges. No cross‑Room mergers here; that job belongs to F.9. Keep senses few, boundaries sharp, and labels honest.
+> **Within one Room,** collect how the canon actually **uses** a head, not how we wish it did. **Merge** aliases that never lead to different conclusions; **split** uses that do. Give each consolidated use a crisp **Tech** label in the Room’s idiom and a faithful **Plain** label. The pair *(Room, Local-Sense)* is your **SenseCell**—the address later cited by Role Descriptions, tables, and bridges. No cross‑Room mergers here; that job belongs to F.9. Keep senses few, boundaries sharp, and labels honest.
 
-# F.4 — CRA Template Definition \[A] 
+# F.4 — Role Description (RCS + RoleStateGraph + Checklists) \[A] 
 
 **“Name the mask or the badge — and say what it commits to — but only inside a Room.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; F.1 **Domain Landscape Survey**; F.2 **Term Harvesting**; F.3 **Intra‑Context Sense Clustering**; A.2.1 **`U.RoleAssignment`**; A.7 **Strict Distinction**; A.11 **Ontological Parsimony**.
-**Coordinates with.** F.5 **Naming Discipline for U‑Types & CRA Templates**; F.7 **Concept‑Set Table**; F.9 **Alignment & Bridge Across Contexts**; B.3 **Trust & Assurance Calculus** (for later status evaluation).
-**Aliases (informative).** *Mask/Badge card*; *CRA card*.
+**Coordinates with.** F.5 **Naming Discipline for U‑Types & Roles**; F.7 **Concept‑Set Table**; F.9 **Alignment & Bridge Across Contexts**; B.3 **Trust & Assurance Calculus** (for later status evaluation).
+**Aliases (informative).** *Mask/Badge card*; *role card* (plain only).
 
 ---
 
@@ -23340,7 +23334,7 @@ Each template is **grounded in a SenseCell** `⟨Room, Local‑Sense⟩` from F.
 
 ## 2 · Problem frame
 
-Without explicit CRA templates:
+Without explicit Role Descriptions:
 
 1. **Role/status conflation.** Access **role** (RBAC) treated as behavioural **mask** (BPMN participant); deontic **duty** treated as runtime **effect**.
 2. **Room drift.** A “role” quietly starts meaning different things across canons; later assignments contradict each other.
@@ -23373,7 +23367,7 @@ Without explicit CRA templates:
 
 ## 5 · Core idea (didactic)
 
-**A CRA Template is a small card that says:**
+**A Role Description is a small card that says:**
 **(i)** *which Room’s sense it relies on* (**SenseCell**),
 **(ii)** *what label we use to speak about it* (Tech & Plain), and
 **(iii)** *what must hold* when someone **wears** the mask (Role) or **bears** the badge (Status).
@@ -23382,7 +23376,7 @@ It is **not** a definition by prose alone; it is a **pledge of invariants** — 
 
 ---
 
-## 6 · The CRA Template Card (one‑screen sketch)
+## 6 · The Role Description Card (one‑screen sketch)
 
 > Each bullet is a **thought‑item**, not a file field.
 
@@ -23414,7 +23408,7 @@ It is **not** a definition by prose alone; it is a **pledge of invariants** — 
 
 ## 7 · Normative invariants (template discipline)
 
-1. **Room‑local grounding.** Every CRA Template **MUST** cite exactly one **SenseCell** as its semantic locus.
+1. **Room‑local grounding.** Every Role Description **MUST** cite exactly one **SenseCell** as its semantic locus.
 2. **Plane separation.**
 
    * A **Role Template** **MUST NOT** encode deontic, access, or measurement rules.
@@ -23686,14 +23680,14 @@ A.15 family (Role–Method–Work alignment) to interpret **System‑in‑Role**
 * **RSCR‑F4‑E01 (Edition churn).** When a Room edition changes, existing cards are **not overwritten**; new cards are added per SenseCell.
 * **RSCR‑F4‑E02 (Refinement safety).** If **T′ ⪯ T** is introduced, prior usages of **T** remain conceptually valid; no backward contradictions arise.
 * **RSCR‑F4‑E03 (Plane integrity).** No card changes plane across revisions (Role↔Status) without an explicit **split** noted.
-* **RSCR‑F4‑E04 (Bridge discipline).** After adding an **F.9 Bridge**, CRA cards remain **unchanged**; cross‑Room meanings do not seep back into cards.
+* **RSCR-F4-E04 (Bridge discipline).** After adding an **F.9 Bridge**, Role Description cards remain **unchanged**; cross-Room meanings do not seep back into cards.
 * **RSCR‑F4‑E05 (Label updates).** Label changes per **F.5** preserve SenseCell and invariants; tests treat them as **renames**, not semantic edits.
 
 ---
 
 ## 15 · Didactic distillation (60‑second close)
 
-> A CRA card is a **Room‑true** way to speak about an assignable: a **Role** (behavioural mask) or a **Status** (epistemic/deontic badge).
+> A Role Description card is a **Room-true** way to speak about an assignable: a **Role** (behavioural mask) or a **Status** (epistemic/deontic badge).
 > Each card names **one SenseCell**, gives a **Tech/Plain** label, states **minimal invariants**, and declares what it **does not** imply.
 > Cards never mix planes, never flip time stance, never import other Rooms.
 > Inside one Room, you can compare cards by **equivalence** (≡), **refinement** (⪯), **incompatibility**, and **co‑wearability**.
@@ -23701,10 +23695,10 @@ A.15 family (Role–Method–Work alignment) to interpret **System‑in‑Role**
 > Keep cards **one‑screen simple**: enough to decide assignments; nothing procedural; no tools; just clear thought.
 
 
-# F.5 — Naming Discipline for U‑Types & CRA Templates \[D] 
+# F.5 — Naming Discipline for U‑Types & Roles \[D] 
 
 **Status.** Definitional pattern \[D], architheory‑agnostic.
-**Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; F.1 **Domain Landscape Survey**; F.2 **Term Harvesting & Normalisation**; F.3 **Intra‑Context Sense Clustering**; F.4 **CRA Template Definition**; A.7 **Strict Distinction**; A.11 **Ontological Parsimony**; F.0.1 **Room‑Local Lexicon Principle (RLP)**.
+**Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; F.1 **Domain Landscape Survey**; F.2 **Term Harvesting & Normalisation**; F.3 **Intra‑Context Sense Clustering**; F.4 **Role Description Definition**; A.7 **Strict Distinction**; A.11 **Ontological Parsimony**; F.0.1 **Room‑Local Lexicon Principle (RLP)**.
 **Coordinates with.** F.7 **Concept‑Set Table**; F.8 **Mint or Reuse?**; F.9 **Alignment & Bridge**; F.13 **Term Registry & Deprecation**.
 **Aliases (informative).** *Room‑true naming*; *Two‑register labels*.
 
@@ -23712,9 +23706,9 @@ A.15 family (Role–Method–Work alignment) to interpret **System‑in‑Role**
 
 ## 1 · Intent & applicability
 
-**Intent.** Provide a **small, normative code of naming** so that **U‑Types** (cross‑room categories) and **CRA templates** (Room‑local Roles/Statuses) are labelled **clearly, locally faithful, and globally stable**, without importing tooling, workflows, or editorial process. Names are **consequences of meaning** fixed earlier (F.1–F.4), not badges invented to “stabilise” drifting words.
+**Intent.** Provide a **small, normative code of naming** so that **U‑Types** (cross‑room categories) and **Role Descriptions** (Room‑local Roles/Statuses) are labelled **clearly, locally faithful, and globally stable**, without importing tooling, workflows, or editorial process. Names are **consequences of meaning** fixed earlier (F.1–F.4), not badges invented to “stabilise” drifting words.
 
-**Applicability.** Use **whenever** you (a) mint or revise a **U‑Type** name from a **Concept‑Set row** (F.7), or (b) assign labels to a **CRA template** (F.4). This pattern governs **what a good name must be**, not *how a team produces it*.
+**Applicability.** Use **whenever** you (a) mint or revise a **U‑Type** name from a **Concept‑Set row** (F.7), or (b) assign labels to a **Role Description** (F.4). This pattern governs **what a good name must be**, not *how a team produces it*.
 
 **Non‑goals.** No registries, reviews, or hand‑offs. No style‑police for punctuation beyond conceptual clarity. No bridging or synonym decisions across Rooms (F.9 does that).
 
@@ -23727,7 +23721,7 @@ Naming errors cause structural errors:
 1. **Room denial.** A label hides its Room, inviting cross‑Room misuse (*“process”* used for both BPMN and PROV senses).
 2. **Plane blur.** Names conflate **Role** (behavioural mask) with **Status** (epistemic/deontic badge).
 3. **Over‑reach.** U‑Types inherit jargon from one canon and sound global while being parochial.
-4. **Under‑reach.** CRA labels sound so generic that they pretend to be U‑Types.
+4. **Under-reach.** Role Description labels sound so generic that they pretend to be U-Types.
 5. **Unstable synonyms.** Labels drift to placate readers rather than reflect meaning fixed in SenseCells.
 
 This code resolves these by **Room fidelity**, **plane‑aware morphology**, and **two‑register pedagogy**.
@@ -23739,7 +23733,7 @@ This code resolves these by **Room fidelity**, **plane‑aware morphology**, and
 * **Tech label** — the **Room‑idiomatic** name engineers expect *inside that Room*.
 * **Plain label** — a **teaching gloss** in simple English that does **not broaden** the sense.
 * **Symbolic alias** *(optional)* — conventional symbol if the canon uses one (e.g., “≤”).
-* **SenseCell** — the **(Room × Local‑Sense)** address cited by a CRA card (F.3–F.4).
+* **SenseCell** — the **(Room × Local-Sense)** address cited by a Role Description card (F.3–F.4).
 * **Concept‑Set row** — the cross‑Room table row that supports minting a **U‑Type** name (F.7).
 
 ---
@@ -23748,35 +23742,35 @@ This code resolves these by **Room fidelity**, **plane‑aware morphology**, and
 
 > **Name what the invariants already make true.**
 >
-> For CRA templates, **speak like the Room** (Tech), then **teach it** (Plain).
+> For Role Descriptions, **speak like the Room** (Tech), then **teach it** (Plain).
 > For U‑Types, **speak like nobody’s Room**: pick the **neutral, minimal‑generality** label that best fits the **intersection** shown by your Concept‑Set row.
 
 ---
 
-## 5 · Normative rules — CRA templates (Room‑local labels)
+## 5 · Normative rules — Role Descriptions (Room‑local labels)
 
-Let **T** be a CRA template in Room **C** with SenseCell `sense(T)=⟨C,σ⟩`.
+Let **T** be a Role Description in Room **C** with SenseCell `sense(T)=⟨C,σ⟩`.
 
-**R‑CRA‑1 (Two registers).** Provide **both**:
+**R‑RD‑1 (Two registers).** Provide **both**:
 `Tech(T)` = the **Room‑idiomatic** phrase (exact canon wording if possible).
 `Plain(T)` = a brief, neutral explanation *that does not broaden meaning*.
 *Symbolic alias* is optional and purely informative.
 
-**R‑CRA‑2 (No Room tags in labels).** Do **not** embed the Room name in the label (avoid “(BPMN)” in the label itself). Room is already carried by the **SenseCell**; keep labels clean.
+**R‑RD‑2 (No Room tags in labels).** Do **not** embed the Room name in the label (avoid “(BPMN)” in the label itself). Room is already carried by the **SenseCell**; keep labels clean.
 
-**R‑CRA‑3 (Plane‑aware morphology).**
+**R‑RD‑3 (Plane‑aware morphology).**
 — **Role** names are **countable nouns** for masks (e.g., *Participant*, *Operator*, *Reviewer*). Avoid verbs and gerunds. Add the suffix **“Role”** **only** if the Room idiom risks confusion with a substance or a status (e.g., *“Reviewer Role”* in a Room that also has a *“Reviewer Status”*).
 — **Status** names are **state nouns** or **adjectival‑noun collocations** (e.g., *Approved*, *Compliant*, *In‑Service*, *Access Role* (RBAC)). If a family of levels exists, encode the **level** (`Assurance L1`, `Readiness L2`) rather than inventing decorative adjectives.
 
-**R‑CRA‑4 (Local idiom first).** Prefer the **canon’s term of art** even if it sounds narrower than a cross‑discipline cliché. The Plain label handles pedagogy; the Tech label honours the Room.
+**R‑RD‑4 (Local idiom first).** Prefer the **canon’s term of art** even if it sounds narrower than a cross‑discipline cliché. The Plain label handles pedagogy; the Tech label honours the Room.
 
-**R‑CRA‑5 (Minimal generality).** Choose the **narrowest label** whose invariants you actually assert. Do **not** “upgrade” *Task* to *Activity* or *Process* just to sound universal.
+**R‑RD‑5 (Minimal generality).** Choose the **narrowest label** whose invariants you actually assert. Do **not** “upgrade” *Task* to *Activity* or *Process* just to sound universal.
 
-**R‑CRA‑6 (No permissions by stealth).** Role labels **must not** imply entitlement (*“Privileged Operator”* is a Status+Role mashup). Keep deontics in **Status** names in the **deontics Room**.
+**R‑RD‑6 (No permissions by stealth).** Role labels **must not** imply entitlement (*“Privileged Operator”* is a Status+Role mashup). Keep deontics in **Status** names in the **deontics Room**.
 
-**R‑CRA‑7 (Edition‑neutral labels).** Do **not** bake edition/profile into labels. Edition lives in the **Room**; the card binds to a SenseCell that already encodes edition where needed.
+**R‑RD‑7 (Edition‑neutral labels).** Do **not** bake edition/profile into labels. Edition lives in the **Room**; the card binds to a SenseCell that already encodes edition where needed.
 
-**R‑CRA‑8 (Short and stable).** Favour **1–3 words**. Avoid rhetorical adjectives (*“robust, optimal, best‑practice”*).
+**R‑RD‑8 (Short and stable).** Favour **1–3 words**. Avoid rhetorical adjectives (*“robust, optimal, best‑practice”*).
 
 ---
 
@@ -23788,7 +23782,7 @@ Let **U** be a U‑Type minted from a **Concept‑Set row** (F.7) satisfying A.8
 
 **R‑UT‑2 (Minimal generality).** Name the **least upper sense** that all row witnesses share. If *Observation* and *Measurement* disagree, perhaps the U‑Type is **Result** or **Reading**, not **Observation**.
 
-**R‑UT‑3 (No plane mixing in names).** Do **not** name a U‑Type with deontic or behavioural language (*“PermittedService”*, *“ResponsibleAgent”*). Planes belong to CRA; U‑Types are *what‑it‑is* kinds, not *what‑it‑does* or *what‑is‑allowed*.
+**R-UT-3 (No plane mixing in names).** Do **not** name a U-Type with deontic or behavioural language (*“PermittedService”*, *“ResponsibleAgent”*). Planes belong to **Role Descriptions (F.4)**; U-Types are *what-it-is* kinds, not *what-it-does* or *what-is-allowed*.
 
 **R‑UT‑4 (Head–modifier discipline).** Prefer **head nouns** with **light modifiers** over stacked compounds.
 Good: *Evidence Status*, *Requirement Status*, *Type Node*.
@@ -23808,17 +23802,17 @@ Risky: *Multi‑stage‑workflow‑execution‑record* (compresses a scenario in
 
 ## 7 · Invariants (normative, lightweight)
 
-**INV‑F5‑1 (Pair).** Every CRA card and every U‑Type **MUST** carry **Tech** and **Plain** labels; symbol is optional and informative.
+**INV-F5-1 (Pair).** Every Role Description card and every U-Type **MUST** carry **Tech** and **Plain** labels; symbol is optional and informative.
 
-**INV‑F5‑2 (Room fidelity for CRA).** `Tech(T)` **MUST** be idiomatic for its Room; `Plain(T)` **MUST NOT** broaden `sense(T)`.
+**INV-F5-2 (Room fidelity for Role Descriptions).** `Tech(T)` **MUST** be idiomatic for its Room; `Plain(T)` **MUST NOT** broaden `sense(T)`.
 
 **INV‑F5‑3 (Neutrality for U‑Types).** `Tech(U)` **MUST** be discipline‑neutral with respect to the witness Rooms in its Concept‑Set row.
 
-**INV‑F5‑4 (Plane honesty).** CRA Role labels are **behavioural masks**; CRA Status labels are **states/badges**; neither sneaks in the other plane.
+**INV-F5-4 (Plane honesty).** Role Description **Role** labels are **behavioural masks**; Role Description **Status** labels are **states/badges**; neither sneaks in the other plane.
 
-**INV‑F5‑5 (Minimality).** Labels **MUST** reflect the **minimal generality** supported by invariants (F.4 for CRA, F.7 for U‑Types).
+**INV‑F5‑5 (Minimality).** Labels **MUST** reflect the **minimal generality** supported by invariants (F.4 for Role Description, F.7 for U‑Types).
 
-**INV‑F5‑6 (No Room tags).** Names **MUST NOT** embed Room/edition tags; that information resides in SenseCells (CRA) and Concept‑Set rows (U‑Types).
+**INV-F5-6 (No Room tags).** Names **MUST NOT** embed Room/edition tags; that information resides in SenseCells (Role Description) and Concept-Set rows (U-Types).
 
 ---
 
@@ -23826,7 +23820,7 @@ Risky: *Multi‑stage‑workflow‑execution‑record* (compresses a scenario in
 
 > Pure mental checks; no tools implied.
 
-1. **Room‑idiom check (CRA).**
+1. **Room-idiom check (Role Description).**
    `T in Room C ⊢ idiomatic(Tech(T), C)`
    *Reading:* The Tech label reads like the Room’s own term of art.
 
@@ -23838,19 +23832,19 @@ Risky: *Multi‑stage‑workflow‑execution‑record* (compresses a scenario in
    `witnessRooms(U)=R ⊢ neutral(Tech(U), R)`
    *Reading:* The Tech label doesn’t privilege one witness Room’s jargon.
 
-4. **Plane form check (CRA).**
+4. **Plane form check (Role Description).**
    `plane(T)=Role ⊢ nounMask(Tech(T))`
    `plane(T)=Status ⊢ stateForm(Tech(T))`
    *Reading:* The morphology matches the plane.
 
 5. **Minimality proof.**
-   `inv(T) ⇒ nameScope(Tech(T)) ⊆ senseScope(sense(T))` (CRA)
+  `inv(T) ⇒ nameScope(Tech(T)) ⊆ senseScope(sense(T))` (Role Description)
    `rowWitnesses(U) ⇒ nameScope(Tech(U)) ⊆ intersectionScope(row)` (U‑Type)
    *Reading:* The name’s scope is **no wider** than what the invariants/witnesses support.
 
 6. **Collision ping.**
    `similar(Tech(X), Tech(Y)) ∧ plane(X)≠plane(Y) ⊢ requireDisambiguatorOrSplit`
-   *Reading:* If two labels nearly coincide across planes, either add a minimal disambiguator (CRA only, within Room idiom) or split concepts.
+  *Reading:* If two labels nearly coincide across planes, either add a **minimal** disambiguator (Role Description only, within Room idiom) or split concepts.
 
 ---
 
@@ -23885,12 +23879,12 @@ Tech: **Type Node** · Plain: *a node in a type hierarchy or lattice*
 | **A3**  | **Plane mixing**            | `Privileged Operator`, `Compliant Reviewer Role`                   | Role + deontic Status fused; category error                        | Keep **Role** nouns for masks; put deontics in **Status** names, often in a deontics Room. (R‑CRA‑3, R‑CRA‑6)       |
 | **A4**  | **Verbified roles**         | `Observing`, `Controlling`, `Approving` as Role names              | Action words hide mask semantics; temporal confusion               | Use **countable nouns** for Roles: `Observer`, `Controller`, `Approver`. (R‑CRA‑3)                                  |
 | **A5**  | **Edition coding**          | `SLO‑v4`, `Task‑IEC61131`                                          | Names fossilise an edition; brittle across time                    | Edition belongs to the **Room**; keep labels edition‑neutral. (R‑CRA‑7, R‑UT‑9)                                     |
-| **A6**  | **Over‑reach**              | CRA `Activity` for a BPMN task, U‑Type `Process` for run‑time acts | Label outruns invariants; invites cross‑Room misuse                | Choose **minimal generality** that the invariants actually support. (R‑CRA‑5, R‑UT‑2, INV‑F5‑5)                     |
+| **A6**  | **Over-reach**              | Role Description `Activity` for a BPMN task, U-Type `Process` for run-time acts | Label outruns invariants; invites cross-Room misuse                | Choose **minimal generality** that the invariants actually support. (R-RD-5, R-UT-2, INV-F5-5)
 | **A7**  | **Under‑reach / vagueness** | `Item`, `Thing`, `Record` for specific kins                        | No discriminative power; weak teaching                             | Prefer **discipline‑neutral yet informative** heads (`Type Node`, `Result`, `Requirement Status`). (R‑UT‑1, R‑UT‑4) |
 | **A8**  | **Symbol as name**          | U‑Type named `λ` or `≤`                                            | Unsearchable; room‑coloured conventions                            | Keep symbols **only as aliases**; Tech label is words. (R‑UT‑8)                                                     |
 | **A9**  | **Synonym spray**           | Multiple Tech labels for one U‑Type                                | Fragmentation; alias drift                                         | One **Tech** label; further surface forms live in the **registry** (F.13). (R‑UT‑6, INV‑F5‑1)                       |
 | **A10** | **Compound overgrowth**     | `multi‑stage‑workflow‑execution‑record`                            | Encodes scenario in a name; unreadable                             | Use **head + light modifier**: `Execution Record` (if that is the U‑Type at all). (R‑UT‑4)                          |
-| **A11** | **Room‑idiom denial**       | CRA in BPMN named `Actor` (imported from other Rooms)              | Readers misapply foreign semantics                                 | Use the **Room’s term of art** in the Tech label; teach via Plain label. (R‑CRA‑4)                                  |
+| **A11** | **Room-idiom denial**       | Role Description in BPMN named `Actor` (imported from other Rooms) | Readers misapply foreign semantics                                 | Use the **Room’s term of art** in the Tech label; teach via Plain label. (R-RD-4)
 | **A12** | **Status as event**         | `Approval` status labelled `Approve`                               | Morphology hides state vs act                                      | Status labels are **state nouns** / **adjectival‑noun collocations**: `Approved`, `In Service`. (R‑CRA‑3)           |
 | **A13** | **Bracketed twins**         | `Participant/Agent`, `Service/SLO` as single label                 | Two senses slipped into one card                                   | Pick **one** label per concept; the other lives as alias (F.13) or as a different card. (INV‑F5‑1, R‑UT‑6)          |
 | **A14** | **Family drift**            | `Assurance Rank`, `Assurance Tier`, `Readiness Level` mixed        | Readers fail to see relatedness                                    | Keep **family shape** parallel: `… Level`, `… Status`. (R‑UT‑7)                                                     |
@@ -23902,31 +23896,31 @@ Tech: **Type Node** · Plain: *a node in a type hierarchy or lattice*
 
 > Each example shows the **reasoning move** that leads to the label; no procedures, no tooling.
 
-### 11.1 CRA labels (Room‑local)
+### 11.1 Role Description labels (Room-local)
 
 **(a) BPMN Room — behavioural mask vs node word**
 
 * **SenseCell.** ⟨*BPMN 2.0*, local‑sense: lane/pool actor that enacts tasks⟩
 * **Decision.** Tech = **Participant** (Room idiom); Plain = *actor in a workflow*
-* **Why.** `Participant` is the mask; it is **not** the node (*Task*, *Event*). (R‑CRA‑3, R‑CRA‑4)
+* **Why.** `Participant` is the mask; it is **not** the node (*Task*, *Event*). (R-RD-3, R-RD-4)
 
 **(b) RBAC Room — deontic badge**
 
 * **SenseCell.** ⟨*NIST RBAC*, local‑sense: named permission set assigned to sessions⟩
 * **Decision.** Tech = **Access Role**; Plain = *named permission set*
-* **Why.** It’s a **Status**, not a behavioural mask; deontic plane kept explicit. (R‑CRA‑3, R‑CRA‑6)
+* **Why.** It’s a **Status**, not a behavioural mask; deontic plane kept explicit. (R-RD-3, R-RD-6)
 
 **(c) ITIL Room — service target**
 
 * **SenseCell.** ⟨*ITIL 4*, local‑sense: target value for a service characteristic⟩
 * **Decision.** Tech = **Service‑Level Objective**; Plain = *service target value*
-* **Why.** Family will carry `… Level`, `… Indicator` in adjacent cards; avoids jargon drift. (R‑CRA‑3, R‑UT‑7)
+* **Why.** Family will carry `… Level`, `… Indicator` in adjacent cards; avoids jargon drift. (R-RD-3, R-UT-7)
 
-**(d) IEC 61131‑3 Room — run‑time execution notion as CRA?**
+**(d) IEC 61131-3 Room — run-time execution notion as Role Description?**
 
 * **SenseCell.** ⟨*IEC 61131‑3*, local‑sense: cyclic/event‑driven task unit⟩
-* **Decision.** For CRA **Status** of a run, label **Completed**, **Failed**, **Skipped** (Room idiom); avoid naming the **Work** itself here.
-* **Why.** The *record of work* is a **U‑Type** elsewhere (A.15.1); CRA in this Room carries **badges** of runs. (A.7 plane split; R‑CRA‑3)
+* **Decision.** For a Role Description **Status** of a run, label **Completed**, **Failed**, **Skipped** (Room idiom); avoid naming the **Work** itself here.
+* **Why.** The *record of work* is a **U-Type** elsewhere (A.15.1); Role Description in this Room carries **badges** of runs. (A.7 plane split; R-RD-3)
 
 ---
 
@@ -23959,9 +23953,9 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 
 **Rooms in play.** IEC 61131‑3 (run), SOSA/SSN (sensing), ITIL 4 (services).
 
-1. **CRA (ITIL)** — Tech: **Service‑Level Objective**; Plain: *service target value*.
+1. **Role Description (ITIL)** — Tech: **Service-Level Objective**; Plain: *service target value*.
 2. **U‑Type (from R₁)** — Tech: **Result** (to host measured values).
-3. **CRA (IEC)** — Tech: **Completed** / **Failed** (Status on a run).
+3. **Role Description (IEC)** — Tech: **Completed** / **Failed** (Status on a run).
 4. **Name discipline payoff.** The sentence “*Compare IEC run **Results** against the ITIL **Service‑Level Objective***” is Room‑true without tags, because each label encodes its plane and neutrality.
 
 ---
@@ -23972,11 +23966,11 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 
 2. **When a Concept‑Set row gains a new witness Room.** Re‑ask neutrality: if the Tech label now privileges a Room, **refactor to a more neutral head** (e.g., `Observation` → `Result`). (R‑UT‑1, R‑UT‑2)
 
-3. **Collision emergence.** If a CRA Role and a Status converge phonetically (`Approver` vs `Approved`), keep both but add the **minimal morphological disambiguator** only where the Room idiom demands it (`Reviewer Role`). (R‑CRA‑3)
+3. **Collision emergence.** If a **Role card** and a **Status card** converge phonetically (`Approver` vs `Approved`), keep both but add the **minimal morphological disambiguator** only where the Room idiom demands it (`Reviewer Role`). (R-RD-3)
 
 4. **Family hygiene.** As families grow, keep **parallel shapes** (`… Level`, `… Status`). If a legacy label breaks shape, add a **Plain alias** for teaching; don’t rename the Tech label without Concept‑Set pressure. (R‑UT‑7, R‑UT‑6)
 
-5. **Language variants.** Non‑English canons keep **their own Tech labels** (idiomatic in that Room); the **Plain** label remains English in FPF unless the Part mandates localisation. (R‑CRA‑4, INV‑F5‑1)
+5. **Language variants.** Non-English canons keep **their own Tech labels** (idiomatic in that Room); the **Plain** label remains English in FPF unless the Part mandates localisation. (R-RD-4, INV-F5-1)
 
 6. **Symbol addition.** You may add a **symbolic alias** later for readers of formal sections; never promote a symbol to the Tech label. (R‑UT‑8)
 
@@ -23990,19 +23984,19 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 
 ### 13.1 Static conformance (SCR)
 
-* **SCR‑F5‑S01 (Two registers).** Every CRA card and U‑Type **has both** Tech and Plain labels; any symbol is marked **alias**.
-* **SCR‑F5‑S02 (Room fidelity for CRA).** For any CRA `T` in Room `C`, `Tech(T)` appears idiomatic **in C**; `Plain(T)` does **not** broaden `sense(T)`.
+* **SCR-F5-S01 (Two registers).** Every Role Description card and U-Type **has both** Tech and Plain labels; any symbol is marked **alias**.
+* **SCR-F5-S02 (Room fidelity for Role Descriptions).** For any Role Description `T` in Room `C`, `Tech(T)` appears idiomatic **in C**; `Plain(T)` does **not** broaden `sense(T)`.
 * **SCR‑F5‑S03 (Neutrality for U‑Types).** For any U‑Type `U`, its Tech label does **not** coincide with a witness Room’s proprietary term when alternatives exist.
 * **SCR‑F5‑S04 (Plane morphology).** Role labels are **countable nouns**; Status labels are **state nouns** / adjectival‑noun forms.
-* **SCR‑F5‑S05 (Minimal generality).** For each label, there exists a reading where the **name’s scope ⊆ invariant scope** (CRA) or **⊆ row intersection** (U‑Type).
+* **SCR-F5-S05 (Minimal generality).** For each label, there exists a reading where the **name’s scope ⊆ invariant scope** (Role Description) or **⊆ row intersection** (U-Type).
 * **SCR‑F5‑S06 (No Room tags).** No label embeds Room or edition strings.
 * **SCR‑F5‑S07 (Family coherence).** Families that claim parity (e.g., Levels) show **parallel shapes** across members.
 
 ### 13.2 Regression checks (RSCR)
 
 * **RSCR‑F5‑E01 (Witness drift).** When a Concept‑Set row gains/removes a witness Room, re‑evaluate **neutrality**; if violated, refactor the Tech label to a more neutral head.
-* **RSCR‑F5‑E02 (Edition churn).** When a Room updates, CRA labels remain stable unless the **sense** changed; if sense changed, **split** the card and keep aliases in F.13.
-* **RSCR‑F5‑E03 (Collision guard).** If two labels become confusable across planes, either add the **minimal** disambiguator (CRA only, Room‑idiom) or separate the concepts.
+* **RSCR-F5-E02 (Edition churn).** When a Room updates, Role Description labels remain stable unless the **sense** changed; if sense changed, **split** the card and keep aliases in F.13.
+* **RSCR-F5-E03 (Collision guard).** If two labels become confusable across planes, either add the **minimal** disambiguator (Role Description only, Room-idiom) or separate the concepts.
 * **RSCR‑F5‑E04 (Rhetoric creep).** Periodic skim for decorative adjectives; remove them unless they encode formal levels or families.
 
 ---
@@ -24010,26 +24004,26 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 ## 14 · Didactic distillation (60‑second recap)
 
 > **Name what is already true.**
-> CRA labels **speak like the Room** (Tech) and **teach without widening** (Plain).
+> Role Description labels **speak like the Room** (Tech) and **teach without widening** (Plain).
 > U‑Type labels **speak like nobody’s Room**: neutral head nouns at **minimal generality**, shaped in **parallel families**.
 > **Never** glue Room tags or editions into names. **Never** mix planes in morphology.
 > If witnesses change, reconsider neutrality; if senses split, **split names**, don’t stretch them.
 > The label is the **last step of understanding**, not the first.
 
 
-# F.6 — Six‑Move CRA Reasoning \[A] 
+# F.6 — Role Assignment & Enactment Cycle (Six-Step) \[A] 
 
 **“Assign only what you can later justify by local meaning and observable facts.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
-**Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; F.1 **Domain Landscape Survey**; F.2 **Term Harvesting & Normalisation**; F.3 **Intra‑Context Sense Clustering**; F.4 **CRA Template Definition**; F.5 **Naming Discipline**.
+**Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; F.1 **Domain Landscape Survey**; F.2 **Term Harvesting & Normalisation**; F.3 **Intra‑Context Sense Clustering**; F.4 **Role Description**; F.5 **Naming Discipline**.
 **Coordinates with.** F.7 **Concept‑Set Table**; F.8 **Mint or Reuse?**; F.9 **Alignment & Bridge**; F.10 **Epistemic Status Mapping**; A.2.1 **U.RoleAssignment**; A.15.\* **Role–Method–Work alignment**; KD‑CAL (observations, results).
-**Aliases (informative).** *Assign‑and‑verify mental loop*; *CRA six moves*.
+**Aliases (informative).** *Assign-and-verify mental loop*; *six-step role cycle*.
 
 ---
 
 ## 1 · Intent & applicability
 
-**Intent.** Provide a **minimal set of reasoning moves** that turn a **CRA Template** (F.4), anchored in a **SenseCell**, into a **sound claim** about a concrete **holder**—either a **Role assignment** or a **Status assertion**—with **local meaning** (within one Room) and a **clear path to evidence** (KD‑CAL). These are **mental moves**, not workflows or tools.
+**Intent.** Provide a **minimal set of reasoning moves** that turn a **Role Description** (F.4), anchored in a **SenseCell**, into a **sound claim** about a concrete **holder**—either a **Role assignment** or a **Status assertion**—with **local meaning** (within one Room) and a **clear path to evidence** (KD‑CAL). These are **mental moves**, not workflows or tools.
 
 **Applicability.** Any time you (a) bind a system to a **Role** mask, or (b) assert a **Status** about a system/artefact, **inside one U.BoundedContext**. Use when drafting models, reconciling vocabularies, or reading external canons.
 
@@ -24039,7 +24033,7 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 
 ## 2 · Problem frame
 
-Without disciplined CRA reasoning:
+Without disciplined Role Assignment & Enactment reasoning:
 
 1. **Plane slippage.** Behavioural **Roles** and deontic/epistemic **Statuses** get mixed.
 2. **Room drift.** A label is lifted from one canon and used as if universal.
@@ -24064,7 +24058,7 @@ Without disciplined CRA reasoning:
 
 * **Room** — shorthand for **U.BoundedContext** (per E.10.1).
 * **SenseCell** — address **⟨Room × Local‑Sense⟩** from F.3.
-* **CRA Template** — a **Role** or **Status** card anchored in a SenseCell (F.4).
+* **Role Description** — a **Role** or **Status** card anchored in a SenseCell (F.4).
 * **Holder** — the concrete system/artefact to which a Role/Status may apply.
 * **Eligibility** — conditions on the Holder that *must* hold to apply the Template (F.4 invariants).
 * **Window** — the temporal stance or interval relevant to the claim (design/run; instant/period).
@@ -24115,7 +24109,7 @@ All moves are **Room‑local** and **side‑effect free** (they assert knowledge
 
 ---
 
-### M4 · Bind/Assert — *Make the CRA claim*
+### M4 · Bind/Assert — *Make the Role Assignment / Status claim*
 
 **Role assignment (behavioural mask).**
 `eligible(H, τ @ C) ∧ window W ⊢ plays_role(H, τ : C) @ W`
@@ -24143,7 +24137,7 @@ All moves are **Room‑local** and **side‑effect free** (they assert knowledge
 **Form.**
 `evidence E fits Σ(C) ∧ invariants(τ) hold ⊢ holds(κ) with confidence γ ∈ [0,1]`
 
-**Reading.** If observed facts match the expected evidence shape and Template invariants stand, the CRA claim **holds** with some confidence (cf. B.3).
+**Reading.** If observed facts match the expected evidence shape and Template invariants stand, the assignment/status claim **holds** with some confidence (cf. B.3).
 **Note.** Confidence combines measurement adequacy (KD‑CAL) with any Room‑specific uncertainty; no cross‑Room boost is implied.
 
 ---
@@ -24173,14 +24167,14 @@ All moves are **Room‑local** and **side‑effect free** (they assert knowledge
 
 | #         | Anti‑pattern                   | Symptom                                                                                     | Why it harms reasoning                                                     | Remedy (conceptual move)                                                                                                     |
 | --------- | ------------------------------ | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| **AP‑1**  | **Cross‑Room Binding**         | Template labeled from Room A, but evidence or eligibility pulled from Room B.               | Imports foreign meaning; breaks **Locality**.                              | Re‑formulate strictly in one Room. If cross‑Room support is essential, defer to **F.9 Bridge** and keep the CRA claim local. |
+| **AP-1**  | **Cross-Room Binding**         | ... | ... | Re-formulate strictly in one Room. If cross-Room support is essential, defer to **F.9 Bridge** and keep the assignment/status claim local. |
 | **AP‑2**  | **Role/Status Conflation**     | “Operator” modeled as a deontic grant; “SLO met” modeled as a Role.                         | Collapses **behavioural mask** and **epistemic/deontic state** (A.7).      | Re‑type the Template: **Role** for “can/does”, **Status** for “is/has (as a claim)”. Use **M4** accordingly.                 |
 | **AP‑3**  | **Window‑less Claims**         | Binding/assertion with no time stance or interval.                                          | Uncheckable; invites retrospective reinterpretation.                       | Make **Window** explicit (§6 M4). Inherit stance from the Room/Template if fixed; otherwise state it.                        |
 | **AP‑4**  | **Eligibility‑after‑the‑fact** | Declaring the claim, then back‑fitting eligibility to observed traces.                      | Confuses **necessary conditions** with **diagnostics**; risks circularity. | Perform **M3 Qualify** *before* **M4 Bind/Assert**; treat evidence only in **M5**/**M6**.                                    |
 | **AP‑5**  | **Global Label Illusion**      | Using bare labels (“process”, “agent”, “role”) as if universal.                             | Hides the Room; fuels homonym errors.                                      | Always recover **M1 Locate**: `address(τ)=⟨Room, SenseCell⟩`. Use F.5 naming discipline (Tech/Plain registers).              |
 | **AP‑6**  | **Evidence by Prestige**       | “Industry practice says …” offered instead of KD‑CAL‑shaped facts.                          | Replaces observable Results with authority talk.                           | State an **evidence shape Σ(Room)** in **M5**; later fill it with **Observation/Result** facts (KD‑CAL).                     |
 | **AP‑7**  | **Design/Run Inversion**       | Verifying a design‑time mask by design documents; verifying a run‑status with design specs. | Violates temporal stance; yields non‑falsifiable claims.                   | Apply **M2 Stance**: the Template’s stance must be compatible with the Room. Evidence follows the stance.                    |
-| **AP‑8**  | **Premature Bridge**           | Claim assumes two Rooms are “the same” to make a neat story.                                | Hides semantic loss; prevents explicit penalties.                          | Keep the CRA claim local; if needed, create an **F.9 Bridge** with loss notes and CL penalty.                                |
+| **AP-8**  | **Premature Bridge**           | ... | ... | Keep the assignment/status claim local; if needed, create an **F.9 Bridge** with loss notes and CL penalty.                  |
 | **AP‑9**  | **Token Proofs**               | Single anecdotal event taken as universal confirmation.                                     | Over‑generalises; ignores evidence windows and procedures.                 | In **M5**, include **Procedure** and **Window**; in **M6**, roll confidence γ from adequacy of sampling (KD‑CAL).            |
 | **AP‑10** | **Role Explosion as Patch**    | New Role minted for every exception.                                                        | Name bloat; brittle semantics.                                             | Re‑examine **eligibility** and **Window**; consider a **Status** to mark exceptions instead of new Roles.                    |
 | **AP‑11** | **Subject Drift**              | Status asserted on the wrong subject (team vs service; asset vs dataset).                   | Breaks referent clarity; evidence no longer matches.                       | Use **M4**’s split: **plays\_role(H, …)** vs **has\_status(subject(H), …)**; pick the correct subject kind.                  |
@@ -24191,7 +24185,7 @@ All moves are **Room‑local** and **side‑effect free** (they assert knowledge
 
 ## 10 · Worked examples (multi‑architheory)
 
-> Each example is a **Room‑local** CRA reasoning trace using **M1…M6**. Cross‑Room relations, if any, are noted as *optional* bridges (F.9) but not relied upon.
+> Each example is a **Room-local** assignment/status reasoning trace using **M1…M6**. Cross-Room relations, if any, are noted as *optional* bridges (F.9) but not relied upon.
 
 ### 10.1 Service availability status (ITIL + KD‑CAL)
 
@@ -24219,7 +24213,7 @@ All moves are **Room‑local** and **side‑effect free** (they assert knowledge
 **M4 Bind.** `plays_role(PLC_7, τ:IEC) @ W` where `W = [08:00, 18:00] 2025‑06‑05`.
 **M5 Evidence shape Σ(IEC).** **Observation** of task schedule and program invocation logs as **Results** for features `T`/`P` during `W`; presence of expected cyclic/event‑driven triggers.
 **M6 Conclude.** If Results show the expected executions with no missed cycles beyond tolerance, `holds( plays_role(PLC_7, τ:IEC) @ W ) with γ≈0.8`.
-*Trip‑wire.* Do **not** restate this as “PROV Activity” without **F.9**; keep the CRA claim IEC‑local.
+*Trip-wire.* Do **not** restate this as “PROV Activity” without **F.9**; keep the assignment/status claim IEC-local.
 
 ---
 
@@ -24248,32 +24242,28 @@ M1…M6 yield `has_status(User U, RBAC:DB‑Admin) @ W_dir` with Σ(RBAC) = **Ob
 **BPMN claim (Role).**
 M1…M6 yield `plays_role(Team T, BPMN:Participant) @ W_proc` with Σ(BPMN) = **Observation** that lanes/pools enact tasks during `W_proc`.
 
-**Lesson.** Two separate CRA claims, each Room‑local; **no** implication that holding RBAC status entails playing the BPMN Role.
-
----
+**Lesson.** Two separate **Room-local** claims — one **Status assertion** and one **Role assignment**; **no** implication that holding RBAC status entails playing the BPMN Role.
 
 ## 11 · Relations (with other patterns)
 
 **Builds on.**
-F.1 **Domain Landscape Survey** (Rooms fixed); F.2 **Term Harvesting** (local terms); F.3 **Intra‑Context Clustering** (SenseCells); F.4 **CRA Template Definition** (invariants, stance); F.5 **Naming Discipline** (labels).
+F.1 **Domain Landscape Survey** (Rooms fixed); F.2 **Term Harvesting** (local terms); F.3 **Intra‑Context Clustering** (SenseCells); F.4 **Role Description** (invariants, stance); F.5 **Naming Discipline** (labels).
 
 **Constrains.**
-**F.7 Concept‑Set Table.** Lists CRA‑relevant labels but must not invent a cross‑Room claim; it *references* CRA claims that are Room‑local.
-**F.8 Mint or Reuse?** Uses CRA outcomes to decide: a new **Role/Status** label only when existing Templates cannot express the claim with eligibility/Window adjustments.
-**F.9 Alignment & Bridge.** May relate evidence vocabularies or near‑synonyms across Rooms with CL penalties; **CRA conclusions remain Room‑local**.
+**F.7** (Concept-Set Table): rows reference **SenseCells**; Role Description cards **point to** those rows but never **create** cross-Room identity.
+**F.8 Mint or Reuse?** Uses outcomes of **Role/Status** claims to decide: a new **Role/Status** label only when existing Templates cannot express the claim with eligibility/Window adjustments.
+**F.9** (Alignment & Bridge): any relation across Rooms is **declared there**; Role Description cards remain Room-local.
 **F.10 Epistemic Status Mapping.** Consumes **M6** confidences γ and Σ‑adequacy to roll up assurance.
 
 **Used by.**
-Architheories (Part C) to anchor their examples: Sys‑CAL (execution/actuation roles), KD‑CAL (measurement statuses), Method‑CAL (execution claims for Methods/MethodDescription), Type‑CAL (typing claims remain outside CRA, but may inform eligibility predicates).
-
----
+Architheories (Part C) to anchor their examples: Sys‑CAL (execution/actuation roles), KD‑CAL (measurement statuses), Method‑CAL (execution claims for Methods/MethodDescription), Type‑CAL (typing claims remain outside Role Assignment & Enactment, but may inform eligibility predicates).
 
 ## 12 · Migration notes (conceptual)
 
 1. **Template refactor.** If a Template’s invariants change, **claims remain as‑is**; re‑evaluate **M6** on demand. Do not silently rewrite past claims.
-2. **Edition updates.** When a Room’s canon updates, treat it as a **new Room** if sense shifts; CRA claims anchored to the old Room stay valid for their Window.
+2. **Edition updates.** When a Room’s canon updates, treat it as a **new Room** if sense shifts; Claims anchored to the old Room stay valid for their Window.
 3. **Name revisions.** Renaming per F.5 does not alter **address(τ)=⟨Room, SenseCell⟩**; claims reference the address, not surface form.
-4. **Bridge introduction.** Adding an **F.9 Bridge** never upgrades an existing CRA claim; at most it enables *separate* translations with declared loss.
+4. **Bridge introduction.** Adding an **F.9 Bridge** never upgrades an existing Role/Status claim; at most it enables *separate* translations with declared loss.
 5. **From exception to Status.** If recurring exceptions to a Role appear, prefer minting a **Status** Template that marks the exception rather than proliferating Roles.
 6. **Window tightening.** If evidence shows drift, narrow future **Windows**; past claims remain tied to their original Windows.
 
@@ -24283,7 +24273,7 @@ Architheories (Part C) to anchor their examples: Sys‑CAL (execution/actuatio
 
 ### 13.1 Static conformance (SCR)
 
-* **SCR‑F6‑S01 (Local address).** Every CRA claim states `address(τ)=⟨Room, SenseCell⟩`; no bare labels.
+* **SCR-F6-S01 (Local address).** Every assignment/status claim states `address(τ)=⟨Room, SenseCell⟩`; no bare labels.
 * **SCR‑F6‑S02 (Plane clarity).** Each claim is typed **Role** or **Status**, never both; subjects are of the correct kind.
 * **SCR‑F6‑S03 (Stance compatibility).** `stance(Room)` and `stance(τ)` are compatible (design/run).
 * **SCR‑F6‑S04 (Eligibility first).** For each claim, `eligible(H, τ@Room)` is derivable prior to assertion.
@@ -24304,7 +24294,7 @@ Architheories (Part C) to anchor their examples: Sys‑CAL (execution/actuatio
 
 > **Six moves.** (M1) *Locate* the Room & SenseCell; (M2) check **stance**; (M3) test **eligibility**; (M4) **bind/assert** with a **Window**; (M5) sketch the **evidence shape** in that Room; (M6) **conclude** with confidence γ.
 > **Two iron rules.** Keep it **Room‑local**; keep **Role** and **Status** on their planes.
-> **Pay‑off.** CRA claims become small, auditable thoughts: easy to teach, easy to check, and easy to relate—later—via explicit Bridges when you truly must step between rooms.
+> **Pay-off.** Assignment/status claims become small, auditable thoughts: easy to teach, easy to check, and easy to relate—later—via explicit Bridges when you truly must step between rooms.
 
 # F.7 — Concept‑Set Table \[A]
 
@@ -24312,7 +24302,7 @@ Architheories (Part C) to anchor their examples: Sys‑CAL (execution/actuatio
 
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Depends on.** E.10.1 **Lexical Discipline for ‘Context’** (Context ≡ `U.BoundedContext`); F.1 **Domain Landscape Survey**; F.2 **Term Harvesting**; F.3 **Intra‑Context Sense Clustering** (SenseCells); F.5 **Naming Discipline**; F.9 **Alignment & Bridge Across Contexts**.
-**Coordinates with.** F.4 **CRA Template Definition**; F.6 **Six‑Move CRA Reasoning**; Part C architheories (for examples).
+**Coordinates with.** F.4 **Role Description**; F.6 **Role Assignment & Enactment Cycle (Six-Step)**; Part C architheories (for examples).
 **Aliases (informative).** *Concept‑Set table*, *comparison grid*.
 
 ---
@@ -24321,7 +24311,7 @@ Architheories (Part C) to anchor their examples: Sys‑CAL (execution/actuatio
 
 **Intent.** Provide a **single, didactic page** where each **row** presents **one Concept‑Set**—a *set of SenseCells from different Rooms that we are licensed (by explicit Bridges) to treat as “the same for a stated scope”*. Columns are **Rooms**; cells carry **local labels**. The table **does not invent equivalences**: it **summarises** already declared **F.9 Bridges**, exposing *scope, losses, and counter‑examples* at a glance.
 
-**Applicability.** Use whenever cross‑Room reading is necessary (naming U‑Types, teaching contrasts, CRA‑adjacent terminology). It is a **reading lens**, not a data model: **notation‑free**, **governance‑free**, **Room‑loyal**.
+**Applicability.** Use whenever cross-Room reading is necessary (naming U-Types, teaching contrasts, assignment/enactment-adjacent terminology). It is a **reading lens**, not a data model: **notation-free**, **governance-free**, **Room-loyal**.
 
 **Non‑goals.** No hidden merges. No “global terms”. No workflows or tool schemas. The table is a **conceptual display** of *licensed sameness* and *honest non‑sameness*.
 
@@ -24360,7 +24350,7 @@ $$
 that FPF **treats as one** *for a declared scope* because there exist **F.9 Bridges** connecting these SenseCells pairwise (directly or via a short chain) with **congruence level** $\text{CL}$ above a **threshold** suitable for that scope. The **table row** shows:
 
 * **FPF Label** *(Tech/Plain)* — the *didactic, FPF‑level* name chosen per F.5.
-* **Row Scope** — where “being one” is safe (e.g., *Naming‑only*, *CRA‑eligibility*, *KD‑CAL metric use*, *Type‑structure*).
+* **Row Scope** — where “being one” is safe (e.g., *Naming-only*, *assignment/enactment-eligibility*, *KD-CAL metric use*, *Type-structure*).
 * **Row CL (min)** — the **minimum CL** of the Bridges that justify the row.
 * **Room columns** — each cell: the **local label** + (optional) short cue.
 * **Rationale (one line)** — why sameness is warranted *for this scope*.
@@ -24415,7 +24405,7 @@ large table; the name signals epistemic humility and traceable reliance on those
 
 1. **Room‑loyal cells.** Every non‑empty cell is a **SenseCell** address; no minted paraphrases.
 2. **Bridge sufficiency.** For a *Concept‑Set* row, **every pair** of filled cells is connected by an **F.9 Bridge path** whose **bottleneck CL** ≥ **Row CL(min)** printed for the row.
-3. **Scope declaration.** Each row **MUST** declare a **Row Scope** chosen from a small controlled set (e.g., *Naming‑only*, *CRA‑eligibility*, *KD‑metric*, *Type‑structure*).
+3. **Scope declaration.** Each row **MUST** declare a **Row Scope** chosen from a small controlled set (e.g., *Naming-only*, *assignment/enactment-eligibility*, *KD-metric*, *Type-structure*).
 4. **Typed rows.** All cells in a row belong to the **same plane** (Role **or** Status **or** Type‑structure **or** Measurement…).
 5. **Temporal compatibility.** Either all cells share the **same stance**, or the row is a **contrast row** (no sameness claim).
 6. **Loss disclosure.** If any Bridge in the row has a **loss note**, the row **MUST** include a **counter‑example** that illustrates that loss in one line.
@@ -24453,7 +24443,7 @@ large table; the name signals epistemic humility and traceable reliance on those
 | #         | Anti‑pattern                | Symptom in a row                                                               | Why it breaks thinking                                               | Remedy (conceptual move)                                                                                          |
 | --------- | --------------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | **AP‑1**  | **Bridge‑free sameness**    | Cells listed as “same” because their labels look alike; no cited Bridges.      | Violates locality; imports meaning across Rooms by name.             | A row **exists only** if backed by **F.9 Bridges**. Otherwise produce a **contrast row**.                         |
-| **AP‑2**  | **Scope creep**             | Row labelled “Type‑structure” but used to justify CRA behaviour or KD metrics. | Scope licences are not transferable; inference leaks.                | Keep a **small controlled set of Row Scopes**. If use widens, **mint a new row** or **re‑bridge** with higher CL. |
+| **AP-2**  | **Scope creep**             | Row labelled “Type-structure” but used to justify **assignment/enactment-eligibility** or KD metrics. | Scope licences are not transferable; inference leaks.                | Keep a **small controlled set of Row Scopes**. If use widens, **mint a new row** or **re-bridge** with higher CL. |
 | **AP‑3**  | **Plane mixing**            | One row mixes Role, Status, Measurement, and Type‑structure cells.             | Conflates planes (A.7); readers cannot tell “what kind of sameness”. | **Type each row.** If two planes are needed, **split** into two rows.                                             |
 | **AP‑4**  | **Temporal blur**           | Cells with incompatible design/run stance declared “same”.                     | Design artefacts ≠ run occurrences; claims invert.                   | Either **harmonise stance** (choose only compatible cells) or publish a **contrast row**.                         |
 | **AP‑5**  | **Loss denial**             | Bridges carry loss notes, but the row omits counter‑examples.                  | Readers over‑trust; misuse outside safe scope.                       | Add a **one‑line counter‑example** that illustrates the loss.                                                     |
@@ -24479,13 +24469,13 @@ large table; the name signals epistemic humility and traceable reliance on those
 
 ---
 
-### 11.2 Execution occurrence (CRA‑eligibility)
+### 11.2 Execution occurrence (assignment/enactment-eligibility)
 
 | FPF Label                                       | Row Scope       | Row CL(min) | PROV‑O                                                           | IEC 61131‑3                                          | Rationale                                                                       | Counter‑examples                                                   |
 | ----------------------------------------------- | --------------- | ----------- | ---------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| **execution‑occurrence** / *a run that happens* | CRA‑eligibility | CL = 2      | **Activity** (time‑bounded occurrence using/generating entities) | **Task execution** (cyclic/event‑driven program run) | Both are **run‑time** occurrences that can be referenced by CRA to ground Work. | BPMN **Process** is a **design** graph; not an occurrence—exclude. |
+| **execution-occurrence** / *a run that happens* | assignment/enactment-eligibility | CL = 2      | **Activity** (time-bounded occurrence using/generating entities) | **Task execution** (cyclic/event-driven program run) | Both are **run-time** occurrences that can be referenced by `U.RoleEnactment` to ground **Work performed under an assignment**. | BPMN **Process** is a **design** graph; not an occurrence—exclude. |
 
-**Reading.** Safe to use as the **thing CRA points to** when we say “this Work happened”. Not safe to equate **all** PROV Activities with **all** PLC task runs for analytics.
+**Reading.** Safe to use as the **run-time occurrence that `U.RoleEnactment` points to** when we say “this Work was performed under an assignment”. Not safe to equate **all** PROV Activities with **all** PLC task runs for analytics.
 
 ---
 
@@ -24581,8 +24571,8 @@ large table; the name signals epistemic humility and traceable reliance on those
 F.1 **Rooms fixed** → defines the column set; F.2 **Harvest** → supplies term material; F.3 **SenseCells** → provide cell addresses; F.5 **Naming Discipline** → provides the two‑register **FPF labels**; F.9 **Bridges** → legally justify each row.
 
 **Constrains.**
-F.4 **CRA Template Definition** — when a template cites an FPF label from the table, it **inherits the Row Scope**; no template may claim semantics beyond the row’s licence.
-F.6 **Six‑Move CRA Reasoning** — Move M‑4 (“choose label”) must reference a row if it wants cross‑Room reading.
+F.4 **Role Description** — when a template cites an FPF label from the table, it **inherits the Row Scope**; no template may claim semantics beyond the row’s licence.
+F.6 **Role Assignment & Enactment Cycle (Six-Step)** — Move M‑4 (“choose label”) must reference a row if it wants cross‑Room reading.
 
 **Used by.**
 Part C architheories for didactic alignment pages; Part B trust calculus (B.3) may consume **Row CL(min)** when computing translation penalties.
@@ -24594,7 +24584,7 @@ Part C architheories for didactic alignment pages; Part B trust calculus (B.
 1. **Bridge update.** If any supporting Bridge’s CL changes, recompute **Row CL(min)**. If it drops below the printed value, either **lower Row Scope**, **split** the row, or **retire** it.
 2. **New Room appears.** Do **not** auto‑expand rows. Test with **12.5**; add only if it brings a **distinct necessity**.
 3. **Sense revision inside a Room.** If a SenseCell splits (F.3), decide which child cell (if any) remains in the row; the rest may require **new rows** or a **contrast**.
-4. **Scope promotion.** To use a row for a stronger purpose (e.g., from Naming‑only to CRA‑eligibility), first ensure **Row CL(min) ≥ τ(new scope)**; otherwise construct **new Bridges** or **decline** promotion.
+4. **Scope promotion.** To use a row for a stronger purpose (e.g., from **Naming-only** to **assignment/enactment-eligibility**), first ensure **Row CL(min) ≥ τ(new scope)**; otherwise construct **new Bridges** or **decline** promotion.
 5. **Deprecation.** If a row no longer meets its invariant, mark its FPF label as **retired** in F.5 and point to successor rows (if any).
 6. **Edition churn.** When a Room is superseded (F.1), either keep the cell (if semantics stable) or treat the successor as a **new Room** and re‑evaluate licensability.
 
@@ -24622,15 +24612,15 @@ Part C architheories for didactic alignment pages; Part B trust calculus (B.
 
 ## 16 · Didactic distillation (60‑second teaching script)
 
-> “A **Concept‑Set row** shows **one idea across Rooms**—but only where explicit **Bridges** license it. Columns are Rooms; cells are **their own labels**. The row prints a **scope** (‘Naming‑only’, ‘CRA‑eligibility’, ‘Type‑structure’, ‘KD‑metric’) and the **weakest CL** that justifies reading across. A **one‑line rationale** says why sameness is safe **here**; a **counter‑example** warns where it breaks. Keep rows small (2–4 Rooms), typed (don’t mix planes), and temporally honest (design vs run). If Bridges don’t suffice, publish a **contrast row** instead. The table doesn’t invent meaning; it **summarises licensed sameness** so readers can cross disciplines without smuggling assumptions.”
+> “A **Concept-Set row** shows **one idea across Rooms**—but only where explicit **Bridges** license it. Columns are Rooms; cells are **their own labels**. The row prints a **scope** (‘Naming-only’, ‘assignment/enactment-eligibility’, ‘Type-structure’, ‘KD-metric’) and the **weakest CL** that justifies reading across. A **one‑line rationale** says why sameness is safe **here**; a **counter‑example** warns where it breaks. Keep rows small (2–4 Rooms), typed (don’t mix planes), and temporally honest (design vs run). If Bridges don’t suffice, publish a **contrast row** instead. The table doesn’t invent meaning; it **summarises licensed sameness** so readers can cross disciplines without smuggling assumptions.”
 
-# F.8 — Mint or Reuse? (U‑Type vs Concept‑Set vs CRA vs Alias) \[A] 
+# F.8 — Mint or Reuse? (U-Type vs Concept-Set vs Role Description vs Alias) \[A] 
 
 **“Name only what thinking **requires**, and reuse everything else.”**
 
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Depends on.** E.10.1 **Lexical Discipline for “Context” (D.CTX)**; A.7 **Strict Distinction**; A.11 **Ontological Parsimony**; A.8 **Universal Core**.
-**Coordinates with.** F.1 **Rooms (Contexts)**; F.2 **Harvest**; F.3 **SenseCells**; F.4 **CRA Templates**; F.5 **Naming Discipline**; F.7 **Concept‑Set Table**; F.9 **Alignment & Bridge**.
+**Coordinates with.** F.1 **Rooms (Contexts)**; F.2 **Harvest**; F.3 **SenseCells**; F.4 **Role Description**; F.5 **Naming Discipline**; F.7 **Concept‑Set Table**; F.9 **Alignment & Bridge**.
 **Aliases (informative).** *Mint‑vs‑Reuse gate*; *Naming governor*.
 
 ---
@@ -24639,11 +24629,11 @@ Part C architheories for didactic alignment pages; Part B trust calculus (B.
 
 **Intent.** Provide a **minimal, conceptual decision lattice** that answers, for any modelling need:
 
-> “Do I **reuse** an existing label, add an **alias**, reference a **Concept‑Set row**, define a **CRA Template**, or mint a **new U‑Type**?”
+> “Do I **reuse** an existing label, add an **alias**, reference a **Concept‑Set row**, define a **Role Description**, or mint a **new U‑Type**?”
 
 The lattice enforces **locality of meaning** (Rooms), **plane separation** (A.7), and **parsimony** (A.11) while remaining didactically simple.
 
-**Applicability.** Use whenever a new name seems “needed” in any architheory thread (Enactment/CRA, Sys‑CAL, KD‑CAL, Type‑CAL, Method‑CAL, LCA‑CAL…).
+**Applicability.** Use whenever a new name seems “needed” in any architheory thread (**Role Assignment & Enactment**, Sys-CAL, KD-CAL, Type-CAL, Method-CAL, LCA-CAL…).
 
 **Non‑goals.** No workflows, no roles, no storage. This is **thinking discipline**, not process guidance.
 
@@ -24675,9 +24665,9 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 * **Room** — `U.BoundedContext` (per D.CTX).
 * **SenseCell** — address of a **local sense** produced by F.3 (one Room × one clustered sense).
 * **Concept‑Set row** — a **licensed cross‑Room reading** (F.7) of cells in one plane with a declared **Row Scope** and **Row CL(min)**.
-* **CRA Template** — a **Role/Status** template anchored to a **single SenseCell** (F.4).
+* **Role Description** — a **Role/Status** template anchored to a **single SenseCell** (F.4).
 * **Alias** — an **additional label** for an existing FPF label (within F.5), no new semantics.
-* **CL threshold τ(scope)** — the **minimum congruence level** needed for a row’s scope (e.g., τ(Naming‑only) < τ(CRA‑eligibility) < τ(Type‑structure)).
+* **CL threshold τ(scope)** — the **minimum congruence level** needed for a row’s scope (e.g., τ(Naming-only) < τ(Assignment-eligibility) < τ(Type-structure)).
 
 ---
 
@@ -24694,10 +24684,10 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 
 * **Yes →** **Reuse** the **SenseCell**’s label **inside that Room**.
 
-  * If you need assignable behaviour or deontics on that sense: **define a CRA Template** **anchored to that SenseCell** (F.4).
+  * If you need assignable behaviour or deontics on that sense: **define a Role Description** **anchored to that SenseCell** (F.4).
 * **No →** go to Q2.
 
-> *Example (engineer).* You want “**task execution**” in control software. In `IEC 61131‑3` there is a clear SenseCell for **task execution**. **Reuse** that label; if you need responsibilities (“who monitors runs”), define a **CRA Template** anchored to this SenseCell.
+> *Example (engineer).* You want “**task execution**” in control software. In `IEC 61131‑3` there is a clear SenseCell for **task execution**. **Reuse** that label; if you need responsibilities (“who monitors runs”), define a **Role Description** anchored to this SenseCell.
 
 ### Q2 — Do you need to **read across Rooms** (same plane)?
 
@@ -24721,13 +24711,13 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 * **Yes →** propose a **new Concept‑Set row** (F.7): small (2–4 Rooms), one plane, declare **Row Scope** and **Row CL(min)**, include a **counter‑example** if any Bridge has loss notes.
 * **No →** go to Q5.
 
-> *Example (engineer).* You repeatedly compare **runtime occurrence** in PROV with **PLC task runs**. F.9 Bridges exist at CL = 2. Propose **row “execution‑occurrence”** at **CRA‑eligibility** scope (not Type‑structure).
+> *Example (engineer).* You repeatedly compare **runtime occurrence** in PROV with **PLC task runs**. F.9 Bridges exist at CL = 2. Propose **row “execution-occurrence”** at **assignment/enactment-eligibility** scope (not Type-structure).
 
-### Q5 — Are you describing a **kernel‑level notion** missing from the catalogue, **not** reducible to existing rows or CRA Templates, and **present across ≥ 3 domain families** (A.8)?
+### Q5 — Are you describing a **kernel‑level notion** missing from the catalogue, **not** reducible to existing rows or Role Descriptions, and **present across ≥ 3 domain families** (A.8)?
 
 * **Yes →** propose a **new U.Type** (rare). Supply:
   (i) the minimal **intensional definition**; (ii) cross‑family evidence (≥ 3 Rooms, **distinct families**); (iii) how it **doesn’t** duplicate an existing U.Type.
-* **No →** you **do not mint** a new type. Re‑express the need in terms of **Room reuse**, **row reuse**, **Alias**, or a **CRA Template**.
+* **No →** you **do not mint** a new type. Re‑express the need in terms of **Room reuse**, **row reuse**, **Alias**, or a **Role Description**.
 
 > *Example (researcher).* You think we need **U.InfluenceEdge** (causal tendency). If it appears as a stable, plane‑specific notion across **control**, **epistemic inference**, and **methods** (≥ 3 families), and cannot be formed from existing `U.Relation` subtypes, it **may** qualify. Otherwise, treat it as a **pattern** or a **row**.
 
@@ -24738,11 +24728,11 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 | Row / Use Scope     | What it licenses                                                                              | Default τ (minimum CL) | Typical consumers                         |
 | ------------------- | --------------------------------------------------------------------------------------------- | ---------------------: | ----------------------------------------- |
 | **Naming‑only**     | Shared label in prose, diagrams, and primers; **no inference**.                               |                  **1** | Pedagogy, glossary, didactic figures.     |
-| **CRA‑eligibility** | Safe to reference the row’s target as the **thing CRA points to** (e.g., a run, a value).     |                  **2** | F.4 CRA Templates, acceptance narratives. |
+| **Assignment-eligibility** | Safe to reference the row’s target as the **thing a `U.RoleAssignment` may point to** (e.g., a run, a value). | **2** | F.4 Role Description, acceptance narratives. |
 | **KD‑metric**       | Treat cells as the **same measured outcome** (unit‑compatible, procedure‑compatible).         |                  **2** | Measurement summaries, SLO tables.        |
 | **Type‑structure**  | Treat cells as the **same structural relation** (e.g., subtyping) with inheritance semantics. |                  **3** | Type‑CAL pages, structural proofs.        |
 
-> **Guard.** You may **tighten** scope (e.g., from Naming‑only → CRA‑eligibility) **only** if the **Row CL(min)** meets the **higher τ**.
+> **Guard.** You may **tighten** scope (e.g., from Naming-only → Assignment-eligibility) **only** if the **Row CL(min)** meets the **higher τ**.
 
 ---
 
@@ -24753,8 +24743,8 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 * **Need.** “We want to refer to **what actually happened** in both provenance logs and PLC runtime.”
 * **Plane.** Execution / run occurrence.
 * **Rooms.** `PROV‑O` (Activity), `IEC 61131‑3` (task run).
-* **Row?** F.7 has **execution‑occurrence** at **CRA‑eligibility**, CL = 2.
-* **Decision.** **Reuse** that row’s label at CRA‑eligibility; **no** new U‑Type; define CRA Templates **anchored to each Room** as needed.
+* **Row?** F.7 has **execution-occurrence** at **assignment/enactment-eligibility**, CL = 2.
+* **Decision.** **Reuse** that row’s label at **Assignment-eligibility**; **no** new U-Type; define Role Descriptions **anchored to each Room** as needed.
 
 ### 7.2 For managers — “Can we call them all **actors**?”
 
@@ -24762,7 +24752,7 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 * **Plane.** Role (behavioural mask in prose).
 * **Rooms.** `BPMN 2.0` (Participant), `PROV‑O` (Agent).
 * **Row?** **Naming‑only** row “actor”, CL = 2.
-* **Decision.** **Reuse** “actor” **in prose only**; keep Room‑loyal labels in formal sections. No CRA Template minted unless tied to one Room.
+* **Decision.** **Reuse** “actor” **in prose only**; keep Room‑loyal labels in formal sections. No Role Description minted unless tied to one Room.
 
 ### 7.3 For researchers — “New **U.Type** for ‘Work Scope’?”
 
@@ -24778,7 +24768,7 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 1. **Room‑first.** Every decision cites at least one **Room**; no global senses.
 2. **Plane purity.** A single decision covers **one plane**. Mixed needs are split.
 3. **Row honesty.** Any cross‑Room reuse occurs **via a Concept‑Set row** at or above **τ(scope)**; no stealth equivalence.
-4. **CRA anchoring.** CRA Templates are **single‑Room**, **single‑cell** anchors (F.4).
+4. **Role Description anchoring.** Role Descriptions are **single-Room**, **single-cell** anchors (F.4).
 5. **Alias modesty.** Aliases **never** change semantics and live under F.5.
 6. **Kernel restraint.** New **U.Types** are **rare**; A.8 **(≥ 3 families)** is mandatory, and duplication with existing U.Types must be ruled out.
 
@@ -24789,7 +24779,7 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 | You feel you need…                          | Likely action                  | Why                                              |
 | ------------------------------------------- | ------------------------------ | ------------------------------------------------ |
 | A convenient everyday word across two Rooms | **Reuse a Naming‑only row**    | Keeps prose simple without smuggling inference.  |
-| An assignable mask with invariants          | **CRA Template (single Room)** | Roles/Statuses attach to **local** senses.       |
+| An assignable mask with invariants          | **Role Description (single Room)** | Roles/Statuses attach to **local** senses.       |
 | The same measured outcome across Rooms      | **Reuse a KD‑metric row**      | Units/procedures aligned at CL ≥ 2.              |
 | A unifying schema relation (e.g., is‑a)     | **Reuse a Type‑structure row** | Structural inference preserved at CL ≥ 3.        |
 | A nicer label for the same FPF concept      | **Alias in F.5**               | Style only; zero semantics.                      |
@@ -24800,9 +24790,9 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 | #         | Anti‑pattern               | Symptom                                                                            | Why it harms thinking                              | Remedy (conceptual move)                                                                                                                         |
 | --------- | -------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **AP‑1**  | **Row‑less sameness**      | Declaring “these mean the same” across Rooms without citing a **Concept‑Set row**. | Imports meaning implicitly; no CL guard.           | If cross‑Room reuse is desired, **reuse an existing row** at a declared **scope** (F.7), else **publish the contrast** and defer to F.9 Bridges. |
-| **AP‑2**  | **Scope creep**            | Using a **Naming‑only** row to justify CRA or structural inferences.               | Over‑claims sameness; breaks τ(scope).             | Respect **scope thresholds** (τ). Upgrade only when **Row CL(min) ≥ τ(new scope)**; otherwise stay Naming‑only.                                  |
-| **AP‑3**  | **Alias with payload**     | Introducing an Alias that subtly changes intent or plane.                          | Hides semantics behind wording; confuses planes.   | Aliases (F.5) are **style only**. If semantics change, choose **row reuse** or **CRA Template** instead.                                         |
-| **AP‑4**  | **CRA‑to‑row anchoring**   | CRA Template points to a **row** rather than a **single SenseCell**.               | Masks locality; CRAs become cross‑Room by stealth. | CRA Templates **must anchor to one SenseCell** (F.4). Use rows only in prose or aggregated views.                                                |
+| **AP-2**  | **Scope creep**            | Using a **Naming-only** row to justify **Assignment-eligibility** or structural inferences. | Over-claims sameness; breaks τ(scope).             | Respect **scope thresholds** (τ). Upgrade only when **Row CL(min) ≥ τ(new scope)**; otherwise stay Naming-only.                                  |
+| **AP‑3**  | **Alias with payload**     | Introducing an Alias that subtly changes intent or plane.                          | Hides semantics behind wording; confuses planes.   | Aliases (F.5) are **style only**. If semantics change, choose **row reuse** or **Role Description** instead.                                         |
+| **AP-4**  | **Role-Description-to-row anchoring** | Role Description points to a **row** rather than a **single SenseCell**.       | Masks locality; **assignments** become cross-Room by stealth. | Role Descriptions **must anchor to one SenseCell** (F.4). Use rows only in prose or aggregated views.                                                |
 | **AP‑5**  | **Kernel inflation**       | Proposing a new **U.Type** because a convenient label is missing.                  | Duplicates the kernel; violates parsimony.         | Apply A.8: require **≥ 3 domain families** and **irreducibility**; otherwise **Alias** or **row**.                                               |
 | **AP‑6**  | **Plane mixing**           | One name that conflates Role, Status, Measurement, or Type‑structure.              | Collapses A.7 Strict Distinction.                  | **Split by plane** first (Q0). Decide **per plane**.                                                                                             |
 | **AP‑7**  | **Bridge‑by‑string**       | Treating identical surface forms as equivalent senses across Rooms.                | Homonym trap; ignores local sense.                 | Equivalence only via **F.9 Bridge** + **row**; never by string.                                                                                  |
@@ -24824,9 +24814,9 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
    `∃ C,σ : expresses(n,P)@σ ⊢ reuseLabel(σ) in C`
    *If a single Room’s SenseCell already says it, reuse it locally.*
 
-3. **CRA eligibility**
-   `reuseLabel(σ) ∧ needAssignable(P ∈ {Role,Status}) ⊢ mintCRATemplate(σ)`
-   *When you need assignable behaviour/deontics for a local sense, mint a CRA Template anchored to that sense.*
+3. **Assignment-eligibility**
+   `reuseLabel(σ) ∧ needAssignable(P ∈ {Role,Status}) ⊢ mintRoleDescription(σ)`
+   *When you need assignable behaviour/deontics for a local sense, mint a Role Description anchored to that sense.*
 
 4. **Row reuse**
    `crossRooms(n,P) ∧ ∃ R: covers(R,P) ∧ CL(R) ≥ τ(scope) ⊢ reuseRow(R,scope)`
@@ -24866,11 +24856,11 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 
 **Reasoning.**
 
-* `Execution`: `IEC` SenseCell (task run) and `PROV` SenseCell (Activity). There exists a **row** *execution‑occurrence* at **CRA‑eligibility** with CL = 2 → **reuse row** at CRA scope; do not infer Type‑structure sameness.
+* `Execution`: `IEC` SenseCell (task run) and `PROV` SenseCell (Activity). There exists a **row** *execution-occurrence* at **Assignment-eligibility** with CL = 2 → **reuse row** at **Assignment-eligible** scope; do not infer Type-structure.
 * `Measurement`: `SOSA` Observation cell; no cross‑Room needed → **reuse cell**.
-* `Status`: `ITIL` SLO/SLA cell; **CRA Template** “SLO‑Target” anchored to ITIL cell.
+* `Status`: `ITIL` SLO/SLA cell; **Role Description** “SLO‑Target” anchored to ITIL cell.
 
-**Outcome.** Prose may say: “This **execution‑occurrence** (row\@CRA) was **observed** (SOSA cell) and **evaluated against the SLO** (ITIL cell).” No new U.Type; no hidden merges.
+**Outcome.** Prose may say: “This **execution-occurrence** (row\@assignment/enactment-eligibility) was **observed** (SOSA cell) and **evaluated against the SLO** (ITIL cell).” No new U.Type; no hidden merges.
 
 ---
 
@@ -24882,7 +24872,7 @@ Modellers tend to **mint names** when they actually need **reuse**, **aliasing**
 **Rooms.** `BPMN 2.0` (Participant), `PROV‑O` (Agent).
 
 **Reasoning.** A **Naming‑only** row “actor” exists, CL = 2. **Reuse the row** at Naming‑only.
-If assignable behaviour is needed in a model, **mint CRA Template** anchored to **BPMN Participant** (not to the row).
+If assignable behaviour is needed in a model, **mint Role Description** anchored to **BPMN Participant** (not to the row).
 
 **Outcome.** Diagrams show “actor”; formal sections reference `Participant` or `Agent` as appropriate.
 
@@ -24919,7 +24909,7 @@ If assignable behaviour is needed in a model, **mint CRA Template** anchored to 
 * **Builds on.** E.10.1 (D.CTX) **Context ≡ U.BoundedContext**; F.1 Rooms; F.2 Harvest; F.3 SenseCells.
 * **Constrains.**
 
-  * **F.4 CRA:** **one SenseCell per CRA Template**; no row anchoring.
+  * **F.4 Role Description:** **one SenseCell per Role Description**; no row anchoring.
   * **F.5 Naming:** Aliases are style‑only; no semantics movement.
   * **F.7 Concept‑Set:** rows must declare **Scope** & **Row CL(min)** and carry **loss notes**.
   * **F.9 Bridges:** any row proposal presupposes Bridges at or above τ(scope).
@@ -24929,8 +24919,8 @@ If assignable behaviour is needed in a model, **mint CRA Template** anchored to 
 
 ## 14 · Migration notes (conceptual)
 
-1. **Old “anchor” language.** Replace legacy “anchor” with: **SenseCell** (local sense) + **CRA Template** (assignable contract) + (optionally) **Concept‑Set row** (cross‑Room reading).
-2. **Over‑strong rows.** If a row was used for CRA or Type‑structure but **CL drops**, **downgrade scope** to Naming‑only in prose; adjust examples.
+1. **Old “anchor” language.** Replace legacy “anchor” with: **SenseCell** (local sense) + **Role Description** (assignable contract) + (optionally) **Concept‑Set row** (cross‑Room reading).
+2. **Over-strong rows.** If a row was used for **assignment/enactment-eligibility** or **Type-structure** but **CL drops**, **downgrade row scope** to **Naming-only** in prose; adjust examples.
 3. **Split rows.** If one row covers cells whose Bridges diverge, **split** into two narrower rows with explicit loss notes.
 4. **Alias proliferation.** Collapse redundant Aliases under a single F.5 entry; keep both registers (Tech/Plain).
 5. **Proto‑types.** Suspect kernel inflation? Attempt **reduction**: SenseCell + row + existing U.Type. Only if irreducible across ≥ 3 families, reopen as a U.Type candidate.
@@ -24942,7 +24932,7 @@ If assignable behaviour is needed in a model, **mint CRA Template** anchored to 
 ### 15.1 Static conformance (SCR)
 
 * **SCR‑F8‑S01 (Plane purity).** Every decision record names **one plane**; mixed needs are split.
-* **SCR‑F8‑S02 (Proper anchoring).** Every CRA Template cites **one SenseCell**; **no row** is used as a CRA anchor.
+* **SCR‑F8‑S02 (Proper anchoring).** Every Role Description cites **one SenseCell**; **no row** is used as a assignment/enactment anchor.
 * **SCR‑F8‑S03 (Row scope).** Whenever a row is reused, its **Scope** is stated and **Row CL(min) ≥ τ(scope)** holds.
 * **SCR‑F8‑S04 (Alias modesty).** Aliases introduced in F.5 do **not** claim new semantics or change plane.
 * **SCR‑F8‑S05 (Kernel restraint).** Any new U.Type proposal includes **≥ 3 domain families** of evidence and an **irreducibility** note.
@@ -24950,15 +24940,15 @@ If assignable behaviour is needed in a model, **mint CRA Template** anchored to 
 ### 15.2 Regression (RSCR)
 
 * **RSCR‑F8‑E01 (CL drift).** If any Bridge’s CL changes, re‑evaluate dependent rows; **downgrade or split** where τ(scope) is no longer met.
-* **RSCR‑F8‑E02 (Row overuse).** Scan examples: no case uses **Naming‑only** rows to justify **CRA** or **Type‑structure** claims.
-* **RSCR‑F8‑E03 (Alias creep).** Ensure no Alias has accreted plane‑specific semantics; if it has, migrate to a **row** or **CRA Template**.
+* **RSCR-F8-E02 (Row overuse).** Scan examples: no case uses **Naming-only** rows to justify **Assignment-eligibility** or **Type-structure** claims.
+* **RSCR‑F8‑E03 (Alias creep).** Ensure no Alias has accreted plane‑specific semantics; if it has, migrate to a **row** or **Role Description**.
 * **RSCR‑F8‑E04 (Kernel hygiene).** New U.Type proposals are rejected if a **SenseCell + row** construction suffices.
 
 ---
 
 ## 16 · Didactic distillation (90‑second teaching script)
 
-> “When you feel like coining a new name, pause. **What plane** are you in—Role, Status, Measurement, Type‑structure, Method, or Execution? If a **single Room’s SenseCell** already says it, **reuse** that label. If you need an assignable contract, **mint a CRA Template** anchored to that SenseCell. If you must read **across Rooms**, reuse a **Concept‑Set row**—but only **at a stated scope** and only if its **CL meets the threshold** (τ). If it’s just a nicer wording, add an **Alias** (style only). Only in the rare case of a cross‑family, **irreducible** notion do you **mint a new U.Type**. Never let Naming‑only rows justify CRA or structural inference, and never let identical strings force equivalence. This is not process—it’s **discipline of thought**: reuse what exists, declare scope when you bridge, and mint new primitives only when the kernel truly needs them.”
+> “When you feel like coining a new name, pause. **What plane** are you in—Role, Status, Measurement, Type‑structure, Method, or Execution? If a **single Room’s SenseCell** already says it, **reuse** that label. If you need an assignable contract, **mint a Role Description** anchored to that SenseCell. If you must read **across Rooms**, reuse a **Concept‑Set row**—but only **at a stated scope** and only if its **CL meets the threshold** (τ). If it’s just a nicer wording, add an **Alias** (style only). Only in the rare case of a cross‑family, **irreducible** notion do you **mint a new U.Type**. Never let Naming‑only rows justify  **Assignment-eligibility** or structural inference, and never let identical strings force equivalence. This is not process—it’s **discipline of thought**: reuse what exists, declare scope when you bridge, and mint new primitives only when the kernel truly needs them.”
 
 # F.9 — Alignment & Bridge Across Rooms \[A] 
 
@@ -25020,9 +25010,9 @@ It always names **(a)** the two **SenseCells**, **(b)** a **Bridge‑kind** (wha
 * **CL (Congruence Level)** — ordinal strength (0…3) of a Bridge (see §7).
 * **Scope** — the **licensed use** of a cross‑Room reading (as in F.7/F.8):
 
-  * **Naming‑only** (talk consistently),
-  * **CRA‑eligibility** (assignable constraints/roles/status reuse),
-  * **Type‑structure** (safe structural inference).
+* **Naming‑only** (talk consistently),
+* **Role Assignment & Enactment-eligibility** (assignable constraints/roles/status reuse),
+* **Type‑structure** (safe structural inference).
 * **Plane** — the semantic plane (Role, Status, Measurement, Type‑structure, Method, Execution…) per A.7.
 
 ---
@@ -25040,11 +25030,11 @@ These relate **SenseCells on the same plane** and may license **limited substitu
    *Loss Notes:* usually “none” or “profiling differences”.
 
 2. **Narrower‑than (⊑)** / **Broader‑than (⊒)** — *proper inclusion of sense*. Directional.
-   *Use:* Safe to substitute **narrower → broader** in **Naming‑only** and sometimes **CRA**; **broader → narrower** is unsafe.
+  *Use:* Safe to substitute **narrower → broader** in **Naming-only** and sometimes **Role Assignment & Enactment**; **broader → narrower** is unsafe.
    *Loss Notes:* “loses special cases X”.
 
 3. **Partial‑overlap (⋂)** — *non‑empty intersection, neither includes the other*.
-   *Use:* **Naming‑only** at best. **Never** justifies CRA/Type‑structure.
+  *Use:* **Naming-only** at best. **Never** justifies Role Assignment & Enactment / Type-structure.
    *Loss Notes:* “A-only facets”, “B-only facets”.
 
 4. **Disjoint (⊥)** — *explicit contrast*.
@@ -25080,13 +25070,13 @@ CL expresses how safely meaning carries over.
 | ----- | ----------------- | ---------------------------------------------------- | -------------------- | -------------------------------- |
 | **0** | **Opposed**       | Intentionally contrastive or disjoint                | n/a                  | none                             |
 | **1** | **Comparable**    | Talk under a shared label; senses differ materially  | many facets differ   | **Naming‑only** (τₙₐₘₑ=1)        |
-| **2** | **Translatable**  | Bounded loss; consistent examples & counter‑examples | small, stated losses | **CRA‑eligibility** (τ꜀ʀᴀ=2)     |
+| **2** | **Translatable**  | Bounded loss; consistent examples & counter-examples | small, stated losses | **Role Assignment & Enactment-eligibility** (τRAE=2)     |
 | **3** | **Near‑identity** | Invariants match; no material counter‑example        | profile‑level only   | **Type‑structure** (τᵗʏᴘᴇ=3)     |
 
 * **Thresholds (normative):**
 
   * Publishing a **Naming‑only** row requires **CL ≥ 1** across the row’s Cells.
-  * Publishing a **CRA‑eligible** row requires **CL ≥ 2** and **plane equality**.
+ * Publishing a **Role Assignment & Enactment-eligible** row requires **CL ≥ 2** and **plane equality**.
   * Publishing a **Type‑structure** row requires **CL = 3** **and** matched invariants (acyclicity, anti‑symmetry, units, etc.).
 
 * **Penalty use (informative):** B.3 may convert **CL** into an assurance **penalty** when a cross‑Room claim is made.
@@ -25104,7 +25094,7 @@ CL expresses how safely meaning carries over.
 * **CL.** *0–3* with a short **why**.
 * **Loss Notes (bullets).** What fails to carry (units, scope, granularity, preconditions, time stance).
 * **Counter‑example.** The crispest case where substitution would mislead.
-* **Allowed use.** *Naming‑only / CRA‑eligible / Type‑structure / Explanation‑only*.
+* **Allowed use.** *Naming-only / Role Assignment & Enactment-eligible / Type-structure / Explanation-only*.
 * **Didactic hook.** The helpful sentence a careful engineer can remember.
 
 *If your Bridge Card doesn’t fit on a screen, you’re describing the Rooms, not the Bridge.*
@@ -25148,13 +25138,13 @@ CL expresses how safely meaning carries over.
 | ID        | Anti‑pattern                     | Symptom                                                                           | Why it breaks thinking                              | Remedy (conceptual move)                                                                                    |
 | --------- | -------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | **AP‑1**  | **String‑equals ≡ sense‑equals** | Same surface used across Rooms with silent identity claims.                       | Violates locality; invites false substitution.      | Always state a **Bridge kind**; if unsure, default to **⋂ overlap** with **Naming‑only** scope.             |
-| **AP‑2**  | **Stealth substitution**         | “We’ll just treat A like B for now.”                                              | Hidden policy with unknown loss; leaks into CRA.    | Publish a **Bridge Card** with **Loss Notes** and **CL**; if CL<2, substitution remains **forbidden**.      |
+| **AP-2**  | **Stealth substitution**         | “We’ll just treat A like B for now.”                                              | Hidden policy with unknown loss; leaks into Role Assignment & Enactment.    | Publish a **Bridge Card** with **Loss Notes** and **CL**; if CL<2, substitution remains **forbidden**.      |
 | **AP‑3**  | **Plane jump by wording**        | “Activity (PROV) is a Process (BPMN).”                                            | Design ↔ run confusion; swaps graphs for events.    | Use **⇄ᴅʀ design↔run Interpretation Bridge**, **not** ≈/⊑; keep **Explanation‑only** scope.                 |
 | **AP‑4**  | **Symmetry hallucination**       | Treating ⊑/⊒ as if they were symmetric.                                           | Narrows broadened, broadens narrowed; unsafe reuse. | Record **direction** explicitly; only **≈** is symmetric.                                                   |
-| **AP‑5**  | **Disjoint but reused**          | Declare ⊥ then still borrow labels or CRA constraints.                            | Contradiction between declaration and use.          | Either retract ⊥ or stop reuse; if a thin thread exists, rename as **contrastive explanation** (no row).    |
+| **AP-5**  | **Disjoint but reused**          | Declare ⊥ then still borrow labels or Role Description constraints (RCS/RSG).     | Contradiction between declaration and use.          | Either retract ⊥ or stop reuse; if a thin thread exists, rename as **contrastive explanation** (no row).    |
 | **AP‑6**  | **CL without counter‑example**   | “These are CL=3” with no invariant check.                                         | Inflates trust; permits structural rows wrongly.    | For **CL=3**, cite the **matching invariants**; otherwise, demote to **CL=2** and add counter‑example.      |
 | **AP‑7**  | **Bridge inflation**             | Dozens of nearly identical Bridges between the same Rooms.                        | Noise masks the few material alignments.            | Prefer **one Bridge per pair of Cells per plane**; fold variants into **Loss Notes**.                       |
-| **AP‑8**  | **Row outruns Bridge**           | Concept‑Set row claims CRA‑eligibility where some participating Bridges are CL=1. | Row scope exceeds weakest link.                     | Apply **weakest‑link rule** (F.7/F.8): row scope ≤ **min(CL)**; otherwise split the row.                    |
+| **AP-8**  | **Row outruns Bridge**           | Concept-Set row claims Role Assignment & Enactment-eligibility where some participating Bridges are CL=1. | Row scope exceeds weakest link.                     | Apply **weakest-link rule** (F.7/F.8): row scope ≤ **min(CL)**; otherwise split the row.                    |
 | **AP‑9**  | **Bridge as new U.Type**         | Using a Bridge to justify minting a new universal Type.                           | Re‑globalises meaning; breaks A.11 parsimony.       | Keep Types Room‑local; where reuse is needed, use **rows** + Bridges, not new primitives.                   |
 | **AP‑10** | **Silent unit/scale mismatch**   | Mapping measurements without unit/scale notes.                                    | Hidden dimensional error.                           | Record units/scales in **Loss Notes**; if units can’t be related, the kind is **⊥** or **⋂ (Naming‑only)**. |
 
@@ -25186,7 +25176,7 @@ CL expresses how safely meaning carries over.
 * **Bridge**
   **Kind:** overlap (⋂), **CL=2**; Loss: assignment moment, enforcement locus, multiplicity.
 * **Permitted use**
-  **Naming‑only** row “actor”; **no CRA reuse** across planes.
+* **Naming-only** row “actor”; **no Role Assignment & Enactment reuse** across planes.
 
 ---
 
@@ -25239,7 +25229,7 @@ CL expresses how safely meaning carries over.
 
 `Bridge(σA,σB): ⟨plane p, kind∈{≈,⊑,⊒}, dir A→B, CL≥2, Loss L⟩ ⊢ A↠B @p (CRA‑eligible)`
 
-*Reading:* A **Substitution Bridge** on the same plane with **CL≥2** licenses **CRA‑level** substitution **in the stated direction**. (Type‑structure requires **CL=3**.)
+*Reading:* A **Substitution Bridge** on the same plane with **CL≥2** licenses **Role-Assignment/Enactment-level** substitution **in the stated direction**. (Type-structure requires **CL=3**.)
 
 ---
 
@@ -25285,7 +25275,7 @@ CL expresses how safely meaning carries over.
 
 ### 13.8 Plane purity
 
-`Bridge scope=CRA‑eligible ⊢ plane(A)=plane(B)`
+`Bridge scope=Role Assignment & Enactment-eligible ⊢ plane(A)=plane(B)`
 
 *Reading:* CRA‑level substitution requires **same plane**.
 
@@ -25350,7 +25340,7 @@ CL expresses how safely meaning carries over.
 
 **“Keep statuses on their own planes; translate between rooms explicitly.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
-**Builds on.** E.10.1 **D.CTX** (Context ≡ `U.BoundedContext`); F.1 (Rooms), F.2 (Seeds), F.3 (Local‑Senses → SenseCells), F.4 (CRA **Status** templates), F.9 (Bridges).
+**Builds on.** E.10.1 **D.CTX** (Context ≡ `U.BoundedContext`); F.1 (Rooms), F.2 (Seeds), F.3 (Local‑Senses → SenseCells), F.4 (Role Description **Status** templates), F.9 (Bridges).
 **Coordinates with.** B.3 **Trust & Assurance Calculus** (interprets CL penalties); Part C architheories: **KD‑CAL** (measurement semantics), **Norm‑CAL** (deontic logic), **Method‑CAL** (design/run stance).
 
 ---
@@ -25409,7 +25399,7 @@ Treat every status word as a **SenseCell on its plane** and **inside one Room**.
 * **Target.** What the status is **about**: a **claim** (epistemic), an **artefact or method** (standard), a **clause** (requirement).
 * **Bridge (F.9).** The only legal way to relate StatusCells across Rooms; declares **kind** (≈, ⊑, ⊒, ⋂, ⊥, or an Interpretation arrow), **CL**, and **Loss**.
 
-> **Plane guard.** EvidenceStatus lives on the **epistemic** plane; StandardStatus & RequirementStatus live on the **deontic** plane. CRA **Status** templates (F.4) bind to these planes; **no mixing**.
+> **Plane guard.** EvidenceStatus lives on the **epistemic** plane; StandardStatus & RequirementStatus live on the **deontic** plane. **Role Description Status** templates (F.4) bind to these planes; **no mixing**.
 
 ---
 
@@ -25499,7 +25489,7 @@ Example: **Measured availability (SOSA)** →ᴍᴇᵃ **SLO clause (ITIL)** wit
 **StandardStatus** is design‑stance; **EvidenceStatus** is run‑signal; **RequirementStatus** spans both. Use **Interpretation Bridges** (F.9) for design↔run readings, not equivalence.
 
 **S‑5. Prefer explanation over substitution.**
-If a Bridge cannot reach **CL≥2** on the **same plane**, do **not** substitute. Use **Naming‑only** rows or **explanations**; keep CRA templates (F.4) out of harm’s way.
+If a Bridge cannot reach **CL≥2** on the **same plane**, do **not** substitute. Use **Naming‑only** rows or **explanations**; keep Role Descriptions (F.4) out of harm’s way.
 
 ---
 
@@ -25513,9 +25503,7 @@ If a Bridge cannot reach **CL≥2** on the **same plane**, do **not** substitute
 6. **No free promotion.** **StandardStatus** (Approved) **does not** entail **RequirementStatus** (Applicable or Satisfied).
 7. **Bridge gate.** Any cross‑Room comparison or reuse of a status **must cite a Bridge** (kind, CL, Loss); otherwise only **room‑local** reading is permitted.
 8. **Weakest‑link propagation.** When multiple Bridges contribute to a cross‑Room interpretation, the **effective CL** is the **minimum** (cf. F.7/F.9).
-9. **Naming restraint.** Status labels used across Rooms **without** a Bridge are **Naming‑only** and **non‑operative** for CRA decisions.
-
----
+9. **Naming restraint.** Status labels used across Rooms **without** a Bridge are **Naming-only** and **non-operative** for Role Assignment & Enactment decisions.
 
 ## 9 · Micro‑illustrations (snapshots, not procedures)
 
@@ -25679,11 +25667,11 @@ If a Bridge cannot reach **CL≥2** on the **same plane**, do **not** substitute
 ## 13 · Relations
 
 **Builds on.**
-E.10.1 **D.CTX** (Context discipline); F.1 (Rooms in view); F.2–F.3 (Seeds→Local‑Senses→SenseCells); F.4 (CRA **Status** template with plane/target/window slots); F.7 (Bridge taxonomy & CL semantics); F.9 (Bridge artefact).
+E.10.1 **D.CTX** (Context discipline); F.1 (Rooms in view); F.2–F.3 (Seeds→Local‑Senses→SenseCells); F.4 (Role Description **Status** template with plane/target/window slots); F.7 (Bridge taxonomy & CL semantics); F.9 (Bridge artefact).
 
 **Constrains.**
 
-* **F.4 (CRA Status):** a CRA Status **must** select a **StatusFamily**, **plane**, **target kind**, and **Window**.
+* **F.4 (Role Description Status):** a Role Description Status **must** select a **StatusFamily**, **plane**, **target kind**, and **Window**.
 * **F.8 (Naming):** status labels reused across Rooms **must** be marked as **Room‑scoped**; global synonyms forbidden.
 * **Part C architheories:** KD‑CAL provides measurement semantics for EvidenceStatus; Norm‑CAL provides clause logic for RequirementStatus; Method‑CAL frames design/run stance for StandardStatus.
 
@@ -25737,7 +25725,7 @@ Service Acceptance (F.12), Assurance roll‑ups (B.3), any cross‑domain confor
 
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Builds on.** E.10.1 **D.CTX** (Context discipline); A.3/**A.3.1**/**A.3.2** (Transformer Constitution; `U.Method`, `U.MethodDescription`); A.15/**A.15.1** (`U.Work` as record of occurrence); Sys‑CAL (control/actuation semantics); KD‑CAL (observation).
-**Coordinates with.** F.1–F.3 (Rooms, Seeds → SenseCells), F.4 (CRA Templates), F.5 (Naming), F.6 (CRA reasoning), F.7/F.9 (Bridges), F.10 (Status families & Windows).
+**Coordinates with.** F.1–F.3 (Rooms, Seeds → SenseCells), F.4 (Role Description), F.5 (Naming), F.6 (Role Assignment & Enactment Cycle (Six-Step)), F.7/F.9 (Bridges), F.10 (Status families & Windows).
 **Aliases (informative).** *Method/Spec/Work/Actuation split*; *design/run harmonisation*.
 
 ---
@@ -25751,7 +25739,7 @@ Service Acceptance (F.12), Assurance roll‑ups (B.3), any cross‑domain confor
 * **`U.Work`** (informal: *Execution*) — the **run‑time occurrence** of doing (recorded event).
 * **`U.Actuation`** — the **control output** applied to a plant (domain‑specific Work in Sys‑CAL).
 
-The pattern makes the split **usable across architheories** (Enactment/CRA, Sys‑CAL, KD‑CAL, Type‑CAL, planned LCA‑CAL) and **legible across Rooms** (SPEM/BPMN for design; PROV‑O/SOSA for run; IEC 61131‑3/state‑space for control).
+The pattern makes the split **usable across architheories** (Role Assignment & Enactment, Sys-CAL, KD-CAL, Type-CAL, planned LCA-CAL) and **legible across Rooms** (SPEM/BPMN for design; PROV-O/SOSA for run; IEC 61131-3/state-space for control).
 
 **Applicability.** Any time a discussion risks **mixing designs with executions**, **recipes with runs**, or **workflow with control signals**; whenever you need to **name** or **reason** about “how we do X”, “the SOP/script/model”, “the actual run”, or “the actuator push”.
 
@@ -25833,7 +25821,7 @@ Each box/arrow is **Room‑local** (SPEM, PROV‑O, IEC…). **Cross‑room rela
 * **Actuation** is the **control output** (setpoint, PWM command, valve open %) emitted **during** Work.
 * You can have Work **without** Actuation (analysis job), or Actuation **without** a complex Method (manual push). Many scenarios have **both**.
 
-### 6.4 The **CRA touch‑points**
+### 6.4 The **Role Assignment & Enactment touch-points**
 
 * **Roles** (F.4) bind **who enacts** the Method at run‑time (behavioural masks), **not** what permissions they hold (RBAC is a different Room).
 * **Statuses** (F.10) bind to the right box: *Approved* → MethodDescription; *Measured/Observed* → Work; *Satisfied/Violated* → Requirement clause about the Work’s outcomes within a **Window**.
@@ -25902,7 +25890,7 @@ Each box/arrow is **Room‑local** (SPEM, PROV‑O, IEC…). **Cross‑room rela
 | **A5**  | **Spec Drift Retroactivity**   | Update to a recipe is assumed to modify past executions.              | Violates temporal honesty; breaks auditability.                             | Past **Work** remains as‑was. New **MethodDescription** versions describe future **Work** only; record variant relations if a run deviated.                                                                                 |
 | **A6**  | **Homonym Collapse**           | *Task*, *activity*, *process* used interchangeably across Rooms.      | Imports meaning implicitly; masks losses.                                   | Prefix with **Room** and use **SenseCells**: e.g., *task (IEC)*, *activity (PROV)*, *process (BPMN)*. Any relation uses **Bridges** with CL/Loss.                                                                    |
 | **A7**  | **Signal‑Only Compliance**     | SLO judged solely from actuator traces.                               | Ignores measured outcomes; risks false positives.                           | Tie **SLO** clauses to **Observations** (KD‑CAL) **about Work outcomes**; treat Actuation as an input, not proof.                                                                                                    |
-| **A8**  | **Recipe‑as‑Role**             | “The Spec assigns responsibility” (mixes MethodDescription with CRA Roles).  | Conflates epistemic artefact with behavioural masks.                        | Use **F.4 CRA Templates** to bind Roles; let **MethodDescription** only **describe** a Method.                                                                                                                              |
+| **A8**  | **Recipe-as-Role**             | “The Spec assigns responsibility” (mixes MethodDescription with Role constructs — `U.RoleDescription`/`U.RoleAssignment`).  | Conflates epistemic artefact with behavioural masks.                        | Use **F.4 Role Description; let **MethodDescription** only **describe** a Method.                                                                              |
 | **A9**  | **One‑Room Scope**        | A single Room (e.g., BPMN) used as if it covered control/measurement. | Scope mirage; silent cross‑domain generalisation.                           | Re‑cut Rooms (F.1) to include control and sensing. Re‑express statements with the quartet across those Rooms.                                                                                                        |
 | **A10** | **Lossless Bridge Assumption** | Claiming “equivalent” across Rooms without Loss.                      | Hides mismatches; unsafe transfer of inferences.                            | In **F.7/F.9** declare Bridge **kind**, **CL**, and explicit **Loss** notes.                                                                                                                                         |
 | **A11** | **Recipe‑as‑Type**             | Treating a MethodDescription vocabulary as a type taxonomy.                  | Category error; misuses Type‑CAL.                                           | If a stable hierarchy of **kinds** of Methods is needed, mint **U.Type** nodes in Type‑CAL; keep MethodDescription as *description* only.                                                                                   |
@@ -26039,7 +26027,7 @@ E.10.1 **D.CTX** (Context ≡ `U.BoundedContext`); A.3/**A.3.1**/**A.3.2**/**A.1
 
 **Constrains.**
 
-* **F.4 CRA Templates:** Roles/Statuses **must** point to the right box (e.g., *Approved* → MethodDescription; *Observed* → Work).
+* **F.4 Role Description:** Roles/Statuses **must** point to the right box (e.g., *Approved* → MethodDescription; *Observed* → Work).
 * **F.5 Naming:** Enforce distinct Tech/Plain labels for Method/Spec/Work/Actuation where homonyms threaten.
 * **F.7/F.9 Bridges:** All cross‑Room assertions among quartet terms **must** go through explicit Bridges with **kind/CL/Loss**.
 
@@ -26450,13 +26438,13 @@ Every verdict is **time‑bounded**. Changing the Window can change the result; 
 
 ## 1 · Intent & applicability
 
-**Intent.** Provide a **conceptual discipline** for evolving labels (for **SenseCells**, **Concept‑Set rows**, and **CRA template names**) so that:
+**Intent.** Provide a **conceptual discipline** for evolving labels (for **SenseCells**, **Concept‑Set rows**, and **Role Description names**) so that:
 
 * new names **clarify** without erasing what earlier texts meant;
 * aliases remain **local to Rooms**;
 * genuine sense changes cause **explicit splits/merges** (F.7/F.9), not cosmetic renames.
 
-**Applicability.** Whenever you consider **renaming**, **aliasing**, **deprecating**, or **retiring** any label in FPF: a SenseCell label in a Room, a Concept‑Set row label, or a CRA template name.
+**Applicability.** Whenever you consider **renaming**, **aliasing**, **deprecating**, or **retiring** any label in FPF: a SenseCell label in a Room, a Concept‑Set row label, or a Role Description name.
 
 ---
 
@@ -26485,7 +26473,7 @@ Unification efforts rot when names drift faster than senses or, worse, when sens
 ## 4 · Core idea (didactic)
 
 **Treat names as lenses, not objects.**
-The **thing that persists** is the *sense* (a **SenseCell** inside a Room, or the *cross‑Room alignment* embodied by a **Concept‑Set row**, or a **CRA template** that points to such sense). Names are **lenses** we look through. When the lens improves, we **record a continuity relation** between lenses; when the underlying sense changes, we **split/merge the thing**, then name accordingly.
+The **thing that persists** is the *sense* (a **SenseCell** inside a Room, or the *cross‑Room alignment* embodied by a **Concept‑Set row**, or a **Role Description** that points to such sense). Names are **lenses** we look through. When the lens improves, we **record a continuity relation** between lenses; when the underlying sense changes, we **split/merge the thing**, then name accordingly.
 
 > **Rooms keep names local.**
 > A label (including aliases) always belongs to **one Room** or to **one Concept‑Set row**. Cross‑Room similarity is handled by **Bridges** (F.9), never by shared names.
@@ -26494,7 +26482,7 @@ The **thing that persists** is the *sense* (a **SenseCell** inside a Room, or th
 
 ## 5 · Minimal vocabulary (this pattern only)
 
-* **Legacy label** — a previously used label in the same Room (or same Concept‑Set row / CRA template).
+* **Legacy label** — a previously used label in the same Room (or same Concept‑Set row / Role Description).
 * **Preferred label** — the current **F.5‑conformant** label for that item.
 * **Alias** *(Room‑local)* — a **read‑path** from a legacy label to the preferred one **inside the same Room** (or the same row/template). For writing, prefer the current label.
 * **Continuity relation** — a small set of **relations over labels** (below) that capture whether a change is *just wording* or a *real sense change*.
@@ -26509,7 +26497,7 @@ Rather than maintain a tool or workflow, **think with five continuity relations*
 ### 6.1 Continuity relations (normative meanings)
 
 1. **`renames(label_old → label_new)`** — *wording improved, sense unchanged*.
-   *Use when:* Same **SenseCell** / same **Concept‑Set row** / same **CRA template**; only the surface form changed to satisfy F.5 (morphology, disambiguation, plain/tech harmony).
+   *Use when:* Same **SenseCell** / same **Concept‑Set row** / same **Role Description**; only the surface form changed to satisfy F.5 (morphology, disambiguation, plain/tech harmony).
    *Effect:* `label_old` becomes a **Room‑local alias** of `label_new`; both resolve to the **same thing**. Past texts remain valid.
 
 2. **`aliases(label_legacy ↔ label_pref)`** — *legacy synonym kept for reading*.
@@ -26534,7 +26522,7 @@ Rather than maintain a tool or workflow, **think with five continuity relations*
 
 ## 7 · Invariants (normative)
 
-1. **Locality of alias.** `aliases(·)` and `renames(·)` operate **within one Room** (SenseCell) or **within one Concept‑Set row / CRA template**.
+1. **Locality of alias.** `aliases(·)` and `renames(·)` operate **within one Room** (SenseCell) or **within one Concept‑Set row / Role Description**.
 2. **Truth over comfort.** If the **sense changed**, use `splits`/`merges` (and possibly adjust rows/Bridges), **not** `renames`.
 3. **Non‑retroactivity.** Past texts remain phrased as written; continuity only **adds read‑paths**, never rewrites.
 4. **Alias parsimony.** Per Room and per row, keep **≤ 1** legacy alias per register (Tech/Plain); prefer the one readers will most likely encounter.
@@ -26616,7 +26604,7 @@ Temptation: “Let’s rename *process* to *activity*.”
 ### 11.1 KD‑CAL × Services — *metric target* labels over time
 
 * **Rooms:** *ITIL 4 (services, design)*; *SOSA/SSN (sensing, run)*.
-* **Before:** CRA template used **“SLO”** (plain “target”) and readers often saw **“service target”**.
+* **Before:** Role Description used **“SLO”** (plain “target”) and readers often saw **“service target”**.
 * **Move:** `renames("SLO" → "service‑level objective")` (Room: ITIL). Keep `aliases("service target" ↔ "service‑level objective")`.
 * **Why:** Same local sense; clearer morphology for F.5; SOSA/SSN labels untouched.
 * **Pay‑off:** Runtime **Observations** (SOSA) are later compared to **service‑level objective** clauses (ITIL) without cross‑Room aliasing.
@@ -26635,7 +26623,7 @@ Temptation: “Let’s rename *process* to *activity*.”
 * **Issue:** A row labeled **“Class”** tried to absorb **“WorkProductKind”** by a `renames`.
 * **Diagnosis:** Not same sense; different calculi (type vs artefact category).
 * **Move:** **Split the row**: `splits("class" ⇒ {"type‑class","work‑product‑category"})`.
-* **Pay‑off:** Downstream CRA templates can point to the correct **SenseCell** without redefining ontological commitments.
+* **Pay‑off:** Downstream Role Descriptions can point to the correct **SenseCell** without redefining ontological commitments.
 
 ### 11.4 Enactment × KD‑CAL — retiring a misleading metaphor
 
@@ -26657,7 +26645,7 @@ Temptation: “Let’s rename *process* to *activity*.”
 
 > Each judgement is a **pure thought**: premises ⇒ safe conclusion. No storage, no workflow, no roles.
 
-Let **`roomOf(ℓ)`** be the Room of label **ℓ** (when ℓ names a SenseCell); **`rowOf(ℓ)`** the Concept‑Set row (when ℓ names a row); **`senseOf(ℓ)`** the SenseCell it denotes (if local); **`pref(thing)`** the current preferred label of a SenseCell / row / CRA template.
+Let **`roomOf(ℓ)`** be the Room of label **ℓ** (when ℓ names a SenseCell); **`rowOf(ℓ)`** the Concept‑Set row (when ℓ names a row); **`senseOf(ℓ)`** the SenseCell it denotes (if local); **`pref(thing)`** the current preferred label of a SenseCell / row / Role Description.
 
 ### 12.1 Same‑sense & same‑place
 
@@ -26762,14 +26750,14 @@ All Part C architheories when editions shift; all examples and tutorials when 
 
 ## 16 · Didactic distillation (60‑second script)
 
-> **Names are lenses.** The *thing* that persists is the **sense** (a SenseCell in a Room, a Concept‑Set row, a CRA template). When you improve a lens, use **`renames`** or **`aliases`** **inside that same place**. When the *thing* changes, say so with **`splits/merges`**—and adjust rows/Bridges accordingly. **Never rename across Rooms.** Keep at most **one** legacy alias per register. Do **not** rewrite history; give readers **read‑paths** and brief epoch notes. With this discipline, you can clarify language without erasing meaning, and your models keep both **continuity** and **truth**.
+> **Names are lenses.** The *thing* that persists is the **sense** (a SenseCell in a Room, a Concept‑Set row, a Role Description). When you improve a lens, use **`renames`** or **`aliases`** **inside that same place**. When the *thing* changes, say so with **`splits/merges`**—and adjust rows/Bridges accordingly. **Never rename across Rooms.** Keep at most **one** legacy alias per register. Do **not** rewrite history; give readers **read‑paths** and brief epoch notes. With this discipline, you can clarify language without erasing meaning, and your models keep both **continuity** and **truth**.
 
 # F.14 — Anti‑Explosion Control (Roles & Statuses) \[A] 
 
 **“Name less, express more.”**
 
 **Status.** Architectural pattern \[A], architheory‑agnostic.
-**Depends on.** F.1 **Rooms of Meaning**; F.2 **Harvesting**; F.3 **Local Sense Clustering**; F.4 **CRA Template Definition**; F.5 **Naming Discipline**; F.7 **Concept‑Set Table**; F.8 **Mint‑or‑Reuse**.
+**Depends on.** F.1 **Rooms of Meaning**; F.2 **Harvesting**; F.3 **Local Sense Clustering**; F.4 **Role Description**; F.5 **Naming Discipline**; F.7 **Concept‑Set Table**; F.8 **Mint‑or‑Reuse**.
 **Coordinates with.** F.10 **Status Windows & Mapping**; F.11 **Method Quartet Harmonisation**; F.12 **Service Acceptance Binding**; F.13 **Lexical Continuity**.
 **Aliases (informative).** *Role/Status economy*; *Explosion guard*.
 
@@ -26779,7 +26767,7 @@ All Part C architheories when editions shift; all examples and tutorials when 
 
 **Intent.** Prevent the uncontrolled growth of **Roles** and **Statuses** by privileging **reuse**, **bundling**, **explicit separation‑of‑duties (SoD)**, and **applicability windows** over minting new names. Keep the vocabulary **small, crisp, and composable** while remaining faithful to local meanings fixed by Rooms (F.1) and SenseCells (F.3).
 
-**Applicability.** Whenever a new Role/Status is proposed, a team merges two lines of work, or a domain shifts its jargon. Use this pattern before adding rows to the Concept‑Set Table (F.7) or new CRA templates (F.4).
+**Applicability.** Whenever a new Role/Status is proposed, a team merges two lines of work, or a domain shifts its jargon. Use this pattern before adding rows to the Concept‑Set Table (F.7) or new Role Descriptions (F.4).
 
 **Non‑goals.** No org charts, no RBAC policies, no process roles. This pattern describes **mental moves** for architectural naming, not governance machinery.
 
@@ -26812,9 +26800,9 @@ Explosion harms didactics and increases alignment cost (F.9).
 
 ## 4 · Minimal vocabulary (this pattern only)
 
-* **CRA Template** (F.4): a **Role** (behavioural mask) or **Status** (epistemic/deontic standing) tied to a **SenseCell**.
+* **Role Description** (F.4): a **Role** (behavioural mask) or **Status** (epistemic/deontic standing) tied to a **SenseCell**.
 * **Concept‑Set row** (F.7): a cross‑Room **intent** (“what we count as one thing”) aligned by SenseCells.
-* **Bundle** (this pattern): a **named composition** of CRA Templates that are meant to be used together by design (e.g., {Requester, Approver} for change control). A Bundle is a **concept**, not a package.
+* **Bundle** (this pattern): a **named composition** of Role Descriptions that are meant to be used together by design (e.g., {Requester, Approver} for change control). A Bundle is a **concept**, not a package.
 * **SoD Constraint** (this pattern): a **conceptual rule** stating that two Roles **must not** be played by the same Holder in the **same window**.
 * **Window** (F.10): an **claim scope** (time stance, holon level, run segment) that delimits when a Role/Status holds.
 
@@ -26835,7 +26823,7 @@ Explosion harms didactics and increases alignment cost (F.9).
 
 ### 6.1 Reuse by row (first lever)
 
-* **Move.** If a proposal matches the **intension** of an existing row (F.7), adopt its CRA template or add a local SenseCell **inside that row**.
+* **Move.** If a proposal matches the **intension** of an existing row (F.7), adopt its Role Description or add a local SenseCell **inside that row**.
 * **Pay‑off.** Names don’t proliferate; cross‑Room tables stay thin.
 
 **Example (services).** *Service‑availability‑compliance* already exists as a row. New labels *SLO‑Met* / *Uptime‑OK* **reuse** that row; SOSA/SSN Observations later feed it (F.12).
@@ -26884,8 +26872,8 @@ Explosion harms didactics and increases alignment cost (F.9).
 
 ## 7 · Invariants (normative)
 
-1. **Room‑locality.** Each CRA template remains tied to a **SenseCell** in a **single Room** (F.3, F.4).
-2. **Row preference.** New CRA templates **SHOULD** map to an existing row; new rows (F.7) require F.8 justification.
+1. **Room‑locality.** Each Role Description remains tied to a **SenseCell** in a **single Room** (F.3, F.4).
+2. **Row preference.** New Role Descriptions **SHOULD** map to an existing row; new rows (F.7) require F.8 justification.
 3. **No hybrid Roles.** If two Roles are conceptually distinct, they **must not** be fused into one to bypass SoD. Use **Bundle + SoD**.
 4. **Windowed statuses.** Status proliferation across time/scale **MUST** be expressed as **windows** of a single Status family (F.10).
 5. **Bundle clarity.** A Bundle **names only composition**; it does not inherit or redefine member semantics.
@@ -26967,14 +26955,14 @@ Let **`rowOf(τ)`** be the Concept‑Set row of template **τ**, **`senseOf(τ)`
 | **A3**  | **Window‑as‑type**                       | *Compliant*, *At‑Risk*, *Grace*, *Breached* as separate Status types.                        | Paints temporal phases as different essences; breaks comparisons. | One **Status family** (e.g., **Compliance**) with **windows**: *evaluation / active / grace / archival* (F.10).                   |
 | **A4**  | **Row drift**                            | New Concept‑Set row for *Uptime‑OK* when **Service‑Availability‑Compliance** already exists. | Splits one intent across rows; cross‑Room tables get wide.        | **Reuse the row** (F.7) if intent matches; add local **SenseCell** if needed.                                                     |
 | **A5**  | **SoD evasion via “trusted” super‑role** | *Senior‑Reviewer* allowed to both author and review.                                         | Conflicts of interest reintroduced under prestige.                | Keep **SoD(Author ⟂ Reviewer)**; if trust matters, attach **Assurance Level** to the *decision* (Status facet), not a new Role.   |
-| **A6**  | **Cross‑Room fusion**                    | One CRA template mixes *Execution (IEC)* with *Duty (ODRL)* semantics.                       | Violates locality; meanings leak across Rooms.                    | Keep each CRA tied to a **SenseCell** in **one Room** (F.4). Cross‑Room reasoning uses **Bridge** (F.9).                          |
+| **A6**  | **Cross-Room fusion**                    | One Role Description mixes *Execution (IEC)* with *Duty (ODRL)* semantics.                       | Violates locality; meanings leak across Rooms.                    | Keep each **Role Description** tied to a **SenseCell** (F.4). Cross-Room reasoning uses **Bridge** (F.9).         |
 | **A7**  | **Synonym carousel**                     | *Validator* vs *Verifier* vs *Checker* minted separately in the same Room.                   | Cognitive noise; ambiguous separation.                            | Choose **one label** via F.5; keep others as **aliases** in **Lexical Continuity** (F.13), not new templates.                     |
-| **A8**  | **Org‑chart mirroring**                  | Roles cloned from a company chart (*Squad‑Lead*, *Tribe‑Lead*) as generic CRA Roles.         | Organisation‑specific names masquerade as semantics.              | Map local titles to **Bundles** of generic Roles (e.g., `{Planner, Coordinator}`), or treat as **aliases** (F.13).                |
+| **A8**  | **Org-chart mirroring**                  | Roles cloned from a company chart (*Squad-Lead*, *Tribe-Lead*) as generic **Role Descriptions**. | Organisation-specific names masquerade as semantics.              | Map local titles to **Bundles** of generic Roles (e.g., `{Planner, Coordinator}`), or treat as **aliases** (F.13). |
 | **A9**  | **KPI‑as‑Status inflation**              | *Latency‑Good*, *Latency‑Bad*, *Latency‑Poor* as Status types.                               | Encodes numeric thresholds as separate essences; brittle.         | One **Quality Status** with **metric threshold** in its window definition (F.10/F.12); keep adjectives out of type names.         |
 | **A10** | **Traffic‑light mania**                  | *Red/Amber/Green* Status types reused across unrelated families.                             | False unification across different intents; color ≠ meaning.      | Keep canonical **Status name** (e.g., **Compliance**); use **presentation** as a separate concern; colors are not types.          |
 | **A11** | **Bundle masquerading as Role**          | *Change‑Manager* invented to hide `{Requester, Approver, Implementer}`.                      | Collapses structure; SoD becomes optional.                        | Name the **Bundle** and its **SoD** explicitly; keep Roles atomic.                                                                |
 | **A12** | **State‑as‑Status sprawl**           | *Pre‑validated*, *Validated*, *Re‑validated*, *De‑validated*.                                | States are temporal positions on one ladder.                      | Define one **Validation Status** with **state ladder** and **windows**; use **Assurance Level** as a facet if needed.             |
-| **A13** | **Roomless CRA**                         | CRA template without a SenseCell anchor.                                                     | Floating meaning; later bridges cannot be made explicit.          | Tie every CRA to a **SenseCell** (F.4). If none fits, use F.8 to decide: **new row** or **rename/reuse**.                         |
+| **A13** | **Roomless Role Description**            | Role Description without a SenseCell anchor.                                                     | Floating meaning; later bridges cannot be made explicit.          | Tie every **Role Description** to a **SenseCell** (F.4). If none fits, use F.8 to decide: **new row** or **rename/reuse**.        |
 | **A14** | **Profile‑driven clones**                | *API‑Approver*, *Data‑Approver*, *Model‑Approver* as different Roles.                        | Scales by surface area; loses the shared essence.                 | One **Approver** Role with a **scope facet** (`objectType=API/Data/Model`).                                                       |
 
 ---
@@ -27021,7 +27009,7 @@ Let **`rowOf(τ)`** be the Concept‑Set row of template **τ**, **`senseOf(τ)`
 
 ## 12 · Relations (with other patterns)
 
-* **Builds on.** F.1 (Rooms), F.2 (Harvesting), F.3 (Local Clustering), F.4 (CRA Templates), F.5 (Naming).
+* **Builds on.** F.1 (Rooms), F.2 (Harvesting), F.3 (Local Clustering), F.4 (Role Description), F.5 (Naming).
 * **Constrains.**
 
   * **F.7 (Concept‑Set Table):** prefer **row reuse**; new rows require F.8 justification.
@@ -27049,11 +27037,11 @@ Let **`rowOf(τ)`** be the Concept‑Set row of template **τ**, **`senseOf(τ)`
 
 ### 14.1 SCR — Static conformance
 
-* **SCR‑F14‑S01 (Row reuse).** Every newly proposed CRA template either **references an existing row** or includes a clear **F.8 justification** for a new row.
-* **SCR‑F14‑S02 (No hybrids).** No CRA template’s label or definition **conflates** two Roles that stand in a declared **SoD** relation.
+* **SCR‑F14‑S01 (Row reuse).** Every newly proposed Role Description either **references an existing row** or includes a clear **F.8 justification** for a new row.
+* **SCR‑F14‑S02 (No hybrids).** No Role Description’s label or definition **conflates** two Roles that stand in a declared **SoD** relation.
 * **SCR‑F14‑S03 (Windowed statuses).** Each Status family that shows temporal/scale variation is expressed as **one Status + windows** (not multiple Status types).
 * **SCR‑F14‑S04 (Facet over modifier).** Role names do not encode circumstantial modifiers; such modifiers appear only as **facets/windows**.
-* **SCR‑F14‑S05 (Room locality).** Every CRA template is anchored to **exactly one SenseCell**; no cross‑Room semantics inside a single template.
+* **SCR‑F14‑S05 (Room locality).** Every Role Description is anchored to **exactly one SenseCell**; no cross‑Room semantics inside a single template.
 * **SCR‑F14‑S06 (Bundles are pure).** Every **Bundle** is a **set of templates** with **no additional semantics** beyond membership and referenced **SoD**.
 
 ### 14.2 RSCR — Regression (evolution)
@@ -27072,7 +27060,7 @@ Let **`rowOf(τ)`** be the Concept‑Set row of template **τ**, **`senseOf(τ)`
 > **(2) Bundle, don’t blur** — when two Roles travel together, **Bundle** them; keep **SoD** if they must stay apart.
 > **(3) Declare SoD, don’t fuse** — conflicts of interest are solved with **SoD**, not with “trusted” super‑roles.
 > **(4) Window, don’t multiply** — one **Status** can wear different **windows** (evaluation/active/grace); that’s not four Status types.
-> Keep modifiers as **facets**, not names; keep every CRA template **Room‑local** via its SenseCell. If your vocabulary no longer fits in a thoughtful mind, you have an **explosion**—return to the levers and reduce.
+> Keep modifiers as **facets**, not names; keep every Role Description **Room‑local** via its SenseCell. If your vocabulary no longer fits in a thoughtful mind, you have an **explosion**—return to the levers and reduce.
 
 # F.15 — SCR/RSCR Harness for Unification \[A] — Part 1/2
 
@@ -27085,8 +27073,8 @@ Let **`rowOf(τ)`** be the Concept‑Set row of template **τ**, **`senseOf(τ)`
 
 ## 1 · Intent & applicability
 
-**Intent.** Provide a **minimal, notation‑free harness of conceptual checks** that tells you whether a unification slice is **sound**: rooms are fixed and diverse (F.1), terms are harvested and clustered **inside** rooms (F.2–F.3), CRA templates **point to one SenseCell** (F.4), names obey discipline (F.5), rows are reused instead of multiplied (F.7–F.8), bridges are **explicit and penalised** (F.9), statuses vary by **windows** not type proliferation (F.10), and cross‑line bindings (F.11–F.12) respect locality.
-**Applicability.** Use whenever you declare or revise any of: Context cards, Local‑Senses, SenseCells, Concept‑Set rows, CRA templates, Bridges, Status windows.
+**Intent.** Provide a **minimal, notation‑free harness of conceptual checks** that tells you whether a unification slice is **sound**: rooms are fixed and diverse (F.1), terms are harvested and clustered **inside** rooms (F.2–F.3), Role Descriptions **point to one SenseCell** (F.4), names obey discipline (F.5), rows are reused instead of multiplied (F.7–F.8), bridges are **explicit and penalised** (F.9), statuses vary by **windows** not type proliferation (F.10), and cross‑line bindings (F.11–F.12) respect locality.
+**Applicability.** Use whenever you declare or revise any of: Context cards, Local‑Senses, SenseCells, Concept‑Set rows, Role Descriptions, Bridges, Status windows.
 **Non‑goals.** No registries, workflows, or storage formats. No team roles. No metrics dashboards. This is **thinking discipline**, not governance.
 
 ---
@@ -27128,9 +27116,9 @@ All checks are expressed as **judgement schemas** (premises ⊢ conclusion). The
 ## 5 · Minimal vocabulary (this pattern only)
 
 * **Unification line (L).** The thematic cut you are pursuing (e.g., Enactment + Sensing + Execution).
-* **Check.** A content‑level assertion about rooms, senses, rows, CRA templates, bridges, or windows.
+* **Check.** A content‑level assertion about rooms, senses, rows, Role Descriptions, bridges, or windows.
 * **Witness.** A **thoughtful minimal example** that makes a check concrete (e.g., one seed, one bridge pair).
-* **Slice.** The small set of objects under scrutiny together (rooms in view, the row you’re adding, the CRA template that uses it, and any bridge it needs).
+* **Slice.** The small set of objects under scrutiny together (rooms in view, the row you’re adding, the Role Description that uses it, and any bridge it needs).
 
 ---
 
@@ -27140,7 +27128,7 @@ All checks are expressed as **judgement schemas** (premises ⊢ conclusion). The
 2. **Local‑Sense** — clustered sense inside one room (F.3).
 3. **SenseCell** — *(Room × Local‑Sense)* address (F.3/F.4).
 4. **Concept‑Set row** — a cross‑projection hypothesis of “the same thing” (F.7).
-5. **CRA template** — Role/Status definition pointing to **one** SenseCell (F.4).
+5. **Role Description** — Role/Status definition pointing to **one** SenseCell (F.4).
 6. **Bridge** — explicit cross‑room relation with CL and loss notes (F.9).
 7. **Windows** — temporal/scale views for a Status family (F.10).
 8. **Aliases** — name continuity commitments (F.13).
@@ -27153,7 +27141,7 @@ All checks are expressed as **judgement schemas** (premises ⊢ conclusion). The
 The harness arranges checks in three clusters:
 
 * **S‑Local.** Room‑local sanity (anchoring, clustering, two‑register labels).
-* **S‑Cross.** Cross‑artefact coherence (row reuse, single‑cell CRA, bridge discipline, window honesty).
+* **S-Cross.** Cross-artefact coherence (row reuse, single-cell **Role Description**, bridge discipline, window honesty).
 * **R‑Evo.** Evolution continuity (no silent rewrites, no vocabulary creep, bridge re‑validation).
 
 This Part 1 enumerates **SCR** (S‑Local and S‑Cross). Part 2 covers **RSCR**, anti‑patterns, worked “dry runs”, and acceptance summaries.
@@ -27192,14 +27180,14 @@ This Part 1 enumerates **SCR** (S‑Local and S‑Cross). Part 2 covers **RS
 
 ## 9 · SCR — Static conformance rules (S‑Cross)
 
-> S‑Cross rules tie rooms, rows, CRA templates, bridges, and windows together **without** breaking locality.
+> S‑Cross rules tie rooms, rows, Role Descriptions, bridges, and windows together **without** breaking locality.
 
-**SCR‑F15‑S7 (Single‑cell CRA).**
-`CRA τ ⊢ anchor(τ)=one SenseCell ⟨C,λ⟩`
-*Reading:* Every CRA template points to exactly **one** SenseCell; no mixed semantics (F.4).
+**SCR-F15-S7 (Single-cell Role Description).**
+`Role Description τ ⊢ anchor(τ)=one SenseCell ⟨C,λ⟩`
+*Reading:* Every Role Description points to exactly **one** SenseCell; no mixed semantics (F.4).
 
-**SCR‑F15‑S8 (Name discipline).**
-`CRA τ ⊢ name(τ) obeys F.5`
+**SCR-F15-S8 (Name discipline).**
+`Role Description τ ⊢ name(τ) obeys F.5`
 *Reading:* Labels follow the agreed morphology, register pairing, and minimal generality (F.5).
 
 **SCR‑F15‑S9 (Row sufficiency).**
@@ -27226,8 +27214,8 @@ This Part 1 enumerates **SCR** (S‑Local and S‑Cross). Part 2 covers **RS
 `Status family Σ varies by time/scale ⊢ windows(Σ) define variation; no new Status types introduced`
 *Reading:* Temporal and scale variation appears as **windows**, not as new types (F.10).
 
-**SCR‑F15‑S15 (SoD preservation).**
-`Bundle B = {τ₁,τ₂,…} with SoD(τᵢ ⟂ τⱼ) ⊢ no single CRA fuses τᵢ,τⱼ`
+**SCR-F15-S15 (SoD preservation).**
+`Bundle B = {τ₁,τ₂,…} with SoD(τᵢ ⟂ τⱼ) ⊢ no single **Role Description** fuses τᵢ,τⱼ`
 *Reading:* Separation‑of‑Duties is a **normative constraint**, not a label tweak (F.14).
 
 **SCR‑F15‑S16 (Binding coherence).**
@@ -27246,8 +27234,8 @@ This Part 1 enumerates **SCR** (S‑Local and S‑Cross). Part 2 covers **RS
 2. **Local clustering**
    `∀σ∈Σ: context(σ)=C ⊢ cluster_C(Σ) = Local‑Sense λ`  *(S3)*
 
-3. **CRA anchoring**
-   `CRA τ names ⟨C,λ⟩ ⊢ singleCell(τ)`  *(S7)*
+3. **Role-Description anchoring**
+   `Role Description τ names ⟨C,λ⟩ ⊢ singleCell(τ)`  *(S7)*
 
 4. **Row reuse**
    `intent(ρ') ≈ intent(ρ) ⊢ reuse(ρ) ∨ justify_mint(ρ')`  *(S11)*
@@ -27273,7 +27261,9 @@ Local‑Senses: *activity(prov)*, *task(iec)*.
 **11.2 Service Acceptance (ITIL 4 ↔ SOSA/SSN).**
 Rooms: `ITIL 4 (design)`, `SOSA/SSN (run)`.
 Row: **Service‑Availability** with cells ⟨ITIL\:SLO availability⟩, ⟨SOSA\:observation of uptime⟩.
-*Fire:* S9 (row spans ≥2 rooms), S12 (Bridge kind: *measure‑for‑target*, CL=3, loss: *sampling bias*), S16 (binding coherence).
+*Fire:* S9 (row spans ≥2 rooms), S12 (Bridge kind: *measure-for-target*, CL=3, loss: *sampling bias*), S16 (binding coherence), **S-RoleDesc-SingleCell**.
+
+
 
 ---
 
@@ -27328,15 +27318,15 @@ Row: **Service‑Availability** with cells ⟨ITIL\:SLO availability⟩, ⟨SOSA
 
 ---
 
-### 13.4 CRA templates (Role/Status)
+### 13.4 Role Descriptions (Role/Status)
 
-**RSCR‑F15‑E7 (Single‑cell continuity).**
-`CRA τ@t0 → τ@t1 ⊢ anchor(τ@t1)=one SenseCell ∧ (sameCell ∨ justifiedSwitch)`
+**RSCR-F15-E7 (Single-cell continuity).**
+`Role Description τ@t0 → τ@t1 ⊢ anchor(τ@t1)=one SenseCell ∧ (sameCell ∨ justifiedSwitch)`
 *Reading:* A CRA keeps pointing to **one** SenseCell; switching cells requires a **one‑sentence** rationale tied to the row you reuse (F.4, F.8).
 
-**RSCR‑F15‑E8 (Alias‑then‑rename).**
+**RSCR-F15-E8 (Alias-then-rename).**
 `name(τ@t0) → name(τ@t1) ⊢ create alias(name@t0→name@t1) unless semantics changed`
-*Reading:* If only the **name** improves, create an **Alias** (F.13). If semantics change, **mint a new CRA** instead.
+*Reading:* If only the **name** improves, create an **Alias** (F.13). If semantics change, **mint a new Role Description** instead.
 
 ---
 
@@ -27397,7 +27387,7 @@ E7 (**single‑cell CRA**): `AvailabilityStatus` still points to exactly one cel
 
 ---
 
-### 15.2 Rename a CRA without changing meaning
+### 15.2 Rename a Role Description without changing meaning
 
 **Slice.** CRA `IncidentStatus`@t0 → `ServiceIncidentStatus`@t1; same SenseCell.
 
@@ -27448,7 +27438,7 @@ S14/E11 (**window honesty**): reject new type; define a **window** for *peak hou
 
 A unification slice is **publish‑ready** when:
 
-1. **All SCR (S‑Local & S‑Cross) hold** for the current snapshot (rooms, Local‑Senses, SenseCells, rows, CRA templates, Bridges, windows).
+1. **All SCR (S‑Local & S‑Cross) hold** for the current snapshot (rooms, Local‑Senses, SenseCells, rows, Role Descriptions, Bridges, windows).
 2. **All RSCR (R‑Evo) hold** against the previous snapshot: no silent replacements; rows either unchanged or retired+reborn; Bridges re‑validated with CL non‑inflated without witnesses; windows adjusted only for real variance; SoD intact.
 3. **One micro‑witness per moving part** exists in the text (tiny example showing the check in action).
 4. **Memory rule still holds**: the active room set for the line fits in a careful mind without external aids (F.1).
@@ -27472,7 +27462,7 @@ A unification slice is **publish‑ready** when:
 
 **Intent.** Provide a **single, didactic page template** for cross‑domain worked examples that makes every claim **local to a room** (Context), every cross‑room step **explicit via a Bridge**, and every named role/status **traceably tied** to one **SenseCell**. The template is **notation‑free** and **tool‑agnostic**; it captures **how to think** the example so others can replay it.
 
-**Applicability.** Use whenever you illustrate **any** FPF construct that spans more than one Context: CRA bindings, acceptance checks, measurement‑driven claims, type alignment, control/actuation stories, etc.
+**Applicability.** Use whenever you illustrate **any** FPF construct that spans more than one Context: **Role Assignment & Enactment** bindings, acceptance checks, measurement-driven claims, type alignment, control/actuation stories, etc.
 
 **Non‑goals.** No registries, workflows, editors, or storage formats; no step‑by‑step “team procedures.” This pattern shapes **the page a reader sees**, not how it was produced.
 
@@ -27484,7 +27474,7 @@ Cross‑domain examples often fail in four predictable ways:
 
 1. **Global words.** *Process*, *role*, *service*, *execution* used without the room, inviting drift.
 2. **Hidden bridges.** “It’s basically the same” across disciplines, with losses left implicit.
-3. **Name without sense.** A CRA name appears with no visible tie to a SenseCell.
+3. **Name without sense.** A **Role Description** name appears with no visible tie to a SenseCell.
 4. **List without structure.** Facts line up but never meet in a single **Concept‑Set row**.
 
 The template counters these by forcing **rooms → senses → row → bridges**, in that order.
@@ -27499,7 +27489,7 @@ A robust worked example is a **compact theatre**:
 * **Backdrop** = **Room set** (Contexts from F.1), each with a one‑line Card.
 * **Actors** = **SenseCells** (⟨Context, Local‑Sense⟩) you will actually use.
 * **Plot** = **one Concept‑Set row** where those cells stand as “the same thing” for this example.
-* **Cues** = **CRA templates** that reference exactly one SenseCell each.
+* **Cues** = **Role Descriptions** that reference exactly one SenseCell each.
 * **Cross‑talk** = **Bridges** across rooms (with kind, CL, and loss).
 * **Timing** = **Windows** (if status varies across time/scale) and **SoD** (if duties must remain separate).
 * **Moral** = a handful of **harness checks** (F.15) that the reader can verify mentally.
@@ -27512,10 +27502,10 @@ A robust worked example is a **compact theatre**:
 * **Local‑Sense** — a sense clustered within one room (F.3).
 * **SenseCell** — address `⟨Context, Local‑Sense⟩`.
 * **Concept‑Set row (ρ)** — a cross‑room alignment for “what we treat as one” in this example (F.7/F.8).
-* **CRA template (τ)** — a Role or Status that **points to one SenseCell** (F.4–F.6).
+* **Role Description (τ)** — a Role or Status that **points to one SenseCell** (F.4–F.6).
 * **Bridge (β)** — explicit cross‑room relation with **kind** (≡ / overlaps / broader‑than / narrower‑than), **CL**, and **loss note** (F.9).
 * **Window** — a bounded interval (time/scale/phase) tied to a Status (F.10).
-* **SoD** — Separation‑of‑Duties constraint among CRA roles (F.14).
+* **SoD** — Separation-of-Duties constraint among **Roles** (F.14).
 
 ---
 
@@ -27527,7 +27517,7 @@ A robust worked example is a **compact theatre**:
    *Example:* *“Service Uptime as Evaluated by Runtime Executions”* — “We compare **Execution (IEC)** observations to **SLO (ITIL)** within a declared window.”
 
 2. **Unification line.** Which Part C threads are active.
-   *Example:* *Enactment/CRA + KD‑CAL (sensing) + Sys‑CAL (execution).*
+   *Example:* *Enactment + KD‑CAL (sensing) + Sys‑CAL (execution).*
 
 3. **Room set (compact Cards).** 3–6 Contexts from F.1 with one‑line scope and, if inherent, **design vs run** stance.
    *Example:* *BPMN 2.0 (design: workflow graph); PROV‑O (run: Activity uses/generates); ITIL 4 (design: SLO/SLA); SOSA/SSN (run: Observation); IEC 61131‑3 (run: task executes).*
@@ -27542,7 +27532,7 @@ A robust worked example is a **compact theatre**:
    *Example β₁:* ⟨**IEC\:execution‑task**⟩ **overlaps** ⟨**PROV\:activity**⟩, **CL=2**, *loss:* PROV lacks cyclic scheduling semantics.
    *Example β₂:* ⟨**SOSA\:observation**⟩ **narrower‑than** ⟨**ITIL\:measurement**⟩, **CL=2**, *loss:* ITIL omits procedure metadata.
 
-7. **CRA hooks.** Name the Role/Status templates and the **one SenseCell** each references.
+7. **Role-Description hooks.** Name the Role/Status templates and the **one SenseCell** each references.
    *Example:* `AvailabilityStatus` → ⟨ITIL\:SLO⟩; `Execution` → ⟨IEC\:execution‑task⟩; `EvidenceObservation` → ⟨SOSA\:observation⟩.
 
 8. **Windows & SoD (if relevant).** Spell any **status windows** and any **SoD** you rely on.
@@ -27551,8 +27541,8 @@ A robust worked example is a **compact theatre**:
 9. **Micro‑narrative (5–7 lines).** Walk the reader through the claim using **room‑prefixed words** and the row/bridges above.
    *Example (abridged):* “A **task (IEC)** runs the control program. Its **observations (SOSA)** yield availability over the *monthly* window. We compare those to the **SLO (ITIL)** in the same window. Where we refer to **activity (PROV)** we do so via **β₁** (overlap, CL=2). The row ρ is the locus of comparison; the Bridge **β₂** explains why ‘measurement’ in ITIL is broader than ‘observation’ in SOSA.”
 
-10. **Harness pings (F.15).** Two or three **named checks** you expect the reader to verify mentally.
-    *Example:* *S‑Row‑Cross*, *S‑CRA‑SingleCell*, *E‑NoSilentEdition*.
+**Harness pings (F.15).** *S-Row-Cross*, **S-RoleDesc-SingleCell**, *E-NoSilentEdition*.
+    *Example:* *S‑Row‑Cross*, *S‑RoleDescription‑SingleCell*, *E‑NoSilentEdition*.
 
 > **Memory rule.** If your Canvas cannot fit on a single page (or one slide), the example is teaching the wrong thing.
 
@@ -27562,7 +27552,7 @@ A robust worked example is a **compact theatre**:
 
 1. **Locality of meaning.** Every term in the narrative appears **with its room** at first mention (*process (BPMN)*, *activity (PROV)*, …).
 2. **At least one row.** The example **MUST** include ≥ 1 **Concept‑Set row** spanning ≥ 2 rooms.
-3. **Single‑cell CRA.** Every CRA in the example **MUST** point to **one** SenseCell.
+3. **Single-cell Role Description.** Every **Role Description** in the example **MUST** point to **one** SenseCell.
 4. **Explicit bridges.** Any cross‑room step **not explained by the row** **MUST** appear as a **Bridge** with kind, CL, and loss.
 5. **Temporal honesty.** If a room fixes **design vs run**, the narrative respects it.
 6. **Window discipline.** If comparison depends on time/scale/phase, a **window** is stated rather than minting a new Status type.
@@ -27593,17 +27583,17 @@ Show the row as a **compact two‑to‑five‑column list**:
 **SenseCells.** ⟨IEC\:execution‑task⟩, ⟨SOSA\:observation⟩, ⟨ITIL\:SLO⟩.
 **Row ρ.** { ⟨ITIL\:uptime‑SLO⟩ ↔ ⟨SOSA\:observed‑availability⟩ } — comparable magnitudes in the *calendar‑month* window.
 **Bridge β.** ⟨IEC\:alarm‑state⟩ **narrower‑than** ⟨SOSA\:observation‑qualifier⟩, **CL=2**, *loss:* SOSA does not prescribe plant‑specific alarm semantics.
-**CRA hooks.** `AvailabilityStatus` → ⟨ITIL\:SLO⟩; `EvidenceObservation` → ⟨SOSA\:observation⟩.
+**Role-Description hooks.** `AvailabilityStatus` → ⟨ITIL\:SLO⟩; `EvidenceObservation` → ⟨SOSA\:observation⟩.
 **Window.** *Calendar month, business‑hours*, exclusion: *alarm‑state intervals*.
 **Micro‑narrative (4 lines).** A **task (IEC)** runs; when the plant is in **alarm state**, **observations (SOSA)** are flagged and **excluded** from the availability window. We then compare the remaining interval to the **SLO (ITIL)** via row ρ. The Bridge β clarifies why the flag is a **qualifier** in SOSA, not a Status type in ITIL.
-**Harness pings.** *S‑Row‑Cross*, *S‑CRA‑SingleCell*, *S‑Window*, *S‑TemporalHonesty*.
+**Harness pings.** *S‑Row‑Cross*, *S‑RoleDescr‑SingleCell*, *S‑Window*, *S‑TemporalHonesty*.
 
 ---
 
 ## 9 · Relations (with other patterns)
 
 **Builds on.**
-F.1 (rooms), F.2–F.3 (terms & senses), F.4–F.6 (CRA), F.7–F.8 (rows), F.9 (bridges), F.10 (windows), F.14 (SoD), F.15 (harness).
+F.1 (rooms), F.2–F.3 (terms & senses), F.4–F.6 (roles), F.7–F.8 (rows), F.9 (bridges), F.10 (windows), F.14 (SoD), F.15 (harness).
 
 **Constrains.**
 Any example placed in Part C or Part B **must** render its claim through this canvas (or a faithful reduction), so readers can run F.15 mentally.
@@ -27612,8 +27602,7 @@ Any example placed in Part C or Part B **must** render its claim through thi
 
 ## 10 · Didactic distillation (60‑second script)
 
-> “A good cross‑domain example fits on **one page**. First, name the **claim**. Then show the **rooms** you’re using. List the **SenseCells** you will actually touch. Draw **one row** that makes them the same **for this claim**. Every cross‑room nuance you can’t justify in that row becomes a **Bridge** with a **kind**, a **CL**, and a **loss** sentence. Point each **CRA** to **one** cell. If time/scale matters, state the **window**; if duties matter, state **SoD**. Finish with two or three **harness pings** from F.15. That’s it—no tooling, no long procedures. The reader can now replay your thought and agree (or disagree) at the right place.”
-
+> “A good cross‑domain example fits on **one page**. First, name the **claim**. Then show the **rooms** you’re using. List the **SenseCells** you will actually touch. Draw **one row** that makes them the same **for this claim**. Every cross‑room nuance you can’t justify in that row becomes a **Bridge** with a **kind**, a **CL**, and a **loss** sentence. Point each **Role Description** to **one** cell. If time/scale matters, state the **window**; if duties matter, state **SoD**. Finish with two or three **harness pings** from F.15. That’s it—no tooling, no long procedures. The reader can now replay your thought and agree (or disagree) at the right place.”
 
 ## 11 · Anti‑patterns & remedies
 
@@ -27644,7 +27633,7 @@ Any example placed in Part C or Part B **must** render its claim through thi
 **SenseCells.** ⟨OWL\:class ‘Pump’⟩, ⟨FCA\:formal‑concept ‘Pump’⟩.
 **Row ρ.** { ⟨OWL\:Pump⟩ ↔ ⟨FCA\:Pump⟩ } — *same practical extension in this product catalogue*.
 **Bridge β.** ⟨FCA\:lattice‑order⟩ **overlaps** ⟨OWL\:subclass‑order⟩, **CL=2**, *loss:* FCA intents may include context attributes not modeled in OWL restrictions.
-**CRA hooks.** `TypeLabel` → ⟨OWL\:class⟩ (for naming), no runtime CRA.
+**Role-Description hooks.** `TypeLabel` → ⟨OWL\:class⟩ (for naming), no runtime **Role Assignment/Enactment**.
 **Micro‑narrative (3 lines).** For catalogue queries, the **instances** covered by OWL class *Pump* match those of the FCA concept created from the same attributes; we treat them as one row. The **orderings** diverge in nuance (β), but not for membership in this example.
 **Harness pings.** *S‑Row‑Cross*, *S‑TemporalHonesty* (design only), *S‑Bridge‑Kind‑CL*.
 
@@ -27653,7 +27642,7 @@ Any example placed in Part C or Part B **must** render its claim through thi
 ### 12.2 Role vs permission: SoD in enactment vs access control
 
 **Title & claim.** *“Behavioral role (BPMN) is disjoint from access role (RBAC); keep duties separate.”*
-**Unification line.** Enactment/CRA (design & run) + access/deontics (design).
+**Unification line.** Role Assignmnent and Enactment (design & run) + access/deontics (design).
 **Rooms.** **BPMN 2.0** — participant/lanes (design). **NIST RBAC (2004)** — roles/permissions (design).
 **SenseCells.** ⟨BPMN\:participant⟩, ⟨RBAC\:role⟩.
 **Row ρ.** — *(intentionally none)* — we do **not** treat them as the same.
@@ -27667,16 +27656,16 @@ Any example placed in Part C or Part B **must** render its claim through thi
 
 ### 12.3 Method quartet: from MethodDescription to Work with observations
 
-**Title & claim.** *“A MethodDescription (SPEM) predicts a Work trace (PROV) whose observations (SOSA) feed a Status (ITIL).”*
-**Unification line.** Method‑CAL (design) + Enactment/CRA (run) + KD‑CAL (run) + services (design).
+**Title & claim.** *“Behavioral role (BPMN) is disjoint from access role (RBAC); keep duties separate.”*
+**Unification line.** **Role Assignment & Enactment** (design & run) + access/deontics (design).
 **Rooms.** **SPEM 2.0** (design: Method/MethodDescription), **PROV‑O** (run: Activity), **SOSA/SSN** (run: Observation), **ITIL 4** (design: SLO).
 **SenseCells.** ⟨SPEM\:MethodDescription⟩, ⟨PROV\:activity⟩, ⟨SOSA\:observation⟩, ⟨ITIL\:SLO⟩.
 **Row ρ.** { ⟨ITIL\:SLO\:build‑time⟩ ↔ ⟨SOSA\:observed‑build‑duration⟩ } — *compare promised vs observed duration on the same window*.
 **Bridges.** β₁: ⟨SPEM\:MethodDescription⟩ **narrower‑than** ⟨PROV\:activity‑plan⟩, **CL=2**, *loss:* PROV lacks prescriptive structure; β₂: ⟨SOSA\:observation⟩ **narrower‑than** ⟨ITIL\:measurement⟩, **CL=2**, *loss:* ITIL abstracts from procedure.
-**CRA hooks.** `Execution` → ⟨PROV\:activity⟩; `EvidenceObservation` → ⟨SOSA\:observation⟩; `BuildDurationStatus` → ⟨ITIL\:SLO⟩.
+**Role-Description hooks.** `Operator` → ⟨BPMN\:participant⟩; `AccessRole` → ⟨RBAC\:role⟩. **SoD:** `Operator` ⟂ `AccessRole-Admin`.
 **Window.** *Release window: calendar week*.
 **Micro‑narrative (4 lines).** The **MethodDescription (SPEM)** implies a target **build‑time**; **Work (PROV activity)** occurs; **observations (SOSA)** provide actuals; we compare against the **SLO (ITIL)** via row ρ over the *calendar week* window. Bridges β₁–β₂ explain why plan/measure semantics do not collapse.
-**Harness pings.** *S‑Row‑Cross*, *S‑Window*, *S‑CRA‑SingleCell*, *S‑TemporalHonesty*.
+**Harness pings.** *S‑Row‑Cross*, *S‑Window*, *S‑RoleDesc‑SingleCell*, *S‑TemporalHonesty*.
 
 ---
 
@@ -27692,9 +27681,8 @@ Any example placed in Part C or Part B **must** render its claim through thi
    `coRef(Ca,Cb) ∧ ¬sameRow(Ca,Cb) ⊢ requires β(Ca↔Cb)`
    *Reading:* If two rooms are co‑referenced in the narrative but their senses are not placed in the same row, an explicit **Bridge** is needed.
 
-3. **CRA single‑cell**
-   `CRA τ used ⊢ ∃!⟨C,S⟩ : ref(τ)=⟨C,S⟩`
-   *Reading:* Each CRA template used in the example points to **exactly one** SenseCell.
+3. **Role-Description single-cell**
+   `Role Description τ used ⊢ ∃!⟨C,S⟩ : ref(τ)=⟨C,S⟩`
 
 4. **Window sufficiency**
    `compare(qᵢ@Cᵢ, qⱼ@Cⱼ) ⊢ windowDeclared`
@@ -27728,7 +27716,7 @@ Any example placed in Part C or Part B **must** render its claim through thi
 
 * **SCR‑F16‑S01 (Row present).** The page contains **≥ 1** Concept‑Set row spanning **≥ 2 rooms**.
 * **SCR‑F16‑S02 (Bridge explicit).** Every cross‑room assertion not justified by a row is shown as a **Bridge** with **kind, CL, loss**.
-* **SCR‑F16‑S03 (CRA anchoring).** Each CRA Role/Status appearing in the page references **exactly one SenseCell**.
+* **SCR-F16-S03 (Role-Description anchoring).** Each **Role Description** appearing in the page references **exactly one SenseCell**.
 * **SCR‑F16‑S04 (Room prefixes).** First mention of each ambiguous term is **room‑prefixed**.
 * **SCR‑F16‑S05 (Window discipline).** Any numeric comparison across rooms names a **Window**.
 * **SCR‑F16‑S06 (Temporal stance).** Claims respect each room’s **design/run** stance.
@@ -27771,7 +27759,7 @@ Any example placed in Part C or Part B **must** render its claim through thi
 * **SenseCells** named (tech & plain labels acceptable)?
 * **Exactly one** tight **row** (or two, each justified)?
 * All cross‑room steps shown as **β(kind, CL, loss)**?
-* **CRA → one SenseCell** each?
+* **Role Description → one SenseCell** each?
 * **Window** present where numbers meet?
 * **SoD** stated where duties appear?
 * Page fits a **single view**?
@@ -27795,7 +27783,7 @@ Any example placed in Part C or Part B **must** render its claim through thi
 
 **Intent.** Provide a **single, normative table**—the **Unified Term Sheet (UTS)**—that distils the output of F.1–F.12 into **human‑readable rows**. Each row expresses **one Concept‑Set** unified into **one FPF U‑Type** with its **Tech/Plain names** and **cross‑context senses**. The UTS is the *front‑door view* that authors, engineers, and managers use; it replaces scattered notes and eliminates guesswork.
 
-**Applicability.** Produce a UTS **per architheory thread** (e.g., *Enactment & CRA*, *Method quartet*, *Trust & Evidence*). Use it:
+**Applicability.** Produce a UTS **per architheory thread** (e.g., *Enactment — Role Assignment & Enactment*, *Method quartet*, *Trust & Evidence*). Use it:
 
 * to **name** U‑Types and their **Tech/Plain** labels (F.5),
 * to **teach** the mapping from familiar canons to unified concepts,
@@ -27877,7 +27865,7 @@ Every UTS row **MUST** carry the following fields (verbatim headings recommended
 
 ## 7 · Block Plan (didactic grouping)
 
-A UTS **MUST** declare a **Block Plan**—the sequence of blocks that group rows. Blocks are **thread‑specific**. Example **Block Plan** for *Enactment & CRA* (matches your earlier tables):
+A UTS **MUST** declare a **Block Plan**—the sequence of blocks that group rows. Blocks are **thread‑specific**. Example **Block Plan** for *Role Assignment & Enactment* (matches your earlier tables):
 
 * **Block A · Context & Roles** — `U.BoundedContext`, `U.Role`, `U.RoleAssignment`, `U.Capability`.
 * **Block B · Method & Description** — `U.Method`, `U.MethodDescription`, Access/Acceptance descriptions (fields of `U.Service`).
@@ -28050,7 +28038,7 @@ _(Choose 3–5 that fit the thread; do not place Contexts here.)_
 
 ### 1. Context
 
-Part F establishes a *local‑first* discipline: meanings live inside a **Bounded Context** (“room of meaning”), and cross‑room relations exist only as explicit **Alignment Bridges** with stated fit/loss. Within that discipline, teams still need **names** they can speak, read, and govern. Names must carry enough signal for everyday use, yet never smuggle in cross‑room identities, hidden assumptions, or role/metric clutter. F.18 supplies that naming discipline and weaves it through F.1–F.17: Term Harvesting, Sense Clustering, CRA templates, Concept‑Sets, Bridges, Lexical Continuity, Anti‑Explosion control, and the Unified Term Sheet (UTS).
+Part F establishes a *local‑first* discipline: meanings live inside a **Bounded Context** (“room of meaning”), and cross‑room relations exist only as explicit **Alignment Bridges** with stated fit/loss. Within that discipline, teams still need **names** they can speak, read, and govern. Names must carry enough signal for everyday use, yet never smuggle in cross‑room identities, hidden assumptions, or role/metric clutter. F.18 supplies that naming discipline and weaves it through F.1–F.17: Term Harvesting, Sense Clustering, Role Descriptions, Concept‑Sets, Bridges, Lexical Continuity, Anti‑Explosion control, and the Unified Term Sheet (UTS).
 
 **Purpose of this pattern.** Provide a **human‑legible, context‑anchored naming protocol** that:
 
@@ -28101,7 +28089,7 @@ A name is **never** context‑free. When you introduce or use a name, **pair it 
 Every Name Card **must** state the **Kind** (System, Episteme, Role, Service, Method, Work, Objective, Requirement, Decision, Characteristic, etc.). This prevents category errors and keeps Role–Method–Work alignment clean. *Clarification:* this is a **Card requirement**, not a demand that the label string begin with the Kind.
 
 **R3 — Anchor the name to a *Local‑Sense*.**
-A minted name **must** resolve to a **Local‑Sense** inside its room (the result of F.2–F.3). If a name points to a CRA template, state that template and its sense basis. No name floats unattached.
+A minted name **must** resolve to a **Local‑Sense** inside its room (the result of F.2–F.3). If a name points to a Role Description, state that template and its sense basis. No name floats unattached.
 
 **R4 — Use *Twin Registers* (Unified Tech + Plain).**
 Provide two human‑oriented labels on the Name Card, per **E.10** register discipline:
@@ -28698,10 +28686,10 @@ All patterns that propose or consume unified names and rows in Part F; any Part
 | ------------------------------------------- | --------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------- |
 | CRA; CRA binding; CRA record                | **`U.RoleAssignment`**                                                                        | role assignment                        | A.2.1               |
 | performed under a CRA; CRA enactment        | **`U.RoleEnactment`** *(Work → RoleAssignment)*                                               | role execution under an assignment     | A.2.1, A.15         |
-| CRA template / CRA profile / role template  | **`U.RoleDescription`** = **RoleCharacteristicSpace (RCS)** + **RoleStateGraph** + checklists | role card *(plain only)*               | E.10.D2, A.2.5, F.4 |
+| Role Description / CRA profile / role template  | **`U.RoleDescription`** = **RoleCharacteristicSpace (RCS)** + **RoleStateGraph** + checklists | role card *(plain only)*               | E.10.D2, A.2.5, F.4 |
 | CRA state / CRA status                      | **RoleStateGraph** (state) + **State Assertion** (via `U.Evaluation`)                         | role state; state assertion            | A.2.5, F.10         |
 | six‑step CRA                                | **Role Assignment & Enactment Cycle (Six‑Step)**                                              | six‑step role cycle                    | F.6                 |
-| CRA naming discipline                       | **Naming Discipline for U‑Types & Role Names**                                                | —                                      | F.5                 |
+| CRA naming discipline                       | **Naming Discipline for U‑Types & Roles**                                                | —                                      | F.5                 |
 | CRA anchor; anchors table                   | **SenseCell**; **Concept‑Set Table**                                                          | —                                      | F.3, F.7            |
 | CRA bridge / CRA mapping                    | **Alignment Bridge** (with **CL/Loss**)                                                       | mapping bridge                         | F.9                 |
 | CRA harness / CRA tests                     | **SCR/RSCR Harness for Role Assignment & Enactment**                                          | test harness for assignments/execution | F.15                |
@@ -28730,7 +28718,7 @@ All patterns that propose or consume unified names and rows in Part F; any Part
   *After:* “Every `Work` **MUST** be `performedBy` a **`U.RoleAssignment`** (Role Enactment).”
 
 * **Heading.**
-  *Before:* “E.10.U4 — CRA Template Definition”
+  *Before:* “E.10.U4 — Role Description Definition”
   *After:* “E.10.U4 — **Role Description** (RCS + RoleStateGraph + Checklists)”
 
 * **Procedure.**
@@ -28751,7 +28739,7 @@ All patterns that propose or consume unified names and rows in Part F; any Part
 
 * **All Parts A–H**: narrative, headings, captions, examples, and internal cross‑references.
 * **Figures**: node/edge labels; legend keys.
-* **Tables**: column names (“CRA State” → “Role State (RSG)”; “CRA Template” → “Role Description”).
+* **Tables**: column names (“CRA State” → “Role State (RSG)”; “Role Description” → “Role Description”).
 * **Annexes**: keep “CRA” only in **G.1 Deprecated Aliases** with a pointer to this section.
 
 ---
