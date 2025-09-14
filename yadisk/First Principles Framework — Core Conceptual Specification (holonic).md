@@ -19858,7 +19858,7 @@ constitution and Guard‑Rails, without prescribing tooling workflows.
 
 ## 4 · Solution — the **LEX‑BUNDLE** rule‑set (overview)
 
-**LEX‑BUNDLE** aka **URL (unified lexical rules)** is a compact set of **register, naming, and rewrite** rules with conformance checks. It consists of:
+**LEX‑BUNDLE** aka **ULR (Unified Lexical Rules)** is a compact set of **register, naming, and rewrite** rules with conformance checks.
 
 1. **Vertical Stratification Ladder** (E.10 → four strata);
 2. **Twin‑Register Discipline** (Tech/Plain pairs);
@@ -19868,8 +19868,6 @@ constitution and Guard‑Rails, without prescribing tooling workflows.
 6. **Conformance Checklist (CC‑LEX)** and **Regression Stubs (RSCR‑LEX)**.
 
 Below are the **normative clauses** 
-
----
 
 ## 5 · Vertical Stratification Ladder (four strata; no cross‑bleed)
 
@@ -19882,17 +19880,90 @@ Below are the **normative clauses**
 
 **V‑1 (Unidirectional meaning).** Meaning **flows downward** only: Kernel → Architheory → Context → Instance. No stratum may redefine a higher stratum’s term; it may only **specialise** or **bridge** it.
 
-**V‑2 (Citation style).** When a Context term is used, its **Context** must be visible at first mention (e.g., `OwnerRole:ITIL_2020`). If an author needs Cross‑context reuse, they **MUST** cite a **Bridge** with a stated **Congruence Level (CL)** (see F.9).
+**V‑2 (Strata vs authoring tiers).** The **Authoring‑Tier Scheme (E.10.D3)** classifies **Work** acts (AT0…AT3) and **MUST NOT** be conflated with the four **lexical strata** above. Strata constrain **tokens**; tiers classify **acts** and publication discipline.
 
-**V‑3 (Firewall).** Tooling/Pedagogy idioms shall not leak into Kernel prose (DevOps Lexical Firewall). CI/CD jargon, file formats, or API names **MUST NOT** appear in Core definitions. (Pedagogy may use them **as examples** only.)
+**V‑3 (Citation style).** When a Context term is used, its **Context** must be visible at first mention (e.g., `OwnerRole:ITIL_2020`). If an author needs Cross‑context reuse, they **MUST** cite a **Bridge** with a stated **Congruence Level (CL)** (see F.9).
 
----
+**V‑4 (Firewall).** Tooling/Pedagogy idioms shall not leak into Kernel prose (DevOps Lexical Firewall). CI/CD jargon, file formats, or API names **MUST NOT** appear in Core definitions. (Pedagogy may use them **as examples** only, in the **Plain** register, with Tech anchors present.)
 
-## 6 · Twin‑Register Discipline (Tech / Plain)
+## 6 · Ontology Guards 
+
+### 6.1 Tech register ontology guards
+
+> **Purpose.** This section stabilises the Tech register of the kernel lexicon by enforcing head‑anchored naming, explicit *object‑of‑talk*, I/D/S morphology, disciplined treatment of **Role / Holder**, and Domain usage consistent with **D.CTX** and **UTS**. It aligns with **F.4 Role Description (RCS/RSG)**, **F.11 Method Quartet Harmonisation**, and **F.17 UTS**. **Scope:** Guidance is **register‑agnostic** and applies to the whole FPF; examples are illustrative and MUST pass Minimal Generality & Domain Anchoring (MG·DA) and other rules of lexical governance pattern E*. This guidance applies to kernel and non‑kernel components (including Part G and patterns in Part C) and SHOULD be reused across extensions.
+> 
+**Onto1 — Head‑anchoring**  *(use Kernel heads + pass LEX.TokenClass / I/D/S gates)*
+* **Rule:** The **head noun of a term MUST explicitly signal the kind** (`System`, `Holon`, `Role`, `Work`, `Episteme`, `Tradition`, `Lineage`, `Characteristic`, `Method`, `Profile`, `Description`, `Spec`, `Flow`, `Card`, `Pack`, `Dashboard`, …).
+* * Figurative heads with obvious overload (“school”, “family”, “process”, “function”) are **forbidden in the kernel**. Use Plain **twins** only corrected and with a 1:1 Tech mapping and declare **`LEX.TokenClass`** for the Tech token. They **MAY** appear **only in the Plain register** as **1:1 twin‑mappings** to a Tech token (LEX‑BUNDLE), but **SHOULD NOT** appear in the Tech register. Plain language should minimise lexical error from overloaded terms; use plain‑twin lexical guards.
+  * ***Do:** `IncidentDashboard`, `MethodSpec`, `TraditionProfile`, `FlowDescription`.
+* ***Don’t:** `IncidentBoard`, `TDD School`, `Production Process` (kernel), `Service Function` (kernel).
+
+* **Onto2 — I/D/S on the surface (Intension/Description/Specification morphology)**  *(ref. E.10.D2)*
+* **Rule:** Any **intensional** object is a bare head: `Method`, `Tradition`, `Characteristic`. Any **description** appends **`…Description`**: `MethodDescription`, `TraditionDescription`. Any **testable specification** appends **`…Spec`** and presupposes acceptance criteria and harnesses (normative in **E.10.D2**). E.g., *Algorithm* is a species of `MethodDescription` for a computer (a system in the role of information transformer); **If** expressed in a formal language **and** bundled with acceptance tests, it is **`MethodSpec`** (per **F.11**). **If** expressed as pseudo‑code, it is **`MethodDescription`**.
+* **Extension:** Apply the same pattern to non‑method objects where appropriate: `FlowDescription`/`FlowSpec`, `SystemDescription`/`SystemSpec`.
+* **Do:** `SamplingMethod` · `SamplingMethodDescription` · `SamplingMethodSpec`.
+* **Don’t:** `SamplingAlgorithm` (when it is just prose), `SamplingProcessSpec` (head not signalling kind).
+
+* **Onto3 — Roles, Holders, and Carriers (holonic)**  *(ref. F.4 / F.5)*
+* **Rule:** The playable intention is named **`…Role`** and described through **F.4 Role Description** (RCS/RSG), e.g., `SafetyOfficerRole`, `ReviewerRole`. The party **assuming a role** is the **Holder**. Use the **`Holder#Role:Context`** pattern to type the assumption (where `Context` is a `U.BoundedContext`), e.g., `Team‑Alpha (U.Holon) is Holder#SafetyOfficerRole:Plant‑Ops`. **Carrier** is **reserved for a system that bears a symbol of episteme** (`U.Episteme`, `Tradition`, `Lineage`, `Profile`, repertoire) **independent of any concrete role assumption**, e.g., `LeanTraditionCarrier`, `CalibrationLineageCarrier`. Avoid **`Artefact`** as a head in the kernel: it is ambiguous between a Carrier (e.g., document), a system “made by” some transformer, or an episteme abstracted from its carrier.
+* **Register note:** Job titles (`Reviewer`, `Owner`, `Lead`) belong in the **Plain** register and MUST twin‑map to explicit Tech `…Role` tokens.
+* **Why:** This resolves the inconsistent “role carrier vs role holder” usage: **use “Holder” for holonic role assumption**, keep **“Carrier”** for the *system that bears a symbol of episteme*. 
+* **Migration note.** Legacy `…CarrierRole` **MUST be rewritten** to `Holder#…Role:Context`. Use SCR‑LEX to enforce the rewrite.
+* **Do:** `ReviewerRole` (or `AssessorRole`), `Holder#ReviewerRole:Journal‑Issue‑42` (or `Holder#AssessorRole:Procurement‑Lot‑42`); `LeanTraditionCarrier (U.Holon)`, independent of any particular role.
+**Don’t:** `Reviewer` (as a kernel type), `ReviewerCarrier` (to mean a role holder), `SystemReviewer` (role collapsed into a type).
+
+* **Onto4 — Domain only as a catalog mark**  *(ref. E.10.D1 D.CTX; publish stitching on UTS)*
+* **Rule:** `Domain` is **not a kernel kind** and carries **no semantics, inheritance, or reasoning rights**. It is a **catalog mark** that groups several `U.BoundedContext` entries.
+* **Required stitching (see D.CTX & UTS).** Any use of `Domain` **MUST** present: 1. the enumerated list of `ContextId` in **D.CTX**, and 2. the corresponding **UTS strings** (F.17) with twin labels.
+* **Governance.** **No “Domain … governance”.** Rules of comparability/aggregation belong to **Discipline/CG‑Spec** (Gauge, MinimalEvidence, Γ‑fold, CL‑routing), *not* to `Domain`. Prefer `DomainFamily` + stitching over inventing new “Domain” types.
+* **Do:** `DomainBundle: ClinicalSafety → {ContextId: AdverseEvents, DeviceLabelling, …} + UTS twins`.
+* **Don’t:** `ClinicalSafetyDomain` as a type with inheritance; `Domain Governance` sections in Tech.
+
+**Onto5 — Always state the **object‑of‑talk**
+* **Rule.** The definition or first line of a gloss **MUST state what the term is about**: a `U.Holon`/`U.System`, a `U.Episteme` (`Tradition`, `Lineage`, `Profile`), a `Role`, a `Work` execution, a `Characteristic`, or a `Carrier`.
+* **Do:** “**Object‑of‑talk:** `ReviewerRole` — a role intention playable by a holon within an editorial context.”
+* **Don’t:** “Reviewer — a person who …” (blurs kind and object‑of‑talk).
+
+* * **Onto6 — Bans and canonical rewrites**  *(mirror E.10 § 9 L‑rules; do not duplicate tables)*
+* `process / function / activity` → **`Work` / `MethodDescription` / `Flow`** (context‑dependent).
+* `school` → **`Tradition`** (Tech); leave “school” only as a Plain twin with an adjacent Tech label.
+* `domain` → **`DomainFamily` + {ContextId list} + UTS twins**.
+* legacy `…CarrierRole` → **`Holder#…Role:Context`**.
+* ambiguous `Owner` in role names → prefer **`StewardRole` / `CustodianRole` / explicit responsibility head**.
+* job titles (`owner`, `lead`, `champion`) in the kernel → **use explicit `…Role` names**; keep titles in Plain with twin‑labels.
+* **Do:** `FlowDescription: ReturnsHandling`, `Tradition: Test‑Driven`, `Holder#CustodianRole:Asset‑Ledger`.
+* **Don’t:** `Returns Process`, `TDD School` (kernel), `Ledger Owner` (underspecified).
+
+**Worked mini‑examples across arenas**
+1. **Software engineering:** `BuildFlowDescription`, `CIHarnessSpec`; `Holder#MaintainerRole:Repo‑X`. Avoid `Build Process`, `Repo Owner`.
+2. **Applied research / experimentation:** `SamplingMethodSpec`, `CalibrationLineageCarrier`; `Holder#ReviewerRole:Grant‑Call‑Y`.  Avoid `Sampling Algorithm` (if prose), `Lab Owner`.
+3. **Production / service management:** `ShiftWork`, `SafetyOfficerRole`; `Holder#SafetyOfficerRole:Plant‑Ops`.  Avoid `Safety Officer` as a type, `SafetyDomain Governance`.
+4. **Operations research / optimisation:**  `RoutingMethodDescription`, `CostCharacteristic`; `Holder#ModelStewardRole:OR‑Program`.  Avoid `Routing Function`, `Model Owner`.
+5. **Healthcare / clinical ops:** `CarePathwayFlowDescription`, `MedicationAdministrationWork`; `Holder#AttendingPhysicianRole:Ward‑12`. Avoid `Care Process`, `Ward Owner`.
+6. **Finance & accounting:** `ReconciliationMethodSpec`, `JournalPostingWork`; `Holder#TreasuryStewardRole:Liquidity‑Book`. Avoid `Reconciliation Process`, `Account Owner` (underspecified).
+7. **Legal / compliance:** `RetentionPolicySpec`, `InvestigationWork`; `Holder#DataProtectionOfficerRole:Org‑X`. Avoid `Compliance Function`, `Data Owner` (underspecified).
+8. **Cloud / IT operations:** `IncidentFlowDescription`, `RunbookMethodSpec`; `Holder#OnCallEngineerRole:Service‑Y`. Avoid `Incident Process`, `Service Owner` (underspecified).
+9. **Logistics / supply chain:** `PickingWork`, `RoutingMethodSpec`; `Holder#DispatcherRole:Hub‑Z`. Avoid `Picking Process`, `Fleet Owner`.
+10. **Construction / civil engineering:** `PermitAcquisitionFlowDescription`, `InspectionMethodSpec`; `Holder#SiteStewardRole:Project‑Lot‑17`. Avoid `Inspection Process`, `Site Owner`.
+11. **Emergency response:** `TriageMethodDescription`, `EvacuationFlowDescription`; `Holder#IncidentCommanderRole:Event‑R`. Avoid `Triage Function`, `Incident Owner`.
+12. **Agriculture:** `IrrigationFlowDescription`, `SoilSamplingMethodSpec`; `Holder#FieldStewardRole:Plot‑17`. Avoid `Irrigation Process`, `Field Owner`.
+
+**Checklist before minting a KernelToken**
+* Head noun signals kind (Onto1).
+* I/D/S morphology correct (Onto2).
+* If role‑related: **Role vs Holder vs Carrier** separation observed; holonic scope explicit (Onto3).
+* Any Domain mention stitched to D.CTX and UTS; **no norms on Domain** (Onto4, Onto.6).
+* Object‑of‑talk declared (Onto5).
+* SCR‑LEX rewrites checked / legacy forms migrated (Onto7).
+> **Note on registers.** Keep figurative or business‑casual terms in the **Plain** register only, with strict **twin‑label** links to the Tech token (LEX‑BUNDLE). In the **Tech** register, speak in KL‑CAL: **episteme‑about‑epistemes** (Tradition, Lineage, Profile), not in catalogue‑admin idioms.
+
+## 6.2 Twin‑Register Discipline (Tech / Plain)
+
+**Plain twin (LEX).** A registry entry pairing the **authoritative Tech label** with a **display‑only Plain label** for one `U.Type` **in one `U.BoundedContext`**; governed by **PTG (Plain Twin Governance)** and referenced by `Twin‑Map ID (LEX)`. *“Plain twin” ≠ the **Plain register** (the register is where twins may be used; the twin is the 1:1 mapping).*
 
 > **Rule R‑0 (Registers).** Every Kernel and Architheory concept has a **Tech label** (the testable semantic token) and an optional **Plain label** (didactic synonym). The **Tech label is authoritative**; the Plain label is permitted *only* in expository text and must map 1:1 to the Tech meaning inside the current **Context**.
 
-### 6.1 Allowed pairs (normative table; examples)
+### 6.2.1 Allowed pairs (normative table; examples)
 
 | **Tech (authoritative)** | **Plain (didactic)**                        | **Notes & guards**                                                                           |
 | ------------------------ | ------------------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -19906,10 +19977,60 @@ Below are the **normative clauses**
 | `U.Capability`           | ability, capacity (within bounds)           | Separate from Role/Method/Work; must carry **envelope & measures**.                          |
 | `U.Dynamics`             | law of change, model of evolution           | Not a capability or a method.                                                                |
 
-**R‑1 (Plain first‑use).** At first use in a section, show **Tech label** and (if you want) the Plain synonym: *“…a `U.Method` (the **how‑to**), described by a `U.MethodDescription` (the **recipe**) …”*
+**R‑1 (Plain first‑use).** At first use in a section, show **Tech label** and (optionally) the Plain twin: *“…a `U.Method` (the **how‑to**), described by a `U.MethodDescription` (the **recipe**) …”*
 **R‑2 (No unpaired Plain in CC).** Conformance Checklists must use **Tech labels** only.
 
 Domains can mint aliases inside their `U.BoundedContext` glossary; all aliases must map 1:1 to a Tech label (**SenseCell** row in the Context’s **Concept-Set Table**), and if exported across Contexts, via an **Alignment Bridge** (with **CL/Loss**).
+
+ Make “plain twins” (reader‑friendly labels) **safe by construction**, not just style. The plain twin must **not** change kind, scope, or reader expectations versus the canonical Tech name; it is **display‑only** and **context‑local**.
+
+* **Tech name (tech)** — the canonical, kernel‑conformant label used in **normative** clauses (e.g., `U.RoleAssignment`, `TransformerRole`).
+* **Plain twin (plain)** — a didactic **display alias** permitted in **expository** prose and UI surfaces **inside one `U.BoundedContext`**.
+
+> **Principle:** *Meaning lives in the Tech name; the plain twin may never move meaning.* (Locality is enforced by `U.BoundedContext` and Bridges.)&#x20;
+
+### 6.2.2 Plain Twin Safety constraints (normative)
+
+**CC‑TWIN‑1 · One‑to‑one & local.**
+Each Tech name has **at most one** plain twin **per `U.BoundedContext`**; the same plain twin **MUST NOT** point at more than one Tech name in the same Context.
+
+**CC‑TWIN‑2 · Sense‑equivalence proof.**
+A plain twin **MUST** bind to the **same SenseCell** as its Tech name in that Context (F.3/F.7). Authors **MUST** record at least one **counter‑example test** showing how the twin could be misread and why it still passes **in this Context** (SenseCell notes).&#x20;
+
+**CC‑TWIN‑3 · Head‑term discipline (HND).**
+The plain twin **MUST** preserve the **head term** of the Tech name, or append an explicit bracketed head on **first use**:
+
+* Roles keep **“(role)”**, Services keep **“(service)”**, Methods keep **“(method)”**, Work keeps **“(work record)”**, Capability keeps **“(capability)”**.
+  *Examples:*
+  `TransformerRole` → “**Transformer (role)**”,
+  `U.Service` → “**Service (service)**”,
+  `U.Work` → “**work (work record)**”.
+
+**CC‑TWIN‑4 · Kind‑consistent.**
+A plain twin **MUST NOT** map across **Kinds** (C.3). If the twin’s everyday reading could denote a different Kind (e.g., *school* = organization, corpus, domain), it is **forbidden** unless qualified by a bracketed head and **Context gloss** on first use (see CC‑TWIN‑7).
+
+ **CC‑TWIN‑5 · Ambiguity stop‑list.**
+The following base nouns are **reserved** and **MUST NOT** be used as unqualified plain twins: *school, service, process, function, model, system, method, standard, library, dataset, evidence, activity, task, action*.
+They are allowed **only** with an explicit head per **CC‑TWIN‑3** and a **Context gloss** (CC‑TWIN‑7). *(This list MAY be extended in the registry.)*
+
+**CC‑TWIN‑6 · No cross‑context by label.**
+Plain twins are **not portable**. Reuse in another `U.BoundedContext` requires a **Bridge** with CL and loss notes; names alone carry no authority.&#x20;
+
+**CC‑TWIN‑7 · First‑use gloss.**
+At first occurrence in a document or screen, a plain twin **MUST** be shown as **“Plain twin \[Tech name] — Context gloss”**, e.g.:
+“**Transformer (role)** \[**TransformerRole**] — *mask borne by a system to enact a method step in OR\_2025*”.
+
+**CC‑TWIN‑8 · Normative surface ban.**
+Plain twins **MUST NOT** appear in **Conformance Checklists, predicates, type signatures, or acceptance clauses**. Only Tech names are normative. (Plain twins are strictly didactic.)
+
+**CC‑TWIN‑9 · Twin budget.**
+**At most one** plain twin per Tech name per Context. Synonym piles are prohibited (control vocabulary sprawl; see F.14).&#x20;
+
+**CC‑TWIN‑10 · Registry entry & DRR.**
+Every plain twin **MUST** have a **registry entry** (E.10.P) recording: `tech`, `plain`, `context`, `head`, **SenseFidelity = {3,2,1,0}**, ambiguity notes, counter‑examples, DRR id. Any change requires a **DRR**.&#x20;
+
+**CC‑TWIN‑11 · Tests.**
+Twin entries **MUST** pass the **Twin Harness** (see F.15 patch below): *Head term*, *Kind consistency*, *SenseCell match*, *Stop‑list compliance*, and *First‑use gloss*.
 
 ## 7 · Minimal Generality & Domain Anchoring (MG·DA) — names neither parochial nor vacuous
 
@@ -19964,7 +20085,7 @@ Prefer **object‑anchored heads** to metaphors. If a metaphor is unavoidable, e
 **SF‑2 (Uniqueness, MUST).** Register short‑forms in the **Reserved‑Names** list; run the collision check (7.4‑MG·DA‑T5).  
 **SF‑3 (Form, SHOULD).** Prefer typographic separators (**MG·DA**) to fused acronyms (**MGDA**). Use the fused form only in code or identifiers where punctuation is disallowed, and only after registration.
 
-### 7.8 Examples (illustrative, not exhaustive)
+### 7.8 Examples (illustrative, canonical)
 Prefer **`U.Service`** (promise) over *BusinessService*; **`U.Capability`** over *Function*; **`U.Dynamics`** over *NaturalProcess*; **`U.WorkPlan`** over *ScheduleProcess*.  
 Do **not** mint *ETLService* at kernel level—model ETL as `MethodDescription`; the **Service** is “data delivered under acceptance.”
 
@@ -20002,7 +20123,7 @@ IDs/instances: **flat with delimiters** (context‑defined) but never collide wi
 | **`Role`**              | **Role kind** (intensional)                | I‑layer                              | KernelToken/ContextToken        | `TransformerRole`, `ApproverRole`                 | Appearing in BoM/mereology; mixing with run logs.                     |
 | **`Method`**            | **Abstract way of doing** (recipe type)    | I‑layer                              | KernelToken/ContextToken        | `SteriliseInstrumentMethod`                       | Versioning on `Method` (version the `MethodDescription` instead).     |
 | **`MethodDescription`** | **Recipe/description** (notation‑agnostic) | D‑layer                              | KernelToken/ContextToken        | `JS_Schedule_v4_MethodDescription`                | Calling it “process”; encoding runtime actuals here.                  |
-| **`Work`**              | **Execution** (runs or kinds of runs)      | (run artefact; not I/D/S)            | ContextToken                    | `SpeechActWork`, `W#Seam134`                      | Plans/schedules; design‑time recipes.                                 |
+| **`Work`**              | **Execution** (runs or kinds of runs)      | (run artefact; not I/D/S)            | KernelToken/ContextToken        | `SpeechActWork`, `W#Seam134`                      | Plans/schedules; design‑time recipes.                                 |
 | **`WorkPlan`**          | **Schedule of intent**                     | D‑layer (plan artefact)              | ContextToken                    | `MaintenanceWorkPlan_Q3`                          | Logging actuals; claiming execution.                                  |
 | **`Service`**           | **External promise object**                | I‑layer (contracted intension)       | KernelToken/ContextToken        | `ObjectStorageService`, `PassportIssuanceService` | Naming teams/APIs as “Service”.                                       |
 | **`Capability`**        | **System ability**                         | I‑layer                              | KernelToken/ContextToken        | `ScheduleGenerationCapability`                    | Mislabeling roles or methods as capabilities.                         |
@@ -20075,17 +20196,7 @@ Example: using a `KernelToken` in a Context constraint may require a Bridge/alia
 * **SCR‑MOR‑S05 (Collision).** Full‑text + Reserved‑Names checks pass (no other sense of the token elsewhere).
 * **SCR‑MOR‑S06 (Object‑of‑talk).** Heads pass M‑2; no bare metaphors as heads.
 * **RSCR‑MOR‑E01 (DevOps firewall).** Tool/file suffixes quarantined to Context; none leak into KernelToken names.
-* **RSCR‑MOR‑E02 (USM compliance).** For each LexicalAct, `USM.Scope ∈ AllowedScopes(LEX.TokenClass)`.
-
-### 8.8 Examples (illustrative)
-
-Prefer **`U.Service`** (promise) over *BusinessService*; **`U.Capability`** over *Function*; **`U.Dynamics`** over *NaturalProcess*; **`U.WorkPlan`** over *ScheduleProcess*.
-Do **not** mint *ETLService* at kernel level—model ETL as `MethodDescription`; the **Service** is “data delivered under acceptance.”
-
-**Notes for editors**
-
-* This section **inherits** § 7 MG·DA rules (Object‑of‑talk anchoring, Characteristic/CharacteristicSpace, collision checks) and **does not** redefine them.
-* The only legitimate use of *plane* is in **CHR\:ReferencePlane**; I/D/S are “**layers**”; Part‑F uses explicit Characteristics (e.g., `SenseFamily`) rather than spatial metaphors.
+**RSCR‑MOR‑E02 (USM compliance).** For each LexicalAct, verify `USM.Scope ∈ AllowedScopes(LEX.TokenClass)` (see § 7.5).
 
 ## 9 · Canonical rewrites for overloaded words (LEX L‑rules; normative)
 
@@ -20321,10 +20432,10 @@ The platform offers **Service** ‘Object Storage’ (access = `S3_API_Spec_vX`;
 
 ---
 
-## 14 · Closing notes *(governance & purity)*
+## 15 · Closing notes *(governance & purity)*
 
 * **Notation‑agnostic.** ULR is a **language constitution**, not a scanner or template. Apply it in prose, sketches, or formal models.
-* **Where checks live.** Convenience checks belong to Tooling; ULR itself stays notation‑agnostic.
+* **Where checks live.** Convenience checks belong to Tooling; ULR itself stays notation‑agnostic. Conformance code lives in **SCR‑LEX / RSCR‑LEX** as referenced above.
 * **Acts vs tokens.** LEX applies to **tokens**; USM applies to **acts** (mint/rename/use). Conformance:
   `LEX.TokenClass(t)=c  ⇒  USM.Scope(usage) ∈ AllowedScopes(c)` (§ 7.5).
 * **Guards honoured.** DevOps Lexical Firewall and Unidirectional Dependency remain intact.
@@ -20333,7 +20444,7 @@ The platform offers **Service** ‘Object Storage’ (access = `S3_API_Spec_vX`;
 > **One‑line memory:** *“ULR keeps words honest so ideas stay composable.”*
 
   
-  # E.10.P — **Conceptual Prefixes (policy & registry)**  \[A]
+# E.10.P — **Conceptual Prefixes (policy & registry)**  \[A]
  **Intent.** Provide a compact, **notation‑neutral** registry and **minting policy** for *conceptual prefixes* — short shorthands that signal **cognitive namespaces** used throughout the Core.
 
  **Policy (normative).**
@@ -23425,9 +23536,16 @@ Risky: *Multi‑stage‑workflow‑execution‑record* (compresses a scenario in
 
 **R‑UT‑9 (No edition/version in name).** Versions live in the Concept‑Set evidence; the name denotes a **time‑robust kind**.
 
----
 
-## 7 · Invariants (normative, lightweight)
+## 7 Twin rules
+
+**Mandatory Tech name.** Every `U.Type`/Role **MUST** declare a Tech name; plain twin is optional.
+**Role suffix invariant.** Role Tech names **MUST** end with `Role`; plain twin **MUST** keep “(role)” on first use.
+**No head elision.** Head terms **MUST NOT** be dropped in a way that changes expected Kind (e.g., _“Approval”_ ≠ _“Approver (role)”_).
+**One twin, one context.** At most one plain twin per Context; register in **E.10.P**.
+
+
+## 8 · Invariants (normative, lightweight)
 
 **INV-F5-1 (Pair).** Every Role Description card and every U.Type **MUST** carry **Tech** and **Plain** labels; symbol is optional and informative.
 
@@ -23443,7 +23561,7 @@ Risky: *Multi‑stage‑workflow‑execution‑record* (compresses a scenario in
 
 ---
 
-## 8 · Reasoning primitives (judgement schemas, notation‑free)
+## 9 · Reasoning primitives (judgement schemas, notation‑free)
 
 > Pure mental checks; no tools implied.
 
@@ -23475,7 +23593,7 @@ Risky: *Multi‑stage‑workflow‑execution‑record* (compresses a scenario in
 
 ---
 
-## 9 · Micro‑examples (illustrative)
+## 10 · Micro‑examples (illustrative)
 
 **Role Description (BPMN Context).**
 Tech: **Participant** · Plain: *actor in a workflow* · senseFamily: **Role**
@@ -23497,7 +23615,7 @@ Tech: **Result** · Plain: *the produced value or record of a measurement/assess
 Tech: **Type Node** · Plain: *a node in a type hierarchy or lattice*
 (*Neutral across DL and FCA.)*
 
-## 10 · Anti‑patterns & remedies
+## 11 · Anti‑patterns & remedies
 
 | #       | Anti‑pattern                | Symptom in labels                                                  | Why it harms thinking                                              | Remedy (rule‑backref)                                                                                               |
 | ------- | --------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
@@ -23519,11 +23637,11 @@ Tech: **Type Node** · Plain: *a node in a type hierarchy or lattice*
 
 ---
 
-## 11 · Worked examples (multi‑architheory)
+## 12 · Worked examples (multi‑architheory)
 
 > Each example shows the **reasoning move** that leads to the label; no procedures, no tooling.
 
-### 11.1 Role Description labels (context-local)
+### 12.1 Role Description labels (context-local)
 
 **(a) BPMN Context — behavioural mask vs node word**
 
@@ -23549,9 +23667,7 @@ Tech: **Type Node** · Plain: *a node in a type hierarchy or lattice*
 * **Decision.** For a Role Description **Status** of a run, label **Completed**, **Failed**, **Skipped** (Context idiom); avoid naming the **Work** itself here.
 * **Why.** The *record of work* is a **U.Type** elsewhere (A.15.1); Role Description in this Context carries **badges** of runs. (A.7 stance split; R-RD-3)
 
----
-
-### 11.2 U.Type labels (from Concept‑Set rows)
+### 12.2 U.Type labels (from Concept‑Set rows)
 
 **Row R₁ (measurement‑sense):**
 SOSA: *Observation* • ML practice: *metric reading* • Metrology: *measurement result*
@@ -23576,7 +23692,7 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 
 ---
 
-### 11.3 Mixed scenario (service acceptance over execution traces)
+### 12.3 Mixed scenario (service acceptance over execution traces)
 
 **Contexts in play.** IEC 61131‑3 (run), SOSA/SSN (sensing), ITIL 4 (services).
 
@@ -23587,7 +23703,7 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 
 ---
 
-## 12 · Migration notes (conceptual)
+## 13 · Migration notes (conceptual)
 
 1. **When a Context changes edition.** Names stay; the **SenseCell** shifts to the new edition. Only change a label if the **sense** has changed; then **split** the card rather than mutate the name. (INV‑F5‑2, R‑RD‑7)
 
@@ -23605,11 +23721,9 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 
 8. **Deprecation path.** If a label must change, publish the **new Tech + Plain**, keep the old as an **alias** in the registry (F.13), and leave the reasoning trail in the Concept‑Set row that forced the rename. (R‑UT‑6, F.13 linkage)
 
----
+## 14 · Acceptance tests (SCR/RSCR — concept‑level)
 
-## 13 · Acceptance tests (SCR/RSCR — concept‑level)
-
-### 13.1 Static conformance (SCR)
+### 14.1 Static conformance (SCR)
 
 * **SCR-F5-S01 (Two registers).** Every Role Description card and U.Type **has both** Tech and Plain labels; any symbol is marked **alias**.
 * **SCR-F5-S02 (Context fidelity for Role Descriptions).** For any Role Description `T` in Context `C`, `Tech(T)` appears idiomatic **in C**; `Plain(T)` does **not** broaden `sense(T)`.
@@ -23619,16 +23733,14 @@ ITIL: *incident status* • Safety cert.: *assurance level* • QA: *readiness l
 * **SCR‑F5‑S06 (No Context tags).** No label embeds Context or edition strings.
 * **SCR‑F5‑S07 (Family coherence).** Families that claim parity (e.g., Levels) show **parallel shapes** across members.
 
-### 13.2 Regression checks (RSCR)
+### 14.2 Regression checks (RSCR)
 
 * **RSCR‑F5‑E01 (Witness drift).** When a Concept‑Set row gains/removes a witness Context, re‑evaluate **neutrality**; if violated, refactor the Tech label to a more neutral head.
 * **RSCR-F5-E02 (Edition churn).** When a Context updates, Role Description labels remain stable unless the **sense** changed; if sense changed, **split** the card and keep aliases in F.13.
 * **RSCR‑F5‑E03 (Collision guard).** If two labels become confusable across **senseFamilies**, either add the **minimal** disambiguator (Role Description only, Context‑idiom) or separate the concepts.
 * **RSCR‑F5‑E04 (Rhetoric creep).** Periodic skim for decorative adjectives; remove them unless they encode formal levels or families.
 
----
-
-## 14 · Didactic distillation (60‑second recap)
+## 15 · Didactic distillation (60‑second recap)
 
 > **Name what is already true.**
 > Role Description labels **speak like the Context** (Tech) and **teach without widening** (Plain).
@@ -26857,7 +26969,39 @@ This Part 1 enumerates **SCR** (S‑Local and S‑Cross). Part 2 covers **RS
 `Service‑Acceptance binding references Status Σ and Execution E ⊢ Σ anchored; E anchored; comparison defined via Bridge(s) if Cross‑context`
 *Reading:* Acceptance compares **anchored** executions and statuses, with any Cross‑context step made explicit (F.12 + F.9).
 
----
+> **SCR/RSCR “Twin Harness” tests**
+
+**SCR‑TWIN‑01 · Head term check.** Plain twin preserves/declares the head per **CC‑TWIN‑3**.  
+**SCR‑TWIN‑02 · Kind check.** Plain twin maps to the same **Kind** as the Tech name (C.3).  
+**SCR‑TWIN‑03 · SenseCell check.** Twin and Tech resolve to the same **SenseCell**; record counter‑example(s).  
+**SCR‑TWIN‑04 · Stop‑list check.** If the base noun is in the **Ambiguity stop‑list**, require bracketed head + gloss or **fail**.  
+**SCR‑TWIN‑05 · Normative surface check.** No plain twins in CC blocks, signatures, or acceptance clauses.  
+**RSCR‑TWIN‑06 · Drift audit.** On Context or glossary edits, re‑run twin harness; degrade or deprecate if SenseFidelity falls.  
+**RSCR‑TWIN‑07 · Bridge audit.** If a twin is copied across Contexts, ensure a **Bridge** exists; record **CL** and loss notes.
+
+ > **Examples & Anti‑examples**
+
+**Good (role with head):**
+* Tech: `TransformerRole` → Plain: **“Transformer (role)”** — passes Head & Kind checks.
+*  Tech: `IncidentCommanderRole` → Plain: **“Incident commander (role)”**.
+
+**Good (episteme status with head):**
+* Tech: `U.EvidenceRole` → Plain: **“Evidence (status)”** — first mention includes head.
+
+**Borderline (allowed with gloss):**
+* Tech: `U.Episteme` → Plain: **“School (episteme)”** — **only** with first‑use gloss, e.g., _“School (episteme) \[U.Episteme\] — a body of knowledge within IAU\_2006”_. (Without the head/gloss this is **forbidden** due to ambiguity.) 
+
+**Forbidden:**
+* Tech: `U.Episteme` → Plain: **“School”** (bare) — fails **CC‑TWIN‑4/5**.
+* Tech: `U.Service` → Plain: **“API”** — fails Kind and head checks (API is an access **method**, not the **promise**).
+* Tech: `U.RoleAssignment` → Plain: **“Appointment”** — banned term; conflates governance speech‑act with the binding object.
+
+> **Migration guidance (lightweight)**
+1.  **Inventory.** List current plain twins per Context.
+2.  **Score.** Assign **SenseFidelity** (0–3) and add counter‑examples; demote or deprecate any with score <2.
+3.  **Head & gloss.** Add bracketed heads and first‑use glosses for all surviving twins.
+4.  **Register.** Create/update entries in **E.10.P**; link a **DRR** for each change.
+5.  **Lint.** Enable the **Twin Harness** in CI to block new ambiguous twins.
 
 ## 10 · Judgement schemas (core moves)
 
@@ -27411,14 +27555,14 @@ Any example placed in Part C or Part B **must** render its claim through thi
 **“One table that a careful mind can hold.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Builds on:** F.1–F.3 (Contexts → seeds → local senses), F.4 (Role Characterisation), F.5 (Naming), F.7 (Concept‑Set table), F.8 (Mint/Reuse decision), F.9 (Bridges), F.10–F.12 (Status & method/service bindings), F.15 (SCR/RSCR).
-**Coordinates with.** A.1.1 `U.BoundedContext`, A.7 **Strict Distinction**, A.11 **Ontological Parsimony**, A.15 **Role–Method–Work Alignment**.
+**Coordinates with:** A.1.1 `U.BoundedContext`, A.7 **Strict Distinction**, A.8 **Heterogeneity**, A.11 **Ontological Parsimony**, A.15 **Role–Method–Work Alignment**.
 **Non‑goals.** No registries, workflows, editors, or storage formats. No by‑name Cross‑context equivalence. No “data pipeline.” This pattern prescribes **what a UTS is** and **how to judge it**, not how to generate files.
 
 ## 1 · Intent & Applicability
 
 **Intent.** Provide a **single, normative table**—the **Unified Term Sheet (UTS)**—that distils the output of F.1–F.12 into **human‑readable rows**. Each row expresses **one Concept‑Set** unified into **one FPF U.Type** with its **Tech/Plain names** and **cross‑context senses**. The UTS is the *front‑door view* that authors, engineers, and managers use; it replaces scattered notes and eliminates guesswork.
 
-**Applicability.** Produce a UTS **per architheory thread** (e.g., *Enactment — Role Assignment & Enactment*, *Method quartet*, *Trust & Evidence*). Use it:
+**Applicability.** Produce a UTS **per architheory thread** (e.g., *Role Assignment & Enactment*, *Method quartet*, *Trust & Evidence*). Use it:
 
 * to **name** U.Types and their **Tech/Plain** labels (F.5),
 * to **teach** the mapping from familiar canons to unified concepts,
@@ -27433,10 +27577,10 @@ Without a single sheet:
 
 1. **Locality is lost.** Mappings hide in prose; readers re‑globalise words.
 2. **Naming drifts.** Teams adopt ad‑hoc labels that collide later.
-3. **Coverage is opaque.** No quick check that ≥ 3 independent Contexts underpin each U.Type (A.8).
+3. **Coverage is opaque.** No quick check that coverage spans **≥ 3 domain families** across the sheet (A.8).
 4. **Didactic load spikes.** Each section re‑teaches the same terms.
 
-**UTS** fixes this by putting the **unification decision** and the **Cross‑context evidence** on **one line** per concept.
+**UTS** fixes this by putting the **unification decision** and the **cross‑context evidence** on **one line** per concept.
 
 ---
 
@@ -27445,7 +27589,7 @@ Without a single sheet:
 | Force                             | Constraint in UTS                                                                                                   |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | **Didactic primacy vs. fidelity** | UTS keeps **two names** (Tech/Plain) and **one‑line rationale**, but never misstates a source meaning.              |
-| **Parsimony vs. recall**          | Each row is **one concept**; each concept cites **≥ 3 Contexts** overall across the sheet (per A.8).                   |
+| **Parsimony vs. recall**          | Each row is one concept; the UTS as a whole demonstrates heterogeneity across ≥ 3 domain families (A.8). Rows may cite fewer Contexts when the concept truly appears in fewer.                   |
 | **Locality vs. comparability**    | Senses are **Context‑scoped** (E.10.D1). Cross‑context relations are shown only as **explicit bridges** (F.9) with **CL**. |
 | **General usability**             | Sheet must be **legible on paper** and **memorisable** (block structure, stable row order).                         |
 
@@ -27455,7 +27599,7 @@ Without a single sheet:
 
 **A UTS is a Concept‑Set table with names.**
 Each **row** = one **Concept‑Set** unified into one **FPF U.Type** (the “what we mean”).
-Each **column family** shows **how this concept appears** in chosen **context of meaning** (F.1).
+Each **column family** shows **how this concept appears** in the chosen **contexts of meaning** (F.1).
 
 Two **canonical layouts** are allowed (pick one or publish both):
 
@@ -27468,11 +27612,12 @@ Both layouts are normative; choose based on audience. In Layout A, comparabili
 
 * **UTS (Unified Term Sheet).** The published, human‑readable table per thread.
 * **Context.** Alias in Tech register for **`U.BoundedContext`** (E.10.D1). Normative unit of meaning; every SenseCell is scoped to a Context _(name + edition)._  
-* **Bounded‑Context Column (BCC).** A didactic column used **only in Layout A**; one column per **Context (`U.BoundedContext`)** from the F.1 cut; **not a model element**; carries **no editions**.  
+* **Bounded‑Context Column (BCC).** A didactic column used **only in Layout A**; one column per **Context (`U.BoundedContext`)** from the F.1 cut; **not a model element**; the **header includes the Context name + edition**.  
 * **Discipline Column (DC).** A _discipline vantage_ used **only in Layout B** (e.g., _Operational Management_, _IT/Software_, _Physics_). A DC is **not** a **Bounded‑Context Column** and does not carry editions.  
 * **Concept‑Set (CSR).** One unified concept with pointers to its SenseCells.  
 * **SenseCell.** _(Context × Local‑Sense)_ address—how a Context “says that thing”.  
-* **Bridge / CL.** Explicit cross‑Context mapping (F.9) with Congruence Level and Loss note.  
+* **Bridge / CL.** Explicit cross‑context mapping (F.9) with Congruence Level and Loss note.
+* **Plain Twin (LEX).** The LEX record pairing the **Unified Tech name** with its **Unified Plain name** for a U.Type; governed by **PTG** and referenced by `Twin‑Map Id (LEX)` (E.10 LEX‑BUNDLE).
 * **Block Plan.** Didactic grouping of rows to keep the sheet memorizable.  
 * **Unified Tech name / Unified Plain name.** Dual‑register names chosen per F.5; the **Tech name is the neutral, unified term** for the U.Type, not a borrowed Context name.
 
@@ -27488,13 +27633,15 @@ Every UTS row **MUST** carry the following fields (verbatim headings recommended
 | **FPF U.Type**            | Canonical kernel type (e.g., `U.Work`).                                                               |
 | **Unified Tech name**     | Short technical name used in spec prose (F.5).                                                        |
 | **Unified Plain name**    | Everyday name for non‑specialists (F.5).                                                              |
+| **Plain‑Twin Governance (PTG) (optional)** | Stance for the Unified Plain twin: {**Strict**, **Guarded**, **Provisional**}; use when additional discipline of the Plain twin is required (E.10 LEX‑BUNDLE). |
+| **Twin‑Map Id (LEX) (optional)** | Identifier of the Tech↔Plain twin record in the LEX‑BUNDLE; cite when `PTG ≠ Strict` or when multiple candidate twins exist. |
 | **FPF Description**       | One‑line definitional gist (no examples).                                                             |
 | **SenseCells (by context)** | Per selected Context: the local term(s) or construct that best realises the concept (one cell per Context). |
-| **Bridges (CL/Loss)**     | If senses are related via F.9 bridges: CL score and a 2–6 word loss note (optional if CL=3 exact).    |
+| **Bridges (CL/Loss)**     | For any cross‑context relation, record the F.9 Bridge with **CL** and a 2–6‑word loss note; if identity, mark **CL=3 (identity)**. |
 | **Unification Rationale** | One sentence: why these senses are the same *conceptually*.                                           |
 | **Notes (optional)**      | Brief temporal stance or trip‑wire hints (e.g., “design vs run”).                                     |
 
-> **Constraint.** “SenseCells (by context)” **MUST** cite **at least three** distinct contexts (metaphorically "Contexts") overall across the sheet for the thread (A.8). A single row may show fewer if the concept truly appears in fewer contexts; coverage is a property of the whole UTS.
+> **Constraint.** “SenseCells (by **Context**)” **MUST** cite **at least three** distinct **Contexts** overall across the sheet for the thread (A.8). A single row may show fewer if the concept truly appears in fewer contexts; coverage is a property of the whole UTS.
 
 **Discipline:** Every SenseCell **must** cite the **Context name + edition** (e.g., _“BPMN 2.0 (2011): Activity instance”_).
 
@@ -27517,7 +27664,7 @@ A UTS **MUST** declare a **Block Plan**—the sequence of blocks that group rows
 
 **Columns:**
 
-* `FPF U.Type · Tech · Plain · FPF Description` (left rail)
+* `FPF U.Type · Unified Tech name · Unified Plain name · Plain‑Twin Governance (PTG) · Twin‑Map Id (LEX) · FPF Description` *(left rail; `PTG`/`LEX` are optional)*
 * **Bounded‑Context Columns (BCC)** — one column per **Context (`U.BoundedContext`)** from the F.1 cut; each header shows _name + edition_: e.g., **OMG BPMN 2.0**, **W3C PROV‑O**, **ITIL 4**, **NIST RBAC**, **W3C SOSA/SSN**, **OMG Essence (Language)**, **DEMO/DEMO‑EO**, **PMBOK 7**, **CM/BPM (CMMN/BPMN)**, **IEC 61131‑3**, **ODRL 2.2**, **ISO 80000‑1 / Metrology** … *(your chosen 12 Contexts)*
 * `Bridges (CL/Loss)`
 * `Unification Rationale`
@@ -27527,25 +27674,29 @@ Do not mix **Discipline Columns (DC)** in Layout A. Columns here are only **Bo
 
 ### 8.2 Layout B — Base‑concept pivot (discipline columns)
 
-**Columns:** Base concept · Scale‑map · Unified Tech name · Formal U.Type · **Discipline Columns (DC)** (e.g., Operational Management / IT/Software / Physics / …) · Rationale · Notes.
+**Columns:** Base concept · Scale‑map · Unified Tech name · **Unified Plain name** · Plain‑Twin Governance (PTG) · Twin‑Map Id (LEX) · Formal U.Type · **Discipline Columns (DC)** (e.g., Operational Management / IT/Software / Physics / …) · Rationale · Notes.
 
 * `Base concept (EN / RU)`
 * `Scale‑map (Σ / Π / μ)` *(optional; see §9.4)*
 * `Unified Tech name`
+* `Unified Plain name`
+* `Plain‑Twin Governance (PTG)` *(optional)*
+* `Twin‑Map Id (LEX)` *(optional)*
 * `Formal U.Type`
+
 * **Discipline Columns (DC)** (choose 3–5): e.g., **Operational Management**, **IT/Software**, **Physics**, **Science/Theory**, **Math/Proof**, **Literature**, **Religion** *(or other discipline columns suited to the thread)*
-  `Unification Rationale`
+ * `Unification Rationale`
 * `Notes`
  
 > **Guidance.** Publish **Layout A** for kernel users and spec authors; publish **Layout B** for cross‑disciplinary onboarding and teaching.
+> **Clarification — Plain vs Base concept.** In Layout B the `Base concept (EN/RU)` is a **discipline vantage** aid and **does not substitute** for the single **Unified Plain name** in the left rail. Do not mint alternative unified‑plain synonyms inside DC cells; flag homonym risks with ⚡ in `Notes`.
 
 ## 9 · Invariants (normative constraints)
 
 1. **Locality.** Every SenseCell is **Context‑scoped** (E.10.D1). No global synonyms.
-2. **Bridges only via F.9.** Cross‑context equivalence appears **only** as an explicit Bridge with **CL**.
+2. **Bridges only via F.9.** Cross‑context equivalence appears **only** as an explicit Bridge with **CL**. Any row citing > 1 **Context** must state at least one Bridge.
 3. **Heterogeneity.** Across the UTS, coverage must involve **≥ 3 domain families** (F.1 Step 2; A.8).
 4. **Scale‑map tags (optional but disciplined).** If used in Layout B:
-
    * **Σ (Summative):** concept’s quantitative properties aggregate across a population of executions/holders.
    * **Π (Conjunctive/Compositional):** concept composes by required conjunction (all‑of), not by averaging.
    * **μ (Micro/Atomic):** concept is inherently micro‑level (per single execution/holder).
@@ -27553,8 +27704,10 @@ Do not mix **Discipline Columns (DC)** in Layout A. Columns here are only **Bo
 5. **Strict Distinction.** Use `U.Method` vs `U.MethodDescription`, `U.Work` vs `U.WorkDescription`, `U.Role` vs `U.RoleCharacterisation` correctly; do **not** collapse intensional objects with their descriptions.
 6. **Dual register.** Every row has **Tech** and **Plain** labels per F.5.
 7. **One‑breath rationale.** The `Unification Rationale` is a **single sentence** explaining the conceptual sameness despite local wording.
-8. **9.7 Unified naming neutrality.** The **Unified Tech name** is the neutral FPF choice per F.5; it is **not** lifted wholesale from any single Context unless the Concept‑Set justification (F.7) shows identity.  
-**9.8 Column discipline.** Layout A uses **Bounded‑Context Columns (BCC)** only; Layout B uses **Discipline Columns (DC)** only. Mixing is non‑conformant.
+8. **Unified naming neutrality.** The **Unified Tech name** is the neutral FPF choice per F.5; it is **not** lifted wholesale from any single Context unless the Concept‑Set justification (F.7) shows identity.  
+9. **Column discipline.** Layout A uses **Bounded‑Context Columns (BCC)** only; Layout B uses **Discipline Columns (DC)** only. Mixing is non‑conformant.
+10. **Plain‑twin discipline.** The single **Unified Plain name** lives in the left rail; BCC/DC cells carry senses only. Any additional Plain aliases are managed in LEX (tv:*) and never minted per column.
+
 
 ## 10 · How to Compile (conceptual moves, not a workflow)
 
@@ -27563,7 +27716,7 @@ Do not mix **Discipline Columns (DC)** in Layout A. Columns here are only **Bo
 **M3 · Form Concept‑Sets (F.7).** For each “the‑same‑thing” across Contexts, create one **CSR**; attach SenseCells.
 **M4 · Name (F.5).** Choose **Tech/Plain** labels; assert the **FPF U.Type** (or propose a new one via F.8).
 **M5 · Bridge (F.9).** Where Cross‑context relations are not exact, assert Bridges with **CL** and a short **Loss** note.
-**M6 · Place rows into blocks (§7).** Keep the sheet memorizable.
+**M6 · Place rows into blocks (§7).** Keep the sheet memorisable.
 **M7 · Write one‑line `FPF Description` and the `Rationale`.**
 **M8 · Run acceptance harness (F.15).** Apply the UTS checks in §11.
 
@@ -27577,12 +27730,13 @@ Do not mix **Discipline Columns (DC)** in Layout A. Columns here are only **Bo
 * **SCR‑UTS‑02 (Dual register).** Each row has both Tech and Plain labels; Tech is used in spec prose, Plain in didactics.
 * **SCR‑UTS‑03 (Locality discipline).** Every SenseCell is cited **with its Context name & edition**.
 * **SCR‑UTS‑04 (Heterogeneity).** Across the sheet, the set of referenced Context spans **≥ 3 domain families**.
-* **SCR‑UTS‑05 (Bridge honesty).** Any Cross‑context sameness claim not backed by identity of structure uses a **Bridge** with **CL** (no by‑name equality).
+* **SCR‑UTS‑05 (Bridge honesty).** All cross‑context sameness claims are expressed via an F.9 **Bridge** with a **CL** score; if identity, mark **CL=3** and note “identity/no loss” rather than omitting the bridge.
 * **SCR‑UTS‑06 (One‑breath rationale).** The rationale is ≤ 35 words and states the **conceptual invariant** that unifies the row.
 * **SCR‑UTS‑07 (Block parsimony).** Block Plan uses **≤ 7 blocks**; each block’s rows can be recited from memory by a careful reader.
 * **SCR‑UTS‑08 (Strict Distinction).** No row description conflates Method↔MethodDescription, Work↔WorkDescription, Role↔RoleCharacterisation.
-* **CR‑UTS‑09 (Unified naming).** Each row’s **Unified Tech name** complies with F.5 rules (dual register, minimal generality, morphology); it is not a mere alias of one Context unless justified by an F.9 Bridge with **CL=3**.
+* **SCR‑UTS‑09 (Unified naming).** Each row’s **Unified Tech name** complies with F.5 rules (dual register, minimal generality, morphology); it is not a mere alias of one Context unless justified by an F.9 Bridge with **CL=3**.
 * **SCR‑UTS‑10 (Column discipline).** **Layout A:** all non‑left‑rail columns are **Contexts** with editions. **Layout B:** all non‑left‑rail columns are **discipline columns**. No cross‑use.
+* **SCR‑UTS‑11 (Plain‑twin hygiene).** The **Unified Plain name** appears **once** in the **left rail** (**tv:primary**). Neither BCC (Layout A) nor DC (Layout B) cells may introduce alternative **unified** Plain synonyms; use the ⚡ marker in `Notes` to flag homonym risk where needed.
 
 ### 11.2 Regression Rules (RSCR‑UTS)
 
@@ -27590,13 +27744,14 @@ Do not mix **Discipline Columns (DC)** in Layout A. Columns here are only **Bo
 * **RSCR‑UTS‑B (Name stability).** Tech labels change only with a documented F.5 decision; Plain labels may evolve didactically if the Tech name stays.
 * **RSCR‑UTS‑C (Coverage drift).** Adding/removing rows **must not** reduce family heterogeneity below §9.3.
 * **RSCR‑UTS‑D (Loss drift).** If new evidence changes a Bridge’s CL/Loss, the row updates both the CL and the 2–6 word loss note.
+* **RSCR‑UTS‑E (Plain discipline).** No per‑column Plain text appears in BCC/DC columns; any additional Plain aliases are tracked in Annex with **tv:** entries and counted against the alias budget (F.13). 
 
 ## 12 · Canonical Heading Templates (fill with your Contexts/Discipline columns)
 
 **Layout A — Kernel‑first**
 
 ```
-# | Block | FPF U.Type | Unified Tech name | Unified Plain name | FPF Description
+# | Block | FPF U.Type | Unified Tech name | Unified Plain name | Plain‑Twin Governance (PTG) | Twin‑Map Id (LEX) | FPF Description
   | BCC‑1 (Context name, edition) | BCC‑2 (Context name, edition) | BCC‑3 (Context name, edition) | … (more BCCs from the F.1 cut)
   | Bridges (CL/Loss) | Unification Rationale | Notes
 ```
@@ -27606,10 +27761,11 @@ Do not mix **Discipline Columns (DC)** in Layout A. Columns here are only **Bo
 _(Use the actual Contexts from your F.1 cut; always include the edition.)_
 
 **Layout B — Base‑concept pivot**
+_(Plain twin discipline identical: only one **Unified Plain name (tv:primary)** in the left rail; DCs carry senses, not Plain.)_
 
 ```
 # | Block | Base concept (EN / RU) | Scale‑map (Σ/Π/μ)
-  | Unified Tech name | Formal U.Type
+  | Unified Tech name | Unified Plain name | Plain‑Twin Governance (PTG) | Twin‑Map Id (LEX) | Formal U.Type
   | DisciplineColumn‑1 (discipline) | DisciplineColumn-2 (discipline) | DisciplineColumn‑3 (discipline) | DisciplineColumn‑4 (discipline) | DisciplineColumn‑5 (discipline)
   | Unification Rationale | Notes
 ```
@@ -27622,18 +27778,17 @@ _(Choose 3–5 that fit the thread; do not place Contexts here.)_
 * **Trip‑wire column (optional).** A ⚡ marker in `Notes` for known homonyms (e.g., *process (BPMN) ≠ process (thermo)*).
 * **Temporal stance tag (optional).** `design` / `run` hint for concepts whose senses split by time.
 
-
 ## 14 · Micro Examples (one line each, illustrative)
 
 *(These illustrate Layout A headings; swap Contexts to match your cut.)*
 
 **Row: `U.Work` (Execution)**
 `Tech=Execution · Plain=run` — “Dated, resource‑consuming occurrence realising a MethodDescription.”
-**BPMN 2.0 (2011)**: *Activity instance* · **PROV‑O (2013)**: `prov:Activity` · **ITIL4**: *change/incident record (run)* · **SOSA/SSN**: *(context: producer of Observation)* · **Essence (Language)**: *Activity occurrence* · **Bridges**: CL=3 (BPMN≍PROV) · **Rationale**: *All cells denote the concrete happening, not the recipe nor the capability.*
+**BPMN 2.0 (2011)**: *Activity instance* · **PROV‑O (2013)**: `prov:Activity` · **ITIL 4**: *change/incident record (run)* · **SOSA/SSN**: *(context: producer of Observation)* · **Essence (Language)**: *Activity occurrence* · **Bridges**: CL=3 (BPMN≍PROV) · **Rationale**: *All cells denote the concrete happening, not the recipe nor the capability.*
 
 **Row: `U.MethodDescription` (Recipe)**
 `Tech=MethodDescription · Plain=recipe` — “Recorded specification guiding executions.”
-**BPMN 2.0 (2011)**: *Process model* · **PROV‑O (2013)**: `prov:Plan` · **ITIL4**: *SOP / Work instruction* · **Essence (Language)**: *Activity space/Practice description* · **Bridges**: CL=2 (loss: control‑flow vs intent) · **Rationale**: *All cells denote the codified ‘how’, distinct from both the performer and the run.*
+**BPMN 2.0 (2011)**: *Process model* · **PROV‑O (2013)**: `prov:Plan` · **ITIL 4**: *SOP / Work instruction* · **Essence (Language)**: *Activity space/Practice description* · **Bridges**: CL=2 (loss: control‑flow vs intent) · **Rationale**: *All cells denote the codified ‘how’, distinct from both the performer and the run.*
 
 > These rows are examples only; your UTS MUST be compiled from your chosen **Contexts** (Layout A) or **Discipline Columns (DC)** (Layout B) and SenseCells.
 
@@ -27641,7 +27796,7 @@ _(Choose 3–5 that fit the thread; do not place Contexts here.)_
 
 * **Builds on:** F.1–F.3 (contexts & local senses), F.7 (Concept‑Set), F.5 (names), F.9 (Bridges).
 * **Feed:** Part A and Part C definitions/examples (row ids used as cross‑refs); teaching bundles (F.16).
-* **Constrained by.** A.7 **Strict Distinction**, A.11 **Parsimony**, E.10.D1 **Context discipline**.
+* **Constrained by.** A.7 **Strict Distinction**, A.11 **Parsimony**, **E.10 §6 Twin‑Register Discipline** (Tech/Plain), **E.10.P (prefix registry: tv: / ut:)**, E.10.D1 **Context discipline**.
 
 ## 16 · Migration Notes
 
