@@ -1,5 +1,7 @@
 # fpf-sync
 
+MCP server: see docs/MCP.md for the local FPF MCP server that exposes FPF resources and tools over stdio for MCP clients (VS Code Continue, etc.).
+
 Keep a file from a public Yandex Disk link in sync with this repository. When the file changes, this repo automatically opens a Pull Request (PR) with the updated version.
 
 Read the main FPF document: [First Principles Framework — Core Conceptual Specification (holonic).md](<yadisk/First%20Principles%20Framework%20%E2%80%94%20Core%20Conceptual%20Specification%20(holonic).md>)

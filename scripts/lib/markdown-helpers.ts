@@ -642,6 +642,8 @@ export function truncateAtWordBoundary(
     return text.substring(0, Math.min(text.length, truncateLength + 1)) +
       suffix;
   }
+  // Fallback: hard cut if no other branch returned
+  return text.substring(0, Math.max(0, truncateLength)) + suffix;
 }
 
 /**
