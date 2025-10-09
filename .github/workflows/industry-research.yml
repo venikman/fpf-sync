@@ -3,7 +3,9 @@ on:
   schedule:
     - cron: "0 17 * * *"
   workflow_dispatch: {}
-  pull_request: {}
+  pull_request:
+    paths:
+      - 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md'
 
 permissions:
   contents: read
@@ -17,6 +19,7 @@ concurrency:
 
 jobs:
   run:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -26,29 +29,49 @@ jobs:
       statuses: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+        uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@f4d14e03ff726c06358e5557344e1da148b56cf7 # v1
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
         with:
-          bun-version: '1.2.3'
-          no-cache: true # disable caching to avoid post-job save outages causing warnings/failures
-
-      - name: Install dependencies
-        run: |
-          bun install
+          deno-version: v2.5.4
 
       - name: Generate daily industry research report (TS + Gemini)
         env:
           GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-pro
-          USE_SEARCH_GROUNDING: "auto"  # try search grounding; auto-disable on permission error
+          USE_SEARCH_GROUNDING: "false"
           # Optional: include small FPF headings excerpt to ground context without extra API features
           # GROUND_FPF_EXCERPT_BYTES: "0"
           # GEN_TEMPERATURE: "0.3"
           # GEN_TOP_P: "0.9"
           # GEN_MAX_TOKENS: "2048"
         run: |
-          bun scripts/agentic/industry-research.ts
+          deno run --allow-read --allow-env --allow-net --allow-write scripts/agentic/industry-research.ts
+  
+  summarize-fpf-changes:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v2.5.4
 
+      - name: Summarize FPF changes
+        env:
+          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+          GEMINI_MODEL: gemini-2.5-pro
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          deno run --allow-read --allow-env --allow-net --allow-run scripts/agentic/summarize-fpf-changes.ts

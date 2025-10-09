@@ -1,6 +1,6 @@
 # FPF MCP Server
 
-Status: MVP (stdio) under Bun + TypeScript
+Status: Deno 2 (stdio/SSE) + TypeScript
 
 What this provides
 - A local MCP server exposing FPF artifacts and docs to desktop tools that support MCP (e.g., VS Code Continue).
@@ -13,18 +13,17 @@ Why MCP here
 - Keeps the source of truth in-repo; clients connect on-demand.
 
 Requirements
-- Bun >= 1.2.3
-- Node-style ESM (already configured in this repo)
+- Deno 2.5.4
 
 Install deps
-- bun install
+- None (Deno resolves npm/jsr imports at runtime; lock file managed by Deno)
 
 Run
-- bun run scripts/mcp/server.ts
-  - Or via npm script: bun run mcp:fpf
+- Stdio MCP server: `deno task mcp:fpf`
+- SSE MCP server: `deno task mcp:fpf:sse`
 
 Security model
-- This server runs over stdio (no TCP port).
+- The stdio server runs over stdio (no TCP port).
 - File access is strictly limited to:
   - repo root for JSON store under data/
   - FPF documents under the whitelisted directory: yadisk/
@@ -75,8 +74,8 @@ VS Code (Continue) wiring
       {
         "id": "fpf",
         "name": "FPF MCP",
-        "command": "bun",
-        "args": ["run", "scripts/mcp/server.ts"],
+        "command": "deno",
+        "args": ["task", "mcp:fpf"],
         "cwd": "${workspaceFolder}"
       }
     ]
@@ -85,8 +84,8 @@ VS Code (Continue) wiring
 
 Other clients
 - ChatGPT (Desktop): You can connect via SSE to a local URL.
-  - Start the SSE server: `bun run mcp:fpf:sse` (listens on http://127.0.0.1:3333/sse)
-    - Read-only mode is default. To enable write tools locally, run: `FPF_READONLY=0 bun run mcp:fpf:sse`
+  - Start the SSE server: `deno task mcp:fpf:sse` (listens on http://127.0.0.1:3333/sse)
+    - Read-only mode is default. To enable write tools locally, run: `FPF_READONLY=0 deno task mcp:fpf:sse`
   - In ChatGPT → Settings → Developer → New Connector:
     - Name: FPF MCP
     - MCP Server URL: http://127.0.0.1:3333/sse
@@ -94,13 +93,12 @@ Other clients
     - Trust: checked
   - Then: list resources, read fpf://spec, run tools like fpf.list_epistemes
 - Commet browser app: similar status; pending official MCP/bridge support.
-- Warp: document steps if/when Warp exposes an MCP bridge; currently this doc focuses on Continue.
 
 Extensibility
 - Metrics/evaluation hooks (F/R/G/CL) are planned but disabled here.
 - A future SQLite adapter can replace the JSON store without changing tool contracts.
 
 Troubleshooting
-- If the server starts then exits, check for syntax errors or missing deps (bun install).
+- If the server starts then exits, check for syntax errors or missing imports; ensure you have Deno 2.5.4 (`deno --version`).
 - If fpf:spec is missing, ensure the main spec file exists at: yadisk/First Principles Framework — Core Conceptual Specification (holonic).md
-- If a client cannot connect, verify it supports MCP stdio and the command path is correct.
+- If a client cannot connect, verify it supports MCP stdio/SSE and the command path is correct.

@@ -1,33 +1,4 @@
 {
   "name": "fpf-sync",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "lint": "oxlint .",
-    "lint:fix": "oxlint . --fix",
-    "test": "bun test",
-    "mcp:fpf": "bun run scripts/mcp/server.ts",
-    "mcp:fpf:sse": "PORT=${PORT:-3333} bun run scripts/mcp/server-sse.ts",
-    "fly:login": "bash scripts/fly/login.sh",
-    "fly:setup": "bash scripts/fly/ensure-app.sh && bash scripts/fly/ensure-volume.sh",
-    "fly:deploy": "bash scripts/fly/deploy.sh",
-    "fly:status": "bash scripts/fly/status.sh",
-    "fly:open": "bash scripts/fly/open.sh",
-    "fly:url": "bash scripts/fly/url.sh"
-  },
-  "devDependencies": {
-    "bun-types": "latest",
-    "oxlint": "latest",
-    "typescript": "^5"
-  },
-  "dependencies": {
-    "@google/generative-ai": "0.21.0",
-    "fast-xml-parser": "4.5.3",
-    "@modelcontextprotocol/sdk": "^1.4.0"
-  },
-  "engines": {
-    "bun": ">=1.2.3"
-  },
-  "packageManager": "bun@1.2.3"
+  "private": true
 }

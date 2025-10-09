@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-write
 /**
  * Daily Industry Research (TypeScript) using Gemini via @google/generative-ai
  * - No issues/PRs, writes to GitHub Actions Job Summary only
