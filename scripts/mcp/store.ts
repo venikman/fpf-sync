@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir } from 'node:fs/promises';
 import { EPISTEMES_PATH, DATA_DIR, writeFileAtomic } from './util.ts';
 import type { Episteme, CreateEpistemeInput, UpdateEpistemePatch } from './types.ts';
 

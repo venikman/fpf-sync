@@ -93,7 +93,7 @@ export function extractSection(
     : startPattern;
 
   let capturing = false;
-  let capturedLines: string[] = [];
+  const capturedLines: string[] = [];
   let startLevel = 0;
 
   for (const line of lines) {

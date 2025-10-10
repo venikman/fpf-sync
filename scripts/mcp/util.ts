@@ -1,6 +1,7 @@
-import { mkdir, readFile, readdir } from 'node:fs/promises';
+import { mkdir, readdir } from 'node:fs/promises';
 import { createWriteStream } from 'node:fs';
-import { dirname, join, resolve as resolvePath, sep } from 'node:path';
+import { join, resolve as resolvePath, sep } from 'node:path';
+import process from "node:process";
 
 export const repoRoot = process.cwd();
 // Allow overriding data dir via env var for deployments (e.g., Fly.io volume at /data)
@@ -65,7 +66,7 @@ export async function findMainFpfSpec(): Promise<string | undefined> {
   return found;
 }
 
-export async function extractTopicsFromMarkdown(markdown: string, maxTopics = 12): Promise<string[]> {
+export function extractTopicsFromMarkdown(markdown: string, maxTopics = 12): string[] {
   const headingRe = /^(#{1,6})\s+(.+?)(?:\s*#*\s*)?$/gm;
   const topics: string[] = [];
   const seen = new Set<string>();

@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopicsFromMarkdown, extractHeadings } from './util.ts';
 import { listEpistemes, getEpistemeById } from './store.ts';
 import { readFile } from 'node:fs/promises';
+import process from "node:process";
 
 // Basic server info
 const pkg = { name: 'fpf-mcp', version: '0.1.0' };
@@ -109,7 +110,7 @@ mcp.tool(
     return {
       content: [{ type: 'text', text: JSON.stringify({ path: rel, topics }) }],
       structuredContent: { path: rel, topics },
-    } as any;
+    };
   },
 );
 
@@ -206,8 +207,8 @@ mcp.tool(
 // 3) Create episteme from a doc or heading (removed: write-only)
 
 // 4) Version and ping
-mcp.tool('fpf.version', {}, async () => ({ content: [{ type: 'text', text: JSON.stringify({ name: pkg.name, version: pkg.version }) }] }));
-mcp.tool('fpf.ping', {}, async () => ({ content: [{ type: 'text', text: 'pong' }] }));
+mcp.tool('fpf.version', {}, () => ({ content: [{ type: 'text', text: JSON.stringify({ name: pkg.name, version: pkg.version }) }] }));
+mcp.tool('fpf.ping', {}, () => ({ content: [{ type: 'text', text: 'pong' }] }));
 
 // 5) Resource template for docs: fpf://doc/{path}
 const docTemplate = new ResourceTemplate('fpf://doc/{path}', {
@@ -318,7 +319,7 @@ async function main() {
           return;
         }
         // handlePostMessage will set its own status and headers
-        await transport.handlePostMessage(req as any, res as any);
+        await transport.handlePostMessage(req, res);
         return;
       }
 
@@ -336,7 +337,9 @@ async function main() {
       try {
         res.writeHead(500, { ...corsHeaders, 'Content-Type': 'text/plain' });
         res.end('Internal server error');
-      } catch {}
+      } catch {
+        // ignore, connection may be closed
+      }
     }
   });
 

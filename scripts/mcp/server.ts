@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopicsFromMarkdown, extractHeadings } from './util.ts';
 import { listEpistemes, getEpistemeById } from './store.ts';
 import { readFile } from 'node:fs/promises';
+import process from "node:process";
 
 // Basic server info
 const pkg = { name: 'fpf-mcp', version: '0.1.0' };
@@ -107,7 +108,7 @@ mcp.tool(
     return {
       content: [{ type: 'text', text: JSON.stringify({ path: rel, topics }) }],
       structuredContent: { path: rel, topics },
-    } as any;
+    };
   },
 );
 
@@ -202,8 +203,8 @@ mcp.tool(
 
 // (write tool removed) create_episteme_from_doc
 
-mcp.tool('fpf.version', {}, async () => ({ content: [{ type: 'text', text: JSON.stringify({ name: pkg.name, version: pkg.version }) }] }));
-mcp.tool('fpf.ping', {}, async () => ({ content: [{ type: 'text', text: 'pong' }] }));
+mcp.tool('fpf.version', {}, () => ({ content: [{ type: 'text', text: JSON.stringify({ name: pkg.name, version: pkg.version }) }] }));
+mcp.tool('fpf.ping', {}, () => ({ content: [{ type: 'text', text: 'pong' }] }));
 
 const docTemplate2 = new ResourceTemplate('fpf://doc/{path}', {
   list: async () => {

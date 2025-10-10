@@ -10,6 +10,8 @@
     "yadisk:sync": "deno run --allow-read --allow-env --allow-write --allow-net=cloud-api.yandex.net scripts/yadisk-sync.mjs"
   },
   "imports": {
+    "@std/testing/bdd": "jsr:@std/testing@0.224.0/bdd",
+    "@std/expect": "jsr:@std/expect@0.224.0",
     "@modelcontextprotocol/sdk": "npm:@modelcontextprotocol/sdk@^1.19.1",
     "@google/generative-ai": "npm:@google/generative-ai@0.21.0",
     "fast-xml-parser": "npm:fast-xml-parser@4.5.3"

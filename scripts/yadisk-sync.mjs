@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { envArg, fetchJson, sanitizeFilename, enforceSizeCap } from './yadisk-lib.ts';
+import process from "node:process";
 
 const getArg = (name, def = undefined) => envArg(process.argv, process.env, name, def);
 
@@ -36,10 +37,10 @@ async function main() {
   const apiBase = 'https://cloud-api.yandex.net/v1/disk/public/resources';
   const q = new URLSearchParams({ public_key: publicUrl });
   if (publicPath) q.set('path', publicPath);
-  let metaUrl = `${apiBase}?${q.toString()}`;
+  const metaUrl = `${apiBase}?${q.toString()}`;
 
   if (verbose) console.log('Fetching meta:', metaUrl);
-  let meta = await fetchJson(metaUrl);
+  const meta = await fetchJson(metaUrl);
 
   async function resolveFileMeta(m) {
     if (m.type === 'file') return m;
