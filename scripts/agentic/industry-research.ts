@@ -192,18 +192,34 @@ async function fetchCrossref(keyword: string, rows = 3): Promise<SourceItem[]> {
       return [];
     }
     const json = await res.json();
-    const items = json?.message?.items ?? [];
-    return items.slice(0, rows).map((it: Record<string, unknown>) => {
-      const title = Array.isArray(it.title)
-        ? it.title[0]
-        : (it.title || "Untitled");
-      const dateParts = (it.published as Record<string, unknown>)?.["date-parts"]?.[0] ||
-        (it["published-print"] as Record<string, unknown>)?.["date-parts"]?.[0] ||
-        (it["published-online"] as Record<string, unknown>)?.["date-parts"]?.[0] || [];
-      const date = dateParts.length ? dateParts.join("-") : undefined;
+    const items: unknown[] = json?.message?.items ?? [];
+
+    const asTitle = (v: unknown): string => {
+      if (Array.isArray(v) && v.length) return String(v[0]);
+      if (typeof v === 'string') return v;
+      return 'Untitled';
+    };
+    const firstDateParts = (obj: unknown): number[] | undefined => {
+      const parts = (obj as { [k: string]: unknown } | undefined)?.["date-parts"];
+      if (Array.isArray(parts) && Array.isArray(parts[0])) {
+        const arr = parts[0] as unknown[];
+        if (arr.every((x) => typeof x === 'number')) return arr as number[];
+      }
+      return undefined;
+    };
+
+    return items.slice(0, rows).map((itRaw) => {
+      const it = itRaw as Record<string, unknown>;
+      const title = asTitle(it.title);
+      const dp = firstDateParts(it.published) ||
+        firstDateParts(it["published-print"]) ||
+        firstDateParts(it["published-online"]) || [];
+      const date = dp.length ? dp.join("-") : undefined;
+      const urlVal = typeof it.URL === 'string' ? it.URL :
+        (typeof it.DOI === 'string' ? `https://doi.org/${it.DOI}` : "");
       return {
         title: String(title).replace(/\s+/g, " ").trim(),
-        url: it.URL || (it.DOI ? `https://doi.org/${it.DOI}` : ""),
+        url: urlVal,
         date,
         source: "Crossref" as const,
       } satisfies SourceItem;
@@ -465,7 +481,7 @@ async function generateStructuredWithFallback(
     for (let pass = 0; pass < 2; pass++) {
       try {
         const model = genAI.getGenerativeModel({ model: m });
-        const req: { contents: { role: string, parts: { text: string }[] }[], generationConfig?: Record<string, unknown>, tools?: unknown[] } = { contents, generationConfig };
+        const req: { contents: { role: string; parts: { text: string }[] }[]; generationConfig?: Record<string, unknown>; tools?: { googleSearchRetrieval: Record<string, never> }[] } = { contents, generationConfig };
         if (searchEnabled) req.tools = [{ googleSearchRetrieval: {} }];
         const result = await model.generateContent(req);
         const text = result.response.text();

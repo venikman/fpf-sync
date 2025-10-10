@@ -1,9 +1,45 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@std/assert@0.224": "0.224.0",
+    "jsr:@std/expect@0.224.0": "0.224.0",
+    "jsr:@std/fmt@0.224": "0.224.0",
+    "jsr:@std/internal@0.224": "0.224.0",
+    "jsr:@std/testing@0.224.0": "0.224.0",
     "npm:@google/generative-ai@0.21.0": "0.21.0",
     "npm:@modelcontextprotocol/sdk@^1.19.1": "1.19.1_express@5.1.0_zod@3.25.76",
-    "npm:fast-xml-parser@4.5.3": "4.5.3"
+    "npm:@types/node@*": "24.2.0",
+    "npm:fast-xml-parser@4.5.3": "4.5.3",
+    "npm:zod@^3.23.8": "3.25.76"
+  },
+  "jsr": {
+    "@std/assert@0.224.0": {
+      "integrity": "8643233ec7aec38a940a8264a6e3eed9bfa44e7a71cc6b3c8874213ff401967f",
+      "dependencies": [
+        "jsr:@std/fmt",
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/expect@0.224.0": {
+      "integrity": "54bc071f7edcbd7bb4531f913e466e5ec3642f401dc3771fe5975f0693f25969",
+      "dependencies": [
+        "jsr:@std/assert",
+        "jsr:@std/fmt",
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/fmt@0.224.0": {
+      "integrity": "e20e9a2312a8b5393272c26191c0a68eda8d2c4b08b046bad1673148f1d69851"
+    },
+    "@std/internal@0.224.0": {
+      "integrity": "afc50644f9cdf4495eeb80523a8f6d27226b4b36c45c7c195dfccad4b8509291",
+      "dependencies": [
+        "jsr:@std/fmt"
+      ]
+    },
+    "@std/testing@0.224.0": {
+      "integrity": "371b8a929aa7132240d5dd766a439be8f780ef5c176ab194e0bcab72370c761e"
+    }
   },
   "npm": {
     "@google/generative-ai@0.21.0": {
@@ -24,6 +60,12 @@
         "raw-body",
         "zod",
         "zod-to-json-schema"
+      ]
+    },
+    "@types/node@24.2.0": {
+      "integrity": "sha512-3xyG3pMCq3oYCNg7/ZP+E1ooTaGB4cG8JWRsqqOYQdbWNY4zbaV0Ennrd7stjiJEFZCaybcIgpTjJWHRfBSIDw==",
+      "dependencies": [
+        "undici-types"
       ]
     },
     "accepts@2.0.0": {
@@ -486,6 +528,9 @@
         "mime-types"
       ]
     },
+    "undici-types@7.10.0": {
+      "integrity": "sha512-t5Fy/nfn+14LuOc2KNYg75vZqClpAiqscVvMygNnlsHBFpSXdJaYtXMcdNLpl/Qvc3P2cB3s6lOV51nqsFq4ag=="
+    },
     "unpipe@1.0.0": {
       "integrity": "sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ=="
     },
@@ -520,9 +565,12 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@std/expect@0.224.0",
+      "jsr:@std/testing@0.224.0",
       "npm:@google/generative-ai@0.21.0",
       "npm:@modelcontextprotocol/sdk@^1.19.1",
-      "npm:fast-xml-parser@4.5.3"
+      "npm:fast-xml-parser@4.5.3",
+      "npm:zod@^3.23.8"
     ]
   }
 }

@@ -104,7 +104,7 @@ mcp.tool(
     if (!rel) throw new Error('No FPF doc specified and main spec not found');
     const abs = isAllowedFpfPath(rel);
     const text = await readFile(abs, 'utf8');
-    const topics = await extractTopicsFromMarkdown(text, args?.maxTopics ?? 12);
+    const topics = await extractTopicsFromMarkdown(text, Number(args?.maxTopics ?? 12));
     return {
       content: [{ type: 'text', text: JSON.stringify({ path: rel, topics }) }],
       structuredContent: { path: rel, topics },
@@ -195,7 +195,7 @@ mcp.tool(
   async (args) => {
     const abs = isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
-    const depth = args?.depthMax ?? 6;
+    const depth = Number(args?.depthMax ?? 6);
     const headings = extractHeadings(text, depth);
     return { content: [{ type: 'text', text: JSON.stringify(headings, null, 2) }] };
   },

@@ -14,7 +14,8 @@
     "@std/expect": "jsr:@std/expect@0.224.0",
     "@modelcontextprotocol/sdk": "npm:@modelcontextprotocol/sdk@^1.19.1",
     "@google/generative-ai": "npm:@google/generative-ai@0.21.0",
-    "fast-xml-parser": "npm:fast-xml-parser@4.5.3"
+    "fast-xml-parser": "npm:fast-xml-parser@4.5.3",
+    "zod": "npm:zod@^3.23.8"
   },
   "compilerOptions": {
     "lib": ["ESNext", "DOM", "deno.ns"],
