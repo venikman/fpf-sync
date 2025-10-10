@@ -7,7 +7,8 @@
     "mcp:fpf": "deno run --allow-read --allow-env --allow-net --allow-write scripts/mcp/server.ts",
     "mcp:fpf:sse": "deno run --allow-read --allow-env --allow-net --allow-write scripts/mcp/server-sse.ts",
     "industry:report": "deno run --allow-read --allow-env --allow-net --allow-write scripts/agentic/industry-research.ts",
-    "yadisk:sync": "deno run --allow-read --allow-env --allow-write --allow-net=cloud-api.yandex.net scripts/yadisk-sync.mjs"
+    "yadisk:sync": "deno run --allow-read --allow-env --allow-write --allow-net=cloud-api.yandex.net scripts/yadisk-sync.mjs",
+    "meme:meter": "deno run --allow-read --allow-env --allow-net --allow-write --allow-run scripts/agentic/meme-meter.ts"
   },
   "imports": {
     "@std/testing/bdd": "jsr:@std/testing@0.224.0/bdd",
