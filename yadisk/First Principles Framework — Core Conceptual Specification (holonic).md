@@ -8373,11 +8373,11 @@ _The following are common modeling mistakes (“anti-patterns”) related to mea
     ✓ **Never alter historical assertions:** **Leave history as-is.** If criteria change, issue new assertions under the new criteria going forward, and if needed, explicitly **version** the gauge or checklist. Past assertions remain valid for the old version and their time; new ones apply henceforth. This ensures auditability and avoids erasing or rewriting what was true under earlier standards.
 
 
-# **A.19.D1 — CG‑frame (comparability & Gauge)** \[D]
+## A.19.D1 — CG‑frame (comparability & Gauge) \[D]
 
 > **Scope** This CG‑frame Algebra & Gauge Discipline A.19 by freezing the **governance Standard** for CG‑frames, defining a **conformance checklist** and **regression harness**, and giving **didactic one‑pagers** and **anti‑patterns** so teams can introduce CG‑frames without tool lock‑in. The mandatory pattern structure and authoring discipline referenced from **Part E** (Style Guide, Tell‑Show‑Show, checklists, DRR, guard‑rails) are applied throughout.
 
-## 1 · Context
+### 1 · Context
 
 A.19 established a substrate‑neutral picture:
 
@@ -8392,7 +8392,7 @@ A.19.D1 makes this *operational and auditable*.
 
 ---
 
-## 2 · Problem
+### 2 · Problem
 
 Absent a governance layer, four failure modes recur:
 
@@ -8403,7 +8403,7 @@ Absent a governance layer, four failure modes recur:
 
 ---
 
-## 3 · Forces
+### 3 · Forces
 
 | Force                         | Tension we must balance                                                              |
 | ----------------------------- | ------------------------------------------------------------------------------------ |
@@ -8414,9 +8414,9 @@ Absent a governance layer, four failure modes recur:
 
 ---
 
-## 4 · Solution — **The CG‑Spec** (CG‑Spec) + **Registry** + **Bridges**
+### 4 · Solution — **The CG‑Spec** (CG‑Spec) + **Registry** + **Bridges**
 
-### 4.1 The **CG‑Spec** (comparability&gauge specification per CG‑frame, in one `U.BoundedContext`)
+#### 4.1 The **CG‑Spec** (comparability&gauge specification per CG‑frame, in one `U.BoundedContext`)
 
 A **CG‑frame** is governed by a compact, notation‑free card:
 
@@ -8447,7 +8447,7 @@ CG‑Spec {
 
 **L‑CG‑Spec‑BASIS‑META**: each element in  cs_basis\[\*\] includes at least {characteristic, scale.type, polarity}; for interval/ratio unit is mandatory.
 
-### 4.2 **CG‑frame Registry** (per Context)
+#### 4.2 **CG‑frame Registry** (per Context)
 
 Each `U.BoundedContext` keeps a **CG‑frame Registry** (VR):
 
@@ -8455,7 +8455,7 @@ Each `U.BoundedContext` keeps a **CG‑frame Registry** (VR):
 * **SoD hooks** (who can edit CG‑Spec, who can certify admission);
 * **deprecation map** (what replaces what, when).
 
-### 4.3 **Bridges** (across contexts)
+#### 4.3 **Bridges** (across contexts)
 
 Cross‑context reuse occurs **only** via explicit **Alignment Bridges** (F.9) between CG‑Specs:
 
@@ -8472,7 +8472,7 @@ Bridge CG‑frameA@Context1  →  CG‑frameB@Context2
 
 ---
 
-## 5 · Conformance Checklist (normative)
+### 5 · Conformance Checklist (normative)
 
 > **Pass these and your CG‑frames are fit for assurance and cross‑team composition.**
 
@@ -8502,7 +8502,7 @@ Bridge CG‑frameA@Context1  →  CG‑frameB@Context2
 
 **CC‑A19.D1‑13 (Lexical guard‑rails).** characteristic names and role labels **MUST** follow the Part E lexical discipline (registers, twin labels; no overloaded “process/service/function”).
 
-## 6 · Consequences (informative)
+### 6 · Consequences (informative)
 
 | Benefit                           | Why it matters                                                                                                        |
 | --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
@@ -8513,17 +8513,17 @@ Bridge CG‑frameA@Context1  →  CG‑frameB@Context2
 
 ---
 
-## 7 · Rationale (informative)
+### 7 · Rationale (informative)
 
 The CG‑Spec aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, Conformance Checklists, and DRR‑backed change, while honouring **DevOps Lexical Firewall**, **Unidirectional Dependency**, and **Notational Independence** so that semantics never depend on tooling.  It also operationalises B.3 **Trust & Assurance** by making CL penalties and WLNK folds first‑class.
 
 ---
 
-## 8 · Archetypal Grounding *(Tell‑Show‑Show)*
+### 8 · Archetypal Grounding *(Tell‑Show‑Show)*
 
 > **Same slots, three arenas; no tooling implied.**
 
-### 8.1 **Industrial line** — *Weld‑quality CG‑frame* (`AssemblyLine_2026`)
+#### 8.1 **Industrial line** — *Weld‑quality CG‑frame* (`AssemblyLine_2026`)
 
 * `cs_basis`: *BeadWidth\[mm] (target 6.0±0.2)*, *Porosity\[ppm] (↓)*, *SeamRate\[1/min] (↑ until limit)*
 * `chart`: reference jig, fixture ID, torch type; `MethodDescription#Weld_MIG_v3`
@@ -8532,7 +8532,7 @@ The CG‑Spec aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, C
 * `aggregation`: WLNK on quality (min‑bound), COMM on counts, time = per‑shift histograms
 * **RSG hook**: `WelderRole.Ready` requires *Porosity ≤ 500 ppm* & *BeadWidth within ±0.2 mm* admitted by this CG‑frame.
 
-### 8.2 **Software/SRE line** — *Latency CG‑frame* (`SRE_Prod_Cluster_EU_2026`)
+#### 8.2 **Software/SRE line** — *Latency CG‑frame* (`SRE_Prod_Cluster_EU_2026`)
 
 * `cs_basis`: *P50Latency\[ms] (↓)*, *P99Latency\[ms] (↓)*, *Load\[req/s]*
 * `chart`: client vantage, trace sampler v4; `MethodDescription#HTTP_probe_v4`
@@ -8541,7 +8541,7 @@ The CG‑Spec aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, C
 * `aggregation`: MONO on latency (max of mins), WLNK across services
 * **RSG hook**: `DeployerRole.Active` gated if **P99** < declared SLO over admission window.
 
-### 8.3 **Clinical/episteme line** — *Trial‑outcome CG‑frame* (`Cardio_2026`)
+#### 8.3 **Clinical/episteme line** — *Trial‑outcome CG‑frame* (`Cardio_2026`)
 
 * cs_basis:
   - slot_id: ΔBP
@@ -8563,7 +8563,7 @@ The CG‑Spec aligns A.19.D1 with **Part E**: it packages Tell‑Show‑Show, C
 * **RSG hook**: `EvidenceRole.Validated` admission requires CG‑frame acceptance; **Assurance** pulls CL from any Bridge used.
 
 
-##### 8.4 Worked mini-schemas (entity/relational mixtures across CG‑frames, informative)
+#### 8.4 Worked mini-schemas (entity/relational mixtures across CG‑frames, informative)
 
 To illustrate how CharacteristicSpace is used in practice, below are simplified schema snippets for three typical **CG‑frames**: an **Operations** view (run-time state and action gating), an **Assurance** view (evidence and cross-context comparison), and an **Alignment** view (design-time consistency across contexts). These examples mix entity-based and relational Characteristics and demonstrate how state spaces, gauges, and bridges appear in a model. (The notation is mix of a graph/entity diagram and a relational table outline for clarity. **PK** = primary key, **FK** = foreign key.)
 
@@ -8592,7 +8592,7 @@ _Relational stub:_ (illustrating how data might be stored)
 
 In this schema: an RCS snapshot table might log individual coordinate values (`VALUE`) for each Characteristic (`CHAR_ID`) in a given RoleAssignment, with their units and scale type noted (to ensure we know what the number means). The StateAssertion ties a RoleAssignment to a state checklist and says whether it passed, including references to any gauge or bridge if cross-context or scaled comparisons were involved. The gate logic for enactment can then be a query like: “Is Work W admissible now?” – which joins through ROLE\_ASSIGNMENT to find the latest StateAssertion for that RA where `ENACTABLE=true` and `VERDICT=pass`.
 
-**8.4..2 Assurance CG‑frame — Evidence freshness & mapped comparisons**
+**8.4.2 Assurance CG‑frame — Evidence freshness & mapped comparisons**
 
 _Entity graph view:_
 
@@ -8642,7 +8642,7 @@ _Relational stub:_
 
 In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-role, with an `ENTAILS` flag indicating if being in the sub-state guarantees being in the super-state. **Every refinement mapping should ensure at least one enactable state in the sub-role corresponds to an enactable state in the super-role** (or else the sub-role would allow something the super-role doesn’t – that’s an alignment lint check). The CHECKLIST\_PULL table records that a state from one context has had its checklist pulled into another context via a gauge (identified by GAUGE\_ID). This is a design artifact saying “State X in context A is defined by applying gauge G to State Y in context B’s criteria.” A version or validity field might ensure we know which edition of the checklist or gauge was used.
 
-## 9 · Anti‑patterns (and the fix)
+### 9 · Anti‑patterns (and the fix)
 
 | Anti‑pattern            | Symptom                                   | Why it hurts                 | Fix (CG‑Spec slot)                           |
 | ----------------------- | ----------------------------------------- | ---------------------------- | --------------------------------------- |
@@ -8655,7 +8655,7 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 
 ---
 
-## 10 · Didactic quick cards (one‑liners teams reuse)
+### 10 · Didactic quick cards (one‑liners teams reuse)
 
 1. **Numbers travel with their Context.** Always cite `Context@Edition`.
 2. **If the gauge is not written, the trend is fiction.**
@@ -8670,11 +8670,11 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 
 ---
 
-## 11 · SCR / RSCR Harness (acceptance & regression)
+### 11 · SCR / RSCR Harness (acceptance & regression)
 
 > **These are concept‑level checks; notation‑agnostic.**
 
-### 11.1 **SCR — Acceptance (first introduction)**
+#### 11.1 **SCR — Acceptance (first introduction)**
 
 * **SCR‑A19.4‑S01 (Completeness).** CG‑Spec has **all** mandatory slots; `cs_basis` include **unit/scale/polarity**; `chart` references a `MethodDescription`.
 * **SCR‑A19.4‑S02 (Gauge clarity).** `gauge` lists admissible transforms **and** named invariants.
@@ -8683,7 +8683,7 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 * **SCR‑A19.4‑S05 (SoD).** Distinct `RoleAssignments` for `CG‑frameStewardRole` and `CG‑frameCertifierRole` exist; windows do not overlap.
 * **SCR‑A19.4‑S06 (Aboutness & anchors surfaced).** For each CG‑Spec characteristic used in the worked example, cite the corresponding CHR Characteristic name and the evidence anchor(s) (A.10) that make the reading observable in this Context.
 
-### 11.2 **RSCR — Regression (on change)**
+#### 11.2 **RSCR — Regression (on change)**
 
 * **RSCR‑A19.4‑R01 (Gauge edit).** On changing `gauge`, flag **all** downstream Bridges for CL re‑assessment; re‑run example comparisons.
 * **RSCR‑A19.4‑R02 (Slot surgery/Basis surgery).** Adding/removing/renaming slot/basis requires a **new edition**; old data remain valid **for their edition**.
@@ -8694,7 +8694,7 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 
 ---
 
-## 12 · Interaction summary (wiring to the rest of the kernel)
+### 12 · Interaction summary (wiring to the rest of the kernel)
 
 * **A.2 / A.2.5 (Roles / RSG).** RSG **checklists** quote **CG‑Spec.acceptance**; enactment gates rely on **admitted** CG‑frame data.
 * **B.1 (Γ‑algebra).** CG‑Spec’s `Γ_fold` instantiates Γ\_ctx/Γ\_time/WLNK/MONO choices explicitly.
@@ -8703,7 +8703,7 @@ In this stub, RSG\_REFINEMENT maps states of a sub-role to states of a super-rol
 
 ---
 
-## 13 · Minimal CG‑Spec template (copy/paste, informational)
+### 13 · Minimal CG‑Spec template (copy/paste, informational)
 
 ```
 CG‑frame: <Name>      Context: <Context/Edition>
@@ -8739,6 +8739,8 @@ Lifecycle:
 ### Close
 
 A.19.D1 gives A.19 some **teeth**: a *CG‑Spec* you can put on one page, a **Registry** that stops sprawl, **Bridges** that carry explicit loss, and a **checklist + harness** that make comparability **auditable**. It obeys the **mandatory pattern structure** of Part E (style, checklists, DRR, guard‑rails) while remaining tool‑agnostic and context‑local.
+
+
 
 # Part B – Trans‑disciplinary Reasoning Cluster
 
