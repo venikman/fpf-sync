@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-write
 /**
  * Daily Industry Research (TypeScript) using Gemini via @google/generative-ai
  * - No issues/PRs, writes to GitHub Actions Job Summary only
@@ -23,6 +23,7 @@ import {
   parseGitRef,
   validateResearchReport,
 } from "../lib/markdown-helpers.ts";
+import process from "node:process";
 
 const REQUEST_TIMEOUT_MS = Number.parseInt(
   process.env.REQUEST_TIMEOUT_MS || "8000",
@@ -191,18 +192,34 @@ async function fetchCrossref(keyword: string, rows = 3): Promise<SourceItem[]> {
       return [];
     }
     const json = await res.json();
-    const items = json?.message?.items ?? [];
-    return items.slice(0, rows).map((it: any) => {
-      const title = Array.isArray(it.title)
-        ? it.title[0]
-        : (it.title || "Untitled");
-      const dateParts = it.published?.["date-parts"]?.[0] ||
-        it["published-print"]?.["date-parts"]?.[0] ||
-        it["published-online"]?.["date-parts"]?.[0] || [];
-      const date = dateParts.length ? dateParts.join("-") : undefined;
+    const items: unknown[] = json?.message?.items ?? [];
+
+    const asTitle = (v: unknown): string => {
+      if (Array.isArray(v) && v.length) return String(v[0]);
+      if (typeof v === 'string') return v;
+      return 'Untitled';
+    };
+    const firstDateParts = (obj: unknown): number[] | undefined => {
+      const parts = (obj as { [k: string]: unknown } | undefined)?.["date-parts"];
+      if (Array.isArray(parts) && Array.isArray(parts[0])) {
+        const arr = parts[0] as unknown[];
+        if (arr.every((x) => typeof x === 'number')) return arr as number[];
+      }
+      return undefined;
+    };
+
+    return items.slice(0, rows).map((itRaw) => {
+      const it = itRaw as Record<string, unknown>;
+      const title = asTitle(it.title);
+      const dp = firstDateParts(it.published) ||
+        firstDateParts(it["published-print"]) ||
+        firstDateParts(it["published-online"]) || [];
+      const date = dp.length ? dp.join("-") : undefined;
+      const urlVal = typeof it.URL === 'string' ? it.URL :
+        (typeof it.DOI === 'string' ? `https://doi.org/${it.DOI}` : "");
       return {
         title: String(title).replace(/\s+/g, " ").trim(),
-        url: it.URL || (it.DOI ? `https://doi.org/${it.DOI}` : ""),
+        url: urlVal,
         date,
         source: "Crossref" as const,
       } satisfies SourceItem;
@@ -425,10 +442,10 @@ function buildModelFallbackChain(requested: string): string[] {
   return chain;
 }
 
-function isPermissionError(err: any): boolean {
-  const msg = (err?.message || String(err) || "").toLowerCase();
-  return msg.includes("permission") || msg.includes("denied") ||
-    msg.includes("unauthorized");
+function isPermissionError(err: unknown): boolean {
+  const msg = (err as Error)?.message || String(err) || "";
+  return msg.toLowerCase().includes("permission") || msg.toLowerCase().includes("denied") ||
+    msg.toLowerCase().includes("unauthorized");
 }
 
 function readNumberEnv(name: string, def: number): number {
@@ -451,26 +468,26 @@ function extractHeadingsExcerpt(
 async function generateStructuredWithFallback(
   genAI: GoogleGenerativeAI,
   requestedModel: string,
-  contents: any,
+  contents: { role: string, parts: { text: string }[] }[],
   trySearch: boolean,
   autoDisableSearchOnPermission: boolean,
-  generationConfig?: any,
+  generationConfig?: Record<string, unknown>,
 ): Promise<{ usedModel: string; text: string; searchUsed: boolean }> {
   const candidates = buildModelFallbackChain(requestedModel);
-  let lastErr: any;
+  let lastErr: unknown;
   let searchEnabled = trySearch;
   for (const m of candidates) {
     // First attempt with search if enabled
     for (let pass = 0; pass < 2; pass++) {
       try {
         const model = genAI.getGenerativeModel({ model: m });
-        const req: any = { contents, generationConfig };
+        const req: { contents: { role: string; parts: { text: string }[] }[]; generationConfig?: Record<string, unknown>; tools?: { googleSearchRetrieval: Record<string, never> }[] } = { contents, generationConfig };
         if (searchEnabled) req.tools = [{ googleSearchRetrieval: {} }];
         const result = await model.generateContent(req);
         const text = result.response.text();
         if (!text?.trim()) throw new Error("Model returned empty response");
         return { usedModel: m, text, searchUsed: !!searchEnabled };
-      } catch (err: any) {
+      } catch (err) {
         lastErr = err;
         if (
           searchEnabled && autoDisableSearchOnPermission &&
@@ -485,7 +502,7 @@ async function generateStructuredWithFallback(
         }
         console.warn(
           "Model '" + m + "' failed, attempting fallback. Error: " +
-            (err?.message || String(err)),
+            ((err as Error)?.message || String(err)),
         );
         break; // move to next model
       }
@@ -495,7 +512,7 @@ async function generateStructuredWithFallback(
   }
   throw new Error(
     `All model attempts failed. Last error: ${
-      lastErr?.message || String(lastErr)
+      ((lastErr as Error)?.message || String(lastErr))
     }`,
   );
 }
@@ -558,7 +575,7 @@ async function run() {
       ? extractHeadingsExcerpt(fpfRaw, excerptBytes)
       : undefined;
 
-    const parts: any[] = [{ text: prompt }];
+    const parts: { text: string }[] = [{ text: prompt }];
     if (fpfExcerpt) {
       parts.push({
         text: `FPF headings excerpt (for grounding):\n${fpfExcerpt}`,
@@ -566,7 +583,7 @@ async function run() {
     }
     const contents = [{ role: "user", parts }];
 
-    const generationConfig: any = {
+    const generationConfig: Record<string, unknown> = {
       temperature: readNumberEnv("GEN_TEMPERATURE", 0.3),
       topP: readNumberEnv("GEN_TOP_P", 0.9),
       maxOutputTokens: Math.floor(readNumberEnv("GEN_MAX_TOKENS", 2048)),
@@ -611,13 +628,13 @@ async function run() {
           failing || "(unspecified)"
         }.\n\nRepair rules:\n- Keep the same claims and sources; do not invent new sources or facts.\n- Ensure exact section headings and order from the prompt (1..7).\n- Add missing inline [n] citations mapped to the numbered sources list created earlier. If a claim cannot be supported, mark it as “insufficient evidence”.\n- Executive Summary: include 'Bottom line:' and 3–5 bullets with Audience: and Recency: tags.\n- Impact Map bullets must include Lens: and Time: tags.\n- Recommendations must include Confidence and Assurance hints.\n- Do not add YAML. Markdown only.`;
 
-      const repairParts: any[] = [
+      const repairParts: { text: string }[] = [
         { text: repairInstr },
         { text: "\n\n---\n\nYour report (to be repaired):\n\n" + text },
       ];
       const repairContents = [{ role: "user", parts: repairParts }];
 
-      const genCfgRepair: any = {
+      const genCfgRepair: Record<string, unknown> = {
         temperature: 0.2,
         topP: 0.9,
         maxOutputTokens: Math.floor(readNumberEnv("GEN_MAX_TOKENS", 2048)),
@@ -641,9 +658,9 @@ async function run() {
         }
       }
     }
-  } catch (err: any) {
+  } catch (err) {
     await appendDraft(
-      `❌ Failed to generate report: ${err?.message || String(err)}`,
+      `❌ Failed to generate report: ${((err as Error)?.message || String(err))}`,
     );
     process.exitCode = 1;
   } finally {

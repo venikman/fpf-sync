@@ -41,17 +41,17 @@ export function sanitizeId(id: string): string {
   return s;
 }
 
-export function validateCreateEpisteme(input: any): CreateEpistemeInput {
+export function validateCreateEpisteme(input: Record<string, unknown>): CreateEpistemeInput {
   if (!input || typeof input !== 'object') throw new Error('Invalid body');
   const { object, concept, symbol, targets } = input;
   if (typeof object !== 'string' || !object.trim()) throw new Error('object is required');
   if (typeof concept !== 'string' || !concept.trim()) throw new Error('concept is required');
   if (typeof symbol !== 'string' || !symbol.trim()) throw new Error('symbol is required');
-  if (targets) validateTargets(targets);
-  return { object: object.trim(), concept: concept.trim(), symbol: symbol.trim(), targets };
+  if (targets) validateTargets(targets as Record<string, unknown>);
+  return { object: object.trim(), concept: concept.trim(), symbol: symbol.trim(), targets: targets as EpistemeTargets };
 }
 
-export function validateUpdatePatch(patch: any): UpdateEpistemePatch {
+export function validateUpdatePatch(patch: Record<string, unknown>): UpdateEpistemePatch {
   if (!patch || typeof patch !== 'object') throw new Error('Invalid patch');
   const out: UpdateEpistemePatch = {};
   if (patch.object != null) {
@@ -67,16 +67,16 @@ export function validateUpdatePatch(patch: any): UpdateEpistemePatch {
     out.symbol = patch.symbol.trim();
   }
   if (patch.targets != null) {
-    validateTargets(patch.targets);
-    out.targets = patch.targets;
+    validateTargets(patch.targets as Record<string, unknown>);
+    out.targets = patch.targets as EpistemeTargets;
   }
   if (patch.tags != null) {
-    if (!Array.isArray(patch.tags) || patch.tags.some((t: any) => typeof t !== 'string')) throw new Error('tags must be string[]');
+    if (!Array.isArray(patch.tags) || patch.tags.some((t: unknown) => typeof t !== 'string')) throw new Error('tags must be string[]');
     out.tags = patch.tags.map((t: string) => t.trim()).filter(Boolean);
   }
   if (patch.docRefs != null) {
     if (!Array.isArray(patch.docRefs)) throw new Error('docRefs must be an array');
-    out.docRefs = patch.docRefs.map((r: any) => ({
+    out.docRefs = (patch.docRefs as Record<string, unknown>[]).map((r: Record<string, unknown>) => ({
       path: String(r.path || '').trim(),
       heading: r.heading ? String(r.heading).trim() : undefined,
       anchor: r.anchor ? String(r.anchor).trim() : undefined,
@@ -85,7 +85,7 @@ export function validateUpdatePatch(patch: any): UpdateEpistemePatch {
   return out;
 }
 
-export function validateTargets(t: any): asserts t is EpistemeTargets {
+export function validateTargets(t: Record<string, unknown>): asserts t is EpistemeTargets {
   if (typeof t !== 'object') throw new Error('targets must be an object');
   for (const k of ['F','R','G','CL'] as const) {
     if (t[k] != null) {

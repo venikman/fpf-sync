@@ -1,5 +1,6 @@
 .git
 node_modules
+bun.lock
 bun.lockb
 **/.DS_Store
 npm-debug.log*
@@ -10,5 +11,7 @@ yarn-error.log*
 coverage
 .vscode
 .idea
+.deno
+deno_dir
 data
 /tmp

@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-write
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import http from 'node:http';
@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopicsFromMarkdown, extractHeadings } from './util.ts';
 import { listEpistemes, getEpistemeById } from './store.ts';
 import { readFile } from 'node:fs/promises';
+import process from "node:process";
 
 // Basic server info
 const pkg = { name: 'fpf-mcp', version: '0.1.0' };
@@ -105,11 +106,11 @@ mcp.tool(
     if (!rel) throw new Error('No FPF doc specified and main spec not found');
     const abs = isAllowedFpfPath(rel);
     const text = await readFile(abs, 'utf8');
-    const topics = await extractTopicsFromMarkdown(text, args?.maxTopics ?? 12);
+    const topics = await extractTopicsFromMarkdown(text, Number(args?.maxTopics ?? 12));
     return {
       content: [{ type: 'text', text: JSON.stringify({ path: rel, topics }) }],
       structuredContent: { path: rel, topics },
-    } as any;
+    };
   },
 );
 
@@ -197,7 +198,7 @@ mcp.tool(
   async (args) => {
     const abs = isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
-    const depth = args?.depthMax ?? 6;
+    const depth = Number(args?.depthMax ?? 6);
     const headings = extractHeadings(text, depth);
     return { content: [{ type: 'text', text: JSON.stringify(headings, null, 2) }] };
   },
@@ -206,8 +207,8 @@ mcp.tool(
 // 3) Create episteme from a doc or heading (removed: write-only)
 
 // 4) Version and ping
-mcp.tool('fpf.version', {}, async () => ({ content: [{ type: 'text', text: JSON.stringify({ name: pkg.name, version: pkg.version }) }] }));
-mcp.tool('fpf.ping', {}, async () => ({ content: [{ type: 'text', text: 'pong' }] }));
+mcp.tool('fpf.version', {}, () => ({ content: [{ type: 'text', text: JSON.stringify({ name: pkg.name, version: pkg.version }) }] }));
+mcp.tool('fpf.ping', {}, () => ({ content: [{ type: 'text', text: 'pong' }] }));
 
 // 5) Resource template for docs: fpf://doc/{path}
 const docTemplate = new ResourceTemplate('fpf://doc/{path}', {
@@ -230,7 +231,7 @@ mcp.tool(
   'fpf.search_tags',
   { text: z.string().optional() },
   async (args) => {
-    const q = (args.text || '').toLowerCase();
+    const q = String(args.text || '').toLowerCase();
     const eps = await listEpistemes();
     const counts = new Map<string, number>();
     for (const e of eps) for (const t of e.tags || []) counts.set(t, (counts.get(t) || 0) + 1);
@@ -318,7 +319,7 @@ async function main() {
           return;
         }
         // handlePostMessage will set its own status and headers
-        await transport.handlePostMessage(req as any, res as any);
+        await transport.handlePostMessage(req, res);
         return;
       }
 
@@ -336,7 +337,9 @@ async function main() {
       try {
         res.writeHead(500, { ...corsHeaders, 'Content-Type': 'text/plain' });
         res.end('Internal server error');
-      } catch {}
+      } catch {
+        // ignore, connection may be closed
+      }
     }
   });
 

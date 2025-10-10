@@ -1,4 +1,5 @@
-import { describe, expect, it } from "bun:test";
+import { describe, it } from "@std/testing/bdd";
+import { expect } from "@std/expect";
 import {
   countBullets,
   extractHeadings,
@@ -12,7 +13,7 @@ import {
   stripMarkdown,
   truncateAtWordBoundary,
   validateResearchReport,
-} from "../scripts/lib/markdown-helpers";
+} from "../scripts/lib/markdown-helpers.ts";
 
 describe("MarkdownPatterns", () => {
   it("matches headings with various formats", () => {

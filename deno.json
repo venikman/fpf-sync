@@ -1,0 +1,26 @@
+{
+  "tasks": {
+    "test": "deno test -A",
+    "typecheck": "deno check scripts/**/*.ts tests/**/*.ts",
+    "lint": "deno lint",
+    "fmt": "deno fmt",
+    "mcp:fpf": "deno run --allow-read --allow-env --allow-net --allow-write scripts/mcp/server.ts",
+    "mcp:fpf:sse": "deno run --allow-read --allow-env --allow-net --allow-write scripts/mcp/server-sse.ts",
+    "industry:report": "deno run --allow-read --allow-env --allow-net --allow-write scripts/agentic/industry-research.ts",
+    "yadisk:sync": "deno run --allow-read --allow-env --allow-write --allow-net=cloud-api.yandex.net scripts/yadisk-sync.mjs"
+  },
+  "imports": {
+    "@std/testing/bdd": "jsr:@std/testing@0.224.0/bdd",
+    "@std/expect": "jsr:@std/expect@0.224.0",
+    "@modelcontextprotocol/sdk": "npm:@modelcontextprotocol/sdk@^1.19.1",
+    "@google/generative-ai": "npm:@google/generative-ai@0.21.0",
+    "fast-xml-parser": "npm:fast-xml-parser@4.5.3",
+    "zod": "npm:zod@^3.23.8"
+  },
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM", "deno.ns"],
+    "strict": true,
+    "verbatimModuleSyntax": true
+  },
+  "nodeModulesDir": "auto"
+}

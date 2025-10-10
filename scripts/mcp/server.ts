@@ -1,10 +1,11 @@
-#!/usr/bin/env bun
+#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-write
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopicsFromMarkdown, extractHeadings } from './util.ts';
 import { listEpistemes, getEpistemeById } from './store.ts';
 import { readFile } from 'node:fs/promises';
+import process from "node:process";
 
 // Basic server info
 const pkg = { name: 'fpf-mcp', version: '0.1.0' };
@@ -103,11 +104,11 @@ mcp.tool(
     if (!rel) throw new Error('No FPF doc specified and main spec not found');
     const abs = isAllowedFpfPath(rel);
     const text = await readFile(abs, 'utf8');
-    const topics = await extractTopicsFromMarkdown(text, args?.maxTopics ?? 12);
+    const topics = await extractTopicsFromMarkdown(text, Number(args?.maxTopics ?? 12));
     return {
       content: [{ type: 'text', text: JSON.stringify({ path: rel, topics }) }],
       structuredContent: { path: rel, topics },
-    } as any;
+    };
   },
 );
 
@@ -194,7 +195,7 @@ mcp.tool(
   async (args) => {
     const abs = isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
-    const depth = args?.depthMax ?? 6;
+    const depth = Number(args?.depthMax ?? 6);
     const headings = extractHeadings(text, depth);
     return { content: [{ type: 'text', text: JSON.stringify(headings, null, 2) }] };
   },
@@ -202,8 +203,8 @@ mcp.tool(
 
 // (write tool removed) create_episteme_from_doc
 
-mcp.tool('fpf.version', {}, async () => ({ content: [{ type: 'text', text: JSON.stringify({ name: pkg.name, version: pkg.version }) }] }));
-mcp.tool('fpf.ping', {}, async () => ({ content: [{ type: 'text', text: 'pong' }] }));
+mcp.tool('fpf.version', {}, () => ({ content: [{ type: 'text', text: JSON.stringify({ name: pkg.name, version: pkg.version }) }] }));
+mcp.tool('fpf.ping', {}, () => ({ content: [{ type: 'text', text: 'pong' }] }));
 
 const docTemplate2 = new ResourceTemplate('fpf://doc/{path}', {
   list: async () => {
