@@ -1,6 +1,6 @@
 # FPF MCP Server
 
-Status: Deno 2 (stdio/SSE) + TypeScript (server v0.2.0)
+Status: Bun 1.3 (stdio/SSE) + TypeScript (server v0.2.0)
 
 What this provides
 - A local MCP server exposing FPF artifacts and docs to desktop tools that support MCP (e.g., VS Code Continue).
@@ -13,14 +13,14 @@ Why MCP here
 - Keeps the source of truth in-repo; clients connect on-demand.
 
 Requirements
-- Deno 2.5.4
+- Bun 1.3.x
 
 Install deps
-- None (Deno resolves npm/jsr imports at runtime; lock file managed by Deno)
+- `bun install`
 
 Run
-- Stdio MCP server: `deno task mcp:fpf`
-- SSE MCP server: `deno task mcp:fpf:sse`
+- Stdio MCP server: `bun run scripts/mcp/server.ts`
+- SSE MCP server: `PORT=3333 bun run scripts/mcp/server-sse.ts`
 
 Security model and policies
 - The stdio server runs over stdio (no TCP port). SSE server listens on configurable port.
@@ -96,8 +96,8 @@ VS Code (Continue) wiring
       {
         "id": "fpf",
         "name": "FPF MCP",
-        "command": "deno",
-        "args": ["task", "mcp:fpf"],
+        "command": "bun",
+        "args": ["run", "scripts/mcp/server.ts"],
         "cwd": "${workspaceFolder}"
       }
     ]
@@ -105,12 +105,10 @@ VS Code (Continue) wiring
 - Then in Continue, ensure the server appears; try tools like fpf.list_epistemes or resources like fpf:spec.
 
 Other clients
-- ChatGPT (Desktop): You can connect via SSE to a local URL.
-  - Start the SSE server: `deno task mcp:fpf:sse` (listens on http://127.0.0.1:3333/sse)
-    - Read-only mode is default. To enable write tools locally, run: `FPF_READONLY=0 deno task mcp:fpf:sse`
-  - In ChatGPT → Settings → Developer → New Connector:
-    - Name: FPF MCP
-    - MCP Server URL: http://127.0.0.1:3333/sse
+- ChatGPT (Desktop) or Context7 client: You can connect via SSE to a local URL.
+  - Start the SSE server: `PORT=3333 bun run scripts/mcp/server-sse.ts` (listens on http://127.0.0.1:3333/sse)
+    - Read-only mode is default. To enable write tools locally, run: `FPF_READONLY=0 PORT=3333 bun run scripts/mcp/server-sse.ts`
+  - In the client, configure the MCP Server URL: http://127.0.0.1:3333/sse
     - Authentication: None
     - Trust: checked
   - Then: list resources, read fpf://spec, run tools like fpf.list_epistemes
