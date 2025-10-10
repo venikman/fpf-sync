@@ -6,7 +6,7 @@ import type { Episteme, CreateEpistemeInput, UpdateEpistemePatch } from './types
 class Mutex {
   private p: Promise<void> = Promise.resolve();
   lock<T>(fn: () => Promise<T>): Promise<T> {
-    const run = async () => fn();
+    const run = () => fn();
     const prev = this.p;
     let resolveNext: () => void;
     this.p = new Promise<void>(r => (resolveNext = r));
@@ -40,7 +40,7 @@ export async function getEpistemeById(id: string): Promise<Episteme | undefined>
   return all.find(e => e.id === id);
 }
 
-export async function createEpisteme(input: CreateEpistemeInput): Promise<Episteme> {
+export function createEpisteme(input: CreateEpistemeInput): Promise<Episteme> {
   return mutex.lock(async () => {
     const now = new Date().toISOString();
     const ep: Episteme = {
@@ -59,7 +59,7 @@ export async function createEpisteme(input: CreateEpistemeInput): Promise<Episte
   });
 }
 
-export async function updateEpisteme(id: string, patch: UpdateEpistemePatch): Promise<Episteme | undefined> {
+export function updateEpisteme(id: string, patch: UpdateEpistemePatch): Promise<Episteme | undefined> {
   return mutex.lock(async () => {
     const all = await listEpistemes();
     const idx = all.findIndex(e => e.id === id);
@@ -76,7 +76,7 @@ export async function updateEpisteme(id: string, patch: UpdateEpistemePatch): Pr
   });
 }
 
-export async function deleteEpisteme(id: string): Promise<boolean> {
+export function deleteEpisteme(id: string): Promise<boolean> {
   return mutex.lock(async () => {
     const all = await listEpistemes();
     const next = all.filter(e => e.id !== id);
