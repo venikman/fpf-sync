@@ -1,7 +1,7 @@
-import { expect } from "@std/expect";
+import { expect, test } from "bun:test";
 import { computeTrustScore } from "../../scripts/mcp/services/trust.ts";
 
-Deno.test("trust.score applies CL and freshness penalties", () => {
+test("trust.score applies CL and freshness penalties", () => {
   const now = new Date().toISOString();
   const old = new Date(Date.now() - 400 * 24 * 3600 * 1000).toISOString();
   const base = computeTrustScore({

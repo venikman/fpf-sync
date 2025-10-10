@@ -1,8 +1,8 @@
-import { expect } from "@std/expect";
+import { expect, test } from "bun:test";
 import { guardEligibility } from "../../scripts/mcp/domain/guards.ts";
 import { FpfError } from "../../scripts/mcp/util/errors.ts";
 
-Deno.test("guardEligibility throws for episteme", () => {
+test("guardEligibility throws for episteme", () => {
   let threw = false;
   try {
     // @ts-ignore testing bad case
