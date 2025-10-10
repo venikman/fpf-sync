@@ -1,0 +1,24 @@
+[
+  {
+    "id": "a4bef5b3-5533-4dce-8e92-c8500f929ebe",
+    "holder": "system",
+    "ctx": "ctx::lab@v1",
+    "taskFamily": "md::foo@v1",
+    "measures": {
+      "precision": 0.91
+    },
+    "createdAt": "2025-10-10T05:25:46.990Z",
+    "updatedAt": "2025-10-10T05:25:46.990Z"
+  },
+  {
+    "id": "bb2815d9-a798-49c9-8fb8-29dda4f59895",
+    "holder": "system",
+    "ctx": "ctx::lab@v1",
+    "taskFamily": "md::foo@v1",
+    "measures": {
+      "precision": 0.91
+    },
+    "createdAt": "2025-10-10T05:25:59.854Z",
+    "updatedAt": "2025-10-10T05:25:59.854Z"
+  }
+]

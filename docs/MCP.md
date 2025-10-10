@@ -1,6 +1,6 @@
 # FPF MCP Server
 
-Status: Deno 2 (stdio/SSE) + TypeScript
+Status: Deno 2 (stdio/SSE) + TypeScript (server v0.2.0)
 
 What this provides
 - A local MCP server exposing FPF artifacts and docs to desktop tools that support MCP (e.g., VS Code Continue).
@@ -22,36 +22,58 @@ Run
 - Stdio MCP server: `deno task mcp:fpf`
 - SSE MCP server: `deno task mcp:fpf:sse`
 
-Security model
-- The stdio server runs over stdio (no TCP port).
+Security model and policies
+- The stdio server runs over stdio (no TCP port). SSE server listens on configurable port.
 - File access is strictly limited to:
   - repo root for JSON store under data/
   - FPF documents under the whitelisted directory: yadisk/
 - Any path passed by tools is resolved and validated to stay within those directories.
-- No external network or LLM calls in this MVP.
+- Read-only by default. Set FPF_READONLY=0 to enable mutations.
+- No external network or LLM calls in this iteration.
+- Guards enforce: RSG.NOT_ENACTABLE, WIN.INVALID, ELIG.VIOLATION, SOD.CONFLICT, BRIDGE.CL_TOO_LOW, CG.MIXED_SCALE, Γ.MISTYPED.
 
-Capabilities (MVP)
+Capabilities (v0.2.0)
 - Resources
   - fpf:spec — returns the main FPF spec markdown from yadisk (text/markdown)
   - fpf:epistemes — returns the episteme list (application/json)
   - fpf:episteme/{id} — returns one episteme (application/json)
 - Tools
+  - fpf.version()
+  - fpf.ping()
+  - fpf.stats()
   - fpf.list_epistemes()
   - fpf.get_episteme({ id })
-  - fpf.list_fpf_docs()
-  - fpf.read_fpf_doc({ path })
-  - fpf.extract_topics_from_fpf({ path?, maxTopics? })
   - fpf.search_epistemes({ text })
   - fpf.find_episteme_by_symbol({ symbol })
   - fpf.export_epistemes()
-  - fpf.stats()
+  - fpf.list_fpf_docs()
+  - fpf.read_fpf_doc({ path })
+  - fpf.extract_topics_from_fpf({ path?, maxTopics? })
   - fpf.search_fpf_docs({ text })
   - fpf.list_headings({ path, depthMax? })
-  - fpf.version()
-  - fpf.ping()
   - fpf.search_tags({ text? })
   - fpf.list_tags()
   - fpf.list_doc_refs({ id })
+  - fpf.context.upsert({ name, edition, glossary?, invariants?, roles? }) → { ctx }
+  - fpf.bridge.upsert({ from:{role|kind|plane,ctx}, to:{…}, CL, lossNotes[] }) → { bridge }
+  - fpf.role.upsert({ ctx, role, rcs, rsg, algebra }) → { role }
+  - fpf.role.assign({ holder, role, ctx, window }) → { ra }
+  - fpf.role.state.assert({ ra, state, checklistEvidence[], at }) → { assertionId }
+  - fpf.method.register({ ctx, md, io?, steps[], references[] }) → { md }
+  - fpf.work.start({ md, stepId, performedBy:ra, at }) → { work }
+  - fpf.work.end({ work, outcome, observations?, resources?, links? }) → { work }
+  - fpf.work.link.evidence({ work, episteme, evidenceRole, ctx }) → { linkId }
+  - fpf.capability.declare({ holder:'system', ctx, taskFamily, workScope?, measures?, qualWindow?, id? }) → { capabilityId }
+  - fpf.capability.check({ holder, step:{md,stepId,jobSlice?,thresholds?}, at }) → { admissible, why[] }
+  - fpf.service.define({ ctx, name, providerRole, consumerRole?, claimScope, accessSpec?, acceptanceSpec, unit?, version }) → { svc }
+  - fpf.service.evaluate({ svc, window, kpis:[uptime|leadTime|rejectRate|costToServe], gammaTimePolicy? }) → { metrics }
+  - fpf.nqd.generate({ ctx, descriptorMapRef, distanceDefRef, objectives:{N,U,C}, archive?, S?, policy }) → { portfolio, illumination, pins }
+  - fpf.ee.policy.set({ policyId, explore_share, dominance, scaleProbe? }) → { policy }
+  - fpf.parity.run({ candidates, ctx, isoScale?, pins?, metrics?, referencePlane? }) → { report, pareto }
+  - fpf.trust.score({ claim, evidence[], bridges?, formalityF, scopeG, reliabilityR? }) → { F,G,R, notes[] }
+  - fpf.gamma.aggregate({ ctx, holons[], fold, gammaTimePolicy? }) → { whole, invariants }
+  - fpf.uts.publish({ ctx, rows[] }) → { utsId }
+  - fpf.drr.record({ change, context, rationale, alternatives?, consequences?, refs? }) → { drrId }
 - Prompts (optional; may not show in all clients)
   - fpf/episteme-template
   - fpf/adi-cycle

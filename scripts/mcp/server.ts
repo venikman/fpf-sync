@@ -8,7 +8,7 @@ import { readFile } from 'node:fs/promises';
 import process from "node:process";
 
 // Basic server info
-const pkg = { name: 'fpf-mcp', version: '0.1.0' };
+const pkg = { name: 'fpf-mcp', version: '0.2.0' };
 
 const mcp = new McpServer({ name: pkg.name, version: pkg.version }, {});
 
