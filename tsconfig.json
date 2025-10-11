@@ -24,6 +24,9 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
+
+    // Bun/Node types
+    "types": ["bun-types", "node"]
   },
   "include": ["**/*.ts", "**/*.mts", "**/*.cts"],
   "exclude": ["node_modules", "dist", "out", "coverage", "yadisk"]
