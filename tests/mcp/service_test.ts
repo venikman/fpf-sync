@@ -1,14 +1,17 @@
-import { expect } from "@std/expect";
+import { expect, test } from "bun:test";
 import { evaluateService } from "../../scripts/mcp/services/service.ts";
 import { upsertWork } from "../../scripts/mcp/storage/work.ts";
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
-function tmpdir() {
-  return Deno.makeTempDirSync();
+function tmpdirPath() {
+  return mkdtempSync(join(tmpdir(), "fpf-"));
 }
 
-Deno.test({ name: "service.evaluate computes metrics from Work", sanitizeResources: false, sanitizeOps: false, fn: async () => {
-  const dir = tmpdir();
-  Deno.env.set('FPF_DATA_DIR', dir);
+test("service.evaluate computes metrics from Work", async () => {
+  const dir = tmpdirPath();
+  process.env.FPF_DATA_DIR = dir;
 
   const svcId = "svc::demo@ctx::test@1.0.0";
   const start = new Date('2025-01-01T00:00:00Z').toISOString();
@@ -22,4 +25,4 @@ Deno.test({ name: "service.evaluate computes metrics from Work", sanitizeResourc
   expect(metrics.leadTime).toBeGreaterThan(0);
   expect(metrics.rejectRate).toBeGreaterThan(0);
   expect(metrics.uptime).toBeGreaterThan(0);
-} });
+});

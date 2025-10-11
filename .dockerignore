@@ -11,7 +11,5 @@ yarn-error.log*
 coverage
 .vscode
 .idea
-.deno
-deno_dir
 data
 /tmp

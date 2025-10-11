@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-run
+#!/usr/bin/env bun
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { exec } from "node:child_process";
@@ -37,7 +37,7 @@ async function run() {
     return;
   }
 
-  const fpfContent = await Deno.readTextFile("yadisk/First Principles Framework — Core Conceptual Specification (holonic).md");
+  const fpfContent = await (await import("node:fs/promises")).readFile("yadisk/First Principles Framework — Core Conceptual Specification (holonic).md", "utf8");
 
   const prompt = `
 You are a research analyst. A change has been made to the "First Principles Framework (FPF)".
@@ -93,5 +93,5 @@ Structure your response in markdown.
 
 run().catch((err) => {
   console.error(err);
-  Deno.exit(1);
+  process.exit(1);
 });

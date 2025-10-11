@@ -16,8 +16,8 @@ Fixes #
 Describe steps to test locally.
 
 # Checklist
-- [ ] I ran linting (deno task lint) and typecheck (deno task typecheck)
-- [ ] I ran tests (deno task test) and they pass
+- [ ] I ran linting (bun run lint) and typecheck (bun run typecheck)
+- [ ] I ran tests (bun test) and they pass
 - [ ] I updated docs/README if needed
 - [ ] No secrets or sensitive data committed
 - [ ] Backwards compatible or documented breaking changes
