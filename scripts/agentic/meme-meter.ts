@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-write --allow-run
+#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-write
 
 import { readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
@@ -17,6 +17,9 @@ function getEnv(name: string, required = false): string | undefined {
 
 const apiKey = getEnv("GEMINI_API_KEY", true);
 const genAI = new GoogleGenerativeAI(apiKey);
+
+const supabaseUrl = getEnv("SUPABASE_URL") || "https://jxanpmwuecvrmznbsxma.supabase.co";
+const supabaseKey = getEnv("SUPABASE_WRITE_KEY", true);
 
 interface MemeFile {
   path: string;
@@ -100,47 +103,38 @@ async function loadMemeFiles(chunksPath: string): Promise<MemeFile[]> {
 }
 
 async function loadExistingMemeCards(): Promise<Map<string, ExistingMemeCard>> {
-  const projectId = getEnv("SUPABASE_PROJECT_ID", true);
-
-  const cmd = new Deno.Command("mcp-cli", {
-    args: [
-      "tool",
-      "call",
-      "execute_sql",
-      "--server",
-      "supabase",
-      "--input",
-      JSON.stringify({
-        project_id: projectId,
-        query:
-          "SELECT source_file, category, title, description, context, state, metrics, verdict, window, updated_at FROM meme_characterization",
-      }),
-    ],
-    stdout: "piped",
-    stderr: "piped",
-  });
-
-  const { code, stdout, stderr } = await cmd.output();
-  if (code !== 0) {
-    console.warn(
-      "Warning: Could not load existing meme cards:",
-      new TextDecoder().decode(stderr),
+  try {
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/meme_characterization?select=source_file,category,title,description,context,state,metrics,verdict,window,updated_at`,
+      {
+        headers: {
+          "apikey": supabaseKey,
+          "Authorization": `Bearer ${supabaseKey}`,
+        },
+      },
     );
+
+    if (!response.ok) {
+      console.warn(
+        "Warning: Could not load existing meme cards:",
+        response.status,
+        await response.text(),
+      );
+      return new Map();
+    }
+
+    const cards = await response.json() as ExistingMemeCard[];
+    const cardMap = new Map<string, ExistingMemeCard>();
+
+    for (const card of cards) {
+      cardMap.set(card.source_file, card);
+    }
+
+    return cardMap;
+  } catch (error) {
+    console.warn("Warning: Could not load existing meme cards:", error);
     return new Map();
   }
-
-  const output = new TextDecoder().decode(stdout);
-  const jsonMatch = output.match(/\[[\s\S]*\]/);
-  if (!jsonMatch) return new Map();
-
-  const cards = JSON.parse(jsonMatch[0]) as ExistingMemeCard[];
-  const cardMap = new Map<string, ExistingMemeCard>();
-
-  for (const card of cards) {
-    cardMap.set(card.source_file, card);
-  }
-
-  return cardMap;
 }
 
 function calculateShannonEntropy(text: string): number {
@@ -314,55 +308,33 @@ Respond in valid JSON format only (no markdown, no extra text):
 }
 
 async function storeMemeCard(card: MemeCard): Promise<void> {
-  const projectId = getEnv("SUPABASE_PROJECT_ID", true);
-
-  const query = `
-    INSERT INTO meme_characterization (
-      source_file, category, title, description, context, state, metrics, verdict, window
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-    ON CONFLICT (source_file) DO UPDATE SET
-      category = EXCLUDED.category,
-      title = EXCLUDED.title,
-      description = EXCLUDED.description,
-      state = EXCLUDED.state,
-      metrics = EXCLUDED.metrics,
-      verdict = EXCLUDED.verdict,
-      window = EXCLUDED.window,
-      updated_at = NOW()
-  `;
-
-  const cmd = new Deno.Command("mcp-cli", {
-    args: [
-      "tool",
-      "call",
-      "execute_sql",
-      "--server",
-      "supabase",
-      "--input",
-      JSON.stringify({
-        project_id: projectId,
-        query,
-        params: [
-          card.source_file,
-          card.category,
-          card.title,
-          card.description,
-          card.context,
-          card.state,
-          JSON.stringify(card.metrics),
-          card.verdict,
-          JSON.stringify(card.window),
-        ],
+  const response = await fetch(
+    `${supabaseUrl}/rest/v1/meme_characterization`,
+    {
+      method: "POST",
+      headers: {
+        "apikey": supabaseKey,
+        "Authorization": `Bearer ${supabaseKey}`,
+        "Content-Type": "application/json",
+        "Prefer": "resolution=merge-duplicates",
+      },
+      body: JSON.stringify({
+        source_file: card.source_file,
+        category: card.category,
+        title: card.title,
+        description: card.description,
+        context: card.context,
+        state: card.state,
+        metrics: card.metrics,
+        verdict: card.verdict,
+        window: card.window,
       }),
-    ],
-    stdout: "piped",
-    stderr: "piped",
-  });
+    },
+  );
 
-  const { code, stderr } = await cmd.output();
-  if (code !== 0) {
-    const errorMsg = new TextDecoder().decode(stderr);
-    throw new Error(`Failed to store MemeCard: ${errorMsg}`);
+  if (!response.ok) {
+    const errorMsg = await response.text();
+    throw new Error(`Failed to store MemeCard: ${response.status} ${errorMsg}`);
   }
 }
 
@@ -430,14 +402,36 @@ async function main() {
           }%)`,
         );
       }
+      
+      await new Promise(resolve => setTimeout(resolve, 6500));
     } catch (error) {
       console.error(`❌ Error processing ${meme.filename}:`, error);
+      
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      if (errorMsg.includes("429") || errorMsg.includes("quota")) {
+        console.log("   ⏳ Rate limit hit, waiting 60 seconds...");
+        await new Promise(resolve => setTimeout(resolve, 60000));
+        
+        try {
+          console.log(`   🔄 Retrying ${meme.filename}...`);
+          const card = await characterizeMeme(meme, memes);
+          await storeMemeCard(card);
+          results.push(card);
+          processed++;
+        } catch (retryError) {
+          console.error(`   ❌ Retry failed for ${meme.filename}:`, retryError);
+        }
+      }
     }
   }
 
   console.log(
     `\n✅ Completed! Processed ${processed}/${memesToProcess.length} memes`,
   );
+  
+  if (processed < memesToProcess.length) {
+    console.log(`\n⚠️  Warning: ${memesToProcess.length - processed} memes failed to process`);
+  }
 
   if (results.length > 0) {
     console.log(`\nState distribution:`);
