@@ -49,6 +49,7 @@ interface MemeCard {
   source_file: string;
   category: string;
   title: string;
+  name: string;
   description: string;
   context: string;
   state: "Candidate" | "Recognizable" | "Meme" | "Dormant" | "Retired";
@@ -189,6 +190,54 @@ async function generateEmbedding(text: string): Promise<number[]> {
   const result = await response.json();
   return result.data[0].embedding;
 }
+async function generateMemeName(description: string, category: string): Promise<string> {
+  const prompt = `Generate a concise, descriptive name (3-6 words maximum) for this behavioral pattern meme.
+
+Category: ${category}
+Description: ${description}
+
+Requirements:
+- Use English only
+- Be concise (3-6 words)
+- Capture the core behavioral pattern
+- Be memorable and descriptive
+- No quotes or special formatting
+
+Respond with ONLY the name, nothing else.`;
+
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${openRouterKey}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": "https://app.devin.ai",
+      "X-Title": "MemeMeter_v1",
+    },
+    body: JSON.stringify({
+      model: "x-ai/grok-4-fast",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 50,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`OpenRouter name generation failed: ${response.status} ${errorText}`);
+  }
+
+  const result = await response.json();
+  const name = result.choices[0].message.content.trim();
+  
+  return name.replace(/^["']|["']$/g, '');
+}
+
+
 
 async function calculateFidelity(
   targetEmbedding: number[],
@@ -279,6 +328,10 @@ Respond in valid JSON format only (no markdown, no extra text):
 
   const aiAssessment = JSON.parse(jsonMatch[0]);
 
+  console.log(`  Generating name for ${meme.filename}...`);
+  const name = await generateMemeName(aiAssessment.description, meme.category);
+  console.log(`  Generated name: "${name}"`);
+
   console.log(`  Generating embedding for ${meme.filename}...`);
   const targetEmbedding = await generateEmbedding(meme.text);
 
@@ -325,6 +378,7 @@ Respond in valid JSON format only (no markdown, no extra text):
     source_file: meme.filename,
     category: meme.category,
     title: meme.title,
+    name,
     description: aiAssessment.description,
     context: "Memetics_v1",
     state,
@@ -352,6 +406,7 @@ async function storeMemeCard(card: MemeCard): Promise<void> {
         source_file: card.source_file,
         category: card.category,
         title: card.title,
+        name: card.name,
         description: card.description,
         context: card.context,
         state: card.state,
