@@ -1,5 +1,4 @@
-import { describe, it } from '@std/testing/bdd';
-import { expect } from '@std/expect';
+import { describe, it, expect } from 'bun:test';
 import { sanitizeFilename, envArg, enforceSizeCap } from '../scripts/yadisk-lib.ts';
 
 describe('sanitizeFilename', () => {

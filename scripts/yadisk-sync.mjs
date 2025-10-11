@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-env --allow-write --allow-net=cloud-api.yandex.net
+#!/usr/bin/env bun
 // Minimal Node script to download a file from a Yandex Disk public share
 // and save it into the repo. Designed for use in CI (GitHub Actions).
 
@@ -91,7 +91,7 @@ async function main() {
   await ensureDir(path.dirname(outFile));
   const ab = await fileRes.arrayBuffer();
   const u8 = new Uint8Array(ab);
-  await Deno.writeFile(outFile, u8);
+  await fs.promises.writeFile(outFile, u8);
   const written = u8.byteLength;
   enforceSizeCap({ downloadedBytes: written, maxBytes });
   console.log(`Saved ${name} (${written} bytes) to ${outFile}`);

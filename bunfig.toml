@@ -1,0 +1,12 @@
+# Bun configuration for fpf-sync
+# Target Bun v1.3.x
+
+[test]
+# Enable test timeouts and coverage if desired
+# timeout = 30000
+# reporters = ["spec"]
+coverage = true
+
+[install]
+# Ensure ESM resolution works smoothly
+# Prefer Bun’s native installer

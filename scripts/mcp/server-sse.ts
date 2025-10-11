@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-write
+#!/usr/bin/env bun
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import http from 'node:http';
@@ -85,7 +85,7 @@ mcp.tool(
 
 // New FPF-MCP tools per server interface (v0.1 tooling profile)
 
-const READONLY = (Deno.env.get('FPF_READONLY') ?? '1') !== '0';
+const READONLY = (process.env.FPF_READONLY ?? '1') !== '0';
 
 function ensureWritable() {
   if (READONLY) throw new FpfError('READONLY', 'Server is in read-only mode. Set FPF_READONLY=0 to enable writes.');
