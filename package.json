@@ -10,7 +10,8 @@
     "mcp:fpf": "bun run scripts/mcp/server.ts",
     "mcp:fpf:sse": "PORT=${PORT:-3333} bun run scripts/mcp/server-sse.ts",
     "industry:report": "bun run scripts/agentic/industry-research.ts",
-    "yadisk:sync": "bun run scripts/yadisk-sync.mjs"
+    "yadisk:sync": "bun run scripts/yadisk-sync.mjs",
+    "meme:meter": "bun run scripts/agentic/meme-meter.ts"
   },
   "dependencies": {
     "@google/generative-ai": "0.21.0",
