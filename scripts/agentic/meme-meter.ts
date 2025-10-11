@@ -2,7 +2,6 @@
 
 import { readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import process from "node:process";
 
 function getEnv(name: string, required: true): string;
@@ -15,8 +14,8 @@ function getEnv(name: string, required = false): string | undefined {
   return v;
 }
 
-const apiKey = getEnv("GEMINI_API_KEY", true);
-const genAI = new GoogleGenerativeAI(apiKey);
+const openRouterKey = getEnv("OPEN_ROUTER_KEY", true);
+const openAiKey = getEnv("OPEN_AI_KEY", true);
 
 const supabaseUrl = getEnv("SUPABASE_URL") || "https://jxanpmwuecvrmznbsxma.supabase.co";
 const supabaseKey = getEnv("SUPABASE_WRITE_KEY", true);
@@ -173,9 +172,25 @@ function cosineSimilarity(a: number[], b: number[]): number {
 }
 
 async function generateEmbedding(text: string): Promise<number[]> {
-  const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
-  const result = await model.embedContent(text);
-  return result.embedding.values;
+  const response = await fetch("https://api.openai.com/v1/embeddings", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${openAiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "text-embedding-3-small",
+      input: text,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`OpenAI embedding failed: ${response.status} ${errorText}`);
+  }
+
+  const result = await response.json();
+  return result.data[0].embedding;
 }
 
 async function calculateFidelity(
@@ -207,14 +222,6 @@ async function characterizeMeme(
   meme: MemeFile,
   allMemes: MemeFile[],
 ): Promise<MemeCard> {
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash-exp",
-    generationConfig: {
-      temperature: 0.3,
-      topP: 0.95,
-    },
-  });
-
   const prompt = `You are analyzing a behavioral pattern meme from an educational context (Russian language).
 
 Meme Title: ${meme.title}
@@ -237,8 +244,34 @@ Respond in valid JSON format only (no markdown, no extra text):
   "R": 0.0
 }`;
 
-  const result = await model.generateContent(prompt);
-  const responseText = result.response.text();
+  const aiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${openRouterKey}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": "https://app.devin.ai",
+      "X-Title": "MemeMeter_v1",
+    },
+    body: JSON.stringify({
+      model: "x-ai/grok-4-fast",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.3,
+      top_p: 0.95,
+    }),
+  });
+
+  if (!aiResponse.ok) {
+    const errorText = await aiResponse.text();
+    throw new Error(`OpenRouter AI assessment failed: ${aiResponse.status} ${errorText}`);
+  }
+
+  const aiResult = await aiResponse.json();
+  const responseText = aiResult.choices[0].message.content;
 
   const jsonMatch = responseText.match(/\{[\s\S]*\}/);
   if (!jsonMatch) {
