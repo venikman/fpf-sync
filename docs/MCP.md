@@ -119,6 +119,6 @@ Extensibility
 - A future SQLite adapter can replace the JSON store without changing tool contracts.
 
 Troubleshooting
-- If the server starts then exits, check for syntax errors or missing imports; ensure you have Deno 2.5.4 (`deno --version`).
+- If the server starts then exits, check for syntax errors or missing imports; ensure you have Bun 1.3.x (`bun --version`).
 - If fpf:spec is missing, ensure the main spec file exists at: yadisk/First Principles Framework — Core Conceptual Specification (holonic).md
 - If a client cannot connect, verify it supports MCP stdio/SSE and the command path is correct.
