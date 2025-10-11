@@ -11,7 +11,7 @@ This document is for contributors working on the code. For setup and usage aimed
 
 ## Prerequisites
 
-- Bun 1.2+ (`bun --version`)
+- Bun 1.3+ (`bun --version`)
 - GitHub CLI (optional, for creating/rerunning PRs locally): `gh --version`
 
 ## Install
