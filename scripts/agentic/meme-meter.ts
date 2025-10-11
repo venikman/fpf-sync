@@ -1,8 +1,12 @@
-#!/usr/bin/env -S deno run --allow-read --allow-env --allow-net --allow-write
+#!/usr/bin/env bun
 
+import { exec } from "node:child_process";
+import { promisify } from "node:util";
 import { readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import process from "node:process";
+
+const execAsync = promisify(exec);
 
 function getEnv(name: string, required: true): string;
 function getEnv(name: string, required?: false): string | undefined;
@@ -68,15 +72,8 @@ async function loadMemeFiles(chunksPath: string): Promise<MemeFile[]> {
     const category = catDir === "good" ? "useful" : "unproductive";
     const dirPath = join(chunksPath, catDir);
 
-    const cmd = new Deno.Command("find", {
-      args: [dirPath, "-name", "*.md", "-type", "f"],
-      stdout: "piped",
-    });
-
-    const { stdout } = await cmd.output();
-    const files = new TextDecoder().decode(stdout).trim().split("\n").filter(
-      Boolean,
-    );
+    const { stdout } = await execAsync(`find "${dirPath}" -name "*.md" -type f`);
+    const files = stdout.trim().split("\n").filter(Boolean);
 
     for (const filepath of files) {
       const content = await readFile(filepath, "utf-8");
