@@ -14,7 +14,11 @@ export const BACKUP_DIR = join(DATA_DIR, 'backups');
 export function getFpfDir(): string {
   const override = process.env.FPF_DOCS_DIR?.trim();
   if (override) {
-    return resolveWithin(repoRoot, override);
+    const resolved = resolveWithin(repoRoot, override);
+    if (resolved === repoRoot) {
+      throw new Error('FPF_DOCS_DIR must resolve to a subdirectory inside the repository root');
+    }
+    return resolved;
   }
   return join(repoRoot, 'yadisk');
 }

@@ -24,7 +24,7 @@ Run
 
 Environment overrides
 - `FPF_DATA_DIR`: change where JSON stores are written (defaults to `<repo>/data`).
-- `FPF_DOCS_DIR`: override the whitelisted FPF document directory (defaults to `<repo>/yadisk`, must stay within the repo root).
+- `FPF_DOCS_DIR`: override the whitelisted FPF document directory (defaults to `<repo>/yadisk`, must stay within the repo root and resolve to a subdirectory).
 
 Security model and policies
 - The stdio server runs over stdio (no TCP port). SSE server listens on configurable port.
