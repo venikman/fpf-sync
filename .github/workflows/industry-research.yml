@@ -39,7 +39,8 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Generate daily industry research report (TS + Gemini)
+      - name: Generate daily industry research report (TS + Gemini, retry; non-blocking)
+        continue-on-error: true
         env:
           GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-pro
@@ -50,7 +51,16 @@ jobs:
           # GEN_TOP_P: "0.9"
           # GEN_MAX_TOKENS: "2048"
         run: |
-          bun run scripts/agentic/industry-research.ts
+          set -eo pipefail
+          for attempt in 1 2 3; do
+            if bun run scripts/agentic/industry-research.ts; then
+              exit 0
+            fi
+            echo "Industry research failed (attempt ${attempt}); retrying in 15s..." >&2
+            sleep 15
+          done
+          echo "Industry research failed after retries" >&2
+          exit 1
   
   summarize-fpf-changes:
     if: github.event_name == 'pull_request'
@@ -73,11 +83,21 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Summarize FPF changes
+      - name: Summarize FPF changes (retry; non-blocking)
+        continue-on-error: true
         env:
           GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
           GEMINI_MODEL: gemini-2.5-pro
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          bun run scripts/agentic/summarize-fpf-changes.ts
+          set -eo pipefail
+          for attempt in 1 2 3; do
+            if bun run scripts/agentic/summarize-fpf-changes.ts; then
+              exit 0
+            fi
+            echo "PR summary failed (attempt ${attempt}); retrying in 15s..." >&2
+            sleep 15
+          done
+          echo "PR summary failed after retries" >&2
+          exit 1
