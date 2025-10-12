@@ -262,15 +262,30 @@ async function handleRequest(req: { id: string; method: string; params: any }) {
   // TODO: validate params against tool.inputSchema
   const controller = new AbortController();
   const deadline = 15_000; // default 15s
-  const timeout = setTimeout(() => controller.abort("deadline"), deadline);
+  // Abort with a standard TimeoutError-like reason so downstream can distinguish
+  const timer = setTimeout(() => {
+    // DOMException is available in Deno; falling back to Error if needed is fine
+    controller.abort(new DOMException("deadline exceeded", "TimeoutError"));
+  }, deadline);
   try {
     const result = await tool.handler(req.params, { requestId: req.id, deadlineMs: deadline, signal: controller.signal });
     return { id: req.id, result };
-  } catch (e) {
-    const retryable = e?.name === "TimeoutError";
-    return { id: req.id, error: { type: retryable ? "timeout" : "internal", message: String(e), retryable } };
+  } catch (e: any) {
+    const name = e?.name ?? "";
+    const isAbort = name === "AbortError"; // common when an AbortSignal cancels work
+    const isTimeout = name === "TimeoutError" || (isAbort && controller.signal.aborted);
+    const message = isTimeout ? "operation timed out" : String(e);
+    return {
+      id: req.id,
+      error: {
+        type: isTimeout ? "timeout" : "internal",
+        message,
+        retryable: !!isTimeout,
+        details: { deadlineMs: deadline }
+      }
+    };
   } finally {
-    clearTimeout(timeout);
+    clearTimeout(timer);
   }
 }
 ```
@@ -339,15 +354,27 @@ type RpcResponse = { id: string; result: JsonElement voption; error: JsonElement
 let handleRequest (req: RpcRequest) (ct: CancellationToken) = task {
     match registry.TryGetValue(req.method) with
     | true, tool ->
+        // Create a timeout CTS and link it with the external token
+        use cts = new CancellationTokenSource()
+        cts.CancelAfter(TimeSpan.FromSeconds(15))
+        use linked = CancellationTokenSource.CreateLinkedTokenSource(ct, cts.Token)
         try
-            use cts = CancellationTokenSource()
-            cts.CancelAfter(TimeSpan.FromSeconds(15))
-            use linked = CancellationTokenSource.CreateLinkedTokenSource(ct, cts.Token)
             let! result = tool.Handle(req.params, { requestId = req.id; deadlineMs = Some 15_000; token = linked.Token })
             let resp = { id = req.id; result = ValueSome result; error = ValueNone }
             return resp
-        with ex ->
-            let err = JsonDocument.Parse($"{{\"type\":\"internal\",\"message\":{JsonSerializer.Serialize(ex.Message)} }}").RootElement
+        with
+        | :? OperationCanceledException as oce ->
+            // Distinguish timeout (our cts) from external cancellation (ct)
+            let isTimeout = cts.IsCancellationRequested && not ct.IsCancellationRequested
+            let json =
+                if isTimeout then
+                    JsonDocument.Parse($"{{\"type\":\"timeout\",\"message\":\"operation timed out\",\"retryable\":true,\"details\":{\"deadlineMs\":15000}}}").RootElement
+                else
+                    JsonDocument.Parse($"{{\"type\":\"cancelled\",\"message\":{JsonSerializer.Serialize(oce.Message)},\"retryable\":false}}").RootElement
+            let resp = { id = req.id; result = ValueNone; error = ValueSome json }
+            return resp
+        | ex ->
+            let err = JsonDocument.Parse($"{{\"type\":\"internal\",\"message\":{JsonSerializer.Serialize(ex.Message)},\"retryable\":false }}").RootElement
             let resp = { id = req.id; result = ValueNone; error = ValueSome err }
             return resp
     | _ ->
