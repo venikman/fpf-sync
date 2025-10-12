@@ -1,6 +1,6 @@
 import { mkdir, readdir } from 'node:fs/promises';
 import { createWriteStream } from 'node:fs';
-import { join, resolve as resolvePath, sep } from 'node:path';
+import { join, relative, resolve as resolvePath, sep } from 'node:path';
 import process from "node:process";
 
 export const repoRoot = process.cwd();
@@ -9,12 +9,26 @@ export const DATA_DIR = process.env.FPF_DATA_DIR && process.env.FPF_DATA_DIR.tri
   ? process.env.FPF_DATA_DIR
   : join(repoRoot, 'data');
 export const EPISTEMES_PATH = join(DATA_DIR, 'epistemes.json');
-export const FPF_DIR = join(repoRoot, 'yadisk');
 export const BACKUP_DIR = join(DATA_DIR, 'backups');
+
+export function getFpfDir(): string {
+  const override = process.env.FPF_DOCS_DIR?.trim();
+  if (override) {
+    const resolved = resolveWithin(repoRoot, override);
+    if (resolved === repoRoot) {
+      throw new Error('FPF_DOCS_DIR must resolve to a subdirectory inside the repository root');
+    }
+    return resolved;
+  }
+  return join(repoRoot, 'yadisk');
+}
 
 export function resolveWithin(base: string, candidate: string): string {
   const abs = resolvePath(base, candidate);
   const baseNorm = base.endsWith(sep) ? base : base + sep;
+  if (abs === base) {
+    return abs;
+  }
   if (!abs.startsWith(baseNorm)) {
     throw new Error(`Path escapes base: ${candidate}`);
   }
@@ -38,12 +52,19 @@ export function writeFileAtomic(path: string, data: string | Uint8Array): Promis
   });
 }
 
+function toRepoRelative(pathname: string): string {
+  const rel = relative(repoRoot, pathname);
+  return rel.split(sep).join('/');
+}
+
 export async function listWhitelistedFpfDocs(): Promise<string[]> {
+  const docsDir = getFpfDir();
   try {
-    const entries = await readdir(FPF_DIR, { withFileTypes: true });
+    const entries = await readdir(docsDir, { withFileTypes: true });
     return entries
       .filter(e => e.isFile())
-      .map(e => join('yadisk', e.name));
+      .map(e => toRepoRelative(join(docsDir, e.name)))
+      .sort((a, b) => a.localeCompare(b));
   } catch {
     return [];
   }
@@ -51,11 +72,11 @@ export async function listWhitelistedFpfDocs(): Promise<string[]> {
 
 export function isAllowedFpfPath(relPath: string): string {
   const abs = resolveWithin(repoRoot, relPath);
-  const fpfAbs = resolveWithin(repoRoot, 'yadisk');
+  const fpfAbs = getFpfDir();
   const fpfNorm = fpfAbs.endsWith(sep) ? fpfAbs : fpfAbs + sep;
-  if (!abs.startsWith(fpfNorm)) {
-    throw new Error(`Path not allowed outside 'yadisk': ${relPath}`);
-    }
+  if (!(abs === fpfAbs || abs.startsWith(fpfNorm))) {
+    throw new Error(`Path not allowed outside whitelisted FPF docs directory: ${relPath}`);
+  }
   return abs;
 }
 
