@@ -20,10 +20,7 @@ No runtime dependencies are required for the core sync functionality.
 
 - Install dependencies: `bun install`
 
-The project includes additional dependencies for the industry research feature:
-
-- `@google/generative-ai`: Used by `scripts/agentic/industry-research.ts` for AI-powered research report generation
-- `fast-xml-parser`: Used to parse arXiv API responses (XML format) in the industry research script
+Note: previously, additional agentic scripts (research, memetics) existed but have been removed. Any AI research functionality and related dependencies are no longer used in this repo.
 
 ## Running the sync locally
 
@@ -53,12 +50,10 @@ Safety:
 
 ## GitHub Actions: configuration
 
-The project includes two workflows:
+The project includes these workflows:
 
 1. **Sync workflow**: `.github/workflows/yadisk-sync.yml` (scheduled daily at 20:00 MSK and manual dispatch)
    - Syncs files from Yandex Disk to the repository via Pull Requests
-2. **Industry Research workflow**: `.github/workflows/industry-research.yml` (scheduled daily at 20:00 MSK, manual dispatch, and on PRs)
-   - Generates AI-powered research reports using Gemini API
 
 - Repo settings → Actions → General → Workflow permissions:
   - "Read and write permissions": enabled
@@ -78,16 +73,7 @@ These map to env vars read by the script: `PUBLIC_URL`, `PUBLIC_PATH`, `TARGET_N
 
 ### Industry Research Workflow
 
-Repository Secrets (Settings → Secrets → Actions):
-
-- `GOOGLE_AI_API_KEY` (required): API key for Google's Gemini AI
-
-Environment variables (set in workflow):
-
-- `GEMINI_MODEL`: The Gemini model to use (default: gemini-2.5-pro)
-- `USE_SEARCH_GROUNDING`: Enable search grounding (default: "auto")
-- `GROUND_FPF_EXCERPT_BYTES`: Include FPF headings excerpt (default: 0)
-- `GEN_TEMPERATURE`, `GEN_TOP_P`, `GEN_MAX_TOKENS`: Generation parameters
+Removed. Historical references to AI-generated reports have been retired along with the agentic scripts.
 
 ## Security hardening (implemented)
 
@@ -197,12 +183,7 @@ This approach balances simplicity with functionality, avoiding over-engineering 
   - `validateResearchReport()`: Structured validation for AI reports
   - `MarkdownBuilder`: Programmatic markdown generation
   - `formatDateUTC()`, `parseGitRef()`: String formatting without regex replacement
-- `scripts/agentic/industry-research.ts` — AI-powered research report generator:
-  - Uses markdown-helpers for robust content processing
-  - Extracts topics from the FPF document
-  - Fetches relevant papers from arXiv and Crossref APIs
-  - Generates structured analysis using Google's Gemini AI
-  - Runs daily via GitHub Actions workflow (`.github/workflows/industry-research.yml`)
+// (Agentic scripts removed.)
 
 ## Contributing workflow
 

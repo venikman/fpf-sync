@@ -1,19 +1,8 @@
 import { readFile, mkdir } from 'node:fs/promises';
-import { createWriteStream } from 'node:fs';
 import { join } from 'node:path';
-import { DATA_DIR, writeFileAtomic } from '../util.ts';
+import { DATA_DIR } from '../util.ts';
 
-// Generic JSON-array store with atomic writes and simple mutex
-class Mutex {
-  private p: Promise<void> = Promise.resolve();
-  lock<T>(fn: () => Promise<T>): Promise<T> {
-    const run = () => fn();
-    const prev = this.p;
-    let resolveNext!: () => void;
-    this.p = new Promise<void>((r) => (resolveNext = r));
-    return prev.then(run).finally(() => resolveNext());
-  }
-}
+// Minimal JSON-array store using Bun.read/write without mutex/atomic rename
 
 export type WithId = { id: string };
 
@@ -22,13 +11,12 @@ async function ensureFile(path: string, initial = '[]') {
   try {
     await readFile(path, 'utf8');
   } catch {
-    await writeFileAtomic(path, initial);
+    await Bun.write(path, initial);
   }
 }
 
 export function makeJsonStore<T extends WithId>(fileName: string) {
   const filePath = join(DATA_DIR, fileName);
-  const mutex = new Mutex();
 
   async function list(): Promise<T[]> {
     await ensureFile(filePath);
@@ -42,7 +30,7 @@ export function makeJsonStore<T extends WithId>(fileName: string) {
   }
 
   function saveAll(items: T[]): Promise<void> {
-    return writeFileAtomic(filePath, JSON.stringify(items, null, 2));
+    return Bun.write(filePath, JSON.stringify(items, null, 2)).then(() => {});
   }
 
   async function get(id: string): Promise<T | undefined> {
@@ -51,18 +39,18 @@ export function makeJsonStore<T extends WithId>(fileName: string) {
   }
 
   function upsert(item: T): Promise<T> {
-    return mutex.lock(async () => {
+    return (async () => {
       const all = await list();
       const idx = all.findIndex((x) => x.id === item.id);
       if (idx === -1) all.push(item);
       else all[idx] = item;
       await saveAll(all);
       return item;
-    });
+    })();
   }
 
   function update(id: string, patch: Partial<T>): Promise<T | undefined> {
-    return mutex.lock(async () => {
+    return (async () => {
       const all = await list();
       const idx = all.findIndex((x) => x.id === id);
       if (idx === -1) return undefined;
@@ -70,17 +58,17 @@ export function makeJsonStore<T extends WithId>(fileName: string) {
       all[idx] = next;
       await saveAll(all);
       return next;
-    });
+    })();
   }
 
   function remove(id: string): Promise<boolean> {
-    return mutex.lock(async () => {
+    return (async () => {
       const all = await list();
       const next = all.filter((x) => x.id !== id);
       const changed = next.length !== all.length;
       if (changed) await saveAll(next);
       return changed;
-    });
+    })();
   }
 
   return { filePath, list, get, upsert, update, remove };

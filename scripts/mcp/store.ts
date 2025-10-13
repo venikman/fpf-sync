@@ -1,26 +1,13 @@
 import { readFile, mkdir } from 'node:fs/promises';
-import { EPISTEMES_PATH, DATA_DIR, writeFileAtomic } from './util.ts';
+import { EPISTEMES_PATH, DATA_DIR } from './util.ts';
 import type { Episteme, CreateEpistemeInput, UpdateEpistemePatch } from './types.ts';
-
-// Simple in-process mutex to serialize writes
-class Mutex {
-  private p: Promise<void> = Promise.resolve();
-  lock<T>(fn: () => Promise<T>): Promise<T> {
-    const run = () => fn();
-    const prev = this.p;
-    let resolveNext: () => void;
-    this.p = new Promise<void>(r => (resolveNext = r));
-    return prev.then(run).finally(() => resolveNext!());
-  }
-}
-const mutex = new Mutex();
 
 async function ensureStoreFile(): Promise<void> {
   await mkdir(DATA_DIR, { recursive: true });
   try {
     await readFile(EPISTEMES_PATH, 'utf8');
   } catch {
-    await writeFileAtomic(EPISTEMES_PATH, '[]');
+    await Bun.write(EPISTEMES_PATH, '[]');
   }
 }
 
@@ -41,7 +28,7 @@ export async function getEpistemeById(id: string): Promise<Episteme | undefined>
 }
 
 export function createEpisteme(input: CreateEpistemeInput): Promise<Episteme> {
-  return mutex.lock(async () => {
+  return (async () => {
     const now = new Date().toISOString();
     const ep: Episteme = {
       id: crypto.randomUUID(),
@@ -54,13 +41,13 @@ export function createEpisteme(input: CreateEpistemeInput): Promise<Episteme> {
     };
     const all = await listEpistemes();
     all.push(ep);
-    await writeFileAtomic(EPISTEMES_PATH, JSON.stringify(all, null, 2));
+    await Bun.write(EPISTEMES_PATH, JSON.stringify(all, null, 2));
     return ep;
-  });
+  })();
 }
 
 export function updateEpisteme(id: string, patch: UpdateEpistemePatch): Promise<Episteme | undefined> {
-  return mutex.lock(async () => {
+  return (async () => {
     const all = await listEpistemes();
     const idx = all.findIndex(e => e.id === id);
     if (idx === -1) return undefined;
@@ -71,19 +58,19 @@ export function updateEpisteme(id: string, patch: UpdateEpistemePatch): Promise<
       updatedAt: new Date().toISOString(),
     };
     all[idx] = next;
-    await writeFileAtomic(EPISTEMES_PATH, JSON.stringify(all, null, 2));
+    await Bun.write(EPISTEMES_PATH, JSON.stringify(all, null, 2));
     return next;
-  });
+  })();
 }
 
 export function deleteEpisteme(id: string): Promise<boolean> {
-  return mutex.lock(async () => {
+  return (async () => {
     const all = await listEpistemes();
     const next = all.filter(e => e.id !== id);
     const changed = next.length !== all.length;
     if (changed) {
-      await writeFileAtomic(EPISTEMES_PATH, JSON.stringify(next, null, 2));
+      await Bun.write(EPISTEMES_PATH, JSON.stringify(next, null, 2));
     }
     return changed;
-  });
+  })();
 }

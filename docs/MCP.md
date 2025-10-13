@@ -83,7 +83,7 @@ Capabilities (v0.2.0)
   - fpf/adi-cycle
 
 Data persistence
-- data/epistemes.json (created on first run, atomic writes)
+- data/epistemes.json (created on first run; simple JSON writes)
 - Schema (Episteme):
   - id: string
   - object: string

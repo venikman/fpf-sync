@@ -4,11 +4,11 @@ FROM oven/bun:1.3 as base
 
 WORKDIR /app
 
-# Copy lockfiles and package manifest
-COPY package.json bun.lock* ./
+# Copy manifest (no lockfile in repo)
+COPY package.json ./
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Copy source
 COPY scripts ./scripts
