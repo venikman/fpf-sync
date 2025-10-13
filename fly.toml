@@ -1,0 +1,44 @@
+# Fly.io configuration for FPF MCP SSE server
+# App name can be changed by `fly launch` if needed
+app = "fpf-mcp"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  FPF_DATA_DIR = "/data"
+  NODE_ENV = "production"
+
+[experimental]
+  auto_stop_machines = true
+  auto_start_machines = true
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 200
+    soft_limit = 150
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.http_checks]]
+    path = "/health"
+    interval = "10s"
+    timeout = "2s"
+    method = "get"
+    protocol = "http"
+
+# Persist epistemes.json
+[[mounts]]
+  source = "fpf_data"
+  destination = "/data"

@@ -5,6 +5,7 @@ import { promisify } from "node:util";
 import { readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import process from "node:process";
+import { loadExistingMemeCards, storeMemeCard, type MemeCard, type MemeMetrics, type ExistingMemeCard } from "../db/supabase.ts";
 
 const execAsync = promisify(exec);
 
@@ -21,9 +22,6 @@ function getEnv(name: string, required = false): string | undefined {
 const openRouterKey = getEnv("OPEN_ROUTER_KEY", true);
 const openAiKey = getEnv("OPEN_AI_KEY", true);
 
-const supabaseUrl = getEnv("SUPABASE_URL") || "https://jxanpmwuecvrmznbsxma.supabase.co";
-const supabaseKey = getEnv("SUPABASE_WRITE_KEY", true);
-
 interface MemeFile {
   path: string;
   filename: string;
@@ -31,38 +29,6 @@ interface MemeFile {
   title: string;
   text: string;
   mtime: number;
-}
-
-interface MemeMetrics {
-  rho: number;
-  phi: number;
-  H: number;
-  A: number;
-  R: number;
-  v: null;
-  R_m: null;
-  L: null;
-  Pi: null;
-}
-
-interface MemeCard {
-  source_file: string;
-  category: string;
-  title: string;
-  name: string;
-  description: string;
-  context: string;
-  state: "Candidate" | "Recognizable" | "Meme" | "Dormant" | "Retired";
-  metrics: MemeMetrics;
-  verdict: boolean | null;
-  window: {
-    start: string;
-    end: string;
-  };
-}
-
-interface ExistingMemeCard extends MemeCard {
-  updated_at: string;
 }
 
 async function loadMemeFiles(chunksPath: string): Promise<MemeFile[]> {
@@ -99,40 +65,6 @@ async function loadMemeFiles(chunksPath: string): Promise<MemeFile[]> {
   return memes;
 }
 
-async function loadExistingMemeCards(): Promise<Map<string, ExistingMemeCard>> {
-  try {
-    const response = await fetch(
-      `${supabaseUrl}/rest/v1/meme_characterization?select=source_file,category,title,description,context,state,metrics,verdict,window,updated_at`,
-      {
-        headers: {
-          "apikey": supabaseKey,
-          "Authorization": `Bearer ${supabaseKey}`,
-        },
-      },
-    );
-
-    if (!response.ok) {
-      console.warn(
-        "Warning: Could not load existing meme cards:",
-        response.status,
-        await response.text(),
-      );
-      return new Map();
-    }
-
-    const cards = await response.json() as ExistingMemeCard[];
-    const cardMap = new Map<string, ExistingMemeCard>();
-
-    for (const card of cards) {
-      cardMap.set(card.source_file, card);
-    }
-
-    return cardMap;
-  } catch (error) {
-    console.warn("Warning: Could not load existing meme cards:", error);
-    return new Map();
-  }
-}
 
 function calculateShannonEntropy(text: string): number {
   const words = text.toLowerCase().match(/\b\w+\b/g) || [];
@@ -391,37 +323,6 @@ Respond in valid JSON format only (no markdown, no extra text):
   };
 }
 
-async function storeMemeCard(card: MemeCard): Promise<void> {
-  const response = await fetch(
-    `${supabaseUrl}/rest/v1/meme_characterization`,
-    {
-      method: "POST",
-      headers: {
-        "apikey": supabaseKey,
-        "Authorization": `Bearer ${supabaseKey}`,
-        "Content-Type": "application/json",
-        "Prefer": "resolution=merge-duplicates",
-      },
-      body: JSON.stringify({
-        source_file: card.source_file,
-        category: card.category,
-        title: card.title,
-        name: card.name,
-        description: card.description,
-        context: card.context,
-        state: card.state,
-        metrics: card.metrics,
-        verdict: card.verdict,
-        window: card.window,
-      }),
-    },
-  );
-
-  if (!response.ok) {
-    const errorMsg = await response.text();
-    throw new Error(`Failed to store MemeCard: ${response.status} ${errorMsg}`);
-  }
-}
 
 async function main() {
   console.log("🔬 MemeMeter_v1: Characterizing behavioral pattern memes...\n");
