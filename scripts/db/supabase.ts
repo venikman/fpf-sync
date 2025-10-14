@@ -15,7 +15,7 @@ function getEnv(name: string, required = false): string | undefined {
   return v;
 }
 
-const supabaseUrl = getEnv("SUPABASE_URL") || "https://jxanpmwuecvrmznbsxma.supabase.co";
+const supabaseUrl = getEnv("SUPABASE_PROJECT_URL", true);
 const supabaseKey = getEnv("SUPABASE_WRITE_KEY", true);
 
 export interface MemeMetrics {
