@@ -3,7 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "bun test",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "echo 'lint not configured (consider biome or eslint)' && exit 0",
     "fmt": "echo 'format not configured (consider biome or prettier)' && exit 0",
