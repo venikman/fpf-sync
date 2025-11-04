@@ -51,21 +51,21 @@ jobs:
             commit -m "Update FPF pattern research journal"
           git push -u origin "$branch"
           cat <<'MD' > pr-body.md
-## FPF Pattern Research — Automated Scan
-**Run ID:** ${{ github.run_id }}
-**Commit:** ${{ github.sha }}
-**Date:** $(date -u +%F)
+          ## FPF Pattern Research — Automated Scan
+          **Run ID:** ${{ github.run_id }}
+          **Commit:** ${{ github.sha }}
+          **Date:** $(date -u +%F)
 
-### Overview
-- Updated `docs/research/fpf-pattern-journal.md` with latest pattern counts and clusters.
+          ### Overview
+          - Updated `docs/research/fpf-pattern-journal.md` with latest pattern counts and clusters.
 
-### Methodology
-- Parsed specification headings for `## {Series}.{Id}: {Title} — {Subtitle}`
-- Counted unique IDs per series and refreshed integration clusters.
+          ### Methodology
+          - Parsed specification headings for `## {Series}.{Id}: {Title} — {Subtitle}`
+          - Counted unique IDs per series and refreshed integration clusters.
 
-### Next Steps
-- Review journal diff and incorporate any manual notes.
-MD
+          ### Next Steps
+          - Review journal diff and incorporate any manual notes.
+          MD
           gh pr create \
             --title "[automation] FPF pattern research – $(date -u +%F)" \
             --body-file pr-body.md
