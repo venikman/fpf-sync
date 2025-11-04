@@ -50,7 +50,7 @@ jobs:
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit -m "Update FPF pattern research journal"
           git push -u origin "$branch"
-          cat <<'MD' > pr-body.md
+          cat <<MD > pr-body.md
           ## FPF Pattern Research — Automated Scan
           **Run ID:** ${{ github.run_id }}
           **Commit:** ${{ github.sha }}
