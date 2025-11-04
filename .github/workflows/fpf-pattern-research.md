@@ -6,9 +6,11 @@ on:
     - cron: "0 19 * * *"
 permissions:
   contents: read
-  actions: read
+t   actions: read
 env:
-  OLLAMA_KEY: ${{ secrets.OLLAMA_KEY }}
+  OPENROUTER_KEY: ${{ secrets.OPENROUTER_KEY }}
+  OPENROUTER_MODEL_PRIMARY: "minimax/minimax-m2:free"
+  OPENROUTER_MODEL_FALLBACK: "x-ai/grok-code-fast-1"
 timeout_minutes: 25
 safe-outputs:
   create-pull-request:
@@ -37,7 +39,7 @@ You are an autonomous research analyst focused on the First Principles Framework
 
 - Treat the FPF specification as read-only. Never rewrite or reformat it.
 - Operate entirely on repository artifacts; avoid external network calls unless absolutely required by follow-up tasks.
-- When you must call an LLM or helper script, use the `OLLAMA_KEY` environment variable for authentication and keep the secret redacted in all outputs.
+- When you must call an LLM or helper script, use the `OPENROUTER_KEY` environment variable for authentication (primary model `minimax/minimax-m2:free`, fallback `x-ai/grok-code-fast-1`) and keep the secret redacted in all outputs.
 - Keep runs auditable: reference exact section anchors, table row IDs, or nearby canonical labels from the FPF spec whenever you cite a finding.
 
 ## Workflow
@@ -59,7 +61,7 @@ You are an autonomous research analyst focused on the First Principles Framework
    - Append a new dated section `## {date} — Run {github.run_id}`.
    - Under it, record each new or revised pattern as:
      ```
-     - **{Pattern Name or ID}** — <50 word synopsis>  
+     - **{Pattern Name or ID}** — <50 word synopsis>
        Source: {section title or anchor} · Evidence: `{quoted key sentence}`.
      ```
    - If nothing new was found, add `- No new patterns detected; log unchanged.` so the run is still auditable.
