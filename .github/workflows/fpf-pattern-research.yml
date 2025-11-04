@@ -1,0 +1,77 @@
+name: FPF pattern research
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 17 * * *"
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      SPEC_PATH: "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md"
+      JOURNAL_PATH: "docs/research/fpf-pattern-journal.md"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "latest"
+
+      - name: Install dependencies
+        run: bun install --no-progress
+
+      - name: Run pattern scanner
+        run: bun run scripts/pattern-research.ts
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Check for updates
+        id: git_status
+        run: |
+          if git diff --quiet --exit-code -- "$JOURNAL_PATH"; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request
+        if: steps.git_status.outputs.changed == 'true'
+        run: |
+          branch="fpf-pattern-research-${{ github.run_id }}"
+          git switch -c "$branch"
+          git add "$JOURNAL_PATH"
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "Update FPF pattern research journal"
+          git push -u origin "$branch"
+          cat <<'MD' > pr-body.md
+## FPF Pattern Research — Automated Scan
+**Run ID:** ${{ github.run_id }}
+**Commit:** ${{ github.sha }}
+**Date:** $(date -u +%F)
+
+### Overview
+- Updated `docs/research/fpf-pattern-journal.md` with latest pattern counts and clusters.
+
+### Methodology
+- Parsed specification headings for `## {Series}.{Id}: {Title} — {Subtitle}`
+- Counted unique IDs per series and refreshed integration clusters.
+
+### Next Steps
+- Review journal diff and incorporate any manual notes.
+MD
+          gh pr create \
+            --title "[automation] FPF pattern research – $(date -u +%F)" \
+            --body-file pr-body.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: No-op summary
+        if: steps.git_status.outputs.changed != 'true'
+        run: echo "No changes detected in $JOURNAL_PATH"
