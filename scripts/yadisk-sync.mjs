@@ -1,206 +1,186 @@
 #!/usr/bin/env bun
-/**
- * Yandex Disk Sync - Download files from Yandex Disk public shares
- *
- * This script downloads files from Yandex Disk public shares and saves them
- * to the repository. Designed for use in GitHub Actions for automated syncing.
- *
- * Features:
- * - Supports both file and folder shares
- * - Filename sanitization and size limits
- * - Pre/post-download validation
- * - Configurable via CLI args or environment variables
- *
- * Usage:
- *   bun scripts/yadisk-sync.mjs --public-url "URL" --dest-path "yadisk"
- *
- * See DEVELOPERS.md for full documentation.
- */
-
 import fs from 'node:fs';
 import path from 'node:path';
 import { envArg, fetchJson, sanitizeFilename, enforceSizeCap } from './yadisk-lib.ts';
 import process from "node:process";
 
-// Constants
-const DEFAULT_MAX_FILE_SIZE = 10_485_760; // 10MB in bytes
+const DEFAULT_MAX_FILE_SIZE = 10_485_760;
 const DEFAULT_DEST_PATH = 'yadisk';
 const DEFAULT_FILENAME = 'downloaded-file';
 const YANDEX_API_BASE = 'https://cloud-api.yandex.net/v1/disk/public/resources';
-const MAX_FOLDER_ITEMS = 1000; // Limit for folder listing
+const MAX_FOLDER_ITEMS = 1000;
 
-// Helper to get configuration from args or environment
-const getArg = (name, def = undefined) => envArg(process.argv, process.env, name, def);
+const getConfig = (name, defaultValue) => envArg(process.argv, process.env, name, defaultValue);
 
-/**
- * Ensures a directory exists, creating it if necessary.
- * @param {string} dir - Directory path to create
- * @returns {Promise<void>}
- */
-async function ensureDir(dir) {
-  await fs.promises.mkdir(dir, { recursive: true });
+async function ensureDirectoryExists(dirPath) {
+  await fs.promises.mkdir(dirPath, { recursive: true });
+}
+
+function parseMaxFileSize(arg) {
+  if (arg == null || String(arg).trim() === '') {
+    return DEFAULT_MAX_FILE_SIZE;
+  }
+  const parsed = parseInt(String(arg), 10);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : DEFAULT_MAX_FILE_SIZE;
+}
+
+function logConfig(config, verbose) {
+  if (!verbose) return;
+  console.log('Configuration:');
+  console.log(`  Public URL: ${config.publicUrl}`);
+  console.log(`  Destination: ${config.destPath}/`);
+  console.log(`  Max size: ${config.maxBytes} bytes (${(config.maxBytes / 1024 / 1024).toFixed(2)} MB)`);
 }
 
 
+async function findFileInFolder(publicUrl, folderPath, targetName, verbose) {
+  const params = new URLSearchParams({
+    public_key: publicUrl,
+    path: folderPath,
+    limit: String(MAX_FOLDER_ITEMS)
+  });
+  const listUrl = `${YANDEX_API_BASE}?${params.toString()}`;
+  if (verbose) console.log('Listing directory:', listUrl);
+
+  const dirMeta = await fetchJson(listUrl);
+  const items = dirMeta?._embedded?.items ?? [];
+
+  if (!items.length) {
+    throw new Error('Directory is empty or not accessible');
+  }
+
+  if (verbose) console.log(`Found ${items.length} items in folder`);
+
+  if (!targetName) {
+    throw new Error('Share points to a folder. Use --public-path or --target-name');
+  }
+
+  const found = items.find((it) => it.type === 'file' && it.name === targetName);
+  if (!found) {
+    throw new Error(`File named "${targetName}" not found in folder share`);
+  }
+
+  if (verbose) console.log(`Selected file: ${found.name}`);
+  return found;
+}
+
+async function resolveFileMetadata(publicUrl, publicPath, targetName, verbose) {
+  const params = new URLSearchParams({ public_key: publicUrl });
+  if (publicPath) params.set('path', publicPath);
+  const metaUrl = `${YANDEX_API_BASE}?${params.toString()}`;
+
+  if (verbose) console.log('\nFetching metadata from:', metaUrl);
+  const meta = await fetchJson(metaUrl);
+
+  if (meta.type === 'file') {
+    if (verbose) console.log('Share type: Direct file');
+    return meta;
+  }
+
+  if (meta.type === 'dir') {
+    if (verbose) console.log('Share type: Folder - listing contents...');
+    return await findFileInFolder(publicUrl, meta.path, targetName, verbose);
+  }
+
+  throw new Error(`Unknown resource type: ${meta.type}`);
+}
+
+function validateAndLogFileSize(fileSize, maxBytes, verbose) {
+  const size = Number(fileSize);
+  if (Number.isFinite(size) && size >= 0) {
+    if (verbose) console.log(`Reported file size: ${size} bytes`);
+    enforceSizeCap({ reportedSize: size, maxBytes });
+  }
+}
+
+async function getDownloadUrl(publicUrl, filePath, verbose) {
+  const params = new URLSearchParams({ public_key: publicUrl, path: filePath });
+  const downloadMetaUrl = `${YANDEX_API_BASE}/download?${params.toString()}`;
+  if (verbose) console.log('\nResolving download URL...');
+
+  const downloadMeta = await fetchJson(downloadMetaUrl);
+  if (!downloadMeta?.href) {
+    throw new Error('No download URL returned from Yandex API');
+  }
+
+  return downloadMeta.href;
+}
+
+async function downloadFile(url, maxBytes, verbose) {
+  if (verbose) console.log('Downloading from:', url);
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Failed to download file: HTTP ${response.status}`);
+  }
+
+  const contentLength = Number(response.headers.get('content-length') || 0);
+  if (Number.isFinite(contentLength) && contentLength >= 0) {
+    if (verbose) console.log(`Content-Length: ${contentLength} bytes`);
+    enforceSizeCap({ reportedSize: contentLength, maxBytes });
+  }
+
+  return response;
+}
+
+async function saveFile(response, destPath, filename, maxBytes) {
+  const outputPath = path.join(destPath, filename);
+  await ensureDirectoryExists(path.dirname(outputPath));
+
+  const arrayBuffer = await response.arrayBuffer();
+  const bytes = new Uint8Array(arrayBuffer);
+
+  enforceSizeCap({ downloadedBytes: bytes.byteLength, maxBytes });
+
+  await fs.promises.writeFile(outputPath, bytes);
+
+  return { path: outputPath, size: bytes.byteLength };
+}
+
+function showSuccess(filename, fileSize, filePath) {
+  console.log(`\n✓ Success!`);
+  console.log(`  File: ${filename}`);
+  console.log(`  Size: ${fileSize} bytes (${(fileSize / 1024 / 1024).toFixed(2)} MB)`);
+  console.log(`  Path: ${filePath}`);
+}
+
 async function main() {
-  // ==========================
-  // Parse Configuration
-  // ==========================
-  const publicUrl = getArg('public-url');
+  const publicUrl = getConfig('public-url');
   if (!publicUrl) {
     console.error('Error: Missing required --public-url or PUBLIC_URL environment variable');
     console.error('Usage: bun scripts/yadisk-sync.mjs --public-url "https://disk.yandex.ru/d/..."');
     process.exit(1);
   }
 
-  // Optional parameters
-  const publicPath = getArg('public-path');   // Path within the share (for folder shares)
-  const targetName = getArg('target-name');   // Specific filename to pick from folder
-  const destPath = getArg('dest-path', DEFAULT_DEST_PATH);
-  const destFilename = getArg('dest-filename'); // Override saved filename
-  const verbose = getArg('verbose', 'false') === 'true';
+  const config = {
+    publicUrl,
+    publicPath: getConfig('public-path'),
+    targetName: getConfig('target-name'),
+    destPath: getConfig('dest-path', DEFAULT_DEST_PATH),
+    destFilename: getConfig('dest-filename'),
+    maxBytes: parseMaxFileSize(getConfig('max-bytes')),
+    verbose: getConfig('verbose', 'false') === 'true',
+  };
 
-  // Parse max file size with validation
-  const maxBytesArg = getArg('max-bytes');
-  const parsedMax = (maxBytesArg != null && String(maxBytesArg).trim() !== '')
-    ? parseInt(String(maxBytesArg), 10)
-    : NaN;
-  const maxBytes = Number.isFinite(parsedMax) && parsedMax >= 0
-    ? parsedMax
-    : DEFAULT_MAX_FILE_SIZE;
+  logConfig(config, config.verbose);
 
-  if (verbose) {
-    console.log('Configuration:');
-    console.log(`  Public URL: ${publicUrl}`);
-    console.log(`  Destination: ${destPath}/`);
-    console.log(`  Max size: ${maxBytes} bytes (${(maxBytes / 1024 / 1024).toFixed(2)} MB)`);
-  }
+  const fileMeta = await resolveFileMetadata(
+    config.publicUrl,
+    config.publicPath,
+    config.targetName,
+    config.verbose
+  );
 
-  // ==========================
-  // Fetch File Metadata
-  // ==========================
-  const q = new URLSearchParams({ public_key: publicUrl });
-  if (publicPath) q.set('path', publicPath);
-  const metaUrl = `${YANDEX_API_BASE}?${q.toString()}`;
+  validateAndLogFileSize(fileMeta.size, config.maxBytes, config.verbose);
 
-  if (verbose) console.log('\nFetching metadata from:', metaUrl);
-  const meta = await fetchJson(metaUrl);
+  const filename = sanitizeFilename(config.destFilename || fileMeta.name || DEFAULT_FILENAME);
+  if (config.verbose) console.log(`Sanitized filename: ${filename}`);
 
-  /**
-   * Resolves file metadata, handling both file and folder shares.
-   * @param {Object} m - Metadata object from Yandex API
-   * @returns {Promise<Object>} File metadata
-   */
-  async function resolveFileMeta(m) {
-    // Direct file share - use as-is
-    if (m.type === 'file') {
-      if (verbose) console.log('Share type: Direct file');
-      return m;
-    }
+  const downloadUrl = await getDownloadUrl(config.publicUrl, fileMeta.path, config.verbose);
+  const response = await downloadFile(downloadUrl, config.maxBytes, config.verbose);
+  const result = await saveFile(response, config.destPath, filename, config.maxBytes);
 
-    // Folder share - need to find the specific file
-    if (m.type === 'dir') {
-      if (verbose) console.log('Share type: Folder - listing contents...');
-
-      const listQ = new URLSearchParams({
-        public_key: publicUrl,
-        path: m.path,
-        limit: String(MAX_FOLDER_ITEMS)
-      });
-      const listUrl = `${YANDEX_API_BASE}?${listQ.toString()}`;
-      if (verbose) console.log('Listing directory:', listUrl);
-
-      const dirMeta = await fetchJson(listUrl);
-      const items = dirMeta?._embedded?.items ?? [];
-
-      if (!items.length) {
-        throw new Error('Directory is empty or not accessible');
-      }
-
-      if (verbose) console.log(`Found ${items.length} items in folder`);
-
-      // Find file by name if specified
-      if (targetName) {
-        const found = items.find((it) => it.type === 'file' && it.name === targetName);
-        if (!found) {
-          throw new Error(`File named "${targetName}" not found in folder share`);
-        }
-        if (verbose) console.log(`Selected file: ${found.name}`);
-        return found;
-      }
-
-      throw new Error(
-        'Share points to a folder. Use --public-path to specify file path ' +
-        'or --target-name to select by filename'
-      );
-    }
-
-    throw new Error(`Unknown resource type: ${m.type}`);
-  }
-
-  // ==========================
-  // Validate File
-  // ==========================
-  const fileMeta = await resolveFileMeta(meta);
-
-  // Check reported file size
-  const reportedSizeRaw = Number(fileMeta.size);
-  if (Number.isFinite(reportedSizeRaw) && reportedSizeRaw >= 0) {
-    if (verbose) console.log(`Reported file size: ${reportedSizeRaw} bytes`);
-    enforceSizeCap({ reportedSize: reportedSizeRaw, maxBytes });
-  }
-
-  const filePath = fileMeta.path; // Path within the Yandex Disk
-  const name = sanitizeFilename(destFilename || fileMeta.name || DEFAULT_FILENAME);
-
-  if (verbose) console.log(`Sanitized filename: ${name}`);
-
-  // ==========================
-  // Download File
-  // ==========================
-  // First, get the actual download URL
-  const dlQ = new URLSearchParams({ public_key: publicUrl, path: filePath });
-  const dlUrl = `${YANDEX_API_BASE}/download?${dlQ.toString()}`;
-  if (verbose) console.log('\nResolving download URL...');
-
-  const dl = await fetchJson(dlUrl);
-  if (!dl?.href) {
-    throw new Error('No download URL returned from Yandex API');
-  }
-
-  if (verbose) console.log('Downloading from:', dl.href);
-  const fileRes = await fetch(dl.href);
-
-  if (!fileRes.ok) {
-    throw new Error(`Failed to download file: HTTP ${fileRes.status}`);
-  }
-
-  // Verify content-length header if present
-  const contentLength = Number(fileRes.headers.get('content-length') || 0);
-  if (Number.isFinite(contentLength) && contentLength >= 0) {
-    if (verbose) console.log(`Content-Length: ${contentLength} bytes`);
-    enforceSizeCap({ reportedSize: contentLength, maxBytes });
-  }
-
-  // ==========================
-  // Save to Filesystem
-  // ==========================
-  const outFile = path.join(destPath, name);
-  await ensureDir(path.dirname(outFile));
-
-  const ab = await fileRes.arrayBuffer();
-  const u8 = new Uint8Array(ab);
-
-  // Final size check on actual downloaded bytes
-  const written = u8.byteLength;
-  enforceSizeCap({ downloadedBytes: written, maxBytes });
-
-  await fs.promises.writeFile(outFile, u8);
-
-  console.log(`\n✓ Success!`);
-  console.log(`  File: ${name}`);
-  console.log(`  Size: ${written} bytes (${(written / 1024 / 1024).toFixed(2)} MB)`);
-  console.log(`  Path: ${outFile}`);
+  showSuccess(filename, result.size, result.path);
 }
 
 main().catch((err) => {
