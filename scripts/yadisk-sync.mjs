@@ -8,7 +8,8 @@ const DEFAULT_MAX_FILE_SIZE = 10_485_760;
 const DEFAULT_DEST_PATH = 'yadisk';
 const DEFAULT_FILENAME = 'downloaded-file';
 const YANDEX_API_BASE = 'https://cloud-api.yandex.net/v1/disk/public/resources';
-const MAX_FOLDER_ITEMS = 1000;
+const ITEMS_PER_PAGE = 1000;
+const MAX_TOTAL_ITEMS = 10000;
 
 const getConfig = (name, defaultValue) => envArg(process.argv, process.env, name, defaultValue);
 
@@ -34,34 +35,48 @@ function logConfig(config, verbose) {
 
 
 async function findFileInFolder(publicUrl, folderPath, targetName, verbose) {
-  const params = new URLSearchParams({
-    public_key: publicUrl,
-    path: folderPath,
-    limit: String(MAX_FOLDER_ITEMS)
-  });
-  const listUrl = `${YANDEX_API_BASE}?${params.toString()}`;
-  if (verbose) console.log('Listing directory:', listUrl);
-
-  const dirMeta = await fetchJson(listUrl);
-  const items = dirMeta?._embedded?.items ?? [];
-
-  if (!items.length) {
-    throw new Error('Directory is empty or not accessible');
-  }
-
-  if (verbose) console.log(`Found ${items.length} items in folder`);
-
   if (!targetName) {
     throw new Error('Share points to a folder. Use --public-path or --target-name');
   }
 
-  const found = items.find((it) => it.type === 'file' && it.name === targetName);
-  if (!found) {
-    throw new Error(`File named "${targetName}" not found in folder share`);
+  let offset = 0;
+  let totalChecked = 0;
+
+  while (totalChecked < MAX_TOTAL_ITEMS) {
+    const params = new URLSearchParams({
+      public_key: publicUrl,
+      path: folderPath,
+      limit: String(ITEMS_PER_PAGE),
+      offset: String(offset)
+    });
+    const listUrl = `${YANDEX_API_BASE}?${params.toString()}`;
+
+    if (verbose && offset === 0) console.log('Searching folder:', listUrl);
+    if (verbose && offset > 0) console.log(`Checking items ${offset}-${offset + ITEMS_PER_PAGE}...`);
+
+    const dirMeta = await fetchJson(listUrl);
+    const items = dirMeta?._embedded?.items ?? [];
+
+    if (offset === 0 && !items.length) {
+      throw new Error('Directory is empty or not accessible');
+    }
+
+    if (!items.length) break;
+
+    totalChecked += items.length;
+
+    const found = items.find((it) => it.type === 'file' && it.name === targetName);
+    if (found) {
+      if (verbose) console.log(`Found file: ${found.name} (checked ${totalChecked} items)`);
+      return found;
+    }
+
+    if (items.length < ITEMS_PER_PAGE) break;
+
+    offset += items.length;
   }
 
-  if (verbose) console.log(`Selected file: ${found.name}`);
-  return found;
+  throw new Error(`File "${targetName}" not found in folder (checked ${totalChecked} items)`);
 }
 
 async function resolveFileMetadata(publicUrl, publicPath, targetName, verbose) {
