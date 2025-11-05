@@ -1,51 +1,88 @@
-export function sanitizeFilename(n: string | undefined): string {
-  const base = (n ?? 'downloaded-file').toString();
-  const justName = base.split(/[\\/]/).pop() ?? 'downloaded-file';
-  const cleaned = justName.replace(/[\\/:*?"<>|]/g, '_');
-  const safe = cleaned.replace(/^\.+$/, '_');
-  return safe || 'downloaded-file';
+const DEFAULT_FILENAME = 'downloaded-file';
+const INVALID_PATH_CHARS = /[\\/:*?"<>|]/g;
+const ONLY_DOTS = /^\.+$/;
+
+export function sanitizeFilename(filename: string | undefined): string {
+  const fallback = DEFAULT_FILENAME;
+  const input = (filename ?? fallback).toString();
+  const basename = input.split(/[\\/]/).pop() ?? fallback;
+  const withoutInvalidChars = basename.replace(INVALID_PATH_CHARS, '_');
+  const withoutDotNames = withoutInvalidChars.replace(ONLY_DOTS, '_');
+  return withoutDotNames || fallback;
 }
 
-export function envArg(
+function isFlag(arg: string): boolean {
+  return arg.startsWith('--');
+}
+
+function kebabToSnakeCase(str: string): string {
+  return str.toUpperCase().replace(/-/g, '_');
+}
+
+export function getConfigValue(
   argv: string[],
   env: Record<string, string | undefined>,
-  name: string,
-  def?: string,
+  paramName: string,
+  defaultValue?: string,
 ): string | undefined {
-  const flag = `--${name}`;
-  const idx = argv.indexOf(flag);
-  if (idx !== -1 && idx + 1 < argv.length) return argv[idx + 1];
-  // Use underscore format for env vars (PUBLIC_URL, MAX_BYTES, etc.)
-  const envKey = name.toUpperCase().replace(/-/g, '_');
-  return env[envKey] ?? def;
+  const flagName = `--${paramName}`;
+  const flagIndex = argv.indexOf(flagName);
+
+  if (flagIndex !== -1 && flagIndex + 1 < argv.length) {
+    const nextArg = argv[flagIndex + 1];
+    if (!isFlag(nextArg)) {
+      return nextArg;
+    }
+  }
+
+  const envKey = kebabToSnakeCase(paramName);
+  const legacyEnvKey = `YANDEX_${envKey}`;
+
+  return env[envKey] ?? env[legacyEnvKey] ?? defaultValue;
 }
 
-export function enforceSizeCap(args: {
+export const envArg = getConfigValue;
+
+function exceedsLimit(size: number, limit: number): boolean {
+  return limit > 0 && size > limit;
+}
+
+export function validateFileSize(args: {
   reportedSize?: number;
   downloadedBytes?: number;
   maxBytes: number;
 }) {
   const { reportedSize = 0, downloadedBytes = 0, maxBytes } = args;
-  if (maxBytes > 0 && reportedSize > maxBytes) {
+
+  if (exceedsLimit(reportedSize, maxBytes)) {
     throw new Error(`Remote file too large: ${reportedSize} bytes exceeds cap ${maxBytes}`);
   }
-  if (maxBytes > 0 && downloadedBytes > maxBytes) {
+
+  if (exceedsLimit(downloadedBytes, maxBytes)) {
     throw new Error(`Downloaded file too large: ${downloadedBytes} bytes exceeds cap ${maxBytes}`);
   }
 }
 
-export async function fetchJson<T = unknown>(url: string, opts: RequestInit = {}): Promise<T> {
-  const res = await fetch(url, opts);
-  if (res.ok) {
-    return res.json() as Promise<T>;
-  }
-  const text = await res.text();
-  let message = `HTTP ${res.status} for ${url}`;
+export const enforceSizeCap = validateFileSize;
+
+function formatErrorMessage(url: string, status: number, body: string): string {
+  let message = `HTTP ${status} for ${url}`;
   try {
-    const json = JSON.parse(text);
+    const json = JSON.parse(body);
     message += `\n${JSON.stringify(json, null, 2)}`;
   } catch {
-    message += `\n${text}`;
+    message += `\n${body}`;
   }
-  throw new Error(message);
+  return message;
+}
+
+export async function fetchJson<T = unknown>(url: string, opts: RequestInit = {}): Promise<T> {
+  const response = await fetch(url, opts);
+
+  if (response.ok) {
+    return response.json() as Promise<T>;
+  }
+
+  const body = await response.text();
+  throw new Error(formatErrorMessage(url, response.status, body));
 }

@@ -1,77 +1,49 @@
 # fpf-sync
 
-MCP server: see docs/MCP.md for the local FPF MCP server that exposes FPF resources and tools over stdio for MCP clients (VS Code Continue, etc.).
+Sync files from Yandex Disk to GitHub + MCP Server for First Principles Framework
 
-Keep a file from a public Yandex Disk link in sync with this repository. When the file changes, this repo automatically opens a Pull Request (PR) with the updated version.
+## What This Does
 
-Read the main FPF document: [First Principles Framework — Core Conceptual Specification (holonic).md](<yadisk/First%20Principles%20Framework%20%E2%80%94%20Core%20Conceptual%20Specification%20(holonic).md>)
+1. **Yandex Sync** - Daily automated sync from Yandex Disk → GitHub PR
+2. **MCP Server** - Exposes FPF spec to AI tools (VS Code, Claude Desktop)
 
-For developer-focused details (coding, variables, local runs), see `DEVELOPERS.md`.
+## Quick Links
 
-**What You Need**
+- 📖 [FPF Document](yadisk/First%20Principles%20Framework%20%E2%80%94%20Core%20Conceptual%20Specification%20(holonic).md)
+- 👨‍💻 [Developer Guide](DEVELOPERS.md) - Setup, config, contributing
+- 🔌 [MCP Setup](docs/MCP.md) - Connect AI tools
 
-- Yandex Disk public link: a share link anyone can open.
-- Repo admin access: permission to change GitHub Actions settings.
+## For Users
 
-**One-Time Setup**
+**Daily sync runs at 20:00 MSK**
+1. Check "Pull requests" tab
+2. Review "Sync: Yandex Disk update" PR
+3. Merge to update repository
 
-- Actions permissions: enable write access and PR creation.
-  - Repo → Settings → Actions → General → Workflow permissions
-  - Select “Read and write permissions”
-  - Turn on “Allow GitHub Actions to create and approve pull requests”
-- Source configuration (link and file selection) is pre‑set. If it needs to change, ask a developer to update it (see `DEVELOPERS.md`).
+**Manual sync:** Actions → "Sync Yandex Disk to PR" → Run workflow
 
-**Run the Sync**
+## For Developers
 
-- Automatic: runs daily at 20:00 MSK (17:00 UTC).
-- Manual: Repo → Actions → "Sync Yandex Disk to PR" → Run workflow.
-
-**What You’ll See**
-
-- A new or updated PR titled “Sync: Yandex Disk update”.
-- The downloaded file stored under the `yadisk/` folder in the PR.
-- Merge the PR to update the repository.
-
-**How It Works (Diagram)**
-
-```mermaid
-flowchart TD
-    A["Yandex Disk (public link)"] -->|scheduled or manual| B["GitHub Actions: Sync workflow"]
-    B --> C["Download file to repo under yadisk/"]
-    C --> D{Changes detected?}
-    D -- No --> B
-    D -- Yes --> E["Create/Update branch sync/yadisk"]
-    E --> F["Open Pull Request → main"]
-    F --> G["Review 'Files changed' diff"]
-    G --> H["Merge PR"]
-    H --> I["Main branch updated • file available in yadisk/"]
+```bash
+bun install                     # Install dependencies
+bun run yadisk:sync --public-url "URL" --verbose true  # Test sync
+bun run mcp:fpf                 # Start MCP server
 ```
 
-What the PR does:
+See [DEVELOPERS.md](DEVELOPERS.md) for details.
 
-- Shows exactly what changed in the file (safe review step).
-- Nothing changes in the main branch until the PR is merged.
-- You can download the file from the PR (before merge) or from main (after merge).
+## Setup (One-Time)
 
-**Review Changes (Diffs) On GitHub**
+**Enable Actions:** Settings → Actions → General → Workflow permissions
+- ✓ "Read and write permissions"
+- ✓ "Allow GitHub Actions to create and approve pull requests"
 
-- Open Pull Requests: Repo → Pull requests → select “Sync: Yandex Disk update”.
-- Files Changed tab: shows exactly what changed inside `yadisk/…`.
-- Compare view (optional): visit `Compare changes` in the PR to see side‑by‑side diffs.
-- Tip: The sync branch is `sync/yadisk` (base is `main`).
+**Configure sync:** See [DEVELOPERS.md](DEVELOPERS.md#github-actions-configuration)
 
-**Download The File (No Coding Needed)**
+## Troubleshooting
 
-- From the PR before merging:
-  - Open the PR → Files changed → click the changed file under `yadisk/`.
-  - Click “Download raw file” (download icon) or “Raw”, then use your browser’s Save.
-- After merging to main:
-  - Go to the repo’s `yadisk/` folder → click the file.
-  - Click “Download raw file” (download icon) or “Raw”, then Save.
-- Download everything (ZIP): Repo → Code (green button) → Download ZIP, then open the `yadisk/` folder inside.
+- No PR created? → Check Actions logs and permissions
+- Wrong file? → Configure `YANDEX_PUBLIC_PATH` or `YANDEX_TARGET_NAME`
+- File too large? → Increase `YANDEX_MAX_BYTES` (default 10MB)
 
-**Notes**
-
-- Scheduling is best‑effort by GitHub; runs may be slightly delayed.
-- Basic safety is built in: filenames are cleaned, and large files are blocked by a size limit.
-- If something doesn’t look right, contact a maintainer. Technical troubleshooting lives in `DEVELOPERS.md`.
+See [DEVELOPERS.md](DEVELOPERS.md#troubleshooting) for more help.
