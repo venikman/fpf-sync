@@ -10,10 +10,8 @@ Sync files from Yandex Disk to GitHub + MCP Server for First Principles Framewor
 ## Quick Links
 
 - 📖 [FPF Document](yadisk/First%20Principles%20Framework%20%E2%80%94%20Core%20Conceptual%20Specification%20(holonic).md)
-- 🏗️ [Architecture](ARCHITECTURE.md) - How it works
-- 👨‍💻 [Developers](DEVELOPERS.md) - Setup & config
+- 👨‍💻 [Developer Guide](DEVELOPERS.md) - Setup, config, contributing
 - 🔌 [MCP Setup](docs/MCP.md) - Connect AI tools
-- 🤝 [Contributing](CONTRIBUTING.md) - How to contribute
 
 ## For Users
 
