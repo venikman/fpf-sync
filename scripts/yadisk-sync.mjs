@@ -9,7 +9,6 @@ const DEFAULT_DEST_PATH = 'yadisk';
 const DEFAULT_FILENAME = 'downloaded-file';
 const YANDEX_API_BASE = 'https://cloud-api.yandex.net/v1/disk/public/resources';
 const ITEMS_PER_PAGE = 1000;
-const MAX_TOTAL_ITEMS = 10000;
 
 const getConfig = (name, defaultValue) => envArg(process.argv, process.env, name, defaultValue);
 
@@ -42,7 +41,7 @@ async function findFileInFolder(publicUrl, folderPath, targetName, verbose) {
   let offset = 0;
   let totalChecked = 0;
 
-  while (totalChecked < MAX_TOTAL_ITEMS) {
+  while (true) {
     const params = new URLSearchParams({
       public_key: publicUrl,
       path: folderPath,
