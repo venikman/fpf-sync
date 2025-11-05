@@ -60,9 +60,11 @@ export function envArg(
       return nextArg;
     }
   }
-  // Use underscore format for env vars (PUBLIC_URL, MAX_BYTES, etc.)
+  // Check both unprefixed and YANDEX_ prefixed env vars for backward compatibility
+  // e.g., both PUBLIC_URL and YANDEX_PUBLIC_URL are checked
   const envKey = name.toUpperCase().replace(/-/g, '_');
-  return env[envKey] ?? def;
+  const prefixedKey = `YANDEX_${envKey}`;
+  return env[envKey] ?? env[prefixedKey] ?? def;
 }
 
 /**
