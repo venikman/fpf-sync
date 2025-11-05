@@ -53,7 +53,13 @@ export function envArg(
 ): string | undefined {
   const flag = `--${name}`;
   const idx = argv.indexOf(flag);
-  if (idx !== -1 && idx + 1 < argv.length) return argv[idx + 1];
+  if (idx !== -1 && idx + 1 < argv.length) {
+    const nextArg = argv[idx + 1];
+    // Guard against flag confusion: --public-url --verbose (where --verbose would be treated as value)
+    if (!nextArg.startsWith('--')) {
+      return nextArg;
+    }
+  }
   // Use underscore format for env vars (PUBLIC_URL, MAX_BYTES, etc.)
   const envKey = name.toUpperCase().replace(/-/g, '_');
   return env[envKey] ?? def;

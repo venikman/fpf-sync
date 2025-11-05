@@ -17,7 +17,7 @@ bun run mcp:fpf:sse                              # MCP HTTP/SSE
 ## Architecture Overview
 
 **System:**
-```
+```text
 fpf-sync
 ├── Yandex Disk Sync → downloads files → creates PR
 └── MCP Server → exposes FPF to AI tools (60+ tools)

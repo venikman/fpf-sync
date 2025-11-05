@@ -35,6 +35,7 @@ const getArg = (name, def = undefined) => envArg(process.argv, process.env, name
 /**
  * Ensures a directory exists, creating it if necessary.
  * @param {string} dir - Directory path to create
+ * @returns {Promise<void>}
  */
 async function ensureDir(dir) {
   await fs.promises.mkdir(dir, { recursive: true });
@@ -88,7 +89,7 @@ async function main() {
   /**
    * Resolves file metadata, handling both file and folder shares.
    * @param {Object} m - Metadata object from Yandex API
-   * @returns {Object} File metadata
+   * @returns {Promise<Object>} File metadata
    */
   async function resolveFileMeta(m) {
     // Direct file share - use as-is
