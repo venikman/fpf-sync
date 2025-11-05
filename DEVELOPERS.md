@@ -1,217 +1,262 @@
 # Developer Guide
 
-This document is for contributors working on the code. For setup and usage aimed at systems/ops engineers, see the README.
+Technical documentation for contributors working on fpf-sync code.
 
-## Overview
+**For general contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)**
+**For architecture overview, see [ARCHITECTURE.md](ARCHITECTURE.md)**
 
-- Sync script: `scripts/yadisk-sync.mjs` (Bun runtime)
-- Shared helpers: `scripts/yadisk-lib.ts`
-- Workflow: `.github/workflows/yadisk-sync.yml`
-- Downloaded artifacts live under `yadisk/` (committed via PRs only).
+## Quick Reference
+
+| Task | Command |
+|------|---------|
+| Install dependencies | `bun install` |
+| Type check | `bun run typecheck` |
+| Run sync locally | `bun run yadisk:sync --public-url "URL" --verbose true` |
+| Start MCP server (stdio) | `bun run mcp:fpf` |
+| Start MCP server (HTTP/SSE) | `bun run mcp:fpf:sse` |
 
 ## Prerequisites
 
-- Bun 1.3+ (`bun --version`)
-- GitHub CLI (optional, for creating/rerunning PRs locally): `gh --version`
+- **Bun 1.3+** - [Install Bun](https://bun.sh) (`bun --version` to check)
+- **Git** - Version control
+- **GitHub CLI** (optional) - For PR operations (`gh --version`)
 
-## Install
+## Project Components
 
-No runtime dependencies are required for the core sync functionality.
+### 1. Yandex Disk Sync
+**Files:**
+- `scripts/yadisk-sync.mjs` - Main sync CLI
+- `scripts/yadisk-lib.ts` - Helper functions (sanitization, validation, API)
+- `.github/workflows/yadisk-sync.yml` - GitHub Actions workflow
 
-- Install dependencies: `bun install`
+**Output:**
+- Downloaded files → `yadisk/` folder (committed via PRs only)
 
-Note: previously, additional agentic scripts (research, memetics) existed but have been removed. Any AI research functionality and related dependencies are no longer used in this repo.
+### 2. MCP Server
+**Files:**
+- `scripts/mcp/server.ts` - Main server (stdio transport)
+- `scripts/mcp/server-sse.ts` - HTTP/SSE transport
+- `scripts/mcp/store.ts` - Data persistence
+- `scripts/mcp/domain/` - Business logic and models
+- `scripts/mcp/services/` - Service layer
+- `scripts/mcp/storage/` - Storage adapters
 
-## Running the sync locally
+**Data:**
+- `data/epistemes.json` - Episteme registry
 
-Example (single file share):
+## Local Development
 
-```
-bun scripts/yadisk-sync.mjs \
+### Running Sync Locally
+
+**Single file share:**
+```bash
+bun run yadisk:sync \
   --public-url "https://disk.yandex.ru/d/EXAMPLE" \
   --dest-path "yadisk" \
   --max-bytes 10485760 \
   --verbose true
 ```
 
-Folder share options:
+**Folder share (specify file):**
+```bash
+# Option 1: By path within the share
+bun run yadisk:sync \
+  --public-url "https://disk.yandex.ru/d/FOLDER" \
+  --public-path "/Folder/file.ext"
 
-- `--public-path "/Folder/file.ext"` to point to a specific file path in the share
-- or `--target-name "file.ext"` to pick a filename from the folder
+# Option 2: By filename
+bun run yadisk:sync \
+  --public-url "https://disk.yandex.ru/d/FOLDER" \
+  --target-name "file.ext"
+```
 
-Output control:
+**CLI Options:**
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--public-url` | Yandex Disk public share URL (required) | - |
+| `--public-path` | Path within folder share | - |
+| `--target-name` | Filename to select from folder | - |
+| `--dest-path` | Output directory | `yadisk` |
+| `--dest-filename` | Override saved filename | Original name |
+| `--max-bytes` | File size limit in bytes | `10485760` (10MB) |
+| `--verbose` | Detailed logging | `false` |
 
-- `--dest-filename "desired-name.ext"` to override the saved filename
+### Running MCP Server
 
-Safety:
+**Stdio transport (for VS Code, Claude Desktop):**
+```bash
+bun run mcp:fpf
+```
 
-- Filenames are sanitized to prevent traversal and invalid characters
-- `--max-bytes` caps the file size (default 10MB) pre- and post-download
+**HTTP/SSE transport (for web clients):**
+```bash
+PORT=3333 bun run mcp:fpf:sse
+```
 
-## GitHub Actions: configuration
+**Environment variables:**
+- `PORT` - HTTP server port (default: 3333)
+- `FPF_READONLY` - Disable write operations (default: 1)
+- `FPF_DATA_DIR` - Data directory (default: `./data`)
+- `FPF_DOCS_DIR` - Documents directory (default: `./yadisk`)
 
-The project includes these workflows:
+## GitHub Actions Configuration
 
-1. **Sync workflow**: `.github/workflows/yadisk-sync.yml` (scheduled daily at 20:00 MSK and manual dispatch)
-   - Syncs files from Yandex Disk to the repository via Pull Requests
+### Workflows
+1. **yadisk-sync.yml** - Daily sync at 20:00 MSK + manual dispatch
+2. **fpf-pattern-research.yml** - Pattern extraction from FPF spec
+3. **fly-deploy.yml** - Deployment to Fly.io
 
-- Repo settings → Actions → General → Workflow permissions:
-  - "Read and write permissions": enabled
-  - "Allow GitHub Actions to create and approve pull requests": enabled
+### Required Permissions
+**Settings → Actions → General → Workflow permissions:**
+- ✓ "Read and write permissions"
+- ✓ "Allow GitHub Actions to create and approve pull requests"
 
-### Sync Workflow Variables
+### Repository Variables
+**Settings → Secrets and variables → Actions → Variables:**
 
-Repository Variables (Settings → Variables → Actions):
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| `YANDEX_PUBLIC_URL` | Yes | Public share URL | `https://disk.yandex.ru/d/abc123` |
+| `YANDEX_PUBLIC_PATH` | No | Path within folder share | `/Documents/file.md` |
+| `YANDEX_TARGET_NAME` | No | Filename to pick from folder | `spec.md` |
+| `YANDEX_DEST_FILENAME` | No | Override saved filename | `custom-name.md` |
+| `YANDEX_MAX_BYTES` | No | Max file size in bytes | `10485760` (default) |
 
-- `YANDEX_PUBLIC_URL` (required): public share URL
-- `YANDEX_PUBLIC_PATH` (optional): path inside share if link points to a folder
-- `YANDEX_TARGET_NAME` (optional): filename to select from a folder share
-- `YANDEX_DEST_FILENAME` (optional): override saved filename
-- `YANDEX_MAX_BYTES` (optional): max size in bytes (default 10MB)
+**Variable to environment mapping:**
+- `YANDEX_PUBLIC_URL` → `PUBLIC_URL`
+- `YANDEX_PUBLIC_PATH` → `PUBLIC_PATH`
+- `YANDEX_TARGET_NAME` → `TARGET_NAME`
+- `YANDEX_MAX_BYTES` → `MAX_BYTES`
 
-These map to env vars read by the script: `PUBLIC_URL`, `PUBLIC_PATH`, `TARGET_NAME`, `DEST_PATH`, `DEST_FILENAME`, `MAX_BYTES`.
+## Security Features
 
-### Industry Research Workflow
+### Implemented
+- ✅ Filename sanitization (prevents directory traversal)
+- ✅ Basename-only writes (restricted to `yadisk/` folder)
+- ✅ Size limits pre/post-download (prevents zip bombs)
+- ✅ GitHub Actions pinned to commit SHAs
+- ✅ Concurrency control for workflows
+- ✅ `persist-credentials: false` in checkout
+- ✅ Path validation for MCP file access
+- ✅ Read-only mode by default for MCP server
 
-Removed. Historical references to AI-generated reports have been retired along with the agentic scripts.
+### Future Enhancements
+- File extension/content-type allowlist (`.md`, `.txt` only)
+- Git LFS for large files in `yadisk/`
+- Structured TypeScript types for Yandex API responses
+- Rate limiting for MCP tools
 
-## Security hardening (implemented)
+## Code Organization
 
-- Filename sanitization and basename-only writes under `yadisk/`
-- Size cap pre-/post-download to avoid large/zip-bomb files
-- Actions pinned to commit SHAs (supply‑chain hardening)
-- Concurrency group + timeout for the sync workflow
-- `actions/checkout` with `persist-credentials: false` (token only used by PR step)
+### Markdown Utilities
+**File:** `scripts/lib/markdown-helpers.ts`
 
-Potential future enhancements:
+Provides utilities for markdown processing:
+- `extractHeadings()` - Parse headings with levels
+- `extractTopics()` - Smart topic extraction with stop words
+- `extractSection()` - Get content between headings
+- `MarkdownBuilder` - Programmatic markdown generation
 
-- Extension/content-type allowlist (e.g., only `.md`, `.txt`)
-- Git LFS for `yadisk/**` if files are large/update frequently
-- Add structured types for Yandex API responses in the library
-
-## Improved markdown handling
-
-The project now includes a dedicated `scripts/lib/markdown-helpers.ts` module with improved regex patterns and utilities for markdown processing.
-
-### Key improvements implemented
-
-1. **Better regex patterns with clear documentation**
-   - Each pattern has comments explaining its purpose
-   - Handles edge cases like trailing spaces and special characters
-   - Patterns are organized in a single `MarkdownPatterns` object
-
-2. **Dedicated helper functions**
-   - `extractHeadings()` - Extract headings with level and text
-   - `extractTopics()` - Smart topic extraction with stop words
-   - `extractSection()` - Get content between headings
-   - `validateResearchReport()` - Structured validation for reports
-   - `formatDateUTC()` - Date formatting without regex replacement
-   - `parseGitRef()` - Parse git references without regex replacement
-
-3. **MarkdownBuilder class**
-   - Programmatic markdown generation
-   - Type-safe and maintainable
-   - Avoids string concatenation errors
-
-### Example usage
-
+**Example:**
 ```typescript
-import {
-  extractHeadings,
-  extractTopics,
-  validateResearchReport,
-  MarkdownBuilder,
-  formatDateUTC,
-} from "../lib/markdown-helpers.ts";
+import { extractHeadings, MarkdownBuilder } from './lib/markdown-helpers.ts';
 
-// Extract headings from markdown
 const headings = extractHeadings(markdown);
-// Returns: [{ level: 1, text: "Title", raw: "# Title" }, ...]
+// [{ level: 1, text: "Title", raw: "# Title" }, ...]
 
-// Extract topics with smart filtering
-const topics = extractTopics(text, {
-  maxTopics: 8,
-  minWordLength: 4,
-  includeCompounds: true,
-});
-
-// Validate report structure
-const validation = validateResearchReport(markdown);
-if (!validation.valid) {
-  console.error("Validation errors:", validation.errors);
-}
-
-// Build markdown programmatically
-const builder = new MarkdownBuilder();
-const report = builder
-  .heading(1, "Report Title")
-  .paragraph("Introduction text")
+const doc = new MarkdownBuilder()
+  .heading(1, "Report")
+  .paragraph("Introduction")
   .bulletList(["Item 1", "Item 2"])
   .build();
 ```
 
-### Why not external libraries?
+**Design Decision:** Uses regex patterns instead of external libraries to keep dependencies minimal and maintain simplicity.
 
-After evaluation, we decided to keep the implementation lightweight:
+## Key Functions Reference
 
-1. **No React dependencies needed** - The project is a CLI tool, not a UI application
-2. **Regex patterns work well** - For well-defined patterns like markdown headings
-3. **Maintainability over complexity** - Simple, documented patterns are easier to maintain
-4. **No unnecessary dependencies** - Keeps the project lean and fast
+### yadisk-lib.ts
+| Function | Purpose |
+|----------|---------|
+| `sanitizeFilename(name)` | Strips directory paths and invalid characters |
+| `envArg(argv, env, name, default)` | Gets config from CLI args or env vars |
+| `enforceSizeCap(args)` | Validates file size limits |
+| `fetchJson<T>(url, opts)` | Fetches and parses JSON with error handling |
 
-The improved regex patterns in `markdown-helpers.ts` provide:
+### markdown-helpers.ts
+| Function | Purpose |
+|----------|---------|
+| `extractHeadings(markdown)` | Parses markdown headings with levels |
+| `extractTopics(text, options)` | Extracts key topics with stop word filtering |
+| `extractSection(markdown, heading)` | Gets content between headings |
+| `MarkdownBuilder` | Programmatic markdown document generation |
 
-- Better edge case handling
-- Clear documentation
-- Centralized pattern management
-- Type-safe interfaces
-- Separation of concerns
-
-This approach balances simplicity with functionality, avoiding over-engineering while still improving code quality.
-
-## Code structure
-
-- `scripts/yadisk-lib.ts` — helpers:
-  - `sanitizeFilename()`: safe basename, strips invalid chars
-  - `envArg()`: reads `--flag` or underscores env var fallback
-  - `enforceSizeCap()`: throws if size exceeds cap
-  - `fetchJson<T>()`: generic JSON fetch with error detail
-- `scripts/yadisk-sync.mjs` — CLI wrapper around the helpers
-- `scripts/lib/markdown-helpers.ts` — improved markdown utilities:
-  - `MarkdownPatterns`: Well-documented regex patterns for markdown parsing
-  - `extractHeadings()`, `extractTopics()`, `extractSection()`: Content extraction
-  - `validateResearchReport()`: Structured validation for AI reports
-  - `MarkdownBuilder`: Programmatic markdown generation
-  - `formatDateUTC()`, `parseGitRef()`: String formatting without regex replacement
-// (Agentic scripts removed.)
-
-## Contributing workflow
-
-- Branch naming: `ci/...`, `feat/...`, `fix/...`
-- Small, focused PRs preferred; include rationale in the description
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and workflow.
 
 ## Troubleshooting
 
-Operational issues (moved from README):
+### No PR Created
+**Possible causes:**
+1. No changes detected (file unchanged)
+2. Workflow permissions not enabled
+3. Invalid Yandex URL or configuration
 
-- No PR created:
-  - Check Actions logs: Repo → Actions → last run of “Sync Yandex Disk to PR”.
-  - Ensure workflow permissions are set to Read and write, and PR creation is allowed.
-  - Validate variables: `YANDEX_PUBLIC_URL` must be a valid public link; if the link is to a folder, set `YANDEX_PUBLIC_PATH` or `YANDEX_TARGET_NAME`.
-  - Re-run workflow: open the latest run → Re-run jobs.
-- Wrong file in PR:
-  - For folder links, set `YANDEX_PUBLIC_PATH` to the exact file path within the share, or set `YANDEX_TARGET_NAME` to pick by name.
-  - Optionally set `YANDEX_DEST_FILENAME` to normalize the saved name.
-- File too large error:
-  - Increase `YANDEX_MAX_BYTES` in repo Variables, or reduce the source file’s size.
-  - Default is 10 MB; both reported size and downloaded size are enforced.
+**Steps to debug:**
+1. Check **Actions** → Select latest "Sync Yandex Disk to PR" run
+2. Review logs for errors
+3. Verify workflow permissions (see GitHub Actions Configuration above)
+4. Validate repository variables
+5. Try **Re-run jobs** from the Actions tab
 
-Developer environment:
+### Wrong File Downloaded
+**Solution:**
+- For folder shares, specify the file:
+  - Set `YANDEX_PUBLIC_PATH` to exact path (e.g., `/Documents/spec.md`)
+  - OR set `YANDEX_TARGET_NAME` to filename (e.g., `spec.md`)
+- Use `YANDEX_DEST_FILENAME` to override saved filename
 
-- IDE can’t find Bun: ensure Bun is on PATH; we avoid committing user‑specific paths.
-- Action schedule timing: GitHub schedules are best‑effort, not real‑time.
+### File Too Large Error
+**Solution:**
+- Increase `YANDEX_MAX_BYTES` in repository variables
+- Or reduce source file size
+- Default limit: 10MB (enforced pre and post-download)
 
-## Yandex API references (public share)
+### MCP Connection Issues
+**Check:**
+1. Correct transport type (stdio vs HTTP/SSE)
+2. Server logs for errors (stderr output)
+3. Client configuration matches server transport
+4. Firewall/port settings (for HTTP/SSE)
 
-- Resource meta: `GET https://cloud-api.yandex.net/v1/disk/public/resources?public_key=...&path=...`
-- Download link: `GET https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=...&path=...`
+### Development Environment
+- **Bun not found:** Ensure Bun is in PATH (`which bun`)
+- **Type errors:** Run `bun run typecheck` for details
+- **Schedule delays:** GitHub Actions schedules are best-effort, may be delayed
+
+## API References
+
+### Yandex Disk Public API
+**Base URL:** `https://cloud-api.yandex.net/v1/disk/public/resources`
+
+**Get metadata:**
+```
+GET /resources?public_key={URL}&path={PATH}
+```
+
+**Get download URL:**
+```
+GET /resources/download?public_key={URL}&path={PATH}
+```
+
+**Response:** JSON with `href` field containing download URL
+
+**Documentation:** [Yandex Disk API](https://yandex.com/dev/disk/api/reference/public)
+
+### Model Context Protocol (MCP)
+**Documentation:** [MCP Specification](https://modelcontextprotocol.io)
+
+**Transports:**
+- stdio - Local editors (VS Code, Claude Desktop)
+- HTTP/SSE - Remote clients (web apps)
+
+**See:** [docs/MCP.md](docs/MCP.md) for fpf-sync MCP server details
