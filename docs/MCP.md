@@ -5,7 +5,7 @@ Status: Bun 1.3 (stdio/SSE) + TypeScript (server v0.2.0)
 What this provides
 - A local MCP server exposing FPF artifacts and docs to desktop tools that support MCP (e.g., VS Code Continue).
 - Read-only FPF spec access from the repo (yadisk/… file)
-- Episteme registry with CRUD operations persisted to JSON (no DB yet)
+- Episteme registry with CRUD operations persisted to SQLite with ACID guarantees
 - Topic extraction from FPF markdown headings (no LLM)
 
 Why MCP here
@@ -23,16 +23,26 @@ Run
 - SSE MCP server: `PORT=3333 bun run scripts/mcp/server-sse.ts`
 
 Environment overrides
-- `FPF_DATA_DIR`: change where JSON stores are written (defaults to `<repo>/data`).
+- `FPF_DATA_DIR`: change where SQLite database is stored (defaults to `<repo>/data`).
 - `FPF_DOCS_DIR`: override the whitelisted FPF document directory (defaults to `<repo>/yadisk`, must stay within the repo root and resolve to a subdirectory).
+- `FPF_READONLY`: set to `0` to enable write operations (default: `1` for read-only).
+- `PORT`: SSE server port (default: `3333`).
+
+Security environment variables (SSE server only)
+- `FPF_MAX_LOG_SIZE`: maximum log file size before rotation (default: `104857600` = 100MB).
+- `FPF_MAX_LOG_ROTATIONS`: number of rotated log files to keep (default: `5`).
+- `FPF_RATE_LIMIT`: maximum requests per minute per IP address (default: `100`).
+- `FPF_MAX_BODY_SIZE`: maximum request body size in bytes (default: `1048576` = 1MB).
+- `FPF_ALLOWED_HOSTS`: comma-separated list of allowed Host headers (default: `localhost,127.0.0.1`).
 
 Security model and policies
 - The stdio server runs over stdio (no TCP port). SSE server listens on configurable port.
 - File access is strictly limited to:
-  - repo root for JSON store under data/
+  - repo root for SQLite database under data/
   - FPF documents under the whitelisted directory: yadisk/
 - Any path passed by tools is resolved and validated to stay within those directories.
 - Read-only by default. Set FPF_READONLY=0 to enable mutations.
+- SSE server includes: rate limiting, request body size limits, DNS rebinding protection, log rotation.
 - No external network or LLM calls in this iteration.
 - Guards enforce: RSG.NOT_ENACTABLE, WIN.INVALID, ELIG.VIOLATION, SOD.CONFLICT, BRIDGE.CL_TOO_LOW, CG.MIXED_SCALE, Γ.MISTYPED.
 
@@ -83,8 +93,11 @@ Capabilities (v0.2.0)
   - fpf/adi-cycle
 
 Data persistence
-- data/epistemes.json (created on first run; simple JSON writes)
-- Schema (Episteme):
+- `data/fpf.db` - SQLite database with WAL mode (created on first run)
+- ACID guarantees for all write operations
+- Automatic timestamps (createdAt, updatedAt) on all entities
+- Collections: epistemes, contexts, bridges, roles, role_assignments, state_assertions, methods, work, evidence_links, services, capabilities, policies
+- Schema (Episteme example):
   - id: string
   - object: string
   - concept: string
@@ -92,6 +105,7 @@ Data persistence
   - targets?: { F?: number; R?: number; G?: number; CL?: number }
   - createdAt: ISO string
   - updatedAt: ISO string
+- Backup utility: `bun run scripts/backup-sqlite.ts` (see DEVELOPERS.md)
 
 VS Code (Continue) wiring
 - Example User settings.json:
@@ -120,7 +134,7 @@ Other clients
 
 Extensibility
 - Metrics/evaluation hooks (F/R/G/CL) are planned but disabled here.
-- A future SQLite adapter can replace the JSON store without changing tool contracts.
+- Storage layer is abstracted - can be extended for alternative backends without changing tool contracts.
 
 Troubleshooting
 - If the server starts then exits, check for syntax errors or missing imports; ensure you have Bun 1.3.x (`bun --version`).

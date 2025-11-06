@@ -1,8 +1,8 @@
-import { makeJsonStore } from './base.ts';
+import { makeSqliteStore } from './sqlite.ts';
 import type { Context } from '../domain/types.ts';
 import { IDS } from '../domain/ids.ts';
 
-const store = makeJsonStore<Context>('contexts.json');
+const store = makeSqliteStore<Context>('contexts');
 
 export async function listContexts() {
   return store.list();

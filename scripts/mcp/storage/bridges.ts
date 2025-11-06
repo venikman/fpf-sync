@@ -1,7 +1,7 @@
-import { makeJsonStore } from './base.ts';
+import { makeSqliteStore } from './sqlite.ts';
 import type { Bridge } from '../domain/types.ts';
 
-const store = makeJsonStore<Bridge>('bridges.json');
+const store = makeSqliteStore<Bridge>('bridges');
 
 export async function listBridges() {
   return store.list();

@@ -1,7 +1,10 @@
-import { mkdir, readdir } from 'node:fs/promises';
+import { mkdir, readdir, lstat, realpath, stat } from 'node:fs/promises';
 import { createWriteStream } from 'node:fs';
 import { join, relative, resolve as resolvePath, sep } from 'node:path';
 import process from "node:process";
+
+// Maximum file size for reading (10MB)
+export const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 export const repoRoot = process.cwd();
 // Allow overriding data dir via env var for deployments (e.g., Fly.io volume at /data)
@@ -70,13 +73,42 @@ export async function listWhitelistedFpfDocs(): Promise<string[]> {
   }
 }
 
-export function isAllowedFpfPath(relPath: string): string {
+export async function isAllowedFpfPath(relPath: string, checkSize = true): Promise<string> {
   const abs = resolveWithin(repoRoot, relPath);
   const fpfAbs = getFpfDir();
   const fpfNorm = fpfAbs.endsWith(sep) ? fpfAbs : fpfAbs + sep;
   if (!(abs === fpfAbs || abs.startsWith(fpfNorm))) {
     throw new Error(`Path not allowed outside whitelisted FPF docs directory: ${relPath}`);
   }
+
+  // Check for symlinks that might point outside allowed directory
+  try {
+    const stats = await lstat(abs);
+    if (stats.isSymbolicLink()) {
+      // Resolve the symlink and check if it points outside allowed directory
+      const realPath = await realpath(abs);
+      if (!(realPath === fpfAbs || realPath.startsWith(fpfNorm))) {
+        throw new Error(`Symlink points outside whitelisted FPF docs directory: ${relPath} -> ${realPath}`);
+      }
+      // Check size of the resolved file
+      if (checkSize) {
+        const realStats = await stat(realPath);
+        if (realStats.size > MAX_FILE_SIZE) {
+          throw new Error(`File too large (${realStats.size} bytes, max ${MAX_FILE_SIZE} bytes): ${relPath}`);
+        }
+      }
+      return realPath;
+    } else if (checkSize && stats.isFile()) {
+      // Check file size for regular files
+      if (stats.size > MAX_FILE_SIZE) {
+        throw new Error(`File too large (${stats.size} bytes, max ${MAX_FILE_SIZE} bytes): ${relPath}`);
+      }
+    }
+  } catch (err) {
+    // File might not exist yet, that's ok
+    if ((err as any).code !== 'ENOENT') throw err;
+  }
+
   return abs;
 }
 
@@ -147,4 +179,34 @@ export function parseHeadingToEpistemeFields(heading: string): { object: string;
   }
   if (!object) object = heading.trim();
   return { object, concept, symbol };
+}
+
+/**
+ * Validates an ISO 8601 timestamp string
+ * @throws Error if timestamp is invalid or outside reasonable range (1970-2100)
+ */
+export function validateTimestamp(ts: string, label = 'timestamp'): void {
+  if (typeof ts !== 'string' || !ts.trim()) {
+    throw new Error(`${label} must be a non-empty string`);
+  }
+  const date = new Date(ts);
+  if (isNaN(date.getTime())) {
+    throw new Error(`${label} is not a valid ISO 8601 timestamp: ${ts}`);
+  }
+  // Check reasonable range (1970-2100)
+  const year = date.getFullYear();
+  if (year < 1970 || year > 2100) {
+    throw new Error(`${label} year ${year} is outside reasonable range (1970-2100): ${ts}`);
+  }
+}
+
+/**
+ * Validates a time window (from < to)
+ */
+export function validateWindow(from: string, to: string, label = 'window'): void {
+  validateTimestamp(from, `${label}.from`);
+  validateTimestamp(to, `${label}.to`);
+  if (from >= to) {
+    throw new Error(`${label}: 'from' must be before 'to' (${from} >= ${to})`);
+  }
 }

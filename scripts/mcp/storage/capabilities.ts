@@ -1,7 +1,7 @@
-import { makeJsonStore } from './base.ts';
+import { makeSqliteStore } from './sqlite.ts';
 import type { Capability } from '../domain/types.ts';
 
-const store = makeJsonStore<Capability>('capabilities.json');
+const store = makeSqliteStore<Capability>('capabilities');
 
 export async function listCapabilities() {
   return store.list();

@@ -1,7 +1,7 @@
-import { makeJsonStore } from './base.ts';
+import { makeSqliteStore } from './sqlite.ts';
 import type { Work } from '../domain/types.ts';
 
-const store = makeJsonStore<Work>('work.json');
+const store = makeSqliteStore<Work>('work');
 
 export async function listWork() {
   return store.list();

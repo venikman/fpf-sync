@@ -4,10 +4,11 @@ import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import http from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { z } from 'zod';
-import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopicsFromMarkdown, extractHeadings } from './util.ts';
+import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopicsFromMarkdown, extractHeadings, validateTimestamp, validateWindow } from './util.ts';
 import { listEpistemes, getEpistemeById } from './store.ts';
 import { readFile } from 'node:fs/promises';
 import process from "node:process";
+import { closeDatabase } from './storage/sqlite.ts';
 // FPF-MCP domain, storage, services, guards, errors
 import { makeCtxId, makeRoleId, makeRaId, makeMdId, makeWorkId, makeSvcId, makeBridgeId, makePolicyId_EE } from './domain/ids.ts';
 import type { Context, Role, RoleAssignment, StateAssertion, MethodDescription, Work, Service as Svc, Capability as Cap, PolicyEE } from './domain/types.ts';
@@ -68,7 +69,7 @@ mcp.resource(
 mcp.resource('FPF Core Spec (holonic)', 'fpf://spec', { mimeType: 'text/markdown' }, async () => {
   const rel = await findMainFpfSpec();
   if (!rel) throw new Error('Main FPF spec not found under yadisk/');
-  const abs = isAllowedFpfPath(rel);
+  const abs = await isAllowedFpfPath(rel);
   const text = await readFile(abs, 'utf8');
   return { contents: [{ uri: 'fpf://spec', mimeType: 'text/markdown', text }] };
 });
@@ -137,6 +138,7 @@ mcp.tool(
   { holder: z.enum(['system','episteme']), role: z.string(), ctx: z.string(), window: z.object({ from: z.string(), to: z.string() }) },
   async (args) => {
     ensureWritable();
+    validateWindow(String(args.window.from), String(args.window.to), 'window');
     const id = makeRaId(String(args.holder), String(args.role), String(args.ctx), String(args.window.from), String(args.window.to));
     const now = new Date().toISOString();
     const ra = { id, holder: args.holder, role: String(args.role), ctx: String(args.ctx), window: args.window, createdAt: now, updatedAt: now } as RoleAssignment;
@@ -152,6 +154,7 @@ mcp.tool(
   { ra: z.string(), state: z.string(), checklistEvidence: z.array(z.string()).optional(), at: z.string() },
   async (args) => {
     ensureWritable();
+    validateTimestamp(String(args.at), 'at');
     const now = new Date().toISOString();
     const assertion: StateAssertion = { id: crypto.randomUUID(), ra: String(args.ra), state: String(args.state), checklistEvidence: args.checklistEvidence as any, at: String(args.at) };
     await upsertStateAssertion(assertion);
@@ -179,6 +182,7 @@ mcp.tool(
   { md: z.string(), stepId: z.string(), performedBy: z.string(), at: z.string() },
   async (args) => {
     ensureWritable();
+    validateTimestamp(String(args.at), 'at');
     const id = makeWorkId(crypto.randomUUID());
     const w: Work = { id, md: String(args.md), stepId: String(args.stepId), performedBy: String(args.performedBy), startedAt: String(args.at) };
     // Guards: window + eligibility (episteme cannot perform)
@@ -259,6 +263,7 @@ mcp.tool(
   'fpf.service.evaluate',
   { svc: z.string(), window: z.object({ from: z.string(), to: z.string() }), kpis: z.array(z.enum(['uptime','leadTime','rejectRate','costToServe'])), gammaTimePolicy: z.any().optional() },
   async (args) => {
+    validateWindow(String(args.window.from), String(args.window.to), 'window');
     const metrics = await evaluateService(String(args.svc), args.window as any, args.kpis as any);
     await appendEvent({ type: 'ServiceEvaluated', ts: new Date().toISOString(), envelope: { ctx: '' }, payload: { svc: args.svc, window: args.window, metrics } });
     return { content: [{ type: 'text', text: JSON.stringify({ metrics }) }] };
@@ -364,7 +369,7 @@ mcp.tool(
   'fpf.read_fpf_doc',
   { path: z.string() },
   async (args) => {
-    const abs = isAllowedFpfPath(String(args.path));
+    const abs = await isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
     return { content: [{ type: 'text', text }] };
   },
@@ -380,7 +385,7 @@ mcp.tool(
   async (args) => {
     const rel = args?.path ? String(args.path) : await findMainFpfSpec();
     if (!rel) throw new Error('No FPF doc specified and main spec not found');
-    const abs = isAllowedFpfPath(rel);
+    const abs = await isAllowedFpfPath(rel);
     const text = await readFile(abs, 'utf8');
     const topics = await extractTopicsFromMarkdown(text, Number(args?.maxTopics ?? 12));
     return {
@@ -457,7 +462,7 @@ mcp.tool(
     const docs = await listWhitelistedFpfDocs();
     const results: { path: string; matches: number }[] = [];
     for (const p of docs) {
-      const abs = isAllowedFpfPath(p);
+      const abs = await isAllowedFpfPath(p);
       const text = await readFile(abs, 'utf8');
       const matches = (text.toLowerCase().match(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length;
       if (matches > 0) results.push({ path: p, matches });
@@ -472,7 +477,7 @@ mcp.tool(
   'fpf.list_headings',
   { path: z.string(), depthMax: z.number().int().min(1).max(6).optional() },
   async (args) => {
-    const abs = isAllowedFpfPath(String(args.path));
+    const abs = await isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
     const depth = Number(args?.depthMax ?? 6);
     const headings = extractHeadings(text, depth);
@@ -496,7 +501,7 @@ const docTemplate = new ResourceTemplate('fpf://doc/{path}', {
 
 mcp.resource('FPF docs', docTemplate, { mimeType: 'text/markdown' }, async (_uri, variables) => {
   const rel = decodeURIComponent(String(variables.path || ''));
-  const abs = isAllowedFpfPath(rel);
+  const abs = await isAllowedFpfPath(rel);
   const text = await readFile(abs, 'utf8');
   return { contents: [{ uri: `fpf://doc/${encodeURIComponent(rel)}`, mimeType: 'text/markdown', text }] };
 });
@@ -547,17 +552,107 @@ mcp.tool(
 
 // Maintain a map of active SSE transports by sessionId for routing POST messages
 const sessions = new Map<string, SSEServerTransport>();
+const sessionActivity = new Map<string, number>(); // sessionId -> last activity timestamp
+const SESSION_TIMEOUT_MS = 60 * 60 * 1000; // 1 hour
+const MAX_CONCURRENT_SESSIONS = 100;
+
+// Periodic cleanup of stale sessions (every 5 minutes)
+setInterval(() => {
+  const now = Date.now();
+  const stale: string[] = [];
+  for (const [sessionId, lastActivity] of sessionActivity.entries()) {
+    if (now - lastActivity > SESSION_TIMEOUT_MS) {
+      stale.push(sessionId);
+    }
+  }
+  for (const sessionId of stale) {
+    console.log(`[cleanup] Removing stale session: ${sessionId}`);
+    sessions.delete(sessionId);
+    sessionActivity.delete(sessionId);
+  }
+  if (stale.length > 0) {
+    console.log(`[cleanup] Removed ${stale.length} stale session(s), ${sessions.size} active`);
+  }
+}, 5 * 60 * 1000);
+
+// Rate limiting configuration
+const RATE_LIMIT_REQUESTS = Number(process.env.FPF_RATE_LIMIT) || 100; // requests per window
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute window
+const rateLimits = new Map<string, { count: number; resetAt: number }>();
+
+// Periodic cleanup of rate limit entries (every minute)
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, limit] of rateLimits.entries()) {
+    if (now > limit.resetAt) {
+      rateLimits.delete(ip);
+    }
+  }
+}, RATE_LIMIT_WINDOW_MS);
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const limit = rateLimits.get(ip);
+
+  if (!limit || now > limit.resetAt) {
+    rateLimits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+
+  if (limit.count >= RATE_LIMIT_REQUESTS) {
+    return false; // Rate limited
+  }
+
+  limit.count++;
+  return true;
+}
+
+// Request body size limiting
+const MAX_BODY_SIZE = Number(process.env.FPF_MAX_BODY_SIZE) || 1 * 1024 * 1024; // 1MB default
+
+function checkBodySize(req: http.IncomingMessage): Promise<void> {
+  return new Promise((resolve, reject) => {
+    let size = 0;
+    req.on('data', (chunk: Buffer) => {
+      size += chunk.length;
+      if (size > MAX_BODY_SIZE) {
+        req.destroy();
+        reject(new Error(`Request body too large (max ${MAX_BODY_SIZE} bytes)`));
+      }
+    });
+    req.on('end', () => resolve());
+    req.on('error', reject);
+  });
+}
 
 async function main() {
   const port = Number(process.env.PORT || 8080);
+  // CORS configuration: default to localhost only, can be overridden with FPF_CORS_ORIGIN
+  // Set to '*' for permissive mode (not recommended for production)
+  const allowedOrigin = process.env.FPF_CORS_ORIGIN || 'http://localhost:3000';
+  console.log(`CORS allowed origin: ${allowedOrigin}`);
+
   const server = http.createServer(async (req, res) => {
+    // Validate CORS origin if not wildcard
+    const requestOrigin = req.headers.origin;
+    let corsOrigin = allowedOrigin;
+
+    // If allowedOrigin is not '*', validate the request origin matches
+    if (allowedOrigin !== '*' && requestOrigin && requestOrigin !== allowedOrigin) {
+      corsOrigin = ''; // Don't set CORS header for disallowed origins
+    }
+
     // Add CORS headers to all responses
-    const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
+    const corsHeaders: Record<string, string> = {
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept',
       'Access-Control-Max-Age': '86400',
     };
+
+    // Only add Origin header if validated
+    if (corsOrigin) {
+      corsHeaders['Access-Control-Allow-Origin'] = corsOrigin;
+    }
 
     try {
       const url = new URL(req.url ?? '/', 'http://localhost');
@@ -569,30 +664,84 @@ async function main() {
         return;
       }
 
+      // Check rate limit (skip for health checks)
+      if (url.pathname !== '/health') {
+        const ip = req.socket.remoteAddress || 'unknown';
+        if (!checkRateLimit(ip)) {
+          res.writeHead(429, { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': '60' });
+          res.end(JSON.stringify({
+            error: 'Too many requests',
+            message: `Rate limit exceeded: ${RATE_LIMIT_REQUESTS} requests per minute`,
+            retryAfter: 60
+          }));
+          return;
+        }
+      }
+
       if (req.method === 'GET' && url.pathname === '/sse') {
+        // Enforce concurrent session limit
+        if (sessions.size >= MAX_CONCURRENT_SESSIONS) {
+          res.writeHead(503, { ...corsHeaders, 'Content-Type': 'text/plain' });
+          res.end(`Too many concurrent sessions (max ${MAX_CONCURRENT_SESSIONS})`);
+          return;
+        }
+        // Validate Host header to prevent DNS rebinding attacks
+        const host = req.headers.host;
+        // Read allowed hosts from env var, default to localhost addresses
+        const allowedHostsEnv = process.env.FPF_ALLOWED_HOSTS || 'localhost,127.0.0.1,[::1]';
+        const allowedHosts = allowedHostsEnv.split(',').map(h => h.trim());
+        const isAllowedHost = allowedHosts.some(h => host?.startsWith(h + ':') || host === h);
+        if (!isAllowedHost && process.env.FPF_SKIP_HOST_CHECK !== '1') {
+          res.writeHead(400, { ...corsHeaders, 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            error: 'Invalid Host header',
+            message: `Host '${host}' not allowed. Set FPF_SKIP_HOST_CHECK=1 to disable this check or configure FPF_ALLOWED_HOSTS.`,
+            allowedHosts
+          }));
+          return;
+        }
+
         // SSE already sets its own headers, but add CORS
         const transport = new SSEServerTransport('/messages', res, {
-          // Disable DNS rebinding protection for local development
-          enableDnsRebindingProtection: false,
+          // Re-enable DNS rebinding protection (can be disabled with env var above)
+          enableDnsRebindingProtection: true,
         });
         // When the connection closes, clean up the session
         transport.onclose = () => {
           sessions.delete(transport.sessionId);
+          sessionActivity.delete(transport.sessionId);
           console.log(`Session closed: ${transport.sessionId}`);
         };
         sessions.set(transport.sessionId, transport);
-        console.log(`New SSE session: ${transport.sessionId}`);
+        sessionActivity.set(transport.sessionId, Date.now());
+        console.log(`New SSE session: ${transport.sessionId} (${sessions.size} active)`);
         await mcp.connect(transport); // connect() will call transport.start()
         return;
       }
 
       if (req.method === 'POST' && url.pathname === '/messages') {
+        // Check body size via Content-Length header
+        const contentLength = parseInt(req.headers['content-length'] || '0', 10);
+        if (contentLength > MAX_BODY_SIZE) {
+          res.writeHead(413, { ...corsHeaders, 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            error: 'Payload too large',
+            message: `Request body too large: ${contentLength} bytes (max ${MAX_BODY_SIZE} bytes)`,
+            maxSize: MAX_BODY_SIZE
+          }));
+          return;
+        }
+
         const sessionId = url.searchParams.get('sessionId');
         const transport = sessionId ? sessions.get(sessionId) : undefined;
         if (!transport) {
           res.writeHead(404, { ...corsHeaders, 'Content-Type': 'text/plain' });
           res.end('Unknown session');
           return;
+        }
+        // Update activity timestamp
+        if (sessionId) {
+          sessionActivity.set(sessionId, Date.now());
         }
         // handlePostMessage will set its own status and headers
         await transport.handlePostMessage(req, res);
@@ -622,6 +771,44 @@ async function main() {
   await new Promise<void>((resolve) => server.listen(port, '0.0.0.0', () => resolve()));
   const { port: bound } = server.address() as AddressInfo;
   console.log(`FPF MCP SSE listening at http://0.0.0.0:${bound}/sse`);
+
+  // Graceful shutdown handling
+  let isShuttingDown = false;
+
+  const gracefulShutdown = async (signal: string) => {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
+    console.log(`\n${signal} received, starting graceful shutdown...`);
+
+    // Stop accepting new connections
+    server.close(() => {
+      console.log('HTTP server closed');
+    });
+
+    // Close all active SSE sessions
+    console.log(`Closing ${sessions.size} active session(s)...`);
+    for (const [sessionId, transport] of sessions.entries()) {
+      try {
+        await transport.close();
+        console.log(`  Session ${sessionId} closed`);
+      } catch (err) {
+        console.error(`  Failed to close session ${sessionId}:`, err);
+      }
+    }
+    sessions.clear();
+    sessionActivity.clear();
+
+    // Close database connection
+    closeDatabase();
+    console.log('Database connection closed');
+
+    console.log('Graceful shutdown complete');
+    process.exit(0);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 }
 
 main().catch((err) => {

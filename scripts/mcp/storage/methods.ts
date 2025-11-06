@@ -1,7 +1,7 @@
-import { makeJsonStore } from './base.ts';
+import { makeSqliteStore } from './sqlite.ts';
 import type { MethodDescription } from '../domain/types.ts';
 
-const store = makeJsonStore<MethodDescription>('methods.json');
+const store = makeSqliteStore<MethodDescription>('methods');
 
 export async function listMethods() {
   return store.list();

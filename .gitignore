@@ -41,3 +41,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # Bun lockfiles
 bun.lock
 bun.lockb
+
+# npm lockfile (we use Bun exclusively)
+package-lock.json

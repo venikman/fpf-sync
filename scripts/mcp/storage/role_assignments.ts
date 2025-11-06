@@ -1,7 +1,7 @@
-import { makeJsonStore } from './base.ts';
+import { makeSqliteStore } from './sqlite.ts';
 import type { RoleAssignment } from '../domain/types.ts';
 
-const store = makeJsonStore<RoleAssignment>('role_assignments.json');
+const store = makeSqliteStore<RoleAssignment>('role_assignments');
 
 export async function listRoleAssignments() {
   return store.list();
