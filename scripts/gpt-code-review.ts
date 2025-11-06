@@ -40,6 +40,11 @@ async function getGitDiff(baseSha?: string, headSha?: string): Promise<string> {
   try {
     let cmd: string;
     if (baseSha && headSha) {
+      // Validate SHA format to prevent command injection
+      const shaPattern = /^[a-f0-9]{7,40}$/i;
+      if (!shaPattern.test(baseSha) || !shaPattern.test(headSha)) {
+        throw new Error("Invalid SHA format");
+      }
       cmd = `git --no-pager diff ${baseSha}...${headSha}`;
     } else {
       // Fallback to comparing with main branch

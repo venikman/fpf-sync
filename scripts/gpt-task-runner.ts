@@ -58,7 +58,8 @@ async function callGPT(prompt: string, systemPrompt: string, model = "gpt-4o-min
 async function reviewCode(target: string): Promise<string> {
   // Validate target to prevent command injection
   const safeTarget = target || "HEAD~1";
-  if (!/^[a-zA-Z0-9._~\-]+$/.test(safeTarget) && !/^HEAD~\d+$/.test(safeTarget)) {
+  // Allow HEAD~N, branch names, or commit SHAs - but prevent any shell metacharacters
+  if (!/^[a-zA-Z0-9._/-]+$/.test(safeTarget) && !/^HEAD~\d+$/.test(safeTarget)) {
     throw new Error("Invalid target format for code review");
   }
   
@@ -71,8 +72,8 @@ async function reviewCode(target: string): Promise<string> {
 }
 
 async function checkDocumentation(target: string): Promise<string> {
-  // Use find for safety instead of direct file expansion
-  const { stdout } = await execAsync(`find . -name "*.md" -type f | head -10 | xargs cat`);
+  // Use find with null-terminated output for safe handling of filenames with special characters
+  const { stdout } = await execAsync(`find . -name "*.md" -type f -print0 | head -z -n 10 | xargs -0 cat`);
   
   const systemPrompt = "You are a technical documentation expert. Review documentation for clarity, completeness, and accuracy.";
   const prompt = `Review this documentation and suggest improvements:\n\`\`\`markdown\n${stdout.substring(0, 8000)}\n\`\`\``;
@@ -83,7 +84,14 @@ async function checkDocumentation(target: string): Promise<string> {
 async function analyzeCommits(target: string): Promise<string> {
   // Validate commit range to prevent command injection
   const range = target || "HEAD~10..HEAD";
-  if (!/^[a-zA-Z0-9._~\-]+\.\.[a-zA-Z0-9._~\-]+$/.test(range) && !/^HEAD~\d+\.\.HEAD$/.test(range)) {
+  // Strict validation: only allow alphanumeric, dots, and specific patterns like HEAD~N..HEAD
+  const validPatterns = [
+    /^HEAD~\d+\.\.HEAD$/,  // HEAD~N..HEAD
+    /^[a-f0-9]{7,40}\.\.[a-f0-9]{7,40}$/i,  // SHA..SHA
+    /^[a-zA-Z0-9/_-]+\.\.[a-zA-Z0-9/_-]+$/  // branch..branch
+  ];
+  
+  if (!validPatterns.some(pattern => pattern.test(range))) {
     throw new Error("Invalid commit range format");
   }
   
