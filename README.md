@@ -1,17 +1,19 @@
 # fpf-sync
 
-Sync files from Yandex Disk to GitHub + MCP Server for First Principles Framework
+Sync files from Yandex Disk to GitHub + MCP Server for First Principles Framework + GPT-Powered Automation
 
 ## What This Does
 
 1. **Yandex Sync** - Daily automated sync from Yandex Disk → GitHub PR
 2. **MCP Server** - Exposes FPF spec to AI tools (VS Code, Claude Desktop)
+3. **GPT Automation** - AI-powered code review and task automation via OpenAI GPT models
 
 ## Quick Links
 
 - 📖 [FPF Document](yadisk/First%20Principles%20Framework%20%E2%80%94%20Core%20Conceptual%20Specification%20(holonic).md)
 - 👨‍💻 [Developer Guide](DEVELOPERS.md) - Setup, config, contributing
 - 🔌 [MCP Setup](docs/MCP.md) - Connect AI tools
+- 🤖 [GPT Automation](docs/GPT-AUTOMATION.md) - AI-powered code review and tasks
 
 ## For Users
 
@@ -21,6 +23,8 @@ Sync files from Yandex Disk to GitHub + MCP Server for First Principles Framewor
 3. Merge to update repository
 
 **Manual sync:** Actions → "Sync Yandex Disk to PR" → Run workflow
+
+**GPT Automation:** Actions → "GPT Task Automation" → Select task type → Run workflow
 
 ## For Developers
 
@@ -39,6 +43,9 @@ See [DEVELOPERS.md](DEVELOPERS.md) for details.
 - ✓ "Allow GitHub Actions to create and approve pull requests"
 
 **Configure sync:** See [DEVELOPERS.md](DEVELOPERS.md#github-actions-configuration)
+
+**Configure GPT:** Settings → Secrets and variables → Actions → New secret
+- Add `OPENAI_API_KEY` with your OpenAI API key (GPT Pro subscription)
 
 ## Troubleshooting
 

@@ -70,6 +70,12 @@ bun run mcp:fpf:sse      # HTTP/SSE (web clients)
 | `YANDEX_TARGET_NAME` | No | `spec.md` |
 | `YANDEX_MAX_BYTES` | No | `10485760` (10MB) |
 
+**Secrets:** Settings → Secrets and variables → Actions
+
+| Secret | Required | Description |
+|--------|----------|-------------|
+| `OPENAI_API_KEY` | Yes (for GPT features) | OpenAI API key for GPT-powered automation |
+
 ## Key Files
 
 **Sync:**
@@ -82,6 +88,12 @@ bun run mcp:fpf:sse      # HTTP/SSE (web clients)
 - `scripts/mcp/server-sse.ts` - HTTP/SSE transport
 - `scripts/mcp/domain/` - Business logic
 - `scripts/mcp/services/` - Service layer
+
+**GPT Automation:**
+- `scripts/gpt-code-review.ts` - AI-powered code review for PRs
+- `scripts/gpt-task-runner.ts` - Flexible GPT task automation
+- `.github/workflows/gpt-code-review.yml` - Automatic PR reviews
+- `.github/workflows/gpt-task-automation.yml` - Manual task automation
 
 ## Troubleshooting
 
@@ -100,6 +112,11 @@ bun run mcp:fpf:sse      # HTTP/SSE (web clients)
 **MCP issues?**
 - Check transport type matches client (stdio vs HTTP/SSE)
 - Review server logs (stderr)
+
+**GPT automation issues?**
+- Verify `OPENAI_API_KEY` secret is set correctly
+- Check Actions logs for API errors or rate limits
+- Ensure sufficient OpenAI API quota/credits
 
 ## API References
 

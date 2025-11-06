@@ -1,0 +1,54 @@
+name: GPT Task Automation
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_type:
+        description: 'Type of task to perform'
+        required: true
+        type: choice
+        options:
+          - code_review
+          - documentation_check
+          - commit_analysis
+          - issue_triage
+      target:
+        description: 'Target (PR number, commit SHA, or issue number)'
+        required: false
+        type: string
+      additional_context:
+        description: 'Additional context or instructions for GPT'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  gpt-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "latest"
+
+      - name: Install dependencies
+        run: bun install --no-progress
+
+      - name: Run GPT Task
+        run: bun run scripts/gpt-task-runner.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TASK_TYPE: ${{ inputs.task_type }}
+          TASK_TARGET: ${{ inputs.target }}
+          ADDITIONAL_CONTEXT: ${{ inputs.additional_context }}
+          REPOSITORY: ${{ github.repository }}
