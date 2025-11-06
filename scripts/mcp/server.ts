@@ -227,6 +227,35 @@ mcp.resource('FPF docs', docTemplate2, { mimeType: 'text/markdown' }, async (_ur
 async function main() {
   const transport = new StdioServerTransport();
   await mcp.connect(transport);
+
+  // Graceful shutdown handling
+  let isShuttingDown = false;
+
+  const gracefulShutdown = async (signal: string) => {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
+    console.error(`${signal} received, starting graceful shutdown...`);
+
+    // Close MCP transport
+    try {
+      await transport.close();
+      console.error('MCP transport closed');
+    } catch (err) {
+      console.error('Failed to close MCP transport:', err);
+    }
+
+    // Close database connection
+    const { closeDatabase } = await import('./storage/sqlite.ts');
+    closeDatabase();
+    console.error('Database connection closed');
+
+    console.error('Graceful shutdown complete');
+    process.exit(0);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 }
 
 main().catch((err) => {

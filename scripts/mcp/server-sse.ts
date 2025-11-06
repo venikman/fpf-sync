@@ -755,6 +755,45 @@ async function main() {
   await new Promise<void>((resolve) => server.listen(port, '0.0.0.0', () => resolve()));
   const { port: bound } = server.address() as AddressInfo;
   console.log(`FPF MCP SSE listening at http://0.0.0.0:${bound}/sse`);
+
+  // Graceful shutdown handling
+  let isShuttingDown = false;
+
+  const gracefulShutdown = async (signal: string) => {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
+    console.log(`\n${signal} received, starting graceful shutdown...`);
+
+    // Stop accepting new connections
+    server.close(() => {
+      console.log('HTTP server closed');
+    });
+
+    // Close all active SSE sessions
+    console.log(`Closing ${sessions.size} active session(s)...`);
+    for (const [sessionId, transport] of sessions.entries()) {
+      try {
+        await transport.close();
+        console.log(`  Session ${sessionId} closed`);
+      } catch (err) {
+        console.error(`  Failed to close session ${sessionId}:`, err);
+      }
+    }
+    sessions.clear();
+    sessionActivity.clear();
+
+    // Close database connection
+    const { closeDatabase } = await import('./storage/sqlite.ts');
+    closeDatabase();
+    console.log('Database connection closed');
+
+    console.log('Graceful shutdown complete');
+    process.exit(0);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 }
 
 main().catch((err) => {

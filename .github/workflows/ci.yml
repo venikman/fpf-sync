@@ -74,7 +74,6 @@ jobs:
 
       - name: Run lint
         run: bun run lint
-        continue-on-error: true  # Don't fail CI since lint is not configured yet
 
       - name: Run format check
         run: bun run fmt
