@@ -90,29 +90,6 @@ bun run scripts/backup-sqlite.ts --output=/mnt/backups
 - `data/backups/fpf-backup-YYYY-MM-DDTHH-MM-SS.db.sha256` - Checksum
 - `data/backups/fpf-backup-YYYY-MM-DDTHH-MM-SS/` - JSON exports (if `--json`)
 
-### Restore Database
-
-Restore from a previous backup:
-
-```bash
-# Interactive restore (with confirmation)
-bun run scripts/restore-sqlite.ts data/backups/fpf-backup-2025-01-15T10-30-00.db
-
-# Force restore without confirmation
-bun run scripts/restore-sqlite.ts backup.db --force
-
-# Restore without creating pre-restore backup
-bun run scripts/restore-sqlite.ts backup.db --no-backup
-```
-
-**Safety features:**
-- Automatic checksum verification
-- Pre-restore backup of current database
-- Database integrity validation
-- Interactive confirmation prompt
-
-**Note:** The MCP server should be stopped before restoring to avoid database locks.
-
 ## Continuous Integration
 
 The project uses GitHub Actions for CI/CD with automated checks on all pull requests and pushes to main.

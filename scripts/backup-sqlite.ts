@@ -200,8 +200,7 @@ async function createBackup(options: BackupOptions) {
   if (options.exportJson) {
     console.log(`   JSON exports: ${join(options.outputDir, `fpf-backup-${timestamp}`)}`);
   }
-  console.log(`\nTo restore this backup, run:`);
-  console.log(`   bun run scripts/restore-sqlite.ts ${backupPath}\n`);
+  console.log();
 }
 
 async function main() {

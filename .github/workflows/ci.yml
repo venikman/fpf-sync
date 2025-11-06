@@ -40,9 +40,8 @@ jobs:
           echo "Verifying sync script..."
           bun run --dry-run scripts/yadisk-sync.mjs
 
-          echo "Verifying backup/restore utilities..."
+          echo "Verifying backup utility..."
           bun run --dry-run scripts/backup-sqlite.ts
-          bun run --dry-run scripts/restore-sqlite.ts
 
           echo "Verifying migration script..."
           bun run --dry-run scripts/migrate-to-sqlite.ts
