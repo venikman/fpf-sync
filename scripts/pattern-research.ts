@@ -869,7 +869,7 @@ async function main(): Promise<void> {
   generateDependencyGraph(currentSnapshot);
 
   // Generate changelog report (individual file per run)
-  const reportFilename = `${snapshot.timestamp}-${snapshot.runId}.md`;
+  const reportFilename = `${currentSnapshot.timestamp}-${currentSnapshot.runId}.md`;
   const reportPath = join(CHANGELOG_DIR, reportFilename);
   const report = generateChangelogReport(currentSnapshot, analysis);
   ensureDir(CHANGELOG_DIR);
