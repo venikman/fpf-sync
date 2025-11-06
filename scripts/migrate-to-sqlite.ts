@@ -12,7 +12,8 @@
 import { readFile, rename, access } from 'node:fs/promises';
 import { join } from 'node:path';
 import { DATA_DIR } from './mcp/util.ts';
-import { migrateFromJson, getStats } from './mcp/storage/sqlite.ts';
+import { makeSqliteStore, getStats } from './mcp/storage/sqlite.ts';
+import type { WithId } from './mcp/storage/sqlite.ts';
 
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -70,6 +71,21 @@ async function backupJsonFile(path: string) {
   console.log(`  ✅ Backed up: ${path} → ${backupPath}`);
 }
 
+async function migrateCollectionData<T extends WithId>(
+  collectionName: string,
+  jsonData: T[]
+): Promise<void> {
+  const store = makeSqliteStore<T>(collectionName);
+
+  console.log(`  🔄 Migrating ${jsonData.length} items to SQLite...`);
+
+  for (const item of jsonData) {
+    await store.upsert(item);
+  }
+
+  console.log(`  ✅ Migration complete`);
+}
+
 async function main() {
   console.log('═══════════════════════════════════════════════════════');
   console.log('  FPF MCP Server: JSON → SQLite Migration');
@@ -105,7 +121,7 @@ async function main() {
 
     if (!DRY_RUN) {
       // Migrate to SQLite
-      await migrateFromJson(task.collection, data);
+      await migrateCollectionData(task.collection, data);
 
       // Backup original JSON file
       await backupJsonFile(jsonPath);

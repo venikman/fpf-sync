@@ -133,24 +133,6 @@ export function makeSqliteStore<T extends WithId>(collectionName: string) {
 }
 
 /**
- * Migrate JSON data to SQLite
- */
-export async function migrateFromJson<T extends WithId>(
-  collectionName: string,
-  jsonData: T[]
-): Promise<void> {
-  const store = makeSqliteStore<T>(collectionName);
-
-  console.log(`[migrate] ${collectionName}: Migrating ${jsonData.length} items to SQLite...`);
-
-  for (const item of jsonData) {
-    await store.upsert(item);
-  }
-
-  console.log(`[migrate] ${collectionName}: Migration complete`);
-}
-
-/**
  * Export all data from SQLite to JSON for backup
  */
 export async function exportToJson(collectionName: string): Promise<any[]> {
