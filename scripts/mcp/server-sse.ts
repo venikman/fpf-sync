@@ -8,6 +8,7 @@ import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopic
 import { listEpistemes, getEpistemeById } from './store.ts';
 import { readFile } from 'node:fs/promises';
 import process from "node:process";
+import { closeDatabase } from './storage/sqlite.ts';
 // FPF-MCP domain, storage, services, guards, errors
 import { makeCtxId, makeRoleId, makeRaId, makeMdId, makeWorkId, makeSvcId, makeBridgeId, makePolicyId_EE } from './domain/ids.ts';
 import type { Context, Role, RoleAssignment, StateAssertion, MethodDescription, Work, Service as Svc, Capability as Cap, PolicyEE } from './domain/types.ts';
@@ -784,7 +785,6 @@ async function main() {
     sessionActivity.clear();
 
     // Close database connection
-    const { closeDatabase } = await import('./storage/sqlite.ts');
     closeDatabase();
     console.log('Database connection closed');
 

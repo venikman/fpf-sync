@@ -6,6 +6,7 @@ import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopic
 import { listEpistemes, getEpistemeById } from './store.ts';
 import { readFile } from 'node:fs/promises';
 import process from "node:process";
+import { closeDatabase } from './storage/sqlite.ts';
 
 // Basic server info
 const pkg = { name: 'fpf-mcp', version: '0.2.0' };
@@ -246,7 +247,6 @@ async function main() {
     }
 
     // Close database connection
-    const { closeDatabase } = await import('./storage/sqlite.ts');
     closeDatabase();
     console.error('Database connection closed');
 
