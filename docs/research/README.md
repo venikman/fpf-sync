@@ -18,7 +18,7 @@ Detects three types of changes:
 - **Removed**: Patterns that no longer exist
 
 ### 3. 🤖 AI-Powered Analysis
-- Uses GitHub Copilot (**o1-preview** - OpenAI's most advanced reasoning model) to analyze pattern changes
+- Uses GitHub Copilot (**Claude Sonnet 4.5** - Anthropic's most advanced model) to analyze pattern changes
 - Provides deep insights on:
   - Architectural implications and strategic significance
   - Emerging themes or patterns in the evolution
@@ -122,7 +122,7 @@ The workflow runs:
 **None!** The workflow uses `github.token` which is automatically provided by GitHub Actions.
 
 - `GITHUB_TOKEN`: Automatically available in all GitHub Actions workflows
-  - Provides access to GitHub Copilot AI models (**o1-preview** - most advanced reasoning model)
+  - Provides access to GitHub Copilot AI models (**Claude Sonnet 4.5** - Anthropic's most advanced model)
   - No additional API keys needed
   - Included with your GitHub Copilot subscription
   - If token unavailable, analysis runs but skips AI insights
@@ -160,11 +160,12 @@ Review the **dependency graphs** to:
 
 ## Changelog
 
-### 2025-11-06 - Upgraded to o1-preview (Most Advanced Model)
-- ✅ Upgraded to **o1-preview** - OpenAI's most advanced reasoning model
-- ✅ Enhanced analytical depth for complex pattern analysis
-- ✅ Better architectural insights and strategic recommendations
-- ✅ Increased output capacity (4000 tokens) for comprehensive analysis
+### 2025-11-06 - Switched to Claude Sonnet 4.5 (Best Model Available)
+- ✅ Using **Claude Sonnet 4.5** - Anthropic's most advanced model
+- ✅ Available models: Claude Sonnet 4.5, Gemini 2.5 Pro, GPT-5
+- ✅ Claude chosen for superior architectural analysis capabilities
+- ✅ Exceptional reasoning depth for complex pattern relationships
+- ✅ Enhanced output capacity (4000 tokens) for comprehensive analysis
 
 ### 2025-11-06 - GitHub Copilot Integration
 - ✅ Integrated GitHub Copilot for AI analysis
