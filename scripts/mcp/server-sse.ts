@@ -4,7 +4,7 @@ import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import http from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { z } from 'zod';
-import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopicsFromMarkdown, extractHeadings } from './util.ts';
+import { listWhitelistedFpfDocs, isAllowedFpfPath, findMainFpfSpec, extractTopicsFromMarkdown, extractHeadings, validateTimestamp, validateWindow } from './util.ts';
 import { listEpistemes, getEpistemeById } from './store.ts';
 import { readFile } from 'node:fs/promises';
 import process from "node:process";
@@ -137,6 +137,7 @@ mcp.tool(
   { holder: z.enum(['system','episteme']), role: z.string(), ctx: z.string(), window: z.object({ from: z.string(), to: z.string() }) },
   async (args) => {
     ensureWritable();
+    validateWindow(String(args.window.from), String(args.window.to), 'window');
     const id = makeRaId(String(args.holder), String(args.role), String(args.ctx), String(args.window.from), String(args.window.to));
     const now = new Date().toISOString();
     const ra = { id, holder: args.holder, role: String(args.role), ctx: String(args.ctx), window: args.window, createdAt: now, updatedAt: now } as RoleAssignment;
@@ -152,6 +153,7 @@ mcp.tool(
   { ra: z.string(), state: z.string(), checklistEvidence: z.array(z.string()).optional(), at: z.string() },
   async (args) => {
     ensureWritable();
+    validateTimestamp(String(args.at), 'at');
     const now = new Date().toISOString();
     const assertion: StateAssertion = { id: crypto.randomUUID(), ra: String(args.ra), state: String(args.state), checklistEvidence: args.checklistEvidence as any, at: String(args.at) };
     await upsertStateAssertion(assertion);
@@ -179,6 +181,7 @@ mcp.tool(
   { md: z.string(), stepId: z.string(), performedBy: z.string(), at: z.string() },
   async (args) => {
     ensureWritable();
+    validateTimestamp(String(args.at), 'at');
     const id = makeWorkId(crypto.randomUUID());
     const w: Work = { id, md: String(args.md), stepId: String(args.stepId), performedBy: String(args.performedBy), startedAt: String(args.at) };
     // Guards: window + eligibility (episteme cannot perform)
@@ -259,6 +262,7 @@ mcp.tool(
   'fpf.service.evaluate',
   { svc: z.string(), window: z.object({ from: z.string(), to: z.string() }), kpis: z.array(z.enum(['uptime','leadTime','rejectRate','costToServe'])), gammaTimePolicy: z.any().optional() },
   async (args) => {
+    validateWindow(String(args.window.from), String(args.window.to), 'window');
     const metrics = await evaluateService(String(args.svc), args.window as any, args.kpis as any);
     await appendEvent({ type: 'ServiceEvaluated', ts: new Date().toISOString(), envelope: { ctx: '' }, payload: { svc: args.svc, window: args.window, metrics } });
     return { content: [{ type: 'text', text: JSON.stringify({ metrics }) }] };
@@ -570,6 +574,56 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000);
 
+// Rate limiting configuration
+const RATE_LIMIT_REQUESTS = Number(process.env.FPF_RATE_LIMIT) || 100; // requests per window
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute window
+const rateLimits = new Map<string, { count: number; resetAt: number }>();
+
+// Periodic cleanup of rate limit entries (every minute)
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, limit] of rateLimits.entries()) {
+    if (now > limit.resetAt) {
+      rateLimits.delete(ip);
+    }
+  }
+}, RATE_LIMIT_WINDOW_MS);
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const limit = rateLimits.get(ip);
+
+  if (!limit || now > limit.resetAt) {
+    rateLimits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+
+  if (limit.count >= RATE_LIMIT_REQUESTS) {
+    return false; // Rate limited
+  }
+
+  limit.count++;
+  return true;
+}
+
+// Request body size limiting
+const MAX_BODY_SIZE = Number(process.env.FPF_MAX_BODY_SIZE) || 1 * 1024 * 1024; // 1MB default
+
+function checkBodySize(req: http.IncomingMessage): Promise<void> {
+  return new Promise((resolve, reject) => {
+    let size = 0;
+    req.on('data', (chunk: Buffer) => {
+      size += chunk.length;
+      if (size > MAX_BODY_SIZE) {
+        req.destroy();
+        reject(new Error(`Request body too large (max ${MAX_BODY_SIZE} bytes)`));
+      }
+    });
+    req.on('end', () => resolve());
+    req.on('error', reject);
+  });
+}
+
 async function main() {
   const port = Number(process.env.PORT || 8080);
   // CORS configuration: default to localhost only, can be overridden with FPF_CORS_ORIGIN
@@ -596,6 +650,20 @@ async function main() {
         return;
       }
 
+      // Check rate limit (skip for health checks)
+      if (url.pathname !== '/health') {
+        const ip = req.socket.remoteAddress || 'unknown';
+        if (!checkRateLimit(ip)) {
+          res.writeHead(429, { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': '60' });
+          res.end(JSON.stringify({
+            error: 'Too many requests',
+            message: `Rate limit exceeded: ${RATE_LIMIT_REQUESTS} requests per minute`,
+            retryAfter: 60
+          }));
+          return;
+        }
+      }
+
       if (req.method === 'GET' && url.pathname === '/sse') {
         // Enforce concurrent session limit
         if (sessions.size >= MAX_CONCURRENT_SESSIONS) {
@@ -603,10 +671,24 @@ async function main() {
           res.end(`Too many concurrent sessions (max ${MAX_CONCURRENT_SESSIONS})`);
           return;
         }
+        // Validate Host header to prevent DNS rebinding attacks
+        const host = req.headers.host;
+        const allowedHosts = ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'];
+        const isAllowedHost = allowedHosts.some(h => host?.startsWith(h + ':') || host === h);
+        if (!isAllowedHost && process.env.FPF_SKIP_HOST_CHECK !== '1') {
+          res.writeHead(400, { ...corsHeaders, 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            error: 'Invalid Host header',
+            message: `Host '${host}' not allowed. Set FPF_SKIP_HOST_CHECK=1 to disable this check.`,
+            allowedHosts
+          }));
+          return;
+        }
+
         // SSE already sets its own headers, but add CORS
         const transport = new SSEServerTransport('/messages', res, {
-          // Disable DNS rebinding protection for local development
-          enableDnsRebindingProtection: false,
+          // Re-enable DNS rebinding protection (can be disabled with env var above)
+          enableDnsRebindingProtection: true,
         });
         // When the connection closes, clean up the session
         transport.onclose = () => {
@@ -622,6 +704,18 @@ async function main() {
       }
 
       if (req.method === 'POST' && url.pathname === '/messages') {
+        // Check body size via Content-Length header
+        const contentLength = parseInt(req.headers['content-length'] || '0', 10);
+        if (contentLength > MAX_BODY_SIZE) {
+          res.writeHead(413, { ...corsHeaders, 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            error: 'Payload too large',
+            message: `Request body too large: ${contentLength} bytes (max ${MAX_BODY_SIZE} bytes)`,
+            maxSize: MAX_BODY_SIZE
+          }));
+          return;
+        }
+
         const sessionId = url.searchParams.get('sessionId');
         const transport = sessionId ? sessions.get(sessionId) : undefined;
         if (!transport) {
