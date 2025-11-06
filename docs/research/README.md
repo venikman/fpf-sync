@@ -18,12 +18,12 @@ Detects three types of changes:
 - **Removed**: Patterns that no longer exist
 
 ### 3. 🤖 AI-Powered Analysis
-- Uses OpenAI GPT-4 to analyze pattern changes
+- Uses GitHub Copilot (GPT-4o) to analyze pattern changes
 - Provides insights on:
   - Architectural implications
   - Emerging themes
   - Integration points and potential tensions
-- Requires `OPENAI_API_KEY` environment variable (works with your OpenAI Pro subscription)
+- Uses `GITHUB_TOKEN` (automatically available in CI via GitHub Copilot subscription)
 
 ### 4. 🧩 Dynamic Cluster Discovery
 - Automatically discovers pattern relationships via cross-references
@@ -90,9 +90,11 @@ docs/research/
 # Without AI analysis
 bun run scripts/pattern-research.ts
 
-# With AI analysis (using your OpenAI Pro subscription)
-OPENAI_API_KEY=your_key_here bun run scripts/pattern-research.ts
+# With AI analysis (using GitHub Copilot via GitHub token)
+GITHUB_TOKEN=your_github_token bun run scripts/pattern-research.ts
 ```
+
+**Note:** In GitHub Actions CI, the `GITHUB_TOKEN` is automatically available and provides access to GitHub Copilot AI models at no additional cost (covered by your GitHub Copilot subscription).
 
 ## GitHub Workflow
 
@@ -117,9 +119,13 @@ The workflow runs:
 
 ### Required Secrets
 
-- `OPENAI_API_KEY` (optional): For AI-powered analysis
-  - Use your OpenAI Pro subscription API key
-  - If not set, analysis runs but skips AI insights
+**None!** The workflow uses `github.token` which is automatically provided by GitHub Actions.
+
+- `GITHUB_TOKEN`: Automatically available in all GitHub Actions workflows
+  - Provides access to GitHub Copilot AI models (GPT-4o)
+  - No additional API keys needed
+  - Included with your GitHub Copilot subscription
+  - If token unavailable, analysis runs but skips AI insights
 
 ## Use Cases
 
@@ -154,11 +160,12 @@ Review the **dependency graphs** to:
 
 ## Changelog
 
-### 2025-11-06 - Direct Commit & OpenAI Integration
-- ✅ Switched from Claude API to OpenAI GPT-4
+### 2025-11-06 - GitHub Copilot Integration
+- ✅ Integrated GitHub Copilot (GPT-4o) for AI analysis
+- ✅ Uses `github.token` - no separate API keys needed!
 - ✅ Changed workflow to commit directly to `reports/` folder (no PRs)
 - ✅ Simplified deployment - reports auto-commit on main branch
-- ✅ Compatible with OpenAI Pro subscriptions
+- ✅ Zero additional cost - covered by GitHub Copilot subscription
 
 ### 2025-11-06 - Enhanced Analysis System
 - ✅ Added historical tracking (append mode)

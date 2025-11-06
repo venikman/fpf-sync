@@ -30,7 +30,7 @@ jobs:
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_SHA: ${{ github.sha }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Check for updates
         id: git_status
@@ -85,7 +85,7 @@ This automated commit includes:
 - JSON output for programmatic analysis
 - Dependency graphs (Mermaid diagrams)
 - Historical snapshot for trend analysis
-- AI-powered insights (OpenAI GPT-4)"
+- AI-powered insights (GitHub Copilot)"
 
           # Commit and push directly to main
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \

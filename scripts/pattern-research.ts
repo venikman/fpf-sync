@@ -376,24 +376,24 @@ async function analyzePatternsWithLLM(
   currentSnapshot: HistoricalSnapshot,
   previousSnapshot: HistoricalSnapshot | null
 ): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const githubToken = process.env.GITHUB_TOKEN;
 
-  if (!apiKey) {
-    console.log("ℹ️  OPENAI_API_KEY not set - skipping AI analysis");
-    return "AI analysis skipped (no API key configured)";
+  if (!githubToken) {
+    console.log("ℹ️  GITHUB_TOKEN not set - skipping AI analysis");
+    return "AI analysis skipped (no GitHub token configured)";
   }
 
   try {
     const prompt = buildAnalysisPrompt(changes, clusters, currentSnapshot, previousSnapshot);
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    // Using GitHub Models API (powered by GitHub Copilot subscription)
+    const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
+        "Authorization": `Bearer ${githubToken}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o",
         messages: [
           {
             role: "system",
@@ -404,15 +404,16 @@ async function analyzePatternsWithLLM(
             content: prompt,
           },
         ],
-        max_tokens: 2000,
         temperature: 0.7,
+        max_tokens: 2000,
+        model: "gpt-4o",
       }),
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error("OpenAI API error:", error);
-      return "AI analysis failed (API error)";
+      const errorText = await response.text();
+      console.error("GitHub Models API error:", errorText);
+      return "AI analysis failed (GitHub Models API error)";
     }
 
     const data = await response.json();
