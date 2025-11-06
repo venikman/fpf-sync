@@ -12,7 +12,8 @@ jobs:
       contents: write
     env:
       SPEC_PATH: "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md"
-      JOURNAL_PATH: "reports/fpf-pattern-journal.md"
+      CHANGELOG_DIR: "reports/changelog"
+      CHANGELOG_INDEX: "reports/CHANGELOG.md"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,8 +36,8 @@ jobs:
       - name: Check for updates
         id: git_status
         run: |
-          # Check if journal, history, or outputs changed
-          if git diff --quiet --exit-code -- "$JOURNAL_PATH" reports/pattern-history/ reports/pattern-outputs/; then
+          # Check if changelog, history, or outputs changed
+          if git diff --quiet --exit-code -- "$CHANGELOG_DIR" "$CHANGELOG_INDEX" reports/pattern-history/ reports/pattern-outputs/; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -55,7 +56,8 @@ jobs:
         if: steps.git_status.outputs.changed == 'true'
         run: |
           # Add all research outputs to reports folder
-          git add "$JOURNAL_PATH"
+          git add "$CHANGELOG_DIR"
+          git add "$CHANGELOG_INDEX"
           git add reports/pattern-history/
           git add reports/pattern-outputs/
 
@@ -81,7 +83,8 @@ Run ID: ${{ github.run_id }}
 Commit: ${{ github.sha }}
 
 This automated commit includes:
-- Updated pattern journal with historical entries
+- New changelog report in reports/changelog/
+- Updated CHANGELOG.md index
 - JSON output for programmatic analysis
 - Dependency graphs (Mermaid diagrams)
 - Historical snapshot for trend analysis
@@ -95,4 +98,4 @@ This automated commit includes:
 
       - name: No-op summary
         if: steps.git_status.outputs.changed != 'true'
-        run: echo "No changes detected in $JOURNAL_PATH"
+        run: echo "No changes detected in pattern research outputs"

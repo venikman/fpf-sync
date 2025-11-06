@@ -7,7 +7,8 @@ The automated FPF Pattern Research system tracks the evolution of patterns in th
 ## Features
 
 ### 1. 📊 Historical Tracking
-- **Append-only journal**: New entries are added to the journal, preserving historical context
+- **Individual reports**: Each run creates a separate report file in `changelog/`
+- **Automatic indexing**: `CHANGELOG.md` automatically lists all reports with links
 - **Snapshot storage**: Each run saves a complete snapshot in `pattern-history/`
 - **Trend analysis**: Compare current state with previous runs to see evolution over time
 
@@ -33,10 +34,11 @@ Detects three types of changes:
 
 ### 5. 📁 Multiple Output Formats
 
-#### **Markdown Journal** (`fpf-pattern-journal.md`)
-- Human-readable chronological log
-- Includes summaries, changes, clusters, and AI insights
-- Historical entries preserved
+#### **Changelog Reports** (`changelog/*.md`)
+- Individual report file per run
+- Each contains: summary, changes, clusters, AI insights
+- Easier to navigate specific dates/runs
+- Linked from `CHANGELOG.md` index
 
 #### **JSON Output** (`pattern-outputs/patterns-*.json`)
 ```json
@@ -70,15 +72,18 @@ Detects three types of changes:
 
 ```
 reports/
-├── fpf-pattern-journal.md              # Main journal (human-readable)
+├── CHANGELOG.md                        # Index of all reports
+├── changelog/                          # Individual reports
+│   ├── 2025-11-06_12-00-00-local.md
+│   └── 2025-11-07_18-30-15-19123456.md
 ├── pattern-history/                    # Historical snapshots
 │   ├── 2025-11-06_12-00-00-local.json
-│   └── 2025-11-07_12-00-00-local.json
+│   └── 2025-11-07_18-30-15-19123456.json
 └── pattern-outputs/                    # Analysis outputs
     ├── patterns-2025-11-06_12-00-00.json
-    ├── patterns-2025-11-07_12-00-00.json
+    ├── patterns-2025-11-07_18-30-15-19123456.json
     ├── dependency-graph-2025-11-06_12-00-00.md
-    └── dependency-graph-2025-11-07_12-00-00.md
+    └── dependency-graph-2025-11-07_18-30-15-19123456.md
 
 docs/research/
 └── README.md                           # This documentation file
@@ -110,6 +115,8 @@ The workflow runs:
    - Pattern history
    - Pattern outputs
 3. If changes detected:
+   - Creates new report file in `reports/changelog/`
+   - Updates `reports/CHANGELOG.md` index
    - Commits all changes directly to the `reports/` folder
    - No PR creation - reports are auto-committed
    - Commit message includes:
@@ -147,7 +154,9 @@ const referencingA1 = data.crossReferences
 ```
 
 ### For Project Managers
-Read the **Markdown journal** for:
+Browse the **Changelog reports** for:
+- Individual reports per date/run
+- Quick access via `CHANGELOG.md` index
 - Weekly pattern growth summaries
 - Significant changes highlighted
 - AI insights on strategic direction
@@ -159,6 +168,13 @@ Review the **dependency graphs** to:
 - Spot potential circular dependencies
 
 ## Changelog
+
+### 2025-11-06 - Separate Reports per Run
+- ✅ Changed from single append-only journal to individual report files
+- ✅ Each run creates a new file in `reports/changelog/`
+- ✅ Automatic `CHANGELOG.md` index with links to all reports
+- ✅ Easier navigation to specific dates/runs
+- ✅ Better organization for long-term tracking
 
 ### 2025-11-06 - Switched to Claude Sonnet 4.5 (Best Model Available)
 - ✅ Using **Claude Sonnet 4.5** - Anthropic's most advanced model

@@ -8,7 +8,8 @@ import { join, dirname } from "node:path";
 // ============================================================================
 
 const SPEC_PATH = "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md";
-const JOURNAL_PATH = "reports/fpf-pattern-journal.md";
+const CHANGELOG_DIR = "reports/changelog";
+const CHANGELOG_INDEX = "reports/CHANGELOG.md";
 const HISTORY_DIR = "reports/pattern-history";
 const OUTPUT_DIR = "reports/pattern-outputs";
 
@@ -609,25 +610,19 @@ function generateDependencyGraph(snapshot: HistoricalSnapshot): string {
   return filepath;
 }
 
-function generateMarkdownJournal(
+function generateChangelogReport(
   snapshot: HistoricalSnapshot,
-  analysis: AnalysisResult,
-  previousJournal: string | null
+  analysis: AnalysisResult
 ): string {
   const lines: string[] = [];
 
-  // Header (always at top)
-  lines.push("# FPF Pattern Journal");
+  // Title with date and run ID
+  const dateStr = snapshot.timestamp.slice(0, 10);
+  lines.push(`# FPF Pattern Research Report — ${dateStr}`);
   lines.push("");
-  lines.push("This log tracks the evolution of behavioral patterns in the First Principles Framework specification.");
-  lines.push("");
-  lines.push("---");
-  lines.push("");
-
-  // New entry
-  lines.push(`## ${snapshot.timestamp} — Run ${snapshot.runId}`);
-  lines.push("");
+  lines.push(`**Run ID:** ${snapshot.runId}`);
   lines.push(`**Commit:** ${snapshot.commit}`);
+  lines.push(`**Timestamp:** ${snapshot.timestamp}`);
   lines.push("");
 
   // Alert banner if significant
@@ -641,7 +636,8 @@ function generateMarkdownJournal(
   }
 
   // Summary
-  lines.push("### Summary");
+  lines.push("## Summary");
+  lines.push("");
   lines.push(`- **Total Patterns**: ${snapshot.totalCount}`);
   lines.push(`- **Constitutional (A)**: ${snapshot.seriesCounts.A || 0}`);
   lines.push(`- **Reasoning (B)**: ${snapshot.seriesCounts.B || 0}`);
@@ -653,84 +649,140 @@ function generateMarkdownJournal(
 
   // Changes
   if (analysis.changes.length > 0) {
-    lines.push("### Changes Detected");
+    lines.push("## Changes Detected");
+    lines.push("");
 
     const added = analysis.changes.filter(c => c.type === "added");
     const modified = analysis.changes.filter(c => c.type === "modified");
     const removed = analysis.changes.filter(c => c.type === "removed");
 
     if (added.length > 0) {
-      lines.push(`- **Added**: ${added.length} pattern(s)`);
+      lines.push(`### Added (${added.length})`);
+      lines.push("");
       for (const change of added) {
-        lines.push(`  - **${change.patternId}**: ${change.pattern?.title}`);
+        lines.push(`**${change.patternId}**: ${change.pattern?.title}`);
         if (change.pattern?.subtitle) {
-          lines.push(`    - *${change.pattern.subtitle}*`);
+          lines.push(`- *${change.pattern.subtitle}*`);
         }
+        lines.push("");
       }
     }
 
     if (modified.length > 0) {
-      lines.push(`- **Modified**: ${modified.length} pattern(s)`);
+      lines.push(`### Modified (${modified.length})`);
+      lines.push("");
       for (const change of modified) {
-        lines.push(`  - **${change.patternId}**`);
-        lines.push(`    - Was: ${change.oldPattern?.title}`);
-        lines.push(`    - Now: ${change.pattern?.title}`);
+        lines.push(`**${change.patternId}**`);
+        lines.push(`- Was: ${change.oldPattern?.title}`);
+        lines.push(`- Now: ${change.pattern?.title}`);
+        lines.push("");
       }
     }
 
     if (removed.length > 0) {
-      lines.push(`- **Removed**: ${removed.length} pattern(s)`);
+      lines.push(`### Removed (${removed.length})`);
+      lines.push("");
       for (const change of removed) {
-        lines.push(`  - **${change.patternId}**: ${change.pattern?.title}`);
+        lines.push(`**${change.patternId}**: ${change.pattern?.title}`);
+        lines.push("");
       }
     }
-
-    lines.push("");
   } else {
-    lines.push("### Changes Detected");
+    lines.push("## Changes Detected");
+    lines.push("");
     lines.push("No changes from previous scan.");
     lines.push("");
   }
 
   // Clusters
   if (analysis.newClusters.length > 0) {
-    lines.push("### Pattern Clusters");
+    lines.push("## Pattern Clusters");
     lines.push("");
     for (const cluster of analysis.newClusters) {
-      lines.push(`**${cluster.name}** (strength: ${cluster.strength})`);
-      lines.push(`- Patterns: ${cluster.patterns.join(", ")}`);
+      lines.push(`### ${cluster.name} (strength: ${cluster.strength})`);
+      lines.push("");
+      lines.push(`Patterns: ${cluster.patterns.join(", ")}`);
       lines.push("");
     }
   }
 
-  // LLM Insights
+  // AI Insights
   if (analysis.insights && analysis.insights.length > 0 && !analysis.insights.includes("skipped")) {
-    lines.push("### AI Analysis");
+    lines.push("## AI Analysis (Claude Sonnet 4.5)");
     lines.push("");
     lines.push(analysis.insights);
     lines.push("");
   }
 
+  // Metadata
   lines.push("---");
   lines.push("");
+  lines.push("## Outputs");
+  lines.push("");
+  lines.push(`- **JSON Output**: [patterns-${snapshot.timestamp}.json](../pattern-outputs/patterns-${snapshot.timestamp}.json)`);
+  lines.push(`- **Dependency Graph**: [dependency-graph-${snapshot.timestamp}.md](../pattern-outputs/dependency-graph-${snapshot.timestamp}.md)`);
+  lines.push(`- **Historical Snapshot**: [${snapshot.timestamp}-${snapshot.runId}.json](../pattern-history/${snapshot.timestamp}-${snapshot.runId}.json)`);
+  lines.push("");
 
-  // Append previous journal entries
-  if (previousJournal) {
-    const previousLines = previousJournal.split("\n");
-    let startAppending = false;
+  return lines.join("\n");
+}
 
-    for (const line of previousLines) {
-      // Start appending after the first "---" separator
-      if (line.trim() === "---" && !startAppending) {
-        startAppending = true;
-        continue;
+function generateChangelogIndex(): string {
+  const lines: string[] = [];
+
+  lines.push("# FPF Pattern Research Changelog");
+  lines.push("");
+  lines.push("This directory contains individual reports for each FPF pattern research run.");
+  lines.push("");
+  lines.push("## About");
+  lines.push("");
+  lines.push("Each report file contains:");
+  lines.push("- Pattern change summary (added/modified/removed)");
+  lines.push("- Alert level and reasons");
+  lines.push("- Pattern counts by category");
+  lines.push("- Discovered pattern clusters");
+  lines.push("- AI-powered analysis (Claude Sonnet 4.5)");
+  lines.push("- Links to detailed outputs (JSON, graphs)");
+  lines.push("");
+
+  // List all existing report files
+  if (existsSync(CHANGELOG_DIR)) {
+    const files = readdirSync(CHANGELOG_DIR)
+      .filter(f => f.endsWith(".md") && f !== "README.md")
+      .sort()
+      .reverse(); // Most recent first
+
+    if (files.length > 0) {
+      lines.push("## Reports");
+      lines.push("");
+
+      for (const file of files) {
+        // Extract date from filename (format: YYYY-MM-DD_HH-MM-SS-runid.md)
+        const match = file.match(/^(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})-(.+)\.md$/);
+        if (match) {
+          const [, date, time, runId] = match;
+          const displayTime = time.replace(/-/g, ":");
+          lines.push(`- [${date} ${displayTime}](changelog/${file}) (Run: ${runId})`);
+        } else {
+          lines.push(`- [${file}](changelog/${file})`);
+        }
       }
-
-      if (startAppending) {
-        lines.push(line);
-      }
+      lines.push("");
     }
   }
+
+  lines.push("## Structure");
+  lines.push("");
+  lines.push("```");
+  lines.push("reports/");
+  lines.push("├── CHANGELOG.md              # This index file");
+  lines.push("├── changelog/                # Individual reports");
+  lines.push("│   ├── 2025-11-06_12-00-00-local.md");
+  lines.push("│   └── 2025-11-07_18-30-15-19123456.md");
+  lines.push("├── pattern-history/          # Historical snapshots (JSON)");
+  lines.push("└── pattern-outputs/          # Detailed outputs (JSON, graphs)");
+  lines.push("```");
+  lines.push("");
 
   return lines.join("\n");
 }
@@ -816,12 +868,18 @@ async function main(): Promise<void> {
   generateJSON(currentSnapshot, analysis);
   generateDependencyGraph(currentSnapshot);
 
-  // Update markdown journal
-  const previousJournal = existsSync(JOURNAL_PATH) ? readFileSync(JOURNAL_PATH, "utf8") : null;
-  const newJournal = generateMarkdownJournal(currentSnapshot, analysis, previousJournal);
-  ensureDirForFile(JOURNAL_PATH);
-  writeFileSync(JOURNAL_PATH, newJournal, "utf8");
-  console.log(`📄 Updated journal: ${JOURNAL_PATH}`);
+  // Generate changelog report (individual file per run)
+  const reportFilename = `${snapshot.timestamp}-${snapshot.runId}.md`;
+  const reportPath = join(CHANGELOG_DIR, reportFilename);
+  const report = generateChangelogReport(currentSnapshot, analysis);
+  ensureDir(CHANGELOG_DIR);
+  writeFileSync(reportPath, report, "utf8");
+  console.log(`📄 Generated changelog report: ${reportPath}`);
+
+  // Update changelog index
+  const changelogIndex = generateChangelogIndex();
+  writeFileSync(CHANGELOG_INDEX, changelogIndex, "utf8");
+  console.log(`📑 Updated changelog index: ${CHANGELOG_INDEX}`);
 
   // Summary
   console.log("");
