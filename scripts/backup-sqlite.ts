@@ -46,7 +46,12 @@ function parseArgs(): BackupOptions {
 
   for (const arg of args) {
     if (arg.startsWith('--keep=')) {
-      options.keepBackups = parseInt(arg.split('=')[1], 10);
+      const keepValue = parseInt(arg.split('=')[1], 10);
+      if (isNaN(keepValue) || keepValue < 1) {
+        console.error(`Error: --keep must be a positive integer, got: ${arg.split('=')[1]}`);
+        process.exit(1);
+      }
+      options.keepBackups = keepValue;
     } else if (arg.startsWith('--output=')) {
       options.outputDir = arg.split('=')[1];
     }

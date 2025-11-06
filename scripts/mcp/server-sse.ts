@@ -633,13 +633,26 @@ async function main() {
   console.log(`CORS allowed origin: ${allowedOrigin}`);
 
   const server = http.createServer(async (req, res) => {
+    // Validate CORS origin if not wildcard
+    const requestOrigin = req.headers.origin;
+    let corsOrigin = allowedOrigin;
+
+    // If allowedOrigin is not '*', validate the request origin matches
+    if (allowedOrigin !== '*' && requestOrigin && requestOrigin !== allowedOrigin) {
+      corsOrigin = ''; // Don't set CORS header for disallowed origins
+    }
+
     // Add CORS headers to all responses
-    const corsHeaders = {
-      'Access-Control-Allow-Origin': allowedOrigin,
+    const corsHeaders: Record<string, string> = {
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept',
       'Access-Control-Max-Age': '86400',
     };
+
+    // Only add Origin header if validated
+    if (corsOrigin) {
+      corsHeaders['Access-Control-Allow-Origin'] = corsOrigin;
+    }
 
     try {
       const url = new URL(req.url ?? '/', 'http://localhost');
@@ -674,13 +687,15 @@ async function main() {
         }
         // Validate Host header to prevent DNS rebinding attacks
         const host = req.headers.host;
-        const allowedHosts = ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'];
+        // Read allowed hosts from env var, default to localhost addresses
+        const allowedHostsEnv = process.env.FPF_ALLOWED_HOSTS || 'localhost,127.0.0.1,[::1]';
+        const allowedHosts = allowedHostsEnv.split(',').map(h => h.trim());
         const isAllowedHost = allowedHosts.some(h => host?.startsWith(h + ':') || host === h);
         if (!isAllowedHost && process.env.FPF_SKIP_HOST_CHECK !== '1') {
           res.writeHead(400, { ...corsHeaders, 'Content-Type': 'application/json' });
           res.end(JSON.stringify({
             error: 'Invalid Host header',
-            message: `Host '${host}' not allowed. Set FPF_SKIP_HOST_CHECK=1 to disable this check.`,
+            message: `Host '${host}' not allowed. Set FPF_SKIP_HOST_CHECK=1 to disable this check or configure FPF_ALLOWED_HOSTS.`,
             allowedHosts
           }));
           return;

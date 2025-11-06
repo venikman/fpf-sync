@@ -113,7 +113,6 @@ export function makeSqliteStore<T extends WithId>(collectionName: string) {
   }
 
   async function update(id: string, patch: Partial<T>): Promise<T | undefined> {
-    const database = await getDatabase();
     const existing = await get(id);
 
     if (!existing) return undefined;

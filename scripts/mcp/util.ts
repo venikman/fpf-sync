@@ -87,7 +87,6 @@ export async function isAllowedFpfPath(relPath: string, checkSize = true): Promi
     if (stats.isSymbolicLink()) {
       // Resolve the symlink and check if it points outside allowed directory
       const realPath = await realpath(abs);
-      const realNorm = realPath.endsWith(sep) ? realPath : realPath + sep;
       if (!(realPath === fpfAbs || realPath.startsWith(fpfNorm))) {
         throw new Error(`Symlink points outside whitelisted FPF docs directory: ${relPath} -> ${realPath}`);
       }
