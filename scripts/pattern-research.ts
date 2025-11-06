@@ -387,6 +387,7 @@ async function analyzePatternsWithLLM(
     const prompt = buildAnalysisPrompt(changes, clusters, currentSnapshot, previousSnapshot);
 
     // Using GitHub Models API (powered by GitHub Copilot subscription)
+    // Using o1-preview - OpenAI's most advanced reasoning model
     const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
       method: "POST",
       headers: {
@@ -396,17 +397,12 @@ async function analyzePatternsWithLLM(
       body: JSON.stringify({
         messages: [
           {
-            role: "system",
-            content: "You are an expert at analyzing software architecture patterns and frameworks. Provide concise, technical analysis focused on actionable insights."
-          },
-          {
             role: "user",
-            content: prompt,
+            content: `You are an expert at analyzing software architecture patterns and frameworks. Provide concise, technical analysis focused on actionable insights.\n\n${prompt}`,
           },
         ],
-        temperature: 0.7,
-        max_tokens: 2000,
-        model: "gpt-4o",
+        max_tokens: 4000,
+        model: "o1-preview",
       }),
     });
 

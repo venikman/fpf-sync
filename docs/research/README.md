@@ -18,11 +18,11 @@ Detects three types of changes:
 - **Removed**: Patterns that no longer exist
 
 ### 3. 🤖 AI-Powered Analysis
-- Uses GitHub Copilot (GPT-4o) to analyze pattern changes
-- Provides insights on:
-  - Architectural implications
-  - Emerging themes
-  - Integration points and potential tensions
+- Uses GitHub Copilot (**o1-preview** - OpenAI's most advanced reasoning model) to analyze pattern changes
+- Provides deep insights on:
+  - Architectural implications and strategic significance
+  - Emerging themes or patterns in the evolution
+  - Potential integration points or tensions with existing patterns
 - Uses `GITHUB_TOKEN` (automatically available in CI via GitHub Copilot subscription)
 
 ### 4. 🧩 Dynamic Cluster Discovery
@@ -122,7 +122,7 @@ The workflow runs:
 **None!** The workflow uses `github.token` which is automatically provided by GitHub Actions.
 
 - `GITHUB_TOKEN`: Automatically available in all GitHub Actions workflows
-  - Provides access to GitHub Copilot AI models (GPT-4o)
+  - Provides access to GitHub Copilot AI models (**o1-preview** - most advanced reasoning model)
   - No additional API keys needed
   - Included with your GitHub Copilot subscription
   - If token unavailable, analysis runs but skips AI insights
@@ -160,8 +160,14 @@ Review the **dependency graphs** to:
 
 ## Changelog
 
+### 2025-11-06 - Upgraded to o1-preview (Most Advanced Model)
+- ✅ Upgraded to **o1-preview** - OpenAI's most advanced reasoning model
+- ✅ Enhanced analytical depth for complex pattern analysis
+- ✅ Better architectural insights and strategic recommendations
+- ✅ Increased output capacity (4000 tokens) for comprehensive analysis
+
 ### 2025-11-06 - GitHub Copilot Integration
-- ✅ Integrated GitHub Copilot (GPT-4o) for AI analysis
+- ✅ Integrated GitHub Copilot for AI analysis
 - ✅ Uses `github.token` - no separate API keys needed!
 - ✅ Changed workflow to commit directly to `reports/` folder (no PRs)
 - ✅ Simplified deployment - reports auto-commit on main branch
