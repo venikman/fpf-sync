@@ -9,7 +9,9 @@
     "mcp:fpf": "bun run scripts/mcp/server.ts",
     "mcp:fpf:sse": "PORT=${PORT:-3333} bun run scripts/mcp/server-sse.ts",
     "yadisk:sync": "bun run scripts/yadisk-sync.mjs",
-    "meme:meter": "bun run scripts/agentic/meme-meter.ts"
+    "meme:meter": "bun run scripts/agentic/meme-meter.ts",
+    "gpt:review": "bun run scripts/gpt-code-review.ts",
+    "gpt:task": "bun run scripts/gpt-task-runner.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.19.1",

@@ -14,6 +14,7 @@ Sync files from Yandex Disk to GitHub + MCP Server for First Principles Framewor
 - 👨‍💻 [Developer Guide](DEVELOPERS.md) - Setup, config, contributing
 - 🔌 [MCP Setup](docs/MCP.md) - Connect AI tools
 - 🤖 [GPT Automation](docs/GPT-AUTOMATION.md) - AI-powered code review and tasks
+  - [Examples](docs/GPT-EXAMPLES.md) - Practical usage examples
 
 ## For Users
 
