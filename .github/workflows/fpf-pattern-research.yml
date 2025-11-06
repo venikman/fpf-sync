@@ -31,14 +31,25 @@ jobs:
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_SHA: ${{ github.sha }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
       - name: Check for updates
         id: git_status
         run: |
-          if git diff --quiet --exit-code -- "$JOURNAL_PATH"; then
+          # Check if journal, history, or outputs changed
+          if git diff --quiet --exit-code -- "$JOURNAL_PATH" docs/research/pattern-history/ docs/research/pattern-outputs/; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          # Extract alert level from latest JSON output
+          LATEST_JSON=$(ls -t docs/research/pattern-outputs/patterns-*.json 2>/dev/null | head -1)
+          if [ -f "$LATEST_JSON" ]; then
+            ALERT_LEVEL=$(bun -e "console.log(JSON.parse(require('fs').readFileSync('$LATEST_JSON', 'utf8')).summary.alertLevel)")
+            echo "alert_level=$ALERT_LEVEL" >> "$GITHUB_OUTPUT"
+          else
+            echo "alert_level=none" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create pull request
@@ -46,29 +57,98 @@ jobs:
         run: |
           branch="fpf-pattern-research-${{ github.run_id }}"
           git switch -c "$branch"
+
+          # Add all research outputs
           git add "$JOURNAL_PATH"
+          git add docs/research/pattern-history/
+          git add docs/research/pattern-outputs/
+
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            commit -m "Update FPF pattern research journal"
+            commit -m "Update FPF pattern research journal and outputs"
           git push -u origin "$branch"
+
+          # Extract summary from latest JSON
+          LATEST_JSON=$(ls -t docs/research/pattern-outputs/patterns-*.json 2>/dev/null | head -1)
+          ALERT_LEVEL="${{ steps.git_status.outputs.alert_level }}"
+
+          # Determine alert emoji and labels
+          if [ "$ALERT_LEVEL" = "high" ]; then
+            ALERT_EMOJI="🚨"
+            LABELS="automation,research,priority:high"
+          elif [ "$ALERT_LEVEL" = "medium" ]; then
+            ALERT_EMOJI="⚠️"
+            LABELS="automation,research,priority:medium"
+          elif [ "$ALERT_LEVEL" = "low" ]; then
+            ALERT_EMOJI="ℹ️"
+            LABELS="automation,research"
+          else
+            ALERT_EMOJI="✓"
+            LABELS="automation,research"
+          fi
+
+          # Build PR body
           cat <<MD > pr-body.md
-          ## FPF Pattern Research — Automated Scan
+          ## ${ALERT_EMOJI} FPF Pattern Research — Enhanced Analysis
+
           **Run ID:** ${{ github.run_id }}
           **Commit:** ${{ github.sha }}
           **Date:** $(date -u +%F)
+          **Alert Level:** \`${ALERT_LEVEL}\`
 
-          ### Overview
-          - Updated docs/research/fpf-pattern-journal.md with latest pattern counts and clusters.
+          ### 📊 What's New
 
-          ### Methodology
-          - Parsed specification headings for "## {Series}.{Id}: {Title} — {Subtitle}"
-          - Counted unique IDs per series and refreshed integration clusters.
+          This PR includes:
+          - ✅ **Updated Pattern Journal** with historical entries
+          - ✅ **JSON Output** for programmatic analysis
+          - ✅ **Dependency Graph** (Mermaid diagram)
+          - ✅ **Historical Snapshot** for trend analysis
+          - ✅ **AI-Powered Insights** (if API key configured)
+          - ✅ **Dynamic Cluster Discovery** based on cross-references
 
-          ### Next Steps
-          - Review journal diff and incorporate any manual notes.
+          ### 📁 Files Changed
+
+          - \`docs/research/fpf-pattern-journal.md\` - Main journal with latest entry
+          - \`docs/research/pattern-history/*.json\` - Historical snapshots
+          - \`docs/research/pattern-outputs/*.json\` - Detailed analysis output
+          - \`docs/research/pattern-outputs/*.md\` - Dependency graph
+
+          ### 🔍 Review Guide
+
+          1. **Check the Journal**: Review the latest entry in \`fpf-pattern-journal.md\`
+          2. **See What Changed**: Look for Added/Modified/Removed patterns
+          3. **View Clusters**: New pattern relationships discovered
+          4. **Read AI Analysis**: Insights about architectural implications
+          5. **Check Graphs**: Visual dependency relationships
+
+          ### 🤖 Analysis Details
+
+          The enhanced workflow now:
+          - Tracks changes over time (not just snapshots)
+          - Discovers pattern clusters automatically via cross-references
+          - Provides LLM-powered insights on architectural implications
+          - Generates multiple output formats (Markdown, JSON, Mermaid)
+          - Sets alert levels based on change significance
+
+          ### 📈 Outputs
+
+          - [View Latest JSON Output](../blob/$branch/$LATEST_JSON)
+          - [View Pattern Journal](../blob/$branch/docs/research/fpf-pattern-journal.md)
+
+          ### ⚡ Next Steps
+
+          - Review the changes and AI insights
+          - Merge if analysis looks correct
+          - Check dependency graph for new relationships
+
+          ---
+
+          *This PR was automatically generated by the enhanced FPF Pattern Research workflow.*
           MD
+
           gh pr create \
-            --title "[automation] FPF pattern research – $(date -u +%F)" \
-            --body-file pr-body.md
+            --title "[automation] ${ALERT_EMOJI} FPF pattern research – $(date -u +%F)" \
+            --body-file pr-body.md \
+            --label "$LABELS"
         env:
           GH_TOKEN: ${{ github.token }}
 
