@@ -88,7 +88,7 @@ This automated commit includes:
 - JSON output for programmatic analysis
 - Dependency graphs (Mermaid diagrams)
 - Historical snapshot for trend analysis
-- AI-powered insights (Claude Sonnet 4.5)"
+- AI-powered insights (Claude 3.5 Sonnet)"
 
           # Commit and push directly to main
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \

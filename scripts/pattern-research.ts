@@ -118,13 +118,9 @@ function parsePatterns(markdown: string): Record<string, Pattern> {
 
   for (const line of lines) {
     let match = colonHeader.exec(line);
-    let format: "colon" | "dash" | null = null;
 
-    if (match) {
-      format = "colon";
-    } else {
+    if (!match) {
       match = dashHeader.exec(line);
-      if (match) format = "dash";
     }
 
     if (!match) continue;
@@ -149,7 +145,6 @@ function parsePatterns(markdown: string): Record<string, Pattern> {
 
 function findCrossReferences(markdown: string, patterns: Record<string, Pattern>): CrossReference[] {
   const refs: CrossReference[] = [];
-  const patternIds = Object.keys(patterns);
 
   // Pattern to match references like "see A.1", "Pattern C.24", "A.13 defines", etc.
   const refPattern = /\b([A-G]\.\d+(?:\.\d+)*)\b/g;
@@ -307,21 +302,6 @@ function getLatestSnapshot(): HistoricalSnapshot | null {
   return JSON.parse(content);
 }
 
-function getAllSnapshots(): HistoricalSnapshot[] {
-  if (!existsSync(HISTORY_DIR)) {
-    return [];
-  }
-
-  const files = readdirSync(HISTORY_DIR)
-    .filter(f => f.endsWith(".json"))
-    .sort();
-
-  return files.map(f => {
-    const content = readFileSync(join(HISTORY_DIR, f), "utf8");
-    return JSON.parse(content);
-  });
-}
-
 // ============================================================================
 // Change Detection
 // ============================================================================
@@ -388,7 +368,7 @@ async function analyzePatternsWithLLM(
     const prompt = buildAnalysisPrompt(changes, clusters, currentSnapshot, previousSnapshot);
 
     // Using GitHub Models API (powered by GitHub Copilot subscription)
-    // Using Claude Sonnet 4.5 - Anthropic's most advanced model, excellent for complex analysis
+    // Using Claude 3.5 Sonnet - Latest available Anthropic model for complex analysis
     const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
       method: "POST",
       headers: {
@@ -408,7 +388,7 @@ async function analyzePatternsWithLLM(
         ],
         max_tokens: 4000,
         temperature: 0.7,
-        model: "claude-sonnet-4.5",
+        model: "claude-3-5-sonnet-20241022",
       }),
     });
 
@@ -594,7 +574,8 @@ function generateDependencyGraph(snapshot: HistoricalSnapshot): string {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 30); // Limit to top 30 connections
 
-  for (const [[from, to], _] of topRefs.map(([k, v]) => [k.split("->"), v] as const)) {
+  for (const [refKey, _count] of topRefs) {
+    const [from, to] = refKey.split("->");
     const fromNode = from.replace(".", "_");
     const toNode = to.replace(".", "_");
     lines.push(`  ${fromNode} --> ${toNode}`);
@@ -841,13 +822,27 @@ async function main(): Promise<void> {
   const changes = detectChanges(patterns, previousSnapshot?.patterns || null);
   console.log(`   ${changes.length} changes detected`);
 
+  // Save snapshot for future comparisons
+  console.log("💾 Saving snapshot...");
+  saveSnapshot(currentSnapshot);
+
+  // If no changes, skip report generation
+  if (changes.length === 0) {
+    console.log("");
+    console.log("✓ No changes detected - skipping report generation");
+    console.log(`   Total patterns: ${currentSnapshot.totalCount}`);
+    console.log(`   Snapshot saved for future comparison`);
+    process.exitCode = 0;
+    return;
+  }
+
   // Determine alert level
   const { level: alertLevel, reasons: alertReasons } = determineAlertLevel(changes, patterns);
   if (alertLevel !== "none") {
     console.log(`   ⚠️  Alert level: ${alertLevel}`);
   }
 
-  // LLM analysis
+  // LLM analysis (only if there are changes)
   console.log("🤖 Running AI analysis...");
   const insights = await analyzePatternsWithLLM(changes, clusters, currentSnapshot, previousSnapshot);
 
@@ -859,11 +854,7 @@ async function main(): Promise<void> {
     alertReasons,
   };
 
-  // Save snapshot
-  console.log("💾 Saving snapshot...");
-  saveSnapshot(currentSnapshot);
-
-  // Generate outputs
+  // Generate outputs (only if there are changes)
   console.log("📝 Generating outputs...");
   generateJSON(currentSnapshot, analysis);
   generateDependencyGraph(currentSnapshot);
@@ -888,17 +879,9 @@ async function main(): Promise<void> {
   console.log(`   Changes: ${changes.length}`);
   console.log(`   Clusters: ${clusters.length}`);
   console.log(`   Alert level: ${alertLevel}`);
-
-  // Exit with code based on whether there are changes
-  if (changes.length > 0) {
-    console.log("");
-    console.log("📢 Changes detected - workflow should create PR");
-    process.exitCode = 0;
-  } else {
-    console.log("");
-    console.log("✓ No changes - no PR needed");
-    process.exitCode = 0;
-  }
+  console.log("");
+  console.log("📢 Changes detected - reports generated");
+  process.exitCode = 0;
 }
 
 // ============================================================================
