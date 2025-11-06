@@ -39,7 +39,7 @@ Ensure GitHub Actions has the necessary permissions:
 
 **Workflow:** `.github/workflows/gpt-code-review.yml`
 
-Automatically reviews pull requests using GPT-4 when:
+Automatically reviews pull requests using GPT-4o-mini when:
 - A new PR is opened
 - New commits are pushed to an existing PR
 - The PR is reopened
