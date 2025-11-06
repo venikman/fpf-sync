@@ -46,7 +46,7 @@ mcp.resource(
 mcp.resource('FPF Core Spec (holonic)', 'fpf://spec', { mimeType: 'text/markdown' }, async () => {
   const rel = await findMainFpfSpec();
   if (!rel) throw new Error('Main FPF spec not found under yadisk/');
-  const abs = isAllowedFpfPath(rel);
+  const abs = await isAllowedFpfPath(rel);
   const text = await readFile(abs, 'utf8');
   return { contents: [{ uri: 'fpf://spec', mimeType: 'text/markdown', text }] };
 });
@@ -86,7 +86,7 @@ mcp.tool(
   'fpf.read_fpf_doc',
   { path: z.string() },
   async (args) => {
-    const abs = isAllowedFpfPath(String(args.path));
+    const abs = await isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
     return { content: [{ type: 'text', text }] };
   },
@@ -102,7 +102,7 @@ mcp.tool(
   async (args) => {
     const rel = args?.path ? String(args.path) : await findMainFpfSpec();
     if (!rel) throw new Error('No FPF doc specified and main spec not found');
-    const abs = isAllowedFpfPath(rel);
+    const abs = await isAllowedFpfPath(rel);
     const text = await readFile(abs, 'utf8');
     const topics = await extractTopicsFromMarkdown(text, Number(args?.maxTopics ?? 12));
     return {
@@ -179,7 +179,7 @@ mcp.tool(
     const docs = await listWhitelistedFpfDocs();
     const results: { path: string; matches: number }[] = [];
     for (const p of docs) {
-      const abs = isAllowedFpfPath(p);
+      const abs = await isAllowedFpfPath(p);
       const text = await readFile(abs, 'utf8');
       const matches = (text.toLowerCase().match(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length;
       if (matches > 0) results.push({ path: p, matches });
@@ -193,7 +193,7 @@ mcp.tool(
   'fpf.list_headings',
   { path: z.string(), depthMax: z.number().int().min(1).max(6).optional() },
   async (args) => {
-    const abs = isAllowedFpfPath(String(args.path));
+    const abs = await isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
     const depth = Number(args?.depthMax ?? 6);
     const headings = extractHeadings(text, depth);
@@ -215,7 +215,7 @@ const docTemplate2 = new ResourceTemplate('fpf://doc/{path}', {
 
 mcp.resource('FPF docs', docTemplate2, { mimeType: 'text/markdown' }, async (_uri, variables) => {
   const rel = decodeURIComponent(String(variables.path || ''));
-  const abs = isAllowedFpfPath(rel);
+  const abs = await isAllowedFpfPath(rel);
   const text = await readFile(abs, 'utf8');
   return { contents: [{ uri: `fpf://doc/${encodeURIComponent(rel)}`, mimeType: 'text/markdown', text }] };
 });

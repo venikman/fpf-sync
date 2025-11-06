@@ -1,5 +1,5 @@
 import { readFile, mkdir } from 'node:fs/promises';
-import { EPISTEMES_PATH, DATA_DIR } from './util.ts';
+import { EPISTEMES_PATH, DATA_DIR, writeFileAtomic } from './util.ts';
 import type { Episteme, CreateEpistemeInput, UpdateEpistemePatch } from './types.ts';
 
 async function ensureStoreFile(): Promise<void> {
@@ -7,7 +7,7 @@ async function ensureStoreFile(): Promise<void> {
   try {
     await readFile(EPISTEMES_PATH, 'utf8');
   } catch {
-    await Bun.write(EPISTEMES_PATH, '[]');
+    await writeFileAtomic(EPISTEMES_PATH, '[]');
   }
 }
 
@@ -16,8 +16,13 @@ export async function listEpistemes(): Promise<Episteme[]> {
   const raw = await readFile(EPISTEMES_PATH, 'utf8');
   try {
     const arr = JSON.parse(raw) as Episteme[];
-    return Array.isArray(arr) ? arr : [];
-  } catch {
+    if (!Array.isArray(arr)) {
+      console.error(`[store] ${EPISTEMES_PATH}: Data is not an array, returning empty array`);
+      return [];
+    }
+    return arr;
+  } catch (err) {
+    console.error(`[store] ${EPISTEMES_PATH}: JSON parse error, returning empty array:`, err);
     return [];
   }
 }
@@ -41,7 +46,7 @@ export function createEpisteme(input: CreateEpistemeInput): Promise<Episteme> {
     };
     const all = await listEpistemes();
     all.push(ep);
-    await Bun.write(EPISTEMES_PATH, JSON.stringify(all, null, 2));
+    await writeFileAtomic(EPISTEMES_PATH, JSON.stringify(all, null, 2));
     return ep;
   })();
 }
@@ -58,7 +63,7 @@ export function updateEpisteme(id: string, patch: UpdateEpistemePatch): Promise<
       updatedAt: new Date().toISOString(),
     };
     all[idx] = next;
-    await Bun.write(EPISTEMES_PATH, JSON.stringify(all, null, 2));
+    await writeFileAtomic(EPISTEMES_PATH, JSON.stringify(all, null, 2));
     return next;
   })();
 }
@@ -69,7 +74,7 @@ export function deleteEpisteme(id: string): Promise<boolean> {
     const next = all.filter(e => e.id !== id);
     const changed = next.length !== all.length;
     if (changed) {
-      await Bun.write(EPISTEMES_PATH, JSON.stringify(next, null, 2));
+      await writeFileAtomic(EPISTEMES_PATH, JSON.stringify(next, null, 2));
     }
     return changed;
   })();

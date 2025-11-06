@@ -68,7 +68,7 @@ mcp.resource(
 mcp.resource('FPF Core Spec (holonic)', 'fpf://spec', { mimeType: 'text/markdown' }, async () => {
   const rel = await findMainFpfSpec();
   if (!rel) throw new Error('Main FPF spec not found under yadisk/');
-  const abs = isAllowedFpfPath(rel);
+  const abs = await isAllowedFpfPath(rel);
   const text = await readFile(abs, 'utf8');
   return { contents: [{ uri: 'fpf://spec', mimeType: 'text/markdown', text }] };
 });
@@ -364,7 +364,7 @@ mcp.tool(
   'fpf.read_fpf_doc',
   { path: z.string() },
   async (args) => {
-    const abs = isAllowedFpfPath(String(args.path));
+    const abs = await isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
     return { content: [{ type: 'text', text }] };
   },
@@ -380,7 +380,7 @@ mcp.tool(
   async (args) => {
     const rel = args?.path ? String(args.path) : await findMainFpfSpec();
     if (!rel) throw new Error('No FPF doc specified and main spec not found');
-    const abs = isAllowedFpfPath(rel);
+    const abs = await isAllowedFpfPath(rel);
     const text = await readFile(abs, 'utf8');
     const topics = await extractTopicsFromMarkdown(text, Number(args?.maxTopics ?? 12));
     return {
@@ -457,7 +457,7 @@ mcp.tool(
     const docs = await listWhitelistedFpfDocs();
     const results: { path: string; matches: number }[] = [];
     for (const p of docs) {
-      const abs = isAllowedFpfPath(p);
+      const abs = await isAllowedFpfPath(p);
       const text = await readFile(abs, 'utf8');
       const matches = (text.toLowerCase().match(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length;
       if (matches > 0) results.push({ path: p, matches });
@@ -472,7 +472,7 @@ mcp.tool(
   'fpf.list_headings',
   { path: z.string(), depthMax: z.number().int().min(1).max(6).optional() },
   async (args) => {
-    const abs = isAllowedFpfPath(String(args.path));
+    const abs = await isAllowedFpfPath(String(args.path));
     const text = await readFile(abs, 'utf8');
     const depth = Number(args?.depthMax ?? 6);
     const headings = extractHeadings(text, depth);
@@ -496,7 +496,7 @@ const docTemplate = new ResourceTemplate('fpf://doc/{path}', {
 
 mcp.resource('FPF docs', docTemplate, { mimeType: 'text/markdown' }, async (_uri, variables) => {
   const rel = decodeURIComponent(String(variables.path || ''));
-  const abs = isAllowedFpfPath(rel);
+  const abs = await isAllowedFpfPath(rel);
   const text = await readFile(abs, 'utf8');
   return { contents: [{ uri: `fpf://doc/${encodeURIComponent(rel)}`, mimeType: 'text/markdown', text }] };
 });
@@ -547,13 +547,40 @@ mcp.tool(
 
 // Maintain a map of active SSE transports by sessionId for routing POST messages
 const sessions = new Map<string, SSEServerTransport>();
+const sessionActivity = new Map<string, number>(); // sessionId -> last activity timestamp
+const SESSION_TIMEOUT_MS = 60 * 60 * 1000; // 1 hour
+const MAX_CONCURRENT_SESSIONS = 100;
+
+// Periodic cleanup of stale sessions (every 5 minutes)
+setInterval(() => {
+  const now = Date.now();
+  const stale: string[] = [];
+  for (const [sessionId, lastActivity] of sessionActivity.entries()) {
+    if (now - lastActivity > SESSION_TIMEOUT_MS) {
+      stale.push(sessionId);
+    }
+  }
+  for (const sessionId of stale) {
+    console.log(`[cleanup] Removing stale session: ${sessionId}`);
+    sessions.delete(sessionId);
+    sessionActivity.delete(sessionId);
+  }
+  if (stale.length > 0) {
+    console.log(`[cleanup] Removed ${stale.length} stale session(s), ${sessions.size} active`);
+  }
+}, 5 * 60 * 1000);
 
 async function main() {
   const port = Number(process.env.PORT || 8080);
+  // CORS configuration: default to localhost only, can be overridden with FPF_CORS_ORIGIN
+  // Set to '*' for permissive mode (not recommended for production)
+  const allowedOrigin = process.env.FPF_CORS_ORIGIN || 'http://localhost:3000';
+  console.log(`CORS allowed origin: ${allowedOrigin}`);
+
   const server = http.createServer(async (req, res) => {
     // Add CORS headers to all responses
     const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': allowedOrigin,
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept',
       'Access-Control-Max-Age': '86400',
@@ -570,6 +597,12 @@ async function main() {
       }
 
       if (req.method === 'GET' && url.pathname === '/sse') {
+        // Enforce concurrent session limit
+        if (sessions.size >= MAX_CONCURRENT_SESSIONS) {
+          res.writeHead(503, { ...corsHeaders, 'Content-Type': 'text/plain' });
+          res.end(`Too many concurrent sessions (max ${MAX_CONCURRENT_SESSIONS})`);
+          return;
+        }
         // SSE already sets its own headers, but add CORS
         const transport = new SSEServerTransport('/messages', res, {
           // Disable DNS rebinding protection for local development
@@ -578,10 +611,12 @@ async function main() {
         // When the connection closes, clean up the session
         transport.onclose = () => {
           sessions.delete(transport.sessionId);
+          sessionActivity.delete(transport.sessionId);
           console.log(`Session closed: ${transport.sessionId}`);
         };
         sessions.set(transport.sessionId, transport);
-        console.log(`New SSE session: ${transport.sessionId}`);
+        sessionActivity.set(transport.sessionId, Date.now());
+        console.log(`New SSE session: ${transport.sessionId} (${sessions.size} active)`);
         await mcp.connect(transport); // connect() will call transport.start()
         return;
       }
@@ -593,6 +628,10 @@ async function main() {
           res.writeHead(404, { ...corsHeaders, 'Content-Type': 'text/plain' });
           res.end('Unknown session');
           return;
+        }
+        // Update activity timestamp
+        if (sessionId) {
+          sessionActivity.set(sessionId, Date.now());
         }
         // handlePostMessage will set its own status and headers
         await transport.handlePostMessage(req, res);

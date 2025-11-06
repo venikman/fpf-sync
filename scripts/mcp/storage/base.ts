@@ -1,8 +1,9 @@
 import { readFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { DATA_DIR } from '../util.ts';
+import { DATA_DIR, writeFileAtomic } from '../util.ts';
 
-// Minimal JSON-array store using Bun.read/write without mutex/atomic rename
+// Minimal JSON-array store with atomic writes
+// Note: For high-concurrency scenarios, consider using SQLite or adding file locking
 
 export type WithId = { id: string };
 
@@ -11,7 +12,7 @@ async function ensureFile(path: string, initial = '[]') {
   try {
     await readFile(path, 'utf8');
   } catch {
-    await Bun.write(path, initial);
+    await writeFileAtomic(path, initial);
   }
 }
 
@@ -23,14 +24,19 @@ export function makeJsonStore<T extends WithId>(fileName: string) {
     const raw = await readFile(filePath, 'utf8');
     try {
       const arr = JSON.parse(raw) as T[];
-      return Array.isArray(arr) ? arr : [];
-    } catch {
+      if (!Array.isArray(arr)) {
+        console.error(`[storage] ${filePath}: Data is not an array, returning empty array`);
+        return [];
+      }
+      return arr;
+    } catch (err) {
+      console.error(`[storage] ${filePath}: JSON parse error, returning empty array:`, err);
       return [];
     }
   }
 
   function saveAll(items: T[]): Promise<void> {
-    return Bun.write(filePath, JSON.stringify(items, null, 2)).then(() => {});
+    return writeFileAtomic(filePath, JSON.stringify(items, null, 2));
   }
 
   async function get(id: string): Promise<T | undefined> {
