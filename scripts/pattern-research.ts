@@ -8,9 +8,9 @@ import { join, dirname } from "node:path";
 // ============================================================================
 
 const SPEC_PATH = "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md";
-const JOURNAL_PATH = "docs/research/fpf-pattern-journal.md";
-const HISTORY_DIR = "docs/research/pattern-history";
-const OUTPUT_DIR = "docs/research/pattern-outputs";
+const JOURNAL_PATH = "reports/fpf-pattern-journal.md";
+const HISTORY_DIR = "reports/pattern-history";
+const OUTPUT_DIR = "reports/pattern-outputs";
 
 // ============================================================================
 // Type Definitions
@@ -376,46 +376,50 @@ async function analyzePatternsWithLLM(
   currentSnapshot: HistoricalSnapshot,
   previousSnapshot: HistoricalSnapshot | null
 ): Promise<string> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
-    console.log("ℹ️  ANTHROPIC_API_KEY not set - skipping LLM analysis");
-    return "LLM analysis skipped (no API key configured)";
+    console.log("ℹ️  OPENAI_API_KEY not set - skipping AI analysis");
+    return "AI analysis skipped (no API key configured)";
   }
 
   try {
     const prompt = buildAnalysisPrompt(changes, clusters, currentSnapshot, previousSnapshot);
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
+        "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "claude-3-5-sonnet-20241022",
-        max_tokens: 2000,
+        model: "gpt-4o",
         messages: [
+          {
+            role: "system",
+            content: "You are an expert at analyzing software architecture patterns and frameworks. Provide concise, technical analysis focused on actionable insights."
+          },
           {
             role: "user",
             content: prompt,
           },
         ],
+        max_tokens: 2000,
+        temperature: 0.7,
       }),
     });
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("LLM API error:", error);
-      return "LLM analysis failed (API error)";
+      console.error("OpenAI API error:", error);
+      return "AI analysis failed (API error)";
     }
 
     const data = await response.json();
-    return data.content[0].text;
+    return data.choices[0].message.content;
   } catch (error) {
-    console.error("LLM analysis error:", error);
-    return `LLM analysis failed: ${error}`;
+    console.error("AI analysis error:", error);
+    return `AI analysis failed: ${error}`;
   }
 }
 

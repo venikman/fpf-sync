@@ -2,7 +2,7 @@
 
 ## Overview
 
-This directory contains the automated FPF Pattern Research system, which tracks the evolution of patterns in the First Principles Framework specification.
+The automated FPF Pattern Research system tracks the evolution of patterns in the First Principles Framework specification. Reports are automatically generated and committed to the `reports/` folder.
 
 ## Features
 
@@ -18,12 +18,12 @@ Detects three types of changes:
 - **Removed**: Patterns that no longer exist
 
 ### 3. 🤖 AI-Powered Analysis
-- Uses Claude (Anthropic API) to analyze pattern changes
+- Uses OpenAI GPT-4 to analyze pattern changes
 - Provides insights on:
   - Architectural implications
   - Emerging themes
   - Integration points and potential tensions
-- Requires `ANTHROPIC_API_KEY` environment variable
+- Requires `OPENAI_API_KEY` environment variable (works with your OpenAI Pro subscription)
 
 ### 4. 🧩 Dynamic Cluster Discovery
 - Automatically discovers pattern relationships via cross-references
@@ -69,8 +69,7 @@ Detects three types of changes:
 ## Directory Structure
 
 ```
-docs/research/
-├── README.md                           # This file
+reports/
 ├── fpf-pattern-journal.md              # Main journal (human-readable)
 ├── pattern-history/                    # Historical snapshots
 │   ├── 2025-11-06_12-00-00-local.json
@@ -80,6 +79,9 @@ docs/research/
     ├── patterns-2025-11-07_12-00-00.json
     ├── dependency-graph-2025-11-06_12-00-00.md
     └── dependency-graph-2025-11-07_12-00-00.md
+
+docs/research/
+└── README.md                           # This documentation file
 ```
 
 ## Running Locally
@@ -88,8 +90,8 @@ docs/research/
 # Without AI analysis
 bun run scripts/pattern-research.ts
 
-# With AI analysis
-ANTHROPIC_API_KEY=your_key_here bun run scripts/pattern-research.ts
+# With AI analysis (using your OpenAI Pro subscription)
+OPENAI_API_KEY=your_key_here bun run scripts/pattern-research.ts
 ```
 
 ## GitHub Workflow
@@ -106,17 +108,17 @@ The workflow runs:
    - Pattern history
    - Pattern outputs
 3. If changes detected:
-   - Creates a new branch
-   - Commits all changes
-   - Opens a PR with:
-     - Detailed summary
-     - Alert level in title
-     - Priority labels based on alert level
-     - Links to outputs
+   - Commits all changes directly to the `reports/` folder
+   - No PR creation - reports are auto-committed
+   - Commit message includes:
+     - Alert level emoji
+     - Date of analysis
+     - Summary of what changed
 
 ### Required Secrets
 
-- `ANTHROPIC_API_KEY` (optional): For AI-powered analysis
+- `OPENAI_API_KEY` (optional): For AI-powered analysis
+  - Use your OpenAI Pro subscription API key
   - If not set, analysis runs but skips AI insights
 
 ## Use Cases
@@ -152,10 +154,16 @@ Review the **dependency graphs** to:
 
 ## Changelog
 
+### 2025-11-06 - Direct Commit & OpenAI Integration
+- ✅ Switched from Claude API to OpenAI GPT-4
+- ✅ Changed workflow to commit directly to `reports/` folder (no PRs)
+- ✅ Simplified deployment - reports auto-commit on main branch
+- ✅ Compatible with OpenAI Pro subscriptions
+
 ### 2025-11-06 - Enhanced Analysis System
 - ✅ Added historical tracking (append mode)
 - ✅ Implemented change detection
-- ✅ Added AI-powered analysis (Claude API)
+- ✅ Added AI-powered analysis
 - ✅ Dynamic cluster discovery
 - ✅ Multiple output formats (JSON, Mermaid)
 - ✅ Alert system with priority levels
