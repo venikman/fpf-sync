@@ -56,7 +56,13 @@ async function callGPT(prompt: string, systemPrompt: string, model = "gpt-4o-min
 }
 
 async function reviewCode(target: string): Promise<string> {
-  const { stdout: diff } = await execAsync(`git --no-pager diff ${target || "HEAD~1"}...HEAD`);
+  // Validate target to prevent command injection
+  const safeTarget = target || "HEAD~1";
+  if (!/^[a-zA-Z0-9._~\-]+$/.test(safeTarget) && !/^HEAD~\d+$/.test(safeTarget)) {
+    throw new Error("Invalid target format for code review");
+  }
+  
+  const { stdout: diff } = await execAsync(`git --no-pager diff ${safeTarget}...HEAD`);
   
   const systemPrompt = "You are an expert code reviewer. Provide constructive feedback on code quality, potential bugs, and best practices.";
   const prompt = `Review these code changes:\n\`\`\`diff\n${diff}\n\`\`\``;
@@ -65,7 +71,7 @@ async function reviewCode(target: string): Promise<string> {
 }
 
 async function checkDocumentation(target: string): Promise<string> {
-  const files = target || "README.md DEVELOPERS.md docs/**/*.md";
+  // Use find for safety instead of direct file expansion
   const { stdout } = await execAsync(`find . -name "*.md" -type f | head -10 | xargs cat`);
   
   const systemPrompt = "You are a technical documentation expert. Review documentation for clarity, completeness, and accuracy.";
@@ -75,7 +81,12 @@ async function checkDocumentation(target: string): Promise<string> {
 }
 
 async function analyzeCommits(target: string): Promise<string> {
+  // Validate commit range to prevent command injection
   const range = target || "HEAD~10..HEAD";
+  if (!/^[a-zA-Z0-9._~\-]+\.\.[a-zA-Z0-9._~\-]+$/.test(range) && !/^HEAD~\d+\.\.HEAD$/.test(range)) {
+    throw new Error("Invalid commit range format");
+  }
+  
   const { stdout: commits } = await execAsync(`git --no-pager log ${range} --oneline --no-decorate`);
   const { stdout: stats } = await execAsync(`git --no-pager log ${range} --stat --oneline --no-decorate`);
   
@@ -86,6 +97,11 @@ async function analyzeCommits(target: string): Promise<string> {
 }
 
 async function triageIssue(issueNumber: string): Promise<string> {
+  // Validate issue number to prevent command injection
+  if (!/^\d+$/.test(issueNumber)) {
+    throw new Error("Invalid issue number format");
+  }
+  
   const { stdout } = await execAsync(`gh issue view ${issueNumber} --json title,body,labels --jq '{title, body, labels}'`);
   const issue = JSON.parse(stdout);
   
