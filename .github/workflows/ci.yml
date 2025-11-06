@@ -31,15 +31,6 @@ jobs:
       - name: Type check
         run: bun run typecheck
 
-      - name: Verify non-server scripts syntax
-        run: |
-          echo "Checking non-server scripts can be parsed..."
-          # Only check scripts that don't start servers
-          bun build --target=bun --format=esm scripts/yadisk-sync.mjs > /dev/null
-          bun build --target=bun --format=esm scripts/backup-sqlite.ts > /dev/null
-          bun build --target=bun --format=esm scripts/migrate-to-sqlite.ts > /dev/null
-          echo "✓ All non-server scripts are valid"
-
       - name: Check for TypeScript errors in all scripts
         run: |
           echo "Checking TypeScript compilation..."
