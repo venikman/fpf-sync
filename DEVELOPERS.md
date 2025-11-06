@@ -55,6 +55,99 @@ bun run mcp:fpf:sse      # HTTP/SSE (web clients)
 
 **Env vars:** `PORT` (3333), `FPF_READONLY` (1), `FPF_DATA_DIR` (./data), `FPF_DOCS_DIR` (./yadisk)
 
+**Security env vars:**
+- `FPF_MAX_LOG_SIZE` - Max log file size before rotation (default: 100MB)
+- `FPF_MAX_LOG_ROTATIONS` - Number of rotated logs to keep (default: 5)
+- `FPF_RATE_LIMIT` - Max requests per minute per IP (default: 100)
+- `FPF_MAX_BODY_SIZE` - Max request body size in bytes (default: 1MB)
+- `FPF_ALLOWED_HOSTS` - Comma-separated list of allowed hosts (default: localhost,127.0.0.1)
+
+## Database Management
+
+### Backup Database
+
+Create timestamped backups of the SQLite database:
+
+```bash
+# Basic backup
+bun run scripts/backup-sqlite.ts
+
+# Export to JSON and keep 5 most recent backups
+bun run scripts/backup-sqlite.ts --json --keep=5
+
+# Custom output directory
+bun run scripts/backup-sqlite.ts --output=/mnt/backups
+```
+
+**Features:**
+- Automatic backup rotation (keeps last N backups)
+- SHA256 checksum verification
+- Optional JSON export for human-readable format
+- Database integrity validation
+
+**Output:**
+- `data/backups/fpf-backup-YYYY-MM-DDTHH-MM-SS.db` - Backup file
+- `data/backups/fpf-backup-YYYY-MM-DDTHH-MM-SS.db.sha256` - Checksum
+- `data/backups/fpf-backup-YYYY-MM-DDTHH-MM-SS/` - JSON exports (if `--json`)
+
+### Restore Database
+
+Restore from a previous backup:
+
+```bash
+# Interactive restore (with confirmation)
+bun run scripts/restore-sqlite.ts data/backups/fpf-backup-2025-01-15T10-30-00.db
+
+# Force restore without confirmation
+bun run scripts/restore-sqlite.ts backup.db --force
+
+# Restore without creating pre-restore backup
+bun run scripts/restore-sqlite.ts backup.db --no-backup
+```
+
+**Safety features:**
+- Automatic checksum verification
+- Pre-restore backup of current database
+- Database integrity validation
+- Interactive confirmation prompt
+
+**Note:** The MCP server should be stopped before restoring to avoid database locks.
+
+## Continuous Integration
+
+The project uses GitHub Actions for CI/CD with automated checks on all pull requests and pushes to main.
+
+**Workflows:**
+- `.github/workflows/ci.yml` - Type checking, build verification, security checks
+- `.github/workflows/yadisk-sync.yml` - Automated Yandex Disk sync (daily)
+- `.github/workflows/fpf-pattern-research.yml` - FPF pattern analysis
+- `.github/workflows/fly-deploy.yml` - Deployment to Fly.io
+
+**CI Checks:**
+1. **Type Check** - Verifies TypeScript types with `bun run typecheck`
+2. **Build Verification** - Ensures all scripts load without errors
+3. **Lint & Format** - Code quality checks (currently stubbed, will fail gracefully)
+4. **Security** - Scans for hardcoded secrets and suspicious patterns
+
+**Running CI locally:**
+```bash
+# Type check (must pass)
+bun run typecheck
+
+# Verify scripts load
+bun run --dry-run scripts/mcp/server.ts
+bun run --dry-run scripts/backup-sqlite.ts
+
+# Check individual file
+bun run tsc --noEmit --skipLibCheck scripts/mcp/server.ts
+```
+
+**CI will fail if:**
+- TypeScript type errors exist
+- Scripts fail to load/parse
+- Hardcoded secrets detected
+- Any test job fails
+
 ## GitHub Actions Configuration
 
 **Permissions:** Settings → Actions → Workflow permissions

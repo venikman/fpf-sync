@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Type Check & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Type check
+        run: bun run typecheck
+
+      - name: Verify scripts load
+        run: |
+          echo "Verifying MCP server scripts..."
+          bun run --dry-run scripts/mcp/server.ts
+          bun run --dry-run scripts/mcp/server-sse.ts
+
+          echo "Verifying sync script..."
+          bun run --dry-run scripts/yadisk-sync.mjs
+
+          echo "Verifying backup/restore utilities..."
+          bun run --dry-run scripts/backup-sqlite.ts
+          bun run --dry-run scripts/restore-sqlite.ts
+
+          echo "Verifying migration script..."
+          bun run --dry-run scripts/migrate-to-sqlite.ts
+
+      - name: Check for TypeScript errors in all scripts
+        run: |
+          echo "Checking TypeScript compilation..."
+          # Use tsc to check all .ts files compile without errors
+          find scripts -name "*.ts" -type f | while read -r file; do
+            echo "Checking $file..."
+            bun run tsc --noEmit --skipLibCheck "$file" || exit 1
+          done
+
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run lint
+        run: bun run lint
+        continue-on-error: true  # Don't fail CI since lint is not configured yet
+
+      - name: Run format check
+        run: bun run fmt
+        continue-on-error: true  # Don't fail CI since format is not configured yet
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for secrets in code
+        run: |
+          echo "Checking for potential secrets..."
+          # Check for common secret patterns
+          if grep -r -i "password\s*=\s*['\"]" scripts/ 2>/dev/null | grep -v "console.log" | grep -v "//"; then
+            echo "⚠️ Warning: Found hardcoded password-like strings"
+            exit 1
+          fi
+
+          if grep -r "api[_-]key\s*=\s*['\"]" scripts/ 2>/dev/null | grep -v "console.log" | grep -v "//"; then
+            echo "⚠️ Warning: Found hardcoded API key-like strings"
+            exit 1
+          fi
+
+          echo "✓ No obvious secrets found"
+
+      - name: Check file permissions
+        run: |
+          echo "Checking for overly permissive files..."
+          # Executable scripts should be in scripts/ directory
+          find . -type f -executable ! -path "./.git/*" ! -path "./node_modules/*" ! -path "./scripts/*" ! -name "*.sh" | while read -r file; do
+            echo "⚠️ Warning: Unexpected executable file: $file"
+          done
+          echo "✓ File permissions check complete"
+
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [test, lint, security]
+    if: always()
+    timeout-minutes: 2
+
+    steps:
+      - name: Check job statuses
+        run: |
+          echo "CI Summary:"
+          echo "- Test: ${{ needs.test.result }}"
+          echo "- Lint: ${{ needs.lint.result }}"
+          echo "- Security: ${{ needs.security.result }}"
+
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "❌ Tests failed"
+            exit 1
+          fi
+
+          if [ "${{ needs.security.result }}" != "success" ]; then
+            echo "❌ Security checks failed"
+            exit 1
+          fi
+
+          echo "✅ CI passed"
