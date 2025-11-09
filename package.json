@@ -6,8 +6,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "oxlint .",
     "fmt": "echo 'format: use oxlint for linting, add prettier if formatting needed' && exit 0",
-    "yadisk:sync": "bun run scripts/yadisk-sync.mjs",
-    "agentic:diff-eval": "bash scripts/agentic/diff-eval.sh"
+    "yadisk:sync": "bun run scripts/yadisk/sync.mjs",
+    "diff-eval": "bash scripts/diff-eval/diff-eval.sh"
   },
   "dependencies": {},
   "devDependencies": {

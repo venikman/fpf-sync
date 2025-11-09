@@ -43,7 +43,7 @@ jobs:
       - name: Run diff evaluation
         id: eval
         run: |
-          bash scripts/agentic/diff-eval.sh | tee analysis.md
+          bash scripts/diff-eval/diff-eval.sh | tee analysis.md
         env:
           DIFF_TARGET_PATH: ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}
           AGENT_NAME: ${{ vars.DIFF_AGENT_NAME || 'diff-evaluator' }}

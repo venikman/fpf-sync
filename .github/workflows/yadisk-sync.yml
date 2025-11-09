@@ -39,7 +39,7 @@ jobs:
 
       - name: Download from Yandex Disk
         run: |
-          bun run scripts/yadisk-sync.mjs --max-bytes "${{ vars.YANDEX_MAX_BYTES || '10485760' }}"
+          bun run scripts/yadisk/sync.mjs --max-bytes "${{ vars.YANDEX_MAX_BYTES || '10485760' }}"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6

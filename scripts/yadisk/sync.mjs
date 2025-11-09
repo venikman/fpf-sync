@@ -58,13 +58,40 @@ function formatErrorMessage(url, status, body) {
   return message;
 }
 
-async function fetchJson(url, opts = {}) {
-  const response = await fetch(url, opts);
-  if (response.ok) {
-    return response.json();
+async function fetchWithRetry(url, opts = {}, maxRetries = 3) {
+  let lastError;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, opts);
+      if (response.ok) {
+        return response;
+      }
+      // Retry on 429 and 5xx errors
+      if (attempt < maxRetries && (response.status === 429 || response.status >= 500)) {
+        const delay = Math.pow(2, attempt) * 1000;
+        console.log(`Retry ${attempt + 1}/${maxRetries} after ${delay}ms (status: ${response.status})`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+      const body = await response.text();
+      throw new Error(formatErrorMessage(url, response.status, body));
+    } catch (error) {
+      lastError = error;
+      if (attempt < maxRetries && (error.name === 'FetchError' || error.code === 'ECONNRESET')) {
+        const delay = Math.pow(2, attempt) * 1000;
+        console.log(`Network error, retry ${attempt + 1}/${maxRetries} after ${delay}ms`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+      throw error;
+    }
   }
-  const body = await response.text();
-  throw new Error(formatErrorMessage(url, response.status, body));
+  throw lastError;
+}
+
+async function fetchJson(url, opts = {}) {
+  const response = await fetchWithRetry(url, opts);
+  return response.json();
 }
 
 const DEFAULT_MAX_FILE_SIZE = 10_485_760;
@@ -185,11 +212,7 @@ async function getDownloadUrl(publicUrl, filePath, verbose) {
 
 async function downloadFile(url, maxBytes, verbose) {
   if (verbose) console.log('Downloading from:', url);
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`Failed to download file: HTTP ${response.status}`);
-  }
+  const response = await fetchWithRetry(url);
 
   const contentLength = Number(response.headers.get('content-length') || 0);
   if (Number.isFinite(contentLength) && contentLength >= 0) {
