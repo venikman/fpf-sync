@@ -7,7 +7,6 @@
     "lint": "oxlint .",
     "fmt": "echo 'format: use oxlint for linting, add prettier if formatting needed' && exit 0",
     "yadisk:sync": "bun run scripts/yadisk-sync.mjs",
-    "pattern:research": "bun run scripts/pattern-research.ts",
     "agentic:diff-eval": "bash scripts/agentic/diff-eval.sh"
   },
   "dependencies": {},
