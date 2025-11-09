@@ -2,6 +2,7 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { runWarpAgent } from "./agents/warp-agent-client.ts";
 
 // ============================================================================
 // Configuration
@@ -348,7 +349,7 @@ function detectChanges(
 }
 
 // ============================================================================
-// LLM Analysis
+// LLM Analysis (Warp Agent)
 // ============================================================================
 
 async function analyzePatternsWithLLM(
@@ -357,52 +358,17 @@ async function analyzePatternsWithLLM(
   currentSnapshot: HistoricalSnapshot,
   previousSnapshot: HistoricalSnapshot | null
 ): Promise<string> {
-  const githubToken = process.env.GITHUB_TOKEN;
-
-  if (!githubToken) {
-    console.log("ℹ️  GITHUB_TOKEN not set - skipping AI analysis");
-    return "AI analysis skipped (no GitHub token configured)";
-  }
-
   try {
     const prompt = buildAnalysisPrompt(changes, clusters, currentSnapshot, previousSnapshot);
-
-    // Using GitHub Models API (powered by GitHub Copilot subscription)
-    // Using Claude 3.5 Sonnet - Latest available Anthropic model for complex analysis
-    const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${githubToken}`,
-      },
-      body: JSON.stringify({
-        messages: [
-          {
-            role: "system",
-            content: "You are an expert at analyzing software architecture patterns and frameworks. Provide concise, technical analysis focused on actionable insights."
-          },
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        max_tokens: 4000,
-        temperature: 0.7,
-        model: "claude-3-5-sonnet-20241022",
-      }),
+    const output = await runWarpAgent({
+      agent: "pattern-research",
+      input: prompt,
+      timeoutMs: 120_000,
     });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("GitHub Models API error:", errorText);
-      return "AI analysis failed (GitHub Models API error)";
-    }
-
-    const data = await response.json();
-    return data.choices[0].message.content;
+    return output || "Warp Agent returned empty analysis";
   } catch (error) {
-    console.error("AI analysis error:", error);
-    return `AI analysis failed: ${error}`;
+    console.error("Warp Agent analysis error:", error);
+    return `AI analysis failed: ${error instanceof Error ? error.message : String(error)}`;
   }
 }
 
@@ -689,7 +655,7 @@ function generateChangelogReport(
 
   // AI Insights
   if (analysis.insights && analysis.insights.length > 0 && !analysis.insights.includes("skipped")) {
-    lines.push("## AI Analysis (Claude Sonnet 4.5)");
+    lines.push("## Warp Agent Analysis");
     lines.push("");
     lines.push(analysis.insights);
     lines.push("");
@@ -722,7 +688,7 @@ function generateChangelogIndex(): string {
   lines.push("- Alert level and reasons");
   lines.push("- Pattern counts by category");
   lines.push("- Discovered pattern clusters");
-  lines.push("- AI-powered analysis (Claude Sonnet 4.5)");
+  lines.push("- Warp Agent analysis");
   lines.push("- Links to detailed outputs (JSON, graphs)");
   lines.push("");
 
@@ -883,10 +849,6 @@ async function main(): Promise<void> {
   console.log("📢 Changes detected - reports generated");
   process.exitCode = 0;
 }
-
-// ============================================================================
-// Entry Point
-// ============================================================================
 
 try {
   await main();

@@ -26,12 +26,24 @@ jobs:
       - name: Install dependencies
         run: bun install --no-progress
 
+      - name: Install Warp CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gpg
+          wget -qO- https://releases.warp.dev/linux/keys/warp.asc | gpg --dearmor > warpdotdev.gpg
+          sudo install -D -o root -g root -m 644 warpdotdev.gpg /etc/apt/keyrings/warpdotdev.gpg
+          sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/warpdotdev.gpg] https://releases.warp.dev/linux/deb stable main" > /etc/apt/sources.list.d/warpdotdev.list'
+          rm warpdotdev.gpg
+          sudo apt-get update
+          sudo apt-get install -y warp-cli
+
       - name: Run pattern scanner
         run: bun run scripts/pattern-research.ts
         env:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_SHA: ${{ github.sha }}
-          GITHUB_TOKEN: ${{ github.token }}
+          WARP_AGENT_MODE: cli
+          WARP_AGENT_CLI: warp-cli
 
       - name: Check for updates
         id: git_status
@@ -55,16 +67,12 @@ jobs:
       - name: Commit pattern research reports
         if: steps.git_status.outputs.changed == 'true'
         run: |
-          # Add all research outputs to reports folder
           git add "$CHANGELOG_DIR"
           git add "$CHANGELOG_INDEX"
           git add reports/pattern-history/
           git add reports/pattern-outputs/
 
-          # Extract alert level for commit message
           ALERT_LEVEL="${{ steps.git_status.outputs.alert_level }}"
-
-          # Determine alert emoji
           if [ "$ALERT_LEVEL" = "high" ]; then
             ALERT_EMOJI="🚨"
           elif [ "$ALERT_LEVEL" = "medium" ]; then
@@ -75,22 +83,8 @@ jobs:
             ALERT_EMOJI="✓"
           fi
 
-          # Create commit message
-          COMMIT_MSG="${ALERT_EMOJI} chore: update FPF pattern research reports [$(date -u +%F)]
+          COMMIT_MSG="${ALERT_EMOJI} chore: update FPF pattern research reports [$(date -u +%F)]\n\nAlert level: ${ALERT_LEVEL}\nRun ID: ${{ github.run_id }}\nCommit: ${{ github.sha }}\n\nThis automated commit includes:\n- New changelog report in reports/changelog/\n- Updated CHANGELOG.md index\n- JSON output for programmatic analysis\n- Dependency graphs (Mermaid diagrams)\n- Historical snapshot for trend analysis\n- Warp Agent insights"
 
-Alert level: ${ALERT_LEVEL}
-Run ID: ${{ github.run_id }}
-Commit: ${{ github.sha }}
-
-This automated commit includes:
-- New changelog report in reports/changelog/
-- Updated CHANGELOG.md index
-- JSON output for programmatic analysis
-- Dependency graphs (Mermaid diagrams)
-- Historical snapshot for trend analysis
-- AI-powered insights (Claude 3.5 Sonnet)"
-
-          # Commit and push directly to main
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit -m "$COMMIT_MSG"
 

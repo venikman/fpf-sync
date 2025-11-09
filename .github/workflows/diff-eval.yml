@@ -1,0 +1,80 @@
+name: Agentic Diff Evaluation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main ]
+    paths:
+      - 'yadisk/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  diff-eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      - name: Install dependencies
+        run: bun install --no-progress
+
+      - name: Install Warp CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gpg
+          wget -qO- https://releases.warp.dev/linux/keys/warp.asc | gpg --dearmor > warpdotdev.gpg
+          sudo install -D -o root -g root -m 644 warpdotdev.gpg /etc/apt/keyrings/warpdotdev.gpg
+          sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/warpdotdev.gpg] https://releases.warp.dev/linux/deb stable main" > /etc/apt/sources.list.d/warpdotdev.list'
+          rm warpdotdev.gpg
+          sudo apt-get update
+          sudo apt-get install -y warp-cli
+
+      - name: Run diff evaluation
+        id: eval
+        run: |
+          bash scripts/agentic/diff-eval.sh | tee analysis.md
+        env:
+          DIFF_TARGET_PATH: ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}
+          AGENT_NAME: ${{ vars.DIFF_AGENT_NAME || 'diff-evaluator' }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+
+      - name: Comment results on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('analysis.md', 'utf8');
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100
+            });
+            const marker = '<!-- warp-diff-eval -->';
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+            }

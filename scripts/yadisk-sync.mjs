@@ -1,8 +1,71 @@
 #!/usr/bin/env bun
 import fs from 'node:fs';
 import path from 'node:path';
-import { envArg, fetchJson, sanitizeFilename, enforceSizeCap } from './yadisk-lib.ts';
 import process from "node:process";
+
+// Inlined helpers (formerly from scripts/yadisk-lib.ts)
+const INVALID_PATH_CHARS = /[\\/:*?"<>|]/g;
+const ONLY_DOTS = /^\.+$/;
+
+function sanitizeFilename(filename) {
+  const fallback = DEFAULT_FILENAME;
+  const input = String(filename ?? fallback);
+  const basename = input.split(/[\\/]/).pop() ?? fallback;
+  const withoutInvalidChars = basename.replace(INVALID_PATH_CHARS, '_');
+  const withoutDotNames = withoutInvalidChars.replace(ONLY_DOTS, '_');
+  return withoutDotNames || fallback;
+}
+
+function isFlag(arg) { return String(arg).startsWith('--'); }
+function kebabToSnakeCase(str) { return String(str).toUpperCase().replace(/-/g, '_'); }
+
+function getConfigValue(argv, env, paramName, defaultValue) {
+  const flagName = `--${paramName}`;
+  const flagIndex = argv.indexOf(flagName);
+  if (flagIndex !== -1 && flagIndex + 1 < argv.length) {
+    const nextArg = argv[flagIndex + 1];
+    if (!isFlag(nextArg)) return nextArg;
+  }
+  const envKey = kebabToSnakeCase(paramName);
+  const legacyEnvKey = `YANDEX_${envKey}`;
+  return env[envKey] ?? env[legacyEnvKey] ?? defaultValue;
+}
+
+const envArg = getConfigValue;
+
+function exceedsLimit(size, limit) { return limit > 0 && size > limit; }
+
+function enforceSizeCap(args) {
+  const reportedSize = Number(args?.reportedSize ?? 0);
+  const downloadedBytes = Number(args?.downloadedBytes ?? 0);
+  const maxBytes = Number(args?.maxBytes ?? 0);
+  if (exceedsLimit(reportedSize, maxBytes)) {
+    throw new Error(`Remote file too large: ${reportedSize} bytes exceeds cap ${maxBytes}`);
+  }
+  if (exceedsLimit(downloadedBytes, maxBytes)) {
+    throw new Error(`Downloaded file too large: ${downloadedBytes} bytes exceeds cap ${maxBytes}`);
+  }
+}
+
+function formatErrorMessage(url, status, body) {
+  let message = `HTTP ${status} for ${url}`;
+  try {
+    const json = JSON.parse(body);
+    message += `\n${JSON.stringify(json, null, 2)}`;
+  } catch {
+    message += `\n${body}`;
+  }
+  return message;
+}
+
+async function fetchJson(url, opts = {}) {
+  const response = await fetch(url, opts);
+  if (response.ok) {
+    return response.json();
+  }
+  const body = await response.text();
+  throw new Error(formatErrorMessage(url, response.status, body));
+}
 
 const DEFAULT_MAX_FILE_SIZE = 10_485_760;
 const DEFAULT_DEST_PATH = 'yadisk';

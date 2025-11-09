@@ -6,15 +6,11 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "oxlint .",
     "fmt": "echo 'format: use oxlint for linting, add prettier if formatting needed' && exit 0",
-    "mcp:fpf": "bun run scripts/mcp/server.ts",
-    "mcp:fpf:sse": "PORT=${PORT:-3333} bun run scripts/mcp/server-sse.ts",
     "yadisk:sync": "bun run scripts/yadisk-sync.mjs",
-    "meme:meter": "bun run scripts/agentic/meme-meter.ts"
+    "pattern:research": "bun run scripts/pattern-research.ts",
+    "agentic:diff-eval": "bash scripts/agentic/diff-eval.sh"
   },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.19.1",
-    "zod": "^3.23.8"
-  },
+  "dependencies": {},
   "devDependencies": {
     "bun-types": "^1.3.0",
     "oxlint": "^1.26.0",

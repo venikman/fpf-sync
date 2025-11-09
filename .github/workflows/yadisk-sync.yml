@@ -2,7 +2,7 @@ name: Sync Yandex Disk to PR
 
 on:
   schedule:
-    - cron: '0 17 * * *' # daily at 20:00 MSK (UTC+3)
+    - cron: '0 17 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -10,8 +10,6 @@ permissions:
   pull-requests: write
 
 env:
-  # Configure via repository Variables (Settings → Variables → Actions)
-  # or Secrets. Fallback to the provided public link.
   PUBLIC_URL: ${{ vars.YANDEX_PUBLIC_URL || secrets.YANDEX_PUBLIC_URL || 'https://disk.yandex.ru/d/N2xaJZWo-hhFYw' }}
   PUBLIC_PATH: ${{ vars.YANDEX_PUBLIC_PATH }}
   TARGET_NAME: ${{ vars.YANDEX_TARGET_NAME }}
@@ -37,14 +35,13 @@ jobs:
           bun-version: 'latest'
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --no-progress
 
       - name: Download from Yandex Disk
         run: |
           bun run scripts/yadisk-sync.mjs --max-bytes "${{ vars.YANDEX_MAX_BYTES || '10485760' }}"
 
       - name: Create Pull Request
-        id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: 'chore(sync): Yandex Disk update'
@@ -52,11 +49,11 @@ jobs:
           body: |
             Automated sync from Yandex Disk public share.
             - Source: ${{ env.PUBLIC_URL }} ${{ env.PUBLIC_PATH && format('(path: {0})', env.PUBLIC_PATH) }}
-            - Main FPF document: https://github.com/venikman/fpf-sync/blob/main/yadisk/First%20Principles%20Framework%20%E2%80%94%20Core%20Conceptual%20Specification%20(holonic).md
-            - Review the diff in the "Files changed" tab.
+            - Main FPF document: https://github.com/${{ github.repository }}/blob/main/${{ env.DEST_PATH }}/${{ env.DEST_FILENAME }}
+            - Agentic diff evaluation will run automatically in this PR.
           branch: sync/yadisk
           delete-branch: true
           labels: |
             sync:auto-merge
           add-paths: |
-            yadisk/First Principles Framework — Core Conceptual Specification (holonic).md
+            ${ env.DEST_PATH }/${ env.DEST_FILENAME }
