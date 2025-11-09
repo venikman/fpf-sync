@@ -1,6 +1,16 @@
 name: 🤖 Agentic Diff Analysis
 
 on:
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: 'Base branch to compare against'
+        required: false
+        default: 'main'
+      head_ref:
+        description: 'Head branch to analyze'
+        required: false
+        default: ''
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [ main ]
@@ -35,8 +45,16 @@ jobs:
       - name: Set base ref
         id: base
         run: |
-          echo "ref=${{ github.base_ref }}" >> $GITHUB_OUTPUT
-          echo "::notice::Base ref: ${{ github.base_ref }}"
+          # Use workflow input if provided, otherwise use PR base ref
+          if [[ -n "${{ inputs.base_ref }}" ]]; then
+            BASE_REF="${{ inputs.base_ref }}"
+          elif [[ -n "${{ github.base_ref }}" ]]; then
+            BASE_REF="${{ github.base_ref }}"
+          else
+            BASE_REF="main"
+          fi
+          echo "ref=$BASE_REF" >> $GITHUB_OUTPUT
+          echo "::notice::Base ref: $BASE_REF"
 
       - name: Compute diff
         id: diff
@@ -108,6 +126,7 @@ jobs:
           } > analysis.md
 
       - name: Comment results on PR
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
@@ -136,3 +155,9 @@ jobs:
                 body
               });
             }
+
+      - name: Output analysis (manual runs)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "::notice::Analysis complete! See results below:"
+          cat analysis.md
