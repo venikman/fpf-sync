@@ -32,14 +32,79 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y warp-cli
 
-      - name: Run diff evaluation
-        id: eval
+      - name: Resolve base ref
+        id: base
         run: |
-          bash scripts/diff-eval/diff-eval.sh | tee analysis.md
-        env:
-          DIFF_TARGET_PATH: ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}
-          AGENT_NAME: ${{ vars.DIFF_AGENT_NAME || 'diff-evaluator' }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
+          BASE_REF="${{ github.base_ref }}"
+          [[ -z "$BASE_REF" ]] && BASE_REF="main"
+
+          for ref in "$BASE_REF" "origin/$BASE_REF" "origin/main" "HEAD~1"; do
+            if git rev-parse --verify --quiet "$ref" >/dev/null 2>&1; then
+              echo "ref=$ref" >> $GITHUB_OUTPUT
+              echo "Resolved base: $ref"
+              exit 0
+            fi
+          done
+
+          echo "ref=HEAD~1" >> $GITHUB_OUTPUT
+          echo "Fallback to: HEAD~1"
+
+      - name: Compute diff
+        id: diff
+        run: |
+          TARGET="${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}"
+          BASE="${{ steps.base.outputs.ref }}"
+
+          git --no-pager diff --no-color --unified=5 "$BASE"...HEAD -- "$TARGET" > diff.txt
+
+          if [[ ! -s diff.txt ]]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in $TARGET"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            LINES=$(wc -l < diff.txt)
+            echo "Found $LINES lines of changes"
+          fi
+
+      - name: Build prompt
+        if: steps.diff.outputs.has_changes == 'true'
+        run: |
+          cat scripts/diff-eval/diff-eval.prompt.md > prompt.txt
+          echo "" >> prompt.txt
+          echo "File: ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}" >> prompt.txt
+          echo "" >> prompt.txt
+          echo "--- DIFF START ---" >> prompt.txt
+          head -c 120000 diff.txt >> prompt.txt
+          echo "" >> prompt.txt
+          echo "--- DIFF END ---" >> prompt.txt
+
+      - name: Run Warp agent analysis
+        if: steps.diff.outputs.has_changes == 'true'
+        id: agent
+        run: |
+          AGENT="${{ vars.DIFF_AGENT_NAME || 'diff-evaluator' }}"
+          warp-cli agents run --agent "$AGENT" --input-file prompt.txt > agent_output.txt
+
+      - name: Format report
+        if: steps.diff.outputs.has_changes == 'true'
+        run: |
+          {
+            echo "<!-- warp-diff-eval -->"
+            echo "# Warp Diff Evaluation"
+            echo ""
+            echo "Target: ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}"
+            echo ""
+            cat agent_output.txt
+          } > analysis.md
+
+      - name: Skip message
+        if: steps.diff.outputs.has_changes == 'false'
+        run: |
+          {
+            echo "# Warp Diff Evaluation"
+            echo ""
+            echo "No changes detected in ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}."
+          } > analysis.md
 
       - name: Comment results on PR
         uses: actions/github-script@v7
