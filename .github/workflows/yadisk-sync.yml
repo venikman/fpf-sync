@@ -10,11 +10,11 @@ permissions:
   pull-requests: write
 
 env:
-  PUBLIC_URL: ${{ vars.YANDEX_PUBLIC_URL }}
-  PUBLIC_PATH: ${{ vars.YANDEX_PUBLIC_PATH }}
-  TARGET_NAME: ${{ vars.YANDEX_TARGET_NAME }}
-  DEST_PATH: ${{ vars.YANDEX_DEST_PATH }}
-  DEST_FILENAME: ${{ vars.YANDEX_DEST_FILENAME }}
+  PUBLIC_URL: https://disk.yandex.ru/d/N2xaJZWo-hhFYw
+  PUBLIC_PATH: ""
+  TARGET_NAME: "First Principles Framework — Core Conceptual Specification (holonic).md"
+  DEST_PATH: yadisk
+  DEST_FILENAME: "First Principles Framework — Core Conceptual Specification (holonic).md"
 
 jobs:
   sync:

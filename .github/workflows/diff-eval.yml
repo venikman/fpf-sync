@@ -41,7 +41,7 @@ jobs:
       - name: Compute diff
         id: diff
         run: |
-          git --no-pager diff --no-color --unified=5 "${{ steps.base.outputs.ref }}"...HEAD -- "${{ vars.DIFF_TARGET_PATH }}" > diff.txt
+          git --no-pager diff --no-color --unified=5 "${{ steps.base.outputs.ref }}"...HEAD -- "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md" > diff.txt
 
           if [[ -s diff.txt ]]; then
             LINES=$(wc -l < diff.txt)
@@ -65,7 +65,7 @@ jobs:
           echo "" >> prompt.txt
           echo "## Context" >> prompt.txt
           echo "" >> prompt.txt
-          echo "**Target File**: ${{ vars.DIFF_TARGET_PATH }}" >> prompt.txt
+          echo "**Target File**: yadisk/First Principles Framework — Core Conceptual Specification (holonic).md" >> prompt.txt
           echo "" >> prompt.txt
           echo "## Diff" >> prompt.txt
           echo "" >> prompt.txt
@@ -77,8 +77,8 @@ jobs:
         if: steps.diff.outputs.has_changes == 'true'
         id: agent
         run: |
-          echo "::notice::Running agent: ${{ vars.DIFF_AGENT_NAME }}"
-          warp-cli agents run --agent "${{ vars.DIFF_AGENT_NAME }}" --input-file prompt.txt > agent_output.txt
+          echo "::notice::Running agent: fpf-diff-evaluator"
+          warp-cli agents run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt
           echo "::notice::Analysis complete"
 
       - name: Format report
@@ -90,7 +90,7 @@ jobs:
             echo ""
             echo "_Agent: [fpf-diff-evaluator](.github/agents/fpf-diff-evaluator.md)_"
             echo ""
-            echo "**Target**: \`${{ vars.DIFF_TARGET_PATH }}\`"
+            echo "**Target**: \`yadisk/First Principles Framework — Core Conceptual Specification (holonic).md\`"
             echo ""
             echo "---"
             echo ""
@@ -104,7 +104,7 @@ jobs:
           {
             echo "# 🤖 Agentic Diff Analysis"
             echo ""
-            echo "No changes detected in \`${{ vars.DIFF_TARGET_PATH }}\`"
+            echo "No changes detected in \`yadisk/First Principles Framework — Core Conceptual Specification (holonic).md\`"
           } > analysis.md
 
       - name: Comment results on PR
