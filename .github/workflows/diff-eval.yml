@@ -1,4 +1,4 @@
-name: Agentic Diff Evaluation
+name: 🤖 Agentic Diff Analysis
 
 on:
   pull_request:
@@ -48,17 +48,26 @@ jobs:
 
           [[ -s diff.txt ]] && echo "has_changes=true" >> $GITHUB_OUTPUT || echo "has_changes=false" >> $GITHUB_OUTPUT
 
-      - name: Build prompt
+      - name: Build agent prompt
         if: steps.diff.outputs.has_changes == 'true'
         run: |
-          cat scripts/diff-eval/diff-eval.prompt.md > prompt.txt
+          TARGET="${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}"
+
+          # Extract agent instructions from markdown
+          sed -n '/^---$/,/^---$/d; /^---$/q; p' .github/agents/fpf-diff-evaluator.md > prompt.txt
+          tail -n +$(grep -n "^---$" .github/agents/fpf-diff-evaluator.md | tail -1 | cut -d: -f1) .github/agents/fpf-diff-evaluator.md | tail -n +2 >> prompt.txt
+
+          # Add context
           echo "" >> prompt.txt
-          echo "File: ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}" >> prompt.txt
+          echo "## Context" >> prompt.txt
           echo "" >> prompt.txt
-          echo "--- DIFF START ---" >> prompt.txt
+          echo "**Target File**: $TARGET" >> prompt.txt
+          echo "" >> prompt.txt
+          echo "## Diff" >> prompt.txt
+          echo "" >> prompt.txt
+          echo '```diff' >> prompt.txt
           head -c 120000 diff.txt >> prompt.txt
-          echo "" >> prompt.txt
-          echo "--- DIFF END ---" >> prompt.txt
+          echo '```' >> prompt.txt
 
       - name: Run Warp agent analysis
         if: steps.diff.outputs.has_changes == 'true'
@@ -71,10 +80,14 @@ jobs:
         if: steps.diff.outputs.has_changes == 'true'
         run: |
           {
-            echo "<!-- warp-diff-eval -->"
-            echo "# Warp Diff Evaluation"
+            echo "<!-- agentic-diff-eval -->"
+            echo "# 🤖 Agentic Diff Analysis"
             echo ""
-            echo "Target: ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}"
+            echo "_Agent: [fpf-diff-evaluator](.github/agents/fpf-diff-evaluator.md)_"
+            echo ""
+            echo "**Target**: \`${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}\`"
+            echo ""
+            echo "---"
             echo ""
             cat agent_output.txt
           } > analysis.md
@@ -100,7 +113,7 @@ jobs:
               issue_number: context.issue.number,
               per_page: 100
             });
-            const marker = '<!-- warp-diff-eval -->';
+            const marker = '<!-- agentic-diff-eval -->';
             const existing = comments.find(c => c.body && c.body.includes(marker));
             if (existing) {
               await github.rest.issues.updateComment({
