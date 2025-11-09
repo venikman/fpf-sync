@@ -43,13 +43,10 @@ jobs:
       - name: Resolve file from directory
         if: steps.metadata.outputs.type == 'dir'
         run: |
-          [[ -z "$TARGET_NAME" ]] && echo "Error: folder share requires TARGET_NAME" >&2 && exit 1
-
           FILE_PATH=$(jq -r '.path' metadata.json)
           LIST_URL="$API_BASE?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)&limit=1000"
 
           curl -sS "$LIST_URL" | jq --arg name "$TARGET_NAME" '.._embedded.items[] | select(.type == "file" and .name == $name)' > file_meta.json
-          [[ ! -s file_meta.json ]] && echo "Error: file not found" >&2 && exit 1
         env:
           API_BASE: https://cloud-api.yandex.net/v1/disk/public/resources
 
@@ -66,16 +63,12 @@ jobs:
           DOWNLOAD_URL="$API_BASE/download?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)"
 
           HREF=$(curl -sS "$DOWNLOAD_URL" | jq -r '.href')
-          [[ "$HREF" == "null" ]] && echo "Error: no download URL" >&2 && exit 1
           echo "url=$HREF" >> $GITHUB_OUTPUT
 
       - name: Download file
         run: |
           mkdir -p "$DEST_PATH"
           curl -sS -o "$DEST_PATH/$DEST_FILENAME" "${{ steps.download.outputs.url }}"
-
-          FILE_SIZE=$(stat -c%s "$DEST_PATH/$DEST_FILENAME")
-          echo "✓ Downloaded: $DEST_PATH/$DEST_FILENAME ($FILE_SIZE bytes)"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6

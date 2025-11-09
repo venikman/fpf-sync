@@ -32,22 +32,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y warp-cli
 
-      - name: Resolve base ref
+      - name: Set base ref
         id: base
         run: |
-          BASE_REF="${{ github.base_ref }}"
-          [[ -z "$BASE_REF" ]] && BASE_REF="main"
-
-          for ref in "$BASE_REF" "origin/$BASE_REF" "origin/main" "HEAD~1"; do
-            if git rev-parse --verify --quiet "$ref" >/dev/null 2>&1; then
-              echo "ref=$ref" >> $GITHUB_OUTPUT
-              echo "Resolved base: $ref"
-              exit 0
-            fi
-          done
-
-          echo "ref=HEAD~1" >> $GITHUB_OUTPUT
-          echo "Fallback to: HEAD~1"
+          BASE_REF="${{ github.base_ref || 'main' }}"
+          echo "ref=$BASE_REF" >> $GITHUB_OUTPUT
 
       - name: Compute diff
         id: diff
@@ -57,14 +46,7 @@ jobs:
 
           git --no-pager diff --no-color --unified=5 "$BASE"...HEAD -- "$TARGET" > diff.txt
 
-          if [[ ! -s diff.txt ]]; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No changes detected in $TARGET"
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            LINES=$(wc -l < diff.txt)
-            echo "Found $LINES lines of changes"
-          fi
+          [[ -s diff.txt ]] && echo "has_changes=true" >> $GITHUB_OUTPUT || echo "has_changes=false" >> $GITHUB_OUTPUT
 
       - name: Build prompt
         if: steps.diff.outputs.has_changes == 'true'
