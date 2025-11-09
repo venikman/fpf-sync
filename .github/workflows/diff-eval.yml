@@ -1,4 +1,4 @@
-name: Agentic Diff Evaluation
+name: 🤖 Agentic Diff Analysis
 
 on:
   pull_request:
@@ -21,14 +21,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 'latest'
-
-      - name: Install dependencies
-        run: bun install --no-progress
-
       - name: Install Warp CLI
         run: |
           sudo apt-get update
@@ -40,14 +32,80 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y warp-cli
 
-      - name: Run diff evaluation
-        id: eval
+      - name: Set base ref
+        id: base
         run: |
-          bash scripts/agentic/diff-eval.sh | tee analysis.md
-        env:
-          DIFF_TARGET_PATH: ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}
-          AGENT_NAME: ${{ vars.DIFF_AGENT_NAME || 'diff-evaluator' }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
+          echo "ref=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+          echo "::notice::Base ref: ${{ github.base_ref }}"
+
+      - name: Compute diff
+        id: diff
+        run: |
+          git --no-pager diff --no-color --unified=5 "${{ steps.base.outputs.ref }}"...HEAD -- "${{ vars.DIFF_TARGET_PATH }}" > diff.txt
+
+          if [[ -s diff.txt ]]; then
+            LINES=$(wc -l < diff.txt)
+            echo "::notice::Found $LINES lines of changes"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "::notice::No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build agent prompt
+        if: steps.diff.outputs.has_changes == 'true'
+        run: |
+          echo "::notice::Building prompt from agent definition"
+
+          # Extract agent instructions from markdown
+          sed -n '/^---$/,/^---$/d; /^---$/q; p' .github/agents/fpf-diff-evaluator.md > prompt.txt
+          tail -n +$(grep -n "^---$" .github/agents/fpf-diff-evaluator.md | tail -1 | cut -d: -f1) .github/agents/fpf-diff-evaluator.md | tail -n +2 >> prompt.txt
+
+          # Add context
+          echo "" >> prompt.txt
+          echo "## Context" >> prompt.txt
+          echo "" >> prompt.txt
+          echo "**Target File**: ${{ vars.DIFF_TARGET_PATH }}" >> prompt.txt
+          echo "" >> prompt.txt
+          echo "## Diff" >> prompt.txt
+          echo "" >> prompt.txt
+          echo '```diff' >> prompt.txt
+          head -c 120000 diff.txt >> prompt.txt
+          echo '```' >> prompt.txt
+
+      - name: Run Warp agent analysis
+        if: steps.diff.outputs.has_changes == 'true'
+        id: agent
+        run: |
+          echo "::notice::Running agent: ${{ vars.DIFF_AGENT_NAME }}"
+          warp-cli agents run --agent "${{ vars.DIFF_AGENT_NAME }}" --input-file prompt.txt > agent_output.txt
+          echo "::notice::Analysis complete"
+
+      - name: Format report
+        if: steps.diff.outputs.has_changes == 'true'
+        run: |
+          {
+            echo "<!-- agentic-diff-eval -->"
+            echo "# 🤖 Agentic Diff Analysis"
+            echo ""
+            echo "_Agent: [fpf-diff-evaluator](.github/agents/fpf-diff-evaluator.md)_"
+            echo ""
+            echo "**Target**: \`${{ vars.DIFF_TARGET_PATH }}\`"
+            echo ""
+            echo "---"
+            echo ""
+            cat agent_output.txt
+          } > analysis.md
+          echo "::notice::Report formatted for PR comment"
+
+      - name: Skip message
+        if: steps.diff.outputs.has_changes == 'false'
+        run: |
+          {
+            echo "# 🤖 Agentic Diff Analysis"
+            echo ""
+            echo "No changes detected in \`${{ vars.DIFF_TARGET_PATH }}\`"
+          } > analysis.md
 
       - name: Comment results on PR
         uses: actions/github-script@v7
@@ -61,7 +119,7 @@ jobs:
               issue_number: context.issue.number,
               per_page: 100
             });
-            const marker = '<!-- warp-diff-eval -->';
+            const marker = '<!-- agentic-diff-eval -->';
             const existing = comments.find(c => c.body && c.body.includes(marker));
             if (existing) {
               await github.rest.issues.updateComment({
