@@ -35,23 +35,27 @@ jobs:
       - name: Set base ref
         id: base
         run: |
-          BASE_REF="${{ github.base_ref || 'main' }}"
-          echo "ref=$BASE_REF" >> $GITHUB_OUTPUT
+          echo "ref=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+          echo "::notice::Base ref: ${{ github.base_ref }}"
 
       - name: Compute diff
         id: diff
         run: |
-          TARGET="${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}"
-          BASE="${{ steps.base.outputs.ref }}"
+          git --no-pager diff --no-color --unified=5 "${{ steps.base.outputs.ref }}"...HEAD -- "${{ vars.DIFF_TARGET_PATH }}" > diff.txt
 
-          git --no-pager diff --no-color --unified=5 "$BASE"...HEAD -- "$TARGET" > diff.txt
-
-          [[ -s diff.txt ]] && echo "has_changes=true" >> $GITHUB_OUTPUT || echo "has_changes=false" >> $GITHUB_OUTPUT
+          if [[ -s diff.txt ]]; then
+            LINES=$(wc -l < diff.txt)
+            echo "::notice::Found $LINES lines of changes"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "::notice::No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Build agent prompt
         if: steps.diff.outputs.has_changes == 'true'
         run: |
-          TARGET="${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}"
+          echo "::notice::Building prompt from agent definition"
 
           # Extract agent instructions from markdown
           sed -n '/^---$/,/^---$/d; /^---$/q; p' .github/agents/fpf-diff-evaluator.md > prompt.txt
@@ -61,7 +65,7 @@ jobs:
           echo "" >> prompt.txt
           echo "## Context" >> prompt.txt
           echo "" >> prompt.txt
-          echo "**Target File**: $TARGET" >> prompt.txt
+          echo "**Target File**: ${{ vars.DIFF_TARGET_PATH }}" >> prompt.txt
           echo "" >> prompt.txt
           echo "## Diff" >> prompt.txt
           echo "" >> prompt.txt
@@ -73,8 +77,9 @@ jobs:
         if: steps.diff.outputs.has_changes == 'true'
         id: agent
         run: |
-          AGENT="${{ vars.DIFF_AGENT_NAME || 'diff-evaluator' }}"
-          warp-cli agents run --agent "$AGENT" --input-file prompt.txt > agent_output.txt
+          echo "::notice::Running agent: ${{ vars.DIFF_AGENT_NAME }}"
+          warp-cli agents run --agent "${{ vars.DIFF_AGENT_NAME }}" --input-file prompt.txt > agent_output.txt
+          echo "::notice::Analysis complete"
 
       - name: Format report
         if: steps.diff.outputs.has_changes == 'true'
@@ -85,20 +90,21 @@ jobs:
             echo ""
             echo "_Agent: [fpf-diff-evaluator](.github/agents/fpf-diff-evaluator.md)_"
             echo ""
-            echo "**Target**: \`${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}\`"
+            echo "**Target**: \`${{ vars.DIFF_TARGET_PATH }}\`"
             echo ""
             echo "---"
             echo ""
             cat agent_output.txt
           } > analysis.md
+          echo "::notice::Report formatted for PR comment"
 
       - name: Skip message
         if: steps.diff.outputs.has_changes == 'false'
         run: |
           {
-            echo "# Warp Diff Evaluation"
+            echo "# 🤖 Agentic Diff Analysis"
             echo ""
-            echo "No changes detected in ${{ vars.DIFF_TARGET_PATH || 'yadisk/First Principles Framework — Core Conceptual Specification (holonic).md' }}."
+            echo "No changes detected in \`${{ vars.DIFF_TARGET_PATH }}\`"
           } > analysis.md
 
       - name: Comment results on PR
