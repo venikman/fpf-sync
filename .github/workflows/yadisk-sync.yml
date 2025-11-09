@@ -29,52 +29,23 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Fetch resource metadata
-        id: metadata
+      - name: Find and download file
         run: |
           API_BASE="https://cloud-api.yandex.net/v1/disk/public/resources"
-          META_URL="$API_BASE?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)"
-          [[ -n "$PUBLIC_PATH" ]] && META_URL="${META_URL}&path=$(printf '%s' "$PUBLIC_PATH" | jq -sRr @uri)"
 
-          echo "::notice::Fetching metadata from Yandex Disk"
-          curl -sS "$META_URL" > metadata.json
-          TYPE=$(jq -r '.type' metadata.json)
-          echo "::notice::Resource type: $TYPE"
-          echo "type=$TYPE" >> $GITHUB_OUTPUT
+          echo "::notice::Listing directory contents"
+          LIST_URL="$API_BASE?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&limit=1000"
 
-      - name: Resolve file from directory
-        if: steps.metadata.outputs.type == 'dir'
-        run: |
-          echo "::notice::Searching directory for file: $TARGET_NAME"
-          FILE_PATH=$(jq -r '.path' metadata.json)
-          LIST_URL="$API_BASE?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)&limit=1000"
+          echo "::notice::Finding file: $TARGET_NAME"
+          FILE_PATH=$(curl -sS "$LIST_URL" | jq -r --arg name "$TARGET_NAME" '.._embedded.items[] | select(.type == "file" and .name == $name) | .path')
 
-          curl -sS "$LIST_URL" | jq --arg name "$TARGET_NAME" '.._embedded.items[] | select(.type == "file" and .name == $name)' > file_meta.json
-          echo "::notice::File found in directory"
-        env:
-          API_BASE: https://cloud-api.yandex.net/v1/disk/public/resources
-
-      - name: Resolve file metadata
-        if: steps.metadata.outputs.type == 'file'
-        run: |
-          cp metadata.json file_meta.json
-
-      - name: Get download URL
-        id: download
-        run: |
-          API_BASE="https://cloud-api.yandex.net/v1/disk/public/resources"
-          FILE_PATH=$(jq -r '.path' file_meta.json)
+          echo "::notice::Getting download URL"
           DOWNLOAD_URL="$API_BASE/download?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)"
-
-          echo "::notice::Requesting download URL for: $(basename "$FILE_PATH")"
           HREF=$(curl -sS "$DOWNLOAD_URL" | jq -r '.href')
-          echo "url=$HREF" >> $GITHUB_OUTPUT
 
-      - name: Download file
-        run: |
+          echo "::notice::Downloading file to: $DEST_PATH/$DEST_FILENAME"
           mkdir -p "$DEST_PATH"
-          echo "::notice::Downloading to: $DEST_PATH/$DEST_FILENAME"
-          curl -sS -o "$DEST_PATH/$DEST_FILENAME" "${{ steps.download.outputs.url }}"
+          curl -sS -o "$DEST_PATH/$DEST_FILENAME" "$HREF"
 
           SIZE=$(stat -c%s "$DEST_PATH/$DEST_FILENAME" 2>/dev/null || stat -f%z "$DEST_PATH/$DEST_FILENAME")
           echo "::notice::Downloaded $(numfmt --to=iec-i --suffix=B $SIZE 2>/dev/null || echo "$SIZE bytes")"
