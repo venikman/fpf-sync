@@ -34,80 +34,31 @@ jobs:
           set -euo pipefail
 
           API_BASE="https://cloud-api.yandex.net/v1/disk/public/resources"
+          PUBLIC_KEY_ENCODED=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)
 
-          echo "::notice::Listing directory contents"
-          LIST_URL="$API_BASE?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&limit=1000"
+          echo "::notice::Fetching file info"
+          LIST_JSON=$(curl -fsSL "$API_BASE?public_key=$PUBLIC_KEY_ENCODED&limit=1000")
 
-          # Fetch directory listing with error handling
-          echo "::debug::Requesting: $LIST_URL"
-          LIST_RESPONSE=$(curl -sS -w "\n%{http_code}" "$LIST_URL")
-          HTTP_CODE=$(echo "$LIST_RESPONSE" | tail -n1)
-          LIST_JSON=$(echo "$LIST_RESPONSE" | sed '$d')
-
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "::error::API request failed with HTTP $HTTP_CODE"
-            echo "::debug::Response: $LIST_JSON"
-            exit 1
-          fi
-
-          # Validate response structure
-          if ! echo "$LIST_JSON" | jq -e '._embedded.items' > /dev/null 2>&1; then
-            echo "::error::Invalid API response structure"
-            echo "::debug::Response: $LIST_JSON"
-            exit 1
-          fi
-
-          echo "::notice::Finding file: $TARGET_NAME"
+          # Try to find file in folder items, fallback to direct file
           FILE_PATH=$(echo "$LIST_JSON" | jq -r --arg name "$TARGET_NAME" '
-            ._embedded.items[] |
-            select(.type == "file" and .name == $name) |
-            .path
+            (._embedded.items[]? | select(.type == "file" and .name == $name) | .path) //
+            (select(.type == "file" and .name == $name) | .path) //
+            empty
           ')
 
           if [ -z "$FILE_PATH" ]; then
             echo "::error::File not found: $TARGET_NAME"
-            echo "::debug::Available files:"
-            echo "$LIST_JSON" | jq -r '._embedded.items[] | select(.type == "file") | .name'
             exit 1
           fi
-
-          echo "::debug::Found file path: $FILE_PATH"
 
           echo "::notice::Getting download URL"
-          DOWNLOAD_URL="$API_BASE/download?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)"
+          HREF=$(curl -fsSL "$API_BASE/download?public_key=$PUBLIC_KEY_ENCODED&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)" | jq -r '.href')
 
-          # Fetch download URL with error handling
-          echo "::debug::Requesting: $DOWNLOAD_URL"
-          DOWNLOAD_RESPONSE=$(curl -sS -w "\n%{http_code}" "$DOWNLOAD_URL")
-          HTTP_CODE=$(echo "$DOWNLOAD_RESPONSE" | tail -n1)
-          DOWNLOAD_JSON=$(echo "$DOWNLOAD_RESPONSE" | sed '$d')
-
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "::error::Download URL request failed with HTTP $HTTP_CODE"
-            echo "::debug::Response: $DOWNLOAD_JSON"
-            exit 1
-          fi
-
-          HREF=$(echo "$DOWNLOAD_JSON" | jq -r '.href')
-
-          if [ -z "$HREF" ] || [ "$HREF" = "null" ]; then
-            echo "::error::Failed to get download URL"
-            echo "::debug::Response: $DOWNLOAD_JSON"
-            exit 1
-          fi
-
-          echo "::debug::Download URL: $HREF"
-
-          echo "::notice::Downloading file to: $DEST_PATH/$DEST_FILENAME"
+          echo "::notice::Downloading to: $DEST_PATH/$DEST_FILENAME"
           mkdir -p "$DEST_PATH"
+          curl -fsSL -o "$DEST_PATH/$DEST_FILENAME" "$HREF"
 
-          if ! curl -sS -o "$DEST_PATH/$DEST_FILENAME" "$HREF"; then
-            echo "::error::Failed to download file"
-            exit 1
-          fi
-
-          SIZE=$(stat -c%s "$DEST_PATH/$DEST_FILENAME" 2>/dev/null || stat -f%z "$DEST_PATH/$DEST_FILENAME")
-          echo "::notice::Downloaded $(numfmt --to=iec-i --suffix=B $SIZE 2>/dev/null || echo "$SIZE bytes")"
+          echo "::notice::Downloaded $(stat -c%s "$DEST_PATH/$DEST_FILENAME" 2>/dev/null || stat -f%z "$DEST_PATH/$DEST_FILENAME") bytes"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
