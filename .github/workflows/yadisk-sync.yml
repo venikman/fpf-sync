@@ -50,24 +50,43 @@ jobs:
             exit 1
           fi
 
-          # Validate response structure
-          if ! echo "$LIST_JSON" | jq -e '._embedded.items' > /dev/null 2>&1; then
-            echo "::error::Invalid API response structure"
+          # Validate and parse response structure
+          echo "::debug::Response structure: $(echo "$LIST_JSON" | jq -c 'keys')"
+
+          # Check if this is a folder with items
+          if echo "$LIST_JSON" | jq -e '._embedded.items' > /dev/null 2>&1; then
+            echo "::notice::Finding file: $TARGET_NAME"
+            FILE_PATH=$(echo "$LIST_JSON" | jq -r --arg name "$TARGET_NAME" '
+              ._embedded.items[] |
+              select(.type == "file" and .name == $name) |
+              .path
+            ')
+
+            if [ -z "$FILE_PATH" ]; then
+              echo "::error::File not found: $TARGET_NAME"
+              echo "::debug::Available files:"
+              echo "$LIST_JSON" | jq -r '._embedded.items[] | select(.type == "file") | .name'
+              exit 1
+            fi
+          # Check if the response itself is a direct file
+          elif echo "$LIST_JSON" | jq -e '.type == "file"' > /dev/null 2>&1; then
+            FILE_NAME=$(echo "$LIST_JSON" | jq -r '.name')
+            if [ "$FILE_NAME" = "$TARGET_NAME" ]; then
+              FILE_PATH=$(echo "$LIST_JSON" | jq -r '.path')
+              echo "::notice::Found direct file link"
+            else
+              echo "::error::Direct file link name mismatch. Expected: $TARGET_NAME, Got: $FILE_NAME"
+              exit 1
+            fi
+          # Check if it's a folder but items are at root level
+          elif echo "$LIST_JSON" | jq -e '.type == "dir"' > /dev/null 2>&1; then
+            echo "::error::Response is a directory but has no items in _embedded.items"
             echo "::debug::Response: $LIST_JSON"
             exit 1
-          fi
-
-          echo "::notice::Finding file: $TARGET_NAME"
-          FILE_PATH=$(echo "$LIST_JSON" | jq -r --arg name "$TARGET_NAME" '
-            ._embedded.items[] |
-            select(.type == "file" and .name == $name) |
-            .path
-          ')
-
-          if [ -z "$FILE_PATH" ]; then
-            echo "::error::File not found: $TARGET_NAME"
-            echo "::debug::Available files:"
-            echo "$LIST_JSON" | jq -r '._embedded.items[] | select(.type == "file") | .name'
+          else
+            echo "::error::Invalid API response structure"
+            echo "::debug::Response: $LIST_JSON"
+            echo "::debug::Response type: $(echo "$LIST_JSON" | jq -r '.type // "unknown"')"
             exit 1
           fi
 
