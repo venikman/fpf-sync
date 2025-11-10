@@ -37,7 +37,7 @@ jobs:
           LIST_URL="$API_BASE?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&limit=1000"
 
           echo "::notice::Finding file: $TARGET_NAME"
-          FILE_PATH=$(curl -sS "$LIST_URL" | jq -r --arg name "$TARGET_NAME" '.._embedded.items[] | select(.type == "file" and .name == $name) | .path')
+          FILE_PATH=$(curl -sS "$LIST_URL" | jq -r --arg name "$TARGET_NAME" '._embedded.items[] | select(.type == "file" and .name == $name) | .path')
 
           echo "::notice::Getting download URL"
           DOWNLOAD_URL="$API_BASE/download?public_key=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)"
