@@ -61,6 +61,7 @@ jobs:
           echo "::notice::Downloaded $(stat -c%s "$DEST_PATH/$DEST_FILENAME" 2>/dev/null || stat -f%z "$DEST_PATH/$DEST_FILENAME") bytes"
 
       - name: Create Pull Request
+        if: ${{ env.ACT != 'true' }}
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: 'chore(sync): Yandex Disk update'
@@ -75,4 +76,4 @@ jobs:
           labels: |
             sync:auto-merge
           add-paths: |
-            ${ env.DEST_PATH }/${ env.DEST_FILENAME }
+            ${{ env.DEST_PATH }}/${{ env.DEST_FILENAME }}

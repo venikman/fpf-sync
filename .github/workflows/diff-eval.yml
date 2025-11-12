@@ -15,6 +15,16 @@ jobs:
   diff-eval:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      KAT_API_BASE: ${{ secrets.KAT_API_BASE }}
+      KAT_API_KEY: ${{ secrets.KAT_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      KAT_ENDPOINT: ${{ secrets.KAT_ENDPOINT }}
+      KAT_LOCAL_MODEL: ${{ secrets.KAT_LOCAL_MODEL }}
+      KAT_FAKE_OUTPUT: ${{ secrets.KAT_FAKE_OUTPUT }}
+      KAT_REQUEST_TIMEOUT_MS: ${{ secrets.KAT_REQUEST_TIMEOUT_MS }}
+      KAT_REQUEST_RETRIES: ${{ secrets.KAT_REQUEST_RETRIES }}
+      KAT_REQUEST_BACKOFF_MS: ${{ secrets.KAT_REQUEST_BACKOFF_MS }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,6 +47,54 @@ jobs:
         run: |
           echo "ref=${{ github.base_ref }}" >> $GITHUB_OUTPUT
           echo "::notice::Base ref: ${{ github.base_ref }}"
+
+      - name: Validate local analysis config
+        if: env.ACT == 'true'
+        run: |
+          set -euo pipefail
+
+          notice() {
+            echo "::notice::$1"
+          }
+
+          require_any() {
+            local message=$1
+            shift
+            for var in "$@"; do
+              if [[ -n "${!var:-}" ]]; then
+                return 0
+              fi
+            done
+            echo "::error::$message"
+            exit 1
+          }
+
+          require_any "Set KAT_API_KEY or OPENAI_API_KEY for local analysis" KAT_API_KEY OPENAI_API_KEY
+
+          if [[ -n "${KAT_API_BASE:-}" ]]; then
+            notice "Local endpoint: ${KAT_API_BASE}"
+          else
+            notice "No KAT_API_BASE provided; defaulting to OpenAI"
+          fi
+
+          if [[ -n "${KAT_LOCAL_MODEL:-}" ]]; then
+            notice "Model override: ${KAT_LOCAL_MODEL}"
+          else
+            notice "KAT_LOCAL_MODEL not set; workflow will rely on --model flag"
+          fi
+
+      - name: Cache Bun toolchain
+        if: env.ACT == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun
+          key: bun-${{ runner.os }}-${{ hashFiles('scripts/kat-dev.ts') }}
+
+      - name: Install Bun (local)
+        if: env.ACT == 'true'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
       - name: Compute diff
         id: diff
@@ -73,13 +131,29 @@ jobs:
           head -c 120000 diff.txt >> prompt.txt
           echo '```' >> prompt.txt
 
+      - name: Run KAT Dev analysis (local)
+        if: steps.diff.outputs.has_changes == 'true' && env.ACT == 'true'
+        run: |
+          MODEL="${KAT_LOCAL_MODEL:-openai/gpt-oss-20b}"
+          export KAT_API_BASE="${KAT_API_BASE:-http://host.docker.internal:1234/v1}"
+          export KAT_API_KEY="${KAT_API_KEY:-lmstudio}"
+          export KAT_ENDPOINT="${KAT_ENDPOINT:-chat/completions}"
+          export KAT_LOCAL_MODEL="$MODEL"
+          echo "::notice::Running local KAT Dev analysis via ${KAT_API_BASE} (model: $MODEL)"
+          bun scripts/kat-dev.ts dev --agent "fpf-diff-evaluator" --model "$MODEL" --input-file prompt.txt > agent_output.txt
+          echo "::notice::KAT Dev analysis complete"
+          echo "ANALYSIS_SOURCE=kat-dev (local)" >> "$GITHUB_ENV"
+          echo "ANALYSIS_MODEL=$MODEL" >> "$GITHUB_ENV"
+
       - name: Run Warp agent analysis
-        if: steps.diff.outputs.has_changes == 'true'
+        if: steps.diff.outputs.has_changes == 'true' && env.ACT != 'true'
         id: agent
         run: |
           echo "::notice::Running agent: fpf-diff-evaluator"
           warp-cli agents run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt
           echo "::notice::Analysis complete"
+          echo "ANALYSIS_SOURCE=warp-cli" >> "$GITHUB_ENV"
+          echo "ANALYSIS_MODEL=fpf-diff-evaluator" >> "$GITHUB_ENV"
 
       - name: Format report
         if: steps.diff.outputs.has_changes == 'true'
@@ -89,6 +163,9 @@ jobs:
             echo "# 🤖 Agentic Diff Analysis"
             echo ""
             echo "_Agent: [fpf-diff-evaluator](.github/agents/fpf-diff-evaluator.md)_"
+            echo ""
+            echo "**Engine**: ${ANALYSIS_SOURCE:-warp-cli}"
+            echo "**Model**: ${ANALYSIS_MODEL:-fpf-diff-evaluator}"
             echo ""
             echo "**Target**: \`yadisk/First Principles Framework — Core Conceptual Specification (holonic).md\`"
             echo ""
@@ -108,6 +185,7 @@ jobs:
           } > analysis.md
 
       - name: Comment results on PR
+        if: env.ACT != 'true'
         uses: actions/github-script@v7
         with:
           script: |
