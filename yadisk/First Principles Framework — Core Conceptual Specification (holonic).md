@@ -67,6 +67,10 @@ September 2025
 | A.18 | **A.CSLC-KERNEL — Minimal CSLC in Kernel (Characteristic/Scale/Level/Coordinate)** | Stable | *Keywords:* CSLC, scale, level, coordinate, measurement Standard. *Queries:* "What is the CSLC Standard?", "How to ensure measurements are comparable?" | **Builds on:** A.17. **Prerequisite for:** all metric-based patterns. |
 | A.19 | **A.CHR-SPACE — CharacteristicSpace & Dynamics hook** | Stable | *Keywords:* state space, CharacteristicSpace, dynamics, state model, RSG. *Queries:* "How to define a system's state space?", "How does FPF model change over time?" | **Builds on:** A.17, A.18, A.2.5. **Prerequisite for:** A.3.3. |
 
+| ***Cluster A.VI · Constitutional Principles of the Kernel*** | | | | |
+
+
+
 **Part B — Trans-disciplinary Reasoning Cluster**
 
 | § | ID & Title | Status | Keywords & Search Queries | Dependencies |
@@ -195,6 +199,7 @@ September 2025
 | E.15 | **Lexical Authoring & Evolution Protocol (LEX-AUTH)** | stable | *Keywords:* lexical authoring, evolution protocol, LAT, delta-classes. *Queries:* "How are FPF patterns authored and evolved?", "What is a Lexical Authoring Trace (LAT)?". | **Builds on:** E.9, E.10, B.4, C.18, C.19, A.10, B.3, F.15. |
 | E.16 | **RoC‑Autonomy: Budget & Enforcement** | **normative** | *Keywords:* autonomy, budget, guard, override, ledger, SoD, SpeechAct. *Queries:* "How is autonomy bounded and tested?", "How are overrides enforced?" | **Builds on:** E.8, E.10, E.11; ties F.4/F.6/F.15/F.17; G.4/G.5/G.9. |
 | E.17 | Multi‑View Publication Kit (for Morphisms) | Stable | Keywords: publication, view, viewpoint, I→D→S, pins, functorial views, reindexing, UTS, CHR, CG‑Spec, ATS. Queries: “How do we publish any morphism across multiple faces without changing semantics?”, “What are the rules for functorial, edition‑pinned views?” | Builds on: A.7, E.8, E.10. Coordinates with: E.11 (ATS), F.17 (UTS), Part F/G. |
+| E.18 | **Transduction Graph Architecture (E.TGA)** | Stable | *Keywords:* transduction graph, **nodes=morphisms**, **edge=U.Transfer** (single-edge kind), **OperationalGate(profile)**, **CV⇒GF** (ConstraintValidity → GateFit), **MVPK** faces, **SquareLaw**, **UNM single-writer**, **CSLC normalize-then-compare**, **Set-return selection**, **PathSlice/Sentinel refresh**, **DesignRunTag**. *Queries:* “What is E.TGA?”, “How do gates/bridges publish crossings?”, “How to model flows of morphisms?” | **Builds on:** E.17 (MVPK), E.8, E.10, A.7. **Coordinates with:** A.20–A.26 (Flow/GateProfilization/Profiles/Sentinels), F.9 (Bridges & CL), G.11 (Refresh). |
 
 **Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment**
 
@@ -3344,7 +3349,7 @@ Use when **adding/removing states**, **changing criteria**, or **bridging** acro
 
 # A.2.6 · **Unified Scope Mechanism (USM): Context Slices & Scopes**  \[A] 
 
-> **One-line summary.** Introduces a single, context-local **scope mechanism** for all holons: **`U.ContextSlice`** (where we reason and measure) and a family of **set-valued scope types** (**USM scope objects, `U.Scope`**), specialized as **`U.ClaimScope`** for epistemes (**G** in **F–G–R**) and **`U.WorkScope`** for system capabilities, with one algebra (∩ / SpanUnion / translate / widen / narrow / refit) and uniform Cross-context handling (Bridge + CL).
+> **One-line summary.** Introduces a single, context-local **scope mechanism** for all holons: **`U.ContextSlice`** (where we reason and measure) and a family of **set-valued scope types** (**USM scope objects, `U.Scope`**), specialized as **`U.ClaimScope`** for epistemes (**G** in **F–G–R**), **`U.WorkScope`** for system capabilities, and **`U.PublicationScope`** for publication carriers; with one algebra (∩ / SpanUnion / translate / widen / narrow / refit) and uniform Cross-context handling (Bridge + CL).
 
 ## 0 · Status, Placement & Deprecations
 
@@ -3355,6 +3360,7 @@ This pattern **supersedes** the scattered use of labels *applicability*, *envelo
 
 * For epistemes, the only **scope type** is **`U.ClaimScope`** (nick **G** in F–G–R).
 * For system capabilities, the only **scope type** is **`U.WorkScope`**.
+* For publication carriers (views/cards/lanes), the only **scope type** is **`U.PublicationScope`**.
 * The abstract architectural notion is **`U.Scope`** — a **set-valued USM object** over `ContextSliceSet` with its own algebra (∩ / SpanUnion / translate / widen / narrow / refit); it is **not** a `U.Characteristic` and MUST NOT appear in any `CharacteristicSpace`.
 
 Legacy words (*applicability / envelope / generality / capability envelope*) MAY appear **only** as explanatory aliases in non‑normative notes.
@@ -3362,8 +3368,8 @@ Legacy words (*applicability / envelope / generality / capability envelope*) MAY
 **Cross‑references.**
 — **C.2.3** (Unified Formality **F**) and **C.2.2** (F–G–R): this pattern **defines G** as `U.ClaimScope`.
 — **A.2.2** (Capabilities): capability gating now **SHALL** use `U.WorkScope`.
-— **Part B** (Bridges & CL): Cross‑context transfers **MUST** declare a Bridge with **CL**; CL affects **R**, not **F/G**.
-
+— **Part B** (Bridges & CL): Cross‑context transfers **MUST** declare a Bridge with **CL**; CL affects **R**, not **F/G**.
+— **Part E** (Publication discipline; e.g., **E.17 MVPK**): publication views/cards/lanes MAY declare `U.PublicationScope` to bound **where** a publication is admissible; `U.PublicationScope` MUST NOT widen the underlying `U.ClaimScope`/`U.WorkScope`. (USM supplies the scope calculus; Part E supplies publication discipline.)
 
 ## 1 · Purpose & Audience
 
@@ -3440,8 +3446,8 @@ When **G** is a **set‑valued scope**, composition becomes precise: serial depe
 * **One algebra:** serial **intersection**, parallel **SpanUnion** (only where supported), **translate** via Bridge (CL affects **R**, not **F/G**), and **widen / narrow / refit** operations for scope evolution.
 
 **Lexical commitments (normative):**
-— In normative text and guards, use **Claim scope (G)** and **Work scope**.
-— Do **not** name the characteristic “applicability/envelope/generality/capability envelope/validity.” Those words are permitted only as explanatory aliases in notes.
+— In normative text and guards, use **Claim scope (G)**, **Work scope**, and **Publication scope**.  
+— Do **not** name the characteristic “applicability/envelope/generality/capability envelope/**publication applicability**/validity.” Those words are permitted only as explanatory aliases in notes.
 
 ## 6 · Normative Definitions
 
@@ -3464,7 +3470,7 @@ When **G** is a **set‑valued scope**, composition becomes precise: serial depe
 
 **Definition.** `U.Scope ⊆ ContextSliceSet` is a **set‑valued USM property** whose values are sets of `U.ContextSlice` where a given statement, behavior, or capability is **fit‑for‑use**. It is **not** numeric; its internal order is the subset relation `⊆`. There is no “unit”. The primitive judgement is **membership**: `slice ∈ Scope`.  
 
-**Guard (normative).** `U.Scope`, `U.ClaimScope (G)`, and `U.WorkScope` are **not** `U.Characteristic`s in the A.17/CSLC sense; do **not** include them as slots in any `U.CharacteristicSpace`, and do **not** attach normalizations/scores to them. They are **USM scope objects**.
++**Guard (normative).** `U.Scope`, `U.ClaimScope (G)`, `U.WorkScope`, and `U.PublicationScope` are **not** `U.Characteristic`s in the A.17/CSLC sense; do **not** include them as slots in any `U.CharacteristicSpace`, and do **not** attach normalizations/scores to them. They are **USM scope objects**.
 
 **Operations.** USM admits:
 
@@ -3521,6 +3527,26 @@ The use‑time admission requires **all** of: `WorkScope covers JobSlice` **AND*
 * **`U.QualificationWindow` (mandatory for operational use).** A time policy (point/window/rolling) stating when the capability is considered qualified; evaluated at `Γ_time`.  
 These facets are **separate** from `U.WorkScope` and live in the **R‑lane** (assurance). They MUST be referenced in Method–Work guards (see §10.3 WG‑2/WG‑3).
 
+### 6.5 · `U.PublicationScope` — scope of a publication (view/surface)
+**Carrier.** Publication carriers (e.g., **PublicationSurface/InteropSurface** views/cards/lanes in Part E; MVPK faces).
+**Meaning.** The set of `U.ContextSlice` where a **publication** (a view/card/lane about some object or morphism) is **admissible for use** without introducing claims beyond its underlying carrier.
+
+**Relation to other scopes (normative).**
+* If the publication is **about an episteme `E`**:  
+  `PublicationScope(view_E) ⊆ ClaimScope(E)`.
+* If the publication is **about a capability `C`**:  
+  `PublicationScope(view_C) ⊆ WorkScope(C)`.
+* If the publication is **about a composition and/or crosses Contexts**:  
+  `PublicationScope(view) ⊆ translate(Bridge, ⋂ scopes of contributors)`; CL penalties apply to **R** only (scope set membership is unaffected).
+
+**Expression.** Authors SHALL declare `U.PublicationScope` as explicit predicates over `U.ContextSlice` (Context, Standard/version ids, environment selectors, `Γ_time`). It MAY be **narrower** than the underlying scope (e.g., due to pin availability, labeling, or audience constraints) but MUST NOT be wider.
+
+**Algebra & Δ‑moves.** Inherits the USM algebra (∩ / SpanUnion / translate / widen / narrow / refit). **Widen** is permitted only when the underlying `U.ClaimScope`/`U.WorkScope` widens accordingly; otherwise the publication MAY refit or narrow.
+
+**Orthogonality to measurement.** `U.PublicationScope` is a **USM scope object** (set‑valued), not a CHR Characteristic and MUST NOT appear as a slot in a `U.CharacteristicSpace`.
+
+**View refinement (profiles).** When a stricter publication profile/view **refines** another (e.g., a typed card that requires additional pins), its `U.PublicationScope` **MUST NOT** be wider than that of the less formal view.
+
 ## 7 · Scope Algebra
 
 ### 7.1 · Membership & Coverage
@@ -3531,8 +3557,6 @@ These facets are **separate** from `U.WorkScope` and live in the **R‑lane** (a
   * **singleton:** `TargetSlice ∈ Scope`, or
   * **set:** `TargetSet ⊆ Scope`.
 * **No implicit expansion.** Absent an explicit declaration, guards MUST NOT treat “close” slices as covered; widening requires a ΔG+ change.
-
----
 
 ### 7.2 · Serial Composition (Intersection)
 
@@ -3566,7 +3590,7 @@ Scope_published = SpanUnion({S_i})  =  ⋃_{i=1..n} S_i
 ### 7.4 Why a **G-ladder/levels/scales** is not needed (and **must not** be introduced)
 
 **1) G is not an ordinal scale; it is set-valued.**
-Under MM‑CHR, `U.ClaimScope` is a **set‑valued** `U.Characteristic` over `U.ContextSlice`. The only well‑typed primitives are **membership** and **set operations** (`⊆`, `∩`, `⋃`). Imposing ordinal “levels” such as **G0…Gk** violates the type discipline and produces non‑invariant behavior (the **same set** could be “rated” with different numbers under different heuristics).
+Under **USM**, `U.ClaimScope` is a **set‑valued** **USM scope object** over `U.ContextSlice`. The only well‑typed primitives are **membership** and **set operations** (`⊆`, `∩`, `⋃`). Imposing ordinal “levels” such as **G0…Gk** violates the type discipline and produces non‑invariant behavior (the **same set** could be “rated” with different numbers under different heuristics). (See also LEX‑CHR‑STRICT.)
 
 **2) G composes via `∩` / `SpanUnion`, not via `min` / `avg`.**
 USM already fixes composition: along a **dependent path** use **intersection**; across **independent support lines** publish **SpanUnion**. None of these operations relies on (or preserves) any linear order. An ordinal “G ladder” invites people to take **minimums/averages**, which is **incorrect** for sets and breaks the established algebra.
@@ -3649,7 +3673,7 @@ For empirical claims and operational capabilities, **R** typically binds evidenc
 
 ## 9 · Lexical Discipline (Part E compliance)
 
-+**L-USM-1 (names).** Use **Claim scope (G)** for epistemes and **Work scope** for capabilities. Use **Scope** only when discussing the abstract mechanism. Avoid naming any **characteristic** as “applicability,” “envelope,” “generality,” “capability envelope,” or “validity”.
+**L‑USM‑1 (names).** Use **Claim scope (G)** for epistemes, **Work scope** for capabilities, and **Publication scope** for publication carriers. Use **Scope** only when discussing the abstract mechanism. Avoid naming any **characteristic** as “applicability,” “envelope,” “generality,” “capability envelope,” or “validity”.
 
 **L‑USM‑2 (Work/Run).** Prefer **Work/Run** vocabulary from A.15 for system execution contexts. Do not introduce “operation/operating” as characteristic names; use **Work scope**.
 
@@ -3775,7 +3799,7 @@ AND Scope’ covers TargetSlice
 AND (Apply CL penalty to R)
 ```
 
-* **Owner(Scope).** The carrier that declares the scope: an **Episteme** (for `U.ClaimScope`) or a **Capability** (for `U.WorkScope`).  
++* **Owner(Scope).** The carrier that declares the scope: an **Episteme** (for `U.ClaimScope`), a **Capability** (for `U.WorkScope`), or a **Publication carrier** (for `U.PublicationScope`).  
 * **Translate(b, Scope).** The partial mapping of a set of source slices to target slices induced by Bridge **b**. If a source slice is unmappable, it is dropped. The result is a set of target slices; **CL penalties apply to R only**.
 * **Penalty to R**: applied per trust calculus; F and G remain as declared.
 
@@ -3803,12 +3827,11 @@ Implicit “latest” is not allowed. If multiple contributors declare different
 | **CC‑USM‑6 (Cross‑context).**            | Any Cross‑context use **MUST** declare a Bridge and **CL**; CL penalties apply to **R**, not **F/G**.                                                                                             |
 | **CC‑USM‑7 (No synonym drift).**      | In normative text and guards, **MUST** use **Claim scope (G)** or **Work scope**. Terms “applicability/envelope/generality/capability envelope/validity” **MUST NOT** name the characteristic. |
 | **CC‑USM‑8 (Determinism).**           | Membership evaluation **MUST** be deterministic given the slice tuple; no heuristic “close enough” matching.                                                                                   |
-| **CC‑USM‑9 (Edition triggers).**      | ΔG± (widen/narrow) constitutes a **content change**; refit does not. Contexts MAY require a new edition when published scope changes.                                                             |
-| **CC‑USM‑10 (Separation).**           | Scope coverage checks and evidence freshness/assurance checks **MUST** be separate predicates (G vs R).                                                                                        |
-| **CC‑USM‑11 (Versioned Standards).**  | Scope predicates **SHALL** name Standards/interfaces by **version**; changes in notations with faithful mapping do not change **G** (may change CL for R).                                     |
-| **CC‑USM‑12 (Min‑info publication).** | Published scopes **SHOULD** enumerate slices or predicate blocks sufficient to re‑evaluate membership without external folklore.                                                               |
-
----
+| **CC‑USM‑9 (Edition triggers).**      | ΔG± (widen/narrow) constitutes a **content change**; refit does not.                                                                                                                          |
+| **CC‑USM‑10 (Publication discipline).** | Publication carriers that gate usage **SHALL** declare `U.PublicationScope`. For any publication **about** an episteme or capability, `PublicationScope` **MUST** be a subset of the underlying `U.ClaimScope`/`U.WorkScope`. Cross‑context publications **MUST** cite Bridge + CL; CL penalties **apply to R only** (scope membership unchanged). |
+| **CC‑USM‑11 (Separation).**           | Scope coverage checks and evidence freshness/assurance checks **MUST** be separate predicates (G vs R).                                                                                        |
+| **CC‑USM‑12 (Versioned Standards).**  | Scope predicates **SHALL** name Standards/interfaces by **version**; changes in notations with faithful mapping do not change **G** (may change CL for R).                                     |
+| **CC‑USM‑13 (Min‑info publication).** | Published scopes **SHOULD** enumerate slices or predicate blocks sufficient to re‑evaluate membership without external folklore.                                                               |
 
 ## 12 · Worked Examples
 
@@ -3911,6 +3934,20 @@ claimScope:
 ```
 
 *(Illustrative only; the specification does not mandate a particular syntax.)*
+
+### 13.5 · Profiles as Scope configurations (informative)
+**Idea.** A **Scope profile** is a **named, editioned configuration** that expands to a concrete `U.Scope` predicate block (over `U.ContextSlice`), used to avoid repetition and to keep declarations consistent across carriers.
+
+**Rules.**
+* **P1 (Expansion).** Profiles are macros: guards **MUST** expand them to explicit predicates before evaluating `Scope covers TargetSlice`.
+* **P2 (Edition).** Profiles are editioned; changing a profile’s predicates is a content change for any carrier that references it.
+* **P3 (No stealth widen).** A profile update MUST NOT implicitly widen a carrier’s published scope; ΔG+ must be explicit in that carrier.
+* **P4 (Bridge awareness).** If a profile implies Cross‑context use, it MUST name the Bridge and CL policy; CL penalties apply to **R** only.
+* **P5 (Locality).** Profiles are context‑local conveniences; they do not introduce new scope types.
+
+**Examples (illustrative).**  
+— An engineering context defines `Ops‑Lab‑v3` as a profile pinning Standards, environment selectors, and a rolling `Γ_time` policy; claims, capabilities, and publications may reference it as a shorthand.  
+— A publication stack defines `TechCard‑Lite@Σ` as a profile that **narrows** `U.PublicationScope` to slices where required pins are available.
 
 ## 14 · Governance Hooks & Audits
 
@@ -4023,6 +4060,7 @@ It indicates “not usable anywhere (here, now)”. Guards MUST fail. This is co
 | capability envelope                 | **Work scope**                                           |
 | validity (as a characteristic name) | **Claim scope** or **Work scope** (depending on carrier) |
 | operational applicability           | **Work scope**                                           |
+| publication/view applicability      | **Publication scope**                                    |
 
 *(Use legacy terms only in explanatory notes; not in guards or conformance text.)*
 
@@ -4140,8 +4178,7 @@ def covers(scope: Set[Slice], target: Union[Slice, Set[Slice]]) -> bool:
 
 ---
 
-**Outcome.** The UTS shows strong convergence across SoTA Contexts on **addressable context** and **set‑valued applicability**. F.18 therefore fixes: **Context slice**, **Scope**, **Claim scope (G)**, **Work scope**, with the algebra and guard clauses mandated in A.2.6. This closes synonym drift while remaining readable for engineering managers and precise for assurance tooling.
-
+**Outcome.** The UTS shows strong convergence across SoTA Contexts on **addressable context** and **set‑valued applicability**. F.18 therefore fixes: **Context slice**, **Scope**, **Claim scope (G)**, **Work scope**, **Publication scope** with the algebra and guard clauses mandated in A.2.6. This closes synonym drift while remaining readable for engineering managers and precise for assurance tooling.
  
 # A.3 Transformer Constitution (Quartet)  \[A]
 
@@ -6069,7 +6106,7 @@ When documents blur the above lines, three classes of defects appear:
 • **senseFamily** — the categorical characteristic, used by F.7/F.8/F.9: {Role | Status | Measurement | Type‑structure | Method | Execution}. Rows must be **sense‑uniform**. 
 • **ReferencePlane** — the referent mode per CHR: {world/external | conceptual | epistemic}. 
 • **I/D/S layer** — the Intension/Description/Specification layer (E.10.D2). Not an I/D/S “plane” or "stance", and not a bare "layer".
-• **design/run Stance** — the design vs run temporal stance. Not a temporal “plane” or "layer", and not a bare "stance".
+• **DesignRunTag** — the design vs run DesignRunTag. Not a temporal “plane” or "layer", and not a bare "stance".
 • **PublicationSurface** — the *didactic projection* of a Description/Specification into a **bundle of views** (ISO 42010 sense). **Surfaces are not the thing described**. Under L‑SURF, Core allows only **PublicationSurface** and **InteropSurface** tokens; faces SHALL be named **…View / …Card / …Lane** rather than inventing new `…Surface` kinds. The canonical didactic set for `[A]` is:
   {**PlainView** (explanatory prose), **TechCard** (typed cards/IDs), **NormsCard** (checklists/SHALL‑clauses), **AssuranceLane** (evidence bindings/lanes)}. *Surfaces are orthogonal to I/D/S and to design/run.*
 • **Typed publication morphisms (I→D, D→S)** — total morphisms that *project* along I/D/S (they are **not** mechanisms):
@@ -9348,7 +9385,7 @@ DependencyGraph D = (V, E, scope, notes)
 * **V (nodes):** each `v ∈ V` is a `U.Holon` with:
 
   * `holonKind ∈ {U.System, U.Episteme}`
-  * `temporalScope ∈ {design, run}` (A.4) — **single, uniform per D**
+  * `DesignRunTag ∈ {design, run}` (A.4) — **single, uniform per D**
   * a declared `U.Boundary` (A.14)
   * optional characteristics (e.g., F–G–R, CL, Agency metrics) for use by downstream patterns (B.1.2/3; B.3; A.13)
 * **E (edges):** each `e ∈ E` is a **mereological** relation from the **normative vocabulary `V_rel`** (below).
@@ -9531,7 +9568,7 @@ Examples:
 #### 6.5 Scope & boundary attestations
 
 > **Obligation SCOPE‑1.**
-> Affirm `temporalScope(D) ∈ {design, run}` and that all nodes share it.
+> Affirm `DesignRunTag(D) ∈ {design, run}` and that all nodes share it.
 > **Obligation BOUND‑1.**
 > List the **U.Boundary** for each top‑level holon in `V` and record any **U.Interaction** edges that are relevant but not part of `E` (to show cross‑boundary influences were not mis‑typed as parthood).
 
@@ -9584,7 +9621,7 @@ Attach the row(s) you use as the **Proof Kit** to the Γ call record.
 | ID             | Requirement                                                                                                                                                | Purpose                             |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
 | **CC‑B1.1.1**  | `D` **SHALL** be acyclic (DAG).                                                                                                                            | Ensure foldability.                 |
-| **CC‑B1.1.2**  | All nodes in `D` **SHALL** share a single `temporalScope ∈ {design, run}`.                                                                                 | Ban design/run chimeras.            |
+| **CC‑B1.1.2**  | All nodes in `D` **SHALL** share a single `DesignRunTag ∈ {design, run}`.                                                                                 | Ban design/run chimeras.            |
 | **CC‑B1.1.3**  | All edges in `E` **SHALL** belong to the **normative `V_rel`** (**ComponentOf, ConstituentOf, PortionOf, PhaseOf** only). | Keep mereology crisp and finite. |
 | **CC‑B1.1.4**  | Cross‑holon influences **SHALL** be modelled as `U.Interaction`, **NOT** parthood.                                                                         | Preserve locality (LOC).            |
 | **CC‑B1.1.5**  | Every top‑level holon **SHALL** declare a `U.Boundary`; if Γ\_work will be used, a Boundary Ledger **SHALL** be produced.                                  | Make results comparable/auditable.  |
@@ -10227,14 +10264,14 @@ Both flavours **keep** IDEM, WLNK, MONO from B.1. They **replace** COMM/LOC by d
 1. **Edge discipline:** only `SerialStepOf` / `ParallelFactorOf`.
 2. **OrderSpec σ:** explicit partial order; joins must have well‑typed inputs/outputs (see B.1.5 for join soundness).
 3. **Independence declaration:** if you claim parallel folds commute locally, declare **which branches are independent** (no hidden shared state or side‑effects).
-4. **Scope:** single `temporalScope` (design *or* run) for all nodes; do not mix plans with histories.
+4. **Scope:** single `DesignRunTag` (design *or* run) for all nodes; do not mix plans with histories.
 5. **Boundary note:** if steps cross holon boundaries, record the relevant `U.Interaction`—do not recast it as parthood.
 
 **For Γ\_time**
 
 1. **Same carrier:** all phases are `PhaseOf` the **same** holon identity; identity change implies a Transformer producing a *new* holon.
 2. **Non‑overlap / coverage:** phase intervals are disjoint and cover `τ`; if not, specify how resolution limits or business rules justify the pattern.
-3. **Scope:** single `temporalScope`; design‑time hypothetical timelines and run‑time actual logs are kept separate.
+3. **Scope:** single `DesignRunTag`; design‑time hypothetical timelines and run‑time actual logs are kept separate.
 4. **Boundary note:** if Work across boundaries is reported for phases, route resource statements to **Γ\_work**; Γ\_time itself does not invent costs.
 
 ---
@@ -10283,7 +10320,7 @@ This Proof Kit instantiates the generic obligations from **B.1.1 §6** for the o
   Provide the one‑step singleton witness: Γ\_ctx of a single `SerialStepOf`‑free node returns that step unchanged (IDEM).
 
 * **CTX‑SCOPE/BOUND.**
-  Affirm a **single temporalScope** (`design` or `run`) and list any **U.Interaction** that crosses a holon boundary (do not recast it as parthood).
+  Affirm a **single DesignRunTag** (`design` or `run`) and list any **U.Interaction** that crosses a holon boundary (do not recast it as parthood).
 
 #### 5.2 Γ\_time obligations
 
@@ -10359,7 +10396,7 @@ Use these as templates; each fits on a page and references the obligations above
 | **CC‑B1.4.3** | An **independence declaration** (Γ\_ctx) or **coverage declaration** (Γ\_time) SHALL be attached, with join‑soundness statements (Γ\_ctx) and non‑overlap proof (Γ\_time).      | Make replaced COMM/LOC discipline explicit.   |
 | **CC‑B1.4.4** | **WLNK cutset** SHALL be identified (critical path for Γ\_ctx; critical epoch for Γ\_time).                                                                                     | Conservative bounds.                          |
 | **CC‑B1.4.5** | **MONO characteristics** SHALL be listed and justified for the call.                                                                                                                       | Prevent hidden regress.                       |
-| **CC‑B1.4.6** | All nodes SHALL share the same `temporalScope` (`design` or `run`) in a single fold.                                                                                            | Ban design/run chimeras.                      |
+| **CC‑B1.4.6** | All nodes SHALL share the same `DesignRunTag` (`design` or `run`) in a single fold.                                                                                            | Ban design/run chimeras.                      |
 | **CC‑B1.4.7** | Structural inclusion, mappings, and resource spending SHALL NOT be encoded as order/time edges; route to **Γ\_sys / Γ\_epist**, value‑level links or **Γ\_work** respectively. | Enforce A.15 Strict Distinction.              |
 | **CC‑B1.4.8** | If coverage breaks or identity changes, the modeller SHALL refactor the graph or declare a **Meta‑Holon Transition** (B.2).                                                     | Make emergence explicit.                      |
 
@@ -11976,7 +12013,7 @@ These obligations refine the generic Proof Kit from **B.1.1 §6** for **assuranc
   Identify the **relevant integration path(s)** and record `CL_min` used in the penalty `Φ(CL_min)`.
 
 * **ASS‑MAN (SCR).**
-  Produce a **SCR** listing all contributing nodes and edges with `(F, G, R)` and `CL` values, their **temporalScope**, and Evidence Graph Ref (A.10). If order or time were material, include the **OrderSpec** or **TimeWindow** identifiers from **B.1.4**.
+  Produce a **SCR** listing all contributing nodes and edges with `(F, G, R)` and `CL` values, their **DesignRunTag**, and Evidence Graph Ref (A.10). If order or time were material, include the **OrderSpec** or **TimeWindow** identifiers from **B.1.4**.
 
 * **ASS‑MONO (Declared monotone characteristics).**
   List the characteristics along which local improvement cannot reduce the aggregate (this supports future evolution, B.4).
@@ -14212,7 +14249,8 @@ Post‑2015 practice converges on **explicit provenance**, **externalized action
 | Thread                      | Key (tech)                             | Plain label                 | Kind                             | Home (§)                           | One‑liner (normative intent)                                                                                                                                                   | Constraints / CL policy (capsule)                                                                                                                                                                                      | Cross‑refs                                                                                         |
 | --------------------------- | -------------------------------------- | --------------------------- | -------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | **Cross‑Context & Bridges** | **U.NotationBridge**                   | Notation Bridge             | `U.Alignment` subtype (relation) | F.9                                | Directional **mapping between notations** for the *same* concept/role/state **across Bounded Contexts**, with explicit **mapping rule**, **CL level**, and **loss notes**.     | **Must not override in‑Context rules** (RSG, `≤/⊥/⊗`). **CL ∈ {3,2,1,0}**: CL≥2 permitted; **CL=1 requires Waiver SpeechAct**; **CL=0 forbidden**. Mapping is **loss‑annotated**; declare preserved/dropped semantics. | E.5.2 (Notational Independence); A.2.5 (RSG refinement); B.3 (CL calculus); F.10 (status families) |
-| **Didactic & Higher‑Order** | **CHR:ReferencePlane** | Object Mode | CHR characteristic | A.7; **E.10.D2**; **C.2.1 Export‑E0** | Declares the **ReferencePlane** of a claim/evidence: **`world`** (material system), **`concept`** (intension/definition), **`episteme`** (about another episteme/claim). | Use to **prevent category errors** and to apply **`CL^plane`** when traversing across **ReferencePlanes**; **cross‑context reuse** additionally **requires a Bridge (F.9)** with declared **CL**, and penalties affect **R\_eff** only per **B.3** (no “distance” language). | A.1/A.7 (Clarity Lattice); B.3 (assurance) |
+| **Didactic & Higher‑Order** | **CHR:ReferencePlane** | Object Mode | CHR characteristic | A.7; **E.10.D2**; **C.2.1 Export‑E0** | Declares the **ReferencePlane** of a claim/evidence: **`world`** (material system), **`concept`** (intension/definition), **`episteme`** (about another episteme/claim). | Use to **prevent category errors** and to apply **`CL^plane`** when traversing across **ReferencePlanes**; **cross‑context reuse** additionally **requires a Bridge (F.9)** with declared **CL**, and penalties affect **R_eff** only per **B.3** (no “distance” language). Do **NOT** extend this enumeration. | A.1/A.7 (Clarity Lattice); B.3 (assurance)
+| **Didactic & Higher‑Order** | **WorldRegime** | Pre‑op vs live **within** `ReferencePlane=world` | policy flag (Characteristic) | A.7; E.10.D2 | Domain: **`{prep|live}`**. Refines `ReferencePlane=world`; **does not** add a new plane. `prep` ⇒ no **Work** on the asset; acceptance is limited (e.g., LA‑only) and telemetry is gated; `live` ⇒ normal obligations. | Use to gate acceptance and telemetry for mechanisms that are preparing the physical world; defaults to **`live`** if omitted. | B.3; Γ_work; E.11 |
 | **Didactic & Higher‑Order** | **aboutEpisteme(x,y)**                 | about‑episteme              | relation (binary)                | A.10; B.3                          | States that episteme/claim **x concerns y as an artefact/claim**, **not** y’s domain referent. Marks **x** as a **ReferencePlane Episteme** statement.                         | **Not a substitute for `about`** (domain aboutness). **Cycles** allowed only if **acyclic within one evaluation chain**. **ReferencePlane(x)=Episteme** by derivation.                                                 | A.10 (EPV‑DAG); CHR:ReferencePlane; B.3                                                           |
 | **Didactic & Higher‑Order** | **CL^plane**                           | Cross‑level CL              | CL policy parameter              | B.3                                | **Congruence‑level adjustment** for **cross‑level crossings** computed from **ReferencePlane** mismatch.                                                                       | Default **Φ\_plane**: **0** for same‑level; **−1 CL** for a one‑step cross‑level jump (requires extra checklist/evidence); **block (CL→0)** for ≥2 steps unless **Waiver SpeechAct** cites rationale.                  | U.NotationBridge; aboutEpisteme; B.3.4 (decay/debt)                                                |
 | **Didactic & Higher‑Order** | **U.InformalRationale**                | Informal Rationale          | `U.Episteme` subtype (status)    | E.12; E.9                          | Plain‑language rationale **attached to a pattern/claim/DRR**; **non‑normative**, tracked with **auto‑debt** until formalised.                                                  | **Not admissible as VA evidence**; may count at **LA** with low weight. **Auto‑debt** opens a refresh task until upgraded to a formal episteme/evidence role.                                                          | E.9 (DRR); B.3 (assurance); A.10 (anchors)                                                         |
@@ -19525,7 +19563,7 @@ Define a **portable minimal set** of CHR **slots**. Each slot is **CHR-typed** (
 **CC-C.21-1 (CHR typing).** Every DHC slot **MUST** declare **Characteristic + Scale/Unit/Polarity**, with CSLC legality proved before any aggregation.
 **CC-C.21-2 (Freshness).** Published values MUST carry Γ_time selector and freshness window; stale rows escalate to {degrade|abstain} in **G.4 Acceptance**.
 **CC-C.21-3 (Plane).** ReferencePlane declared; cross‑plane re‑use publishes **CL^plane** (policy id) alongside CL; both penalties route to **R_eff**.
-**CC‑C.21‑4 (Design/Run stance).** Every DHC row SHALL declare **Stance ∈ {design, run}**; design‑ и run‑characteristics **not mixing** in one value/aggregate.
+**CC‑C.21‑4 (DesignRunTag).** Every DHC row SHALL declare **Stance ∈ {design, run}**; design‑ и run‑characteristics **not mixing** in one value/aggregate.
 **CC-C.21-5 (Lane tags).** Each value **MUST** tag **TA/VA/LA** lanes of contributing evidence.
 **CC-C.21-6 (Ordinal discipline).** **StandardisationLevel** is ordinal; **no means**, **no z-scores**.
 **CC-C.21-7 (Scope).** All computations declare **TargetSlice**; **USM** membership is decidable and deterministic.
@@ -19655,7 +19693,7 @@ A TaskSignature is a minimal typed record the selector consumes:
 
 Values are **CHR‑typed** with **provenance**; traits may be **inferred** from CHR/CAL bindings (e.g., *convexity known? differentiable? ordinal vs interval scales?*) and from **USM** scope metadata. Unknowns are tri‑state; **Missingness semantics MUST align with CHR.Missingness** and be honored by Acceptance/Flows. 
 
-**Design/Run hygiene.** Do not mix design/run stance in one signature; **publish ATS crossings** (Bridge + UTS) when importing design‑time traits into run‑time.
+**Design/Run hygiene.** Do not mix DesignRunTag in one signature; **publish ATS crossings** (Bridge + UTS) when importing design‑time traits into run‑time.
 
 #### 5.3 Provenance & planes.
 Record **Context**, **ReferencePlane** for each value; on any cross‑Context/plane reuse, attach BridgeDescription + UTS row, apply **CL** (and, if planes differ, **CL^plane**) penalties to **R_eff only**; both **Φ(CL)** and (if used) **Φ_plane** MUST be **monotone, bounded, and table‑backed**; **no “distance” language; penalties never mutate F/G.** Publish policy‑ids in SCR and cite Bridge ids on crossings.
@@ -22118,7 +22156,7 @@ procedures are `U.MethodDescription`; re‑runs are **Work**.
 ---
 
 **Editorial note.**
-This section **inherits** § 7 **MG·DA** (anchored head nouns; Characteristic/CharacteristicSpace for enums; collision checks) and § 8 **LEX.Morph** (suffix/prefix/casing). It deliberately **omits** their details to avoid duplication. The only legitimate use of *plane* remains **CHR:ReferencePlane**; all other “plane/layer/tier/lane” talk must pass § 7 (object‑of‑talk anchoring) or be expressed as an explicit **Characteristic**.
+This section **inherits** § 7 **MG·DA** (anchored head nouns; Characteristic/CharacteristicSpace for enums; collision checks) and § 8 **LEX.Morph** (suffix/prefix/casing). It deliberately **omits** their details to avoid duplication.  The only legitimate uses of *plane* in the Core are **CHR:ReferencePlane** and the derived operators **CL^plane** and **Φ_plane**; policy flags MUST NOT introduce new “planes”. To distinguish pre‑operational vs operational states *within* **ReferencePlane=world**, use **WorldRegime ∈ {prep|live}** (formerly `PlaneRegime`).
 
 ## 10 · Migration playbook — turning messy language into ULR‑clean prose *(informative)*
 
@@ -22360,7 +22398,7 @@ The platform offers **Service** ‘Object Storage’ (access = `S3_API_Spec_vX`;
 4. **LCTX‑INV‑4 (Frames, not contexts).** Pattern headers use **Problem Frame** for narrative.
 5. **LCTX‑INV‑5 (No hierarchy).** Contexts are flat; relationships are declared **only** via E.10.U9 Bridges.
 6. **LCTX‑INV‑6 (Plane hygiene).** Contexts describe **context of meaning** for sources; they are not roles, statuses, executions, or types (C‑6).
-7. **LCTX‑INV‑7 (Time tags).** Temporal stance is a **tag** on artefacts/sources; it does not multiply contexts.
+7. **LCTX‑INV‑7 (Time tags).** DesignRunTag is a **tag** on artefacts/sources; it does not multiply contexts.
 8. **LCTX‑INV‑8 (Language/edition).** Multilingual or multi‑edition handling follows D‑CTX‑7.
 
 ---
@@ -22608,7 +22646,7 @@ Every Description/Spec is **local to** a `U.BoundedContext` (E.10.D1). Phrases i
 `U.Carrier` holds **encodings** of a Description/Spec; the KU’s identity is **not** the file. *Never* say “the role contains the checklist in the PDF”; say “the **RoleDescription** characterises the role with checklists; this **carrier** encodes them.”
 
 **Time stance.**
-Descriptions/Specs must declare design/run stance when inherent (e.g., RoleDescription is design‑time; state attestation via `U.Evaluation` is run‑time).
+Descriptions/Specs must declare DesignRunTag when inherent (e.g., RoleDescription is design‑time; state attestation via `U.Evaluation` is run‑time).
 
 ---
 
@@ -23230,60 +23268,7 @@ A **GateCrossing** between tiers (e.g., AT0→AT1, AT1→AT2, AT2→AT3) **MUST*
 **Publication discipline.** Keep a **`BridgeRegisterCarrier`** and a **`UTSRegisterCarrier`** controlled by `Holder#StewardRole:Program‑X`.
  Record twin labels on UTS rows.
 
-### 15) Modes & switches (normative) — **Core vs Lite**
-
-**E.11‑M1 · Mode token.** Authors MAY declare a mode on the ATS card:
-`ATSMODE ∈ {Core | Lite}` (default = **Core**). The mode governs the **harness reaction**, not the **invariants**.
-
-**E.11‑M2 · Red‑line invariants (apply in all modes).** The following remain **blocking** irrespective of mode:
-1) Cross‑tier reuse **without** `BridgeCard + UTS row` (and missing CL notes).  
-2) **CHR illegality**: ordinal means; unit/scale mixing; hidden thresholds in CHR/LOG/code.  
-3) Missing **ReferencePlane** on numeric/comparable claims; missing **CL^plane** on plane crossings; penalties not routed to **R_eff only**.  
-4) Any view/publication that **adds claims** beyond I/D/S (violates A.7 Publ_ID / Formalize_DS laws).  
-(*See A.7, E.10, F/G pins; red‑lines are mode‑independent.*)
-
-**E.11‑M3 · Harness reaction by mode.**
-- **Core (current default):** `AH‑1..AH‑4` failures **SHALL block** publication under this Scheme.  
-- **Lite:** `AH‑L1..AH‑L4` fire as **advisory**, producing **warnings** and **SCR defects**; publication proceeds unless a **red‑line invariant** (E.11‑M2) is violated.
-
-**E.11‑M4 · Minimal publication sets by mode (refines C8).**
-- **Core:** C8 minimal sets unchanged.  
-- **Lite:** During prototyping, authors MAY publish the **C8‑Lite set**:
-  * AT0↔AT1: `BridgeCard` + **stub `TaskPack` header** (scope heads only) + UTS row.  
-  * AT1↔AT2: `BridgeCard` + **stub `ArchitheoryPack` header** (pack head + edition pins only) + UTS row.  
-  * AT2↔AT3: `BridgeCard` + **stub `CoordinationFlowDescription`** (lane policy heads) + UTS row.  
-  Any numeric claims still require **pins** (units/scale/reference‑plane/edition).
-
-**E.11‑M5 · Migration rule (Lite → Core).** A `C8‑Lite` publication MUST be upgraded to **Core** before: (i) external consumption outside the home Context, or (ii) maturity advance on the UTS ladder that cites the pack.
-
-**E.11‑M6 · Surface defaults by mode (ties to MVPK).**
-- **Lite:** default **PlainView + TechCard**; `AssuranceLane` is **optional**, but MUST appear whenever numeric claims or crossings are present.  
-- **Core:** `PlainView + TechCard + AssuranceLane` are **required**; `InteropCard` remains project‑optional (Part I).
-
-### 16) ATS‑Lite harness (advisory)
-
-**Tech token:** `AuthoringTierSchemeLite` (**ATS‑Lite**).  
-**Plain twin:** *ATS‑Lite (advisory harness for small teams)*.
-
-**AH‑L1 (Classifier, advisory).** Same inputs as AH‑1; the classifier MAY be heuristic but MUST be deterministic. Output: {AT0|AT1|AT2|AT3} + confidence + warning if ambiguous; never blocks by itself.
-
-**AH‑L2 (Gate check, advisory).** On a cross‑tier citation, warn if `BridgeCard + UTS` are missing; **block only** if E.11‑M2(1) red‑line is hit.
-
-**AH‑L3 (Lane & pins check, advisory).** Warn on CL/CL^k/CL^plane routing mistakes, missing pins (`DescriptorMapRef.edition`, `DistanceDefRef.edition`, `CharacteristicSpaceRef.edition?`, `TransferRulesRef.edition`) or on attempts to include illumination in dominance without CAL policy. **Block** only if E.11‑M2(2–3) red‑lines are hit.
-
-**AH‑L4 (Lexical check, advisory).** Warn on head‑anchoring, I/D/S, Role/Holon slips; suggest canonical rewrites; never blocks unless publication adds claims beyond I/D/S (E.11‑M2(4)).
-
-**Outputs (Lite):** All AH‑L warnings are recorded as **SCR defects** with remediation notes; CI MAY enforce **warning budgets** per Context.
-
-### 17) Author’s quick rubric (Lite)
-
-1) **Bridge first.** If you cite across tiers, mint the `BridgeCard` and a UTS row, even if the pack card is a stub.  
-2) **Pin numbers.** If you print a number to compare/aggregate, pin unit/scale/plane/edition.  
-3) **Avoid ordinal means and unit mixing.** If in doubt, abstain and note the policy.  
-4) **Keep surfaces lean.** Start with PlainView+TechCard; add AssuranceLane when you cross Contexts/planes or use numbers.  
-5) **Upgrade on release.** Before external consumption or maturity advance, switch `ATSMODE=Core` and fill the full C8 set.
-
-### 18) Related patterns
+### 15) Related patterns
 
 * **A.4** — Temporal Duality & Open‑Ended Evolution Principle (time‑split of design/run).
 * **B.4** — Canonical Evolution Loop (Observe→Refine→Deploy) governs ATS change/refresh cadence.
@@ -23296,7 +23281,7 @@ A **GateCrossing** between tiers (e.g., AT0→AT1, AT1→AT2, AT2→AT3) **MUST*
 * **C.20 §D.DISC** — Discipline CAL lexical guard (Holon, CG‑Spec, Domain stitching).
 * **D.CTX** — Context enumeration and stitching.
 
-### 19) Glossary (tokens minted or stabilised here)
+### 16) Glossary (tokens minted or stabilised here)
 
 * `AuthoringTierScheme` · `AuthoringTierSchemeDescription` · `AuthoringTierSchemeSpec`
 * `AppliedWork` (AT0) · `TransdisciplineDesignWork` (AT1) · `ArchitheoryAuthoringWork` (AT2) · `MetaAuthoringWork` (AT3)
@@ -23305,7 +23290,7 @@ A **GateCrossing** between tiers (e.g., AT0→AT1, AT1→AT2, AT2→AT3) **MUST*
 * Roles: `DesignerRole`, `TranslatorRole`, `AuthorRole`, `AssessorRole`, `ReviewerRole`, `CoordinatorRole`, `EditorRole`, `DisciplineStewardRole`
 * Lane markers: `F‑lane`, `G‑lane`, `R‑lane` · `CL` (conformance loss) with **CL→R only**
 
-### 20) Lexical/Conformance checklist (quick use)
+### 17) Lexical/Conformance checklist (quick use)
 
 * **Head‑anchoring:** All heads signal kind (System/Holon/Work/Method/Pack/Spec/Description/Role/Carrier).
 * **I/D/S morphology:** `…Description` vs `…Spec` used correctly; acceptance harness only for `…Spec`.
@@ -23317,7 +23302,7 @@ A **GateCrossing** between tiers (e.g., AT0→AT1, AT1→AT2, AT2→AT3) **MUST*
 * **Plain twins:** Figurative heads (e.g., “Ladder”, job titles, “Tradition”) also corrected by a twin plane lexical discipline.
 * **No minted `U.Type` “Strategy”.** Treat **strategy/policy** as compositions/lenses in **G.5** under **E/E‑LOG**; keep “strategy” in the **Plain** register only.
 
-### 21) Minimal worked “publish set” (ready‑to‑use)
+### 18) Minimal worked “publish set” (ready‑to‑use)
 
 1. **Mint** `AuthoringTierSchemeDescription` (this pattern).
 2. **Optionally mint** `AuthoringTierSchemeSpec` with AH‑1…AH‑4 harnesses (per E.10.D2).
@@ -24132,6 +24117,8 @@ If no **ScaleLensPolicy** is declared, selection remains **neutral** with respec
 > • **Tech:** `Emit_PlainView`, `Emit_TechCard`, `Emit_InteropCard`, `Emit_AssuranceLane`; `PromoteView[s→t]_·`.  
 > • **Plain:** `PlainView(x)`, `TechCard(x)`, `InteropCard(x)`, `AssuranceLane(x)`; “Promote to *t*”.
 
+> **USM binding (overview):** `PublicationScope` is a **USM‑class** object that parameterizes MVPK; see §5.0.
+
 ### 1 · Intent
 
 Provide a **disciplined, compositional way to publish morphisms** (arrows) across multiple didactic faces (views/cards) **without adding semantics**, while keeping **viewpoints** (the specifications that constrain views) explicit and auditable. Authors get a small **view‑pack** that, when applied to any `U.Morphism` (including compositions), yields a **family of views** that commute with arrow composition and respect edition/measurement pinning (Part F/G).
@@ -24163,29 +24150,53 @@ Provide a **disciplined, compositional way to publish morphisms** (arrows) acros
 
 ### 5 · Solution — the **MVPK Kit**
 
+#### 5.0 USM anchoring (normative)
+* **PublicationScope (USM).** Define `U.PublicationScope` in **USM** analogously to `U.WorkScope` and `U.ClaimScope`. An MVPK kit instance is **governed by** a `PublicationScope` that fixes:
+  * (a) the **viewpoint index** `Σ` and its partial order `⪯`,
+  * (b) the **profile** (MVPK‑Min/Lite/SetReady/Max) as a *configuration* of this scope,
+  * (c) the admissible **Publication characteristics (PC)** and required **pinning contracts**,
+  * (d) any **cross‑Context/plane** constraints (Bridge/CL policies) applicable to emitted faces.
+* **Scope lineage.** `PublicationScope` participates in the same USM lineage regime as `WorkScope`/`ClaimScope` (editioning and migration rules); MVPK emits faces **under** a declared `PublicationScopeId`.
+* **L, P, D, E quartet.** The canonical MVPK‑Max scope enumerates exactly four **face kinds**: `PlainView (P)`, `TechCard (T)`, `InteropCard (I)`, `AssuranceLane (A)`. If a program elects to retain the mnemonic **(L, P, D, E)** tuple, it MUST map it 1‑to‑1 onto these **face kinds** within `PublicationScope` and SHALL NOT introduce additional kinds without a USM extension.
+
 #### 5.1 Terminology (normative)
 
 * **View** (`U.View`): a **concrete publication** produced *under* a viewpoint.    
-* **View family** (`U.ViewFamily`): the **indexed family / bundle** of views `{View_s | s ∈ Σ_viewpoints}` for a given morphism (no product semantics assumed).  
-* **Per‑viewpoint view category** `View_s(U)`: with objects `U.ViewObj_s` and morphisms `U.ViewMorph_s`; `Emit_s(f) : ViewObj_s(X) → ViewObj_s(Y)`.
-* **Index set of viewpoints** `Σ` ≡ `Σ_viewpoints`.
-* **Publication vs presentation vs rendering vs representation (guard):**    
+* **View** (`U.View`): a **concrete publication face** produced *under* a viewpoint; a **conceptual projection** (not a symbol carrier).  
+  Every `U.View` **SHALL** declare:  
+  `SurfaceKind ∈ {PublicationSurface, InteropSurface}`, `ViewpointId`, `AboutId`, and a `U.PublicationScope` (USM §6.5).  
+  Any materialization/rendering is separate **Work on SCR/RSCR carriers** and is not part of `U.View`.
+ **Publication vs presentation vs rendering vs representation (guard):**    
     * **Publication** = typed projection along **I→D→S** onto a **PublicationSurface** (A.7 §5.8–5.9).        
     * **Presentation** = rhetorical arrangement of a published carrier; **notation‑neutral**, adds no claims and is **not** a Surface kind.        
     * **Rendering** = display/layout of a carrier, purely graphical/formatting; **Work on carriers** (A.7), not a Surface kind.        
     * **Representation** = episteme↔referent relation; **not** a surface act. Use **publication** and **view** here; treat presentation/rendering as **Work on carriers** (A.7).        
-* **No‑mechanism equivalence:** MVPK **is not** a mechanism; any operational toil (build/render/upload) is **separate Work by a system on carriers** (A.7; see §6.5).
++* **No‑mechanism equivalence:** MVPK **is not** a mechanism; any operational toil (build/render/upload) is **separate Work by a system on carriers** (A.7; see **Laws 5 — No Γ‑leakage** in §6).
+* **ViewpointSpec (`U.Viewpoint`)** — a typed specification that declares stakeholders, concerns, conformance rules, allowed **Publication Characteristics**, and pinning requirements per profile. The index set `Σ` consists of identifiers of `U.Viewpoint` instances (see §5.3).
 
 #### 5.2 Allowed surfaces at Part E (L‑SURF discipline)
 Part E restricts the term *Surface* to **PublicationSurface** and **InteropSurface**. Concrete faces SHALL be named **…View / …Card / …Lane**. 
 
-**MVPK‑Max viewpoints (normative; exactly four):**
+**USM linkage (normative).** Every `U.View` **SHALL** declare a `U.PublicationScope` (USM §6.5).  
+For a view **about an episteme** `E`: `PublicationScope(view_E) ⊆ ClaimScope(E)`.  
+For a view **about a capability** `C`: `PublicationScope(view_C) ⊆ WorkScope(C)`.  
+Cross‑context views **SHALL** cite Bridge + CL; **CL penalties apply to R only** (scope membership unchanged).
+
+**L‑PUBSURF naming discipline**
+ * Allowed surface kinds: **PublicationSurface**, **InteropSurface**.
+ * Concrete faces MUST be named **…View / …Card / …Lane**.
+* The tokens **carrier/bearer/holder** MUST NOT name a `U.View` or any publication entity.  
+  Use **`U.View`** (PlainView / TechCard / InteropCard / AssuranceLane) for conceptual publication faces.  
+  Reserve **carrier** exclusively for **SCR/RSCR** (symbol/document/data carriers) and **Work on carriers**.
+* Avoid geometric metaphors (axis/dimension) for publication artifacts; use **Characteristic/CharacteristicSpace** only when referring to CHR‑MM entities.
+
+**MVPK‑Max viewpoints (normative; exactly four; governed by PublicationScope):**
 * `PlainView` (explanatory prose view)    
 * `TechCard` (typed catalog card)    
 * `AssuranceLane` (evidence bindings/lanes)
 * `InteropCard` (conceptual interoperability view; **mapping to concrete exchange formats lives in Annex/Interop; Part E does not specify schemas**)
 
-**Lean profiles (small‑team friendly, optional):**
+**Lean profiles (small‑team friendly, optional; as PublicationScope configurations):**
 * **MVPK‑Min (F0–F1):** Σ = {`PlainView`, `TechCard‑Lite`}. `AssuranceLane` omitted. No interop face.
 * **MVPK‑Lite (F1–F3):** Σ = {`PlainView`, `TechCard‑Lite`, `AssuranceLane‑Lite` gated by crossing trigger}. `InteropCard` only if external consumers exist.
 * **MVPK‑SetReady (F3–F5):** add `InteropCard` when replayability or external interchange is required (details outside Part E).
@@ -24195,9 +24206,9 @@ Part E restricts the term *Surface* to **PublicationSurface** and **InteropSur
 #### 5.3 The kit (constructs)
 
 1. **Object component** `ViewObj_s` for each viewpoint (see §5.1), to make types explicit.  
-2. **Index set of viewpoints** `Σ` with declared **partial order** `⪯` for formality/refinement (default chain: `PlainView ⪯ TechCard ⪯ InteropCard`; `AssuranceLane` is **orthogonal** and not ordered with respect to others).  
+2. **Viewpoint set** `Σ : FinSet(U.Viewpoint)` with declared **partial order** `⪯` for formality/refinement (default chain: `PlainView ⪯ TechCard ⪯ InteropCard`; `AssuranceLane` is **orthogonal** and not ordered with respect to others).  
 3. **Emitters** `Emit_s(·) : U.Morphism → U.ViewMorph_s` (one per `s ∈ Σ`).
-4. **Coherence** (laws §6) + **Pins** policy (units/scale/reference‑plane/edition) for numeric/comparable content.    
+4. **Coherence** (laws §6) + **Pin Characteristics** policy (UnitType/ScaleKind/ReferencePlane/EditionId) for any numeric/comparable content, grounded in CHR/UNM.    
 5. **Interop anchors (conceptual)** for `InteropCard` (concerns/semantics only); **any concrete schema/exchange mapping is outside Part E** (Annex/Interop).
 
 **Result:** `MVPK(f, Σ)` returns `U.ViewFamily(f)` whose components are `Emit_s(f)`. Reindexing across `s ⪯ t` is mediated by total object‑level coercions `PromoteView[s→t]_X` (see §6.2).
@@ -24206,12 +24217,60 @@ Part E restricts the term *Surface* to **PublicationSurface** and **InteropSur
 1) **I/O are intensional.** The **Input/Output** sections of a morphism describe **intensional** data types (I/D/S) only; they do **not** depend on any publication face.  
 2) **No duplication on faces.** MVPK faces **do not duplicate** I/O lists; they publish a **minimal profile**: **presence‑pins**, **CG‑Spec/CHR anchors**, and **EditionId** only.  
 3) **Signature reserved to intensional.** Use **“Signature”** exclusively for intensional objects (`U.Signature`, `U.PrincipleFrame`, …). On faces, avoid “signature” and use **TechName/PlainName**.  
-4) **Lawful orders, return sets.** Whenever a face shows **selection or comparison**, it **returns sets / lawful partial orders** and **never hides scalarization**; cite a **ComparatorSet**.  
+4) **Lawful orders, return sets.** Whenever a face shows **selection or comparison**, it **returns sets / lawful partial orders** and **never hides scalarization**; cite a **ComparatorSetRef** for any total order.  
 5) **Bridge routing, penalties.** Crossings go via **Bridge + CL**; publish **Φ(CL)/Φ_plane** ids; penalties route to **R only** (never F/G).  
 6) **Carrier anchoring & lanes.** On first mention, anchor carriers (**SCR/RSCR**); keep **Work occurrences** distinct from **epistemic claims** via lanes.  
 7) **Publication ≠ execution.** No time/resource semantics on faces; any build/render/upload is separate **Work**.
 
-#### 5.5 Author ergonomics (non‑normative)
+#### 5.5 Pin & Publication characteristics (normative; never “axes”)
+**Intent.** Make pinning and publication‑time measurement claims explicit, typed, and auditable without importing geometric metaphors. This section introduces **Publication characteristics** (PC) as CHR‑grounded, publication‑level facets that can legally appear on MVPK faces.
+
+**Terminology (aligned with CHR‑MM & UNM).**
+* **Characteristic** (`U.Characteristic`): a measured aspect as defined in CHR‑MM (entity/relation characteristic with a chosen **Scale**).  
+* **CharacteristicSpace** (`U.CharacteristicSpace`): a CHR‑typed product of slots used by dynamics/measurement theories (A.19).  
+* **Publication characteristic** (`U.PubCharacteristic`, **PC**): a **declarative facet** that a view/card/lane may expose *about a morphism* under a stated **Viewpoint**. Each PC is **backed by** CHR/CG‑Spec artifacts and **pinned** by {unit/scale/reference‑plane/edition}. PCs are **not** geometry and do **not** define “axes”.
+
+**PC catalog (initial set).** MVPK defines a minimal open set of PCs that are frequently surfaced:
+* **PC.Number** — numeric/comparable entries (thresholds, budgets, counts). **Pins required:** unit, scale, reference‑plane, edition.  
+* **PC.EvidenceBinding** — bindings to evidence carriers and policies (e.g., PathSliceId, BridgeId, CL notes).  
+* **PC.ComparatorSetRef** — an explicit comparator family for lawful partial orders on faces.  
+* **PC.CharacteristicSpaceRef?** — optional pointer when a face needs to cite the **space** in which a claim is interpreted (e.g., dominance on a declared space).  
+The catalog **MAY** be extended (see “Extensibility” below); PCs **must** remain declarative (no embedded mechanisms).
+
+**Norms (E17‑PC).**
+* **E17‑PC‑1 (CHR grounding).** Every PC that yields numeric/comparable content **SHALL** cite CHR/CG‑Spec anchors and carry pins {unit, scale, reference‑plane, edition}.  
+* **E17‑PC‑2 (Lexical discipline — no geometry).** Faces and PCs **MUST NOT** use “axis”, “dimension”, or geometric metaphors; use **Characteristic**, **slot**, **CharacteristicSpace** where applicable (**E.10**; see also A.19).  
+* **E17‑PC‑3 (No hidden arithmetic).** Faces **MUST NOT** smuggle aggregation/normalization; any such logic lives in **CG‑Spec** (UNM/NormalizationMethod) and is cited by **…Ref.edition**.  
+* **E17‑PC‑4 (Plane & crossing).** When a PC depends on **ReferencePlane** or crosses planes/contexts, the face **SHALL** cite `BridgeId` and **CL** policy‑ids; penalties route to the **R‑channel only**.  
+* **E17‑PC‑5 (Edition pinning).** PCs that rely on maps or distances **SHALL** pin `DescriptorMapRef.edition`, `DistanceDefRef.edition`, and, if used, `CharacteristicSpaceRef.edition` / `TransferRulesRef.edition`.  
+* **E17‑PC‑6 (Viewpoint scope).** Each PC instance declares the **Viewpoint** under which it is valid; promotion `PromoteView[s→t]` **MUST NOT** strengthen claims; at most, it reindexes or annotates.  
+* **E17‑PC‑7 (Comparator/SetSemantics edition).** `PC.ComparatorSetRef` and any `SetSemanticsRef` **SHALL carry edition identifiers**; cards MUST be re‑emitted upon edition change with migration notes.
+
+**Surfaces & responsibilities.**
+* **PlainView** MAY include **PC.Number** iff fully pinned; otherwise it uses **compare‑only** language.  
+* **TechCard** SHOULD carry **PC.Number**, **PC.ComparatorSetRef**, and **PC.CharacteristicSpaceRef?** when faces enable lawful ordering.  
+* **AssuranceLane** SHALL carry **PC.EvidenceBinding** and the pins for any numeric claims it relays.  
+* **InteropCard** MAY reference PCs conceptually but SHALL remain notation‑neutral in Part E (schemas map in Annex/Interop).
+
+**Rationale.** MVPK is a publication discipline, not a measurement calculus. By naming **Publication characteristics** and pinning them to CHR/UNM, we:
+1) prevent geometric leakage (no “axes”);  
+2) keep publication neutral yet auditable;  
+3) enable lawful set/ordering behavior on faces via explicit **ComparatorSet**;  
+4) make plane/crossing obligations first‑class and checkable by declared publication checks / **OperationalGate(profile)** modules.
+
+**Extensibility.**
+* **E17‑PC‑Ext‑1 (Open catalog).** New PCs MAY be added under `U.PubCharacteristic` provided they are declarative and CHR/UNM‑grounded.  
+* **E17‑PC‑Ext‑2 (Kinding).** New PCs MUST declare `kind ∈ {Number, EvidenceBinding, SelectorHint, …}` and a **pinning contract**.  
+* **E17‑PC‑Ext‑3 (Twin‑register names).** Supply **Tech** and **Plain** twins; avoid tokens that collide with E.10 bans; do not coin “…Space” names for publication artifacts.  
+* **E17‑PC‑Ext‑4 (Edition discipline).** If a PC depends on a definitional artifact, **edition‑pin** the reference (`…Ref.edition`) and document migration rules.
+
+**Adding invariants (procedure).**
+1) Place **new invariants** for PCs in **CG‑Spec** (S‑layer), not on faces; supply acceptance tests and an **ATS** check.  
+2) Version any affected **CharacteristicSpace**; publish embeddings if semantics change; never mutate slots in place.  
+3) Update **AH‑3/AH‑4 (or AH‑L3/AH‑L4)** to warn/block per **E.11‑M2** red‑lines; never weaken functorial laws.  
+4) **Document** edition/migration rules; extend §9 with a conformance item and provide **Lean‑profile downgrade** (advisory vs block) where applicable.
+
+#### 5.6 Author ergonomics (non‑normative)
 *Quick path for authors (three steps and a micro‑template):*
 1. **Declare Σ and profile.** Choose `{PlainView, TechCard, …}` and whether faces are full or *‑Lite*.
 2. **Pin once, reuse everywhere.** Attach `{UnitType, ScaleKind, ReferencePlane, EditionId}` to the arrow; cards reference these pins by ID (no duplication).
@@ -24241,7 +24300,7 @@ For any composable arrows `X —f→ Y —g→ Z` in `U`, and any `s, t ∈ Σ_v
       with **ID‑1/ID‑2, DS‑1/‑2/‑3** enforced (A.7 §5.9). **No new commitments** are introduced by publication. Edition governance follows **U.EditionSeries**; UTS rows are the identity anchors for names.
 4. **Pin discipline (Part F/G).**  
      * Any numeric/comparable content in a view SHALL pin {UnitType, ScaleKind, ReferencePlane}. **EditionId MAY be coarse at Lean profiles**; if units/scale are unknown, **declare ordinal/compare‑only** and **forbid arithmetic** until CHR pins are available.  Pins upgrade monotonically with profile and risk.
-5. **No Γ‑leakage.**  
+5. **No Γ‑leakage (publication independence).**  
     Publication morphisms carry **no** Γ\_method / Γ\_time / Γ_work semantics. Any build/render/upload toil is **separate Work by a system on carriers** (A.7).    
      **Lean assurance lane:** `AssuranceLane‑Lite` MAY expose only presence bits for {PathId/PathSlice?, Γ_time window?, BridgeId?}; unknowns propagate (tri‑state) with an explicit {degrade|abstain|sandbox} policy note.
 6. **Carrier provenance.**  
@@ -24253,7 +24312,12 @@ For any composable arrows `X —f→ Y —g→ Z` in `U`, and any `s, t ∈ Σ_v
 9. **Totality of publication morphisms.**    
     * Publication maps are total on their domains; when a composition in a view would be ill‑typed, the author **must** fix the object mapping (via `ViewObj_s`) rather than weakening functoriality or reindexing laws.
 10. **ATS check‑points (authoring stance).**  
-    * MVPK outputs SHALL be checkable by **ATS**: (i) **pin/anchor presence**, (ii) **functoriality witnesses** for compositions, (iii) **reindexing naturality** witnesses, (iv) **Surface token discipline**. Failing cards are rejected at **E.11** gates.
+    * MVPK outputs SHALL be checkable by **ATS**: (i) **Pin/Publication Characteristics presence** (incl. anchors and editions), (ii) **functoriality witnesses** for compositions, (iii) **reindexing naturality** witnesses, (iv) **Surface token discipline**. Failing cards are rejected at **E.11** gates.
+11. **PublicationScope discipline (subset & composition).**  
+    * (a) **Subset law:** If a view `v` is about episteme `E` then `PublicationScope(v) ⊆ ClaimScope(E)`; if about capability `C` then `PublicationScope(v) ⊆ WorkScope(C)`.  
+    * (b) **No widening by refinement:** If `s ⪯ t`, then promotion `PromoteView[s→t]` MUST NOT widen `PublicationScope`.  
+    * (c) **Compositional bound:** For composable arrows `X —f→ Y —g→ Z`,  
+      `PublicationScope(Emit_s(g∘f)) ⊆ PublicationScope(Emit_s(g)) ∩ PublicationScope(Emit_s(f))`.
 
 ### 7 · Structure & participants
 ```
@@ -24270,7 +24334,7 @@ U :  X ──f──▶ Y ──g──▶ Z    X ──f──▶ Y ──g─�
 ```
 * **Author** chooses `Σ_viewpoints` (declared concerns + conformance rules).    
 * **MVPK** emits `U.ViewFamily(f)` for each arrow `f`.    
-* **ATS (E.11)** checks that pins/anchors/IDs are present and laws are not violated.    
+* **Gate‑based validation** (via declared publication checks / OperationalGate(profile) modules) verifies that pins/anchors/IDs are present and that MVPK laws are respected.    
 
 ### 8 · Examples (SoTA‑echoing)
 
@@ -24286,18 +24350,23 @@ U :  X ──f──▶ Y ──g──▶ Z    X ──f──▶ Y ──g─�
 
 | ID | Requirement | Practical test |
 | --- | --- | --- |
-| **CC‑MVPK‑0 (ATS‑Lite)** | For Lean profiles, a minimal guard runs: (i) set‑returning selection present; (ii) ReferencePlane present; (iii) any crossing cites BridgeId+CL with penalties routed to R only. | ATS‑Lite report shows presence bits; penalties route to R only. |
+| **CC‑MVPK‑0 (Lean publication guard)** | For Lean profiles, a minimal guard runs: (i) set‑returning selection present; (ii) ReferencePlane present; (iii) any crossing cites BridgeId+CL with penalties routed to R only. | Validation report shows presence bits; penalties route to R only. |
 | **CC‑MVPK‑1 (Viewpoint explicit)** | Each view declares its **Viewpoint** (stakeholders, concerns, conformance). | Cards show `ViewpointId` and concerns. |
 | **CC‑MVPK‑2 (Functoriality)** | `Emit_s(id)` is identity; `Emit_s(g∘f) = Emit_s(g)∘Emit_s(f)`. | Compose two cards and diff with the card of the composite. |
 | **CC‑MVPK‑3 (No content extension)** | `PlainView`, `TechCard`, and `InteropCard` add **no new claims** beyond I/D/S. | Red‑line vs `Publ_ID/DS` output shows only formatting/indexing. |
-| **CC‑MVPK‑4 (Pins & anchors)** | Numbers/thresholds pin {...}. **Lean exception:** at MVPK‑Min/Lite profiles, EditionId MAY remain coarse; ordinal claims are legal only as compare‑only (no means/z‑scores). | ATS shows pins present or compare‑only gates enabled. |
+| **CC‑MVPK‑4 (Pins & anchors)** | Numbers/thresholds pin {...}. **Lean exception:** at MVPK‑Min/Lite profiles, EditionId MAY remain coarse; ordinal claims are legal only as compare‑only (no means/z‑scores). | Validation shows pins present or compare‑only mode engaged. |
 | **CC‑MVPK‑4b (Lean assurance)** | If `AssuranceLane‑Lite` is used, presence bits for {PathSliceId?, BridgeId?} suffice; full artefact lists are deferred. | Presence bits visible; deferred artefacts marked TODO. |
 | **CC‑MVPK‑4c (I/O vs publication)** | Faces **do not** restate I/O; they carry **presence‑pins + anchors + EditionId** only. | Face inspection shows no I/O duplication. |
 | **CC‑MVPK‑4d (Lawful orders)** | Any selection/comparison on faces **returns sets / lawful partial orders** with a **ComparatorSet** citation. | No hidden scalarization; ComparatorSetRef present. |
 | **CC‑MVPK‑4e (Signature on faces — banned)** | The term **“signature”** is **not used** on faces; use **TechName/PlainName**. | Token scan: no “signature” on faces. |
-| **CC‑MVPK‑4f (Legacy labels)** | Legacy labels for mechanisms/operations are replaced with **Mechanism.Intension/OperatorAlgebra** (intensional). | Token scan passes; face fields name concrete heads. |
+| **CC‑MVPK‑4f (PC discipline)** | Any numeric/comparable publication uses **Publication characteristics** (PC) and carries pins {unit, scale, reference‑plane, edition}. | Cards show PC fields + pins; validation passes. |
+| **CC‑MVPK‑4g (No axis/dimension)** | Faces avoid “axis/dimension/plane” metaphors except **ReferencePlane**; use CHR terms (**Characteristic/slot/CharacteristicSpace**). | Lexical check flags none; only `ReferencePlane` appears. |
+| **CC‑MVPK‑4h (Edition pins on defs)** | Where maps/distances/spaces are cited, the face pins `DescriptorMapRef.edition`, `DistanceDefRef.edition`, and `CharacteristicSpaceRef.edition?`. | Validation shows edition fields populated. |
+| **CC‑MVPK‑4i (Crossings gated)** | Plane/Context crossings cite **Bridge + CL** policies; penalties route to **R‑channel** only. | IDs present; routing verified in harness logs. |
+| **CC‑MVPK‑4j (PublicationScope present)** | Each view **declares `U.PublicationScope`** (USM §6.5). | Field present; presence‑bit green. |
+| **CC‑MVPK‑4k (Subset‑of underlier)** | For views about epistemes/capabilities, `PublicationScope ⊆ ClaimScope/WorkScope`; reindexing **does not widen** it. | Subset witness passes; promotion diff shows no widening. |
 | **CC‑MVPK‑5 (Carrier anchoring)** | First mention includes **SCR/RSCR** ids. | SCR ids visible on the card. |
-| **CC‑MVPK‑6 (Γ‑separation)** | No cost/time/data‑spend on publication morphisms. | Any such fields live in **Work** of a publication service. |
+| **CC‑MVPK‑6 (Γ‑separation)** | No cost/time/data‑spend on publication morphisms. | CI shows proofs/witness artefacts; gate validation passes. |
 | **CC‑MVPK‑7 (Reindexing monotone)** | If `s ⪯ t`, then `Emit_s(x) ⪯ Emit_t(x)`. | `TechCard` ≤ `InteropCard` (more structure, same claims). |
 | **CC‑MVPK‑8 (Surface discipline)** | Only **PublicationSurface/InteropSurface** are used; faces named …**View/…Card**. | Token scan; no “rendering/presentation” as surface kinds. |
 | **CC‑MVPK‑9 (Reindexing naturality)** | Reindexing coercions `PromoteView[s→t]` exist, are total, and commute with composition. | Witness shows `PromoteView[s→t]_Z ∘ Emit_s(g∘f) = (Emit_t(g) ∘ Emit_t(f)) ∘ PromoteView[s→t]_X`. |
@@ -24324,7 +24393,7 @@ U :  X ──f──▶ Y ──g──▶ Z    X ──f──▶ Y ──g─�
 | Benefit | Why it matters | Trade‑off / Mitigation |
 | --- | --- | --- |
 | **Arrow‑level traceability.** | Composition preserved across views enables chain‑of‑evidence on pipelines. | Slight authoring overhead → MVPK templates. |
-| **Audit‑ready surfaces.** | Pins + CHR anchors make numeric claims verifiable. | Tooling (ATS) performs checks. |
+| **Audit‑ready surfaces.** | Pins + CHR anchors make numeric claims verifiable. | Gate‑based validation performs checks. |
 | **Terminology hygiene.** | Clear View vs Viewpoint, Publication vs Presentation. | Enforce L‑SURF tokens in CI. |
 | **Notation independence.** | Viewpoints talk concerns, not tools. | Provide adapters to local stacks. |
 
@@ -24338,18 +24407,335 @@ U :  X ──f──▶ Y ──g──▶ Z    X ──f──▶ Y ──g─�
 
 ### 13 · Relations
 
-* **Builds on:** A.7 (Strict Distinction: I/D/S vs Surface; publication morphisms), E.8 (Authoring conventions), E.10 (LEX‑BUNDLE incl. L‑SURF), ATS (E.11) for checks, Part F/G (UTS, CG‑Spec, CHR pins).    
+* **Builds on:** A.7 (Strict Distinction: I/D/S vs Surface; publication morphisms), E.8 (Authoring conventions), E.10 (LEX‑BUNDLE incl. L‑SURF), Part F/G (UTS, CG‑Spec, CHR pins).    
 * **Constrains:** Any surface‑emitting automation; must treat publication as typed projection, not mechanism.    
-* **Coordinates with:** B‑operators (no Γ‑leakage), C‑cluster (selection/archives: views are carriers, not selections).
+* **Coordinates with:** B‑operators (no Γ‑leakage), C‑cluster (selection/archives: views are carriers, not selections), **CHR‑MM** (measurement semantics), **UNM** (normalization families).
 
 ### 14 · Minimal authoring template (E‑level)
 
 **Header:** `MVPK v⟨edition⟩ — Σ = {PlainView ⪯ TechCard ⪯ InteropCard, AssuranceLane ⟂}`  
-**For each arrow `f`:** emit `{Emit_s(f) | s ∈ Σ}` (or use the plain aliases `{PlainView(f), TechCard(f), …}`) with: ViewpointId, pins, CHR/CG anchors, SCR ids, Bridge+CL ids (if crossing), and—if composite—machine‑checkable witnesses that `Emit_s(g∘f) = Emit_s(g)∘Emit_s(f)` **and** for each `s ⪯ t` the naturality square `PromoteView[s→t]_Y ∘ Emit_s(f) = Emit_t(f) ∘ PromoteView[s→t]_X`.
+**For each arrow `f`:** emit `{Emit_s(f) | s ∈ Σ}` (or use the plain aliases `{PlainView(f), TechCard(f), …}`) with: **PublicationScope**, ViewpointId, pins, CHR/CG anchors, SCR ids, Bridge+CL ids (if crossing), and—if composite—machine‑checkable witnesses that `Emit_s(g∘f) = Emit_s(g)∘Emit_s(f)` **and** for each `s ⪯ t` the naturality square `PromoteView[s→t]_Y ∘ Emit_s(f) = Emit_t(f) ∘ PromoteView[s→t]_X`.
 
 ### 15 · Manager’s one‑page review (copy‑paste)
 
 > “We publish every **morphism** under a declared **set of viewpoints** using **MVPK**. Each **view** is **functorial** (identities, composition), **adds no new claims**, and pins **unit/scale/reference‑plane/edition** with **CHR/CG** anchors. **Interop** views clarify concerns/semantics only (concrete exchange lives outside Part E); **Assurance** cites evidence carriers (SCR). Any cross‑Context/plane view cites **Bridge+CL** (Φ→R only). Publication toil is **Work on carriers**, not a mechanism change.”
+ 
+## E.18 **Transduction Graph Architecture** (E.TGA) · \[A]
+
+> **Tech‑name:** **E.TGA** (pattern label)
+> **Plain‑name:** Architecture of the transduction graph
+> **Twin labels:** Tech / Plain per E.10; faces emitted via E.17 MVPK (no schemas in Part E). 
+
+### 1 · Intent
+
+Provide a **notation‑independent** architecture for graphs whose vertices are **morphisms (transductions)** and whose edges are **typed transfers**. The architecture is **agnostic to the concrete morphism set** and equips the graph with **publication, comparability, crossing, and budget** disciplines so that **flows** are **valuations over paths** within the same object. Faces appear via **MVPK**; numeric/comparable publication carries **pins** with **Bridge/CL** notes; Φ/CL^plane penalties remain in **R**.  
+*Style note:* wording follows the **counterfactual register** of FPF: invariants are stated as model conditions, not deontic obligations (per E.8 style and the assignment).
+
+### 2 · Problem frame
+
+Teams can produce many **valid flows** over the same capability: e.g., the assignment’s reference path
+`U.FormalSubstrate → U.PrincipleFrame → U.Mechanism → U.ContextNormalization (UNM) → U.SelectionAndBinding ↔ U.WorkPlanning → U.Work → U.RefreshAndEvaluate`
+is one **path** among many possible domain paths. Without a common **graph‑level architecture**:
+
+* flows look ad‑hoc and **non‑comparable**;
+* cross‑Context **crossings** (plane/Context changes) are undocumented;
+* publication surfaces **smuggle arithmetic** or restate I/O;
+* set‑returning selection is silently replaced by **single scores**;
+* cycles lack **budget** discipline; refresh is **out‑of‑band**.
+
+MVPK already fixes publication drift at the **single‑arrow** level; E.TGA lifts those **publication and comparability laws** to the **graph as a whole**. 
+
+### 3 · Problem
+
+1. **Morphisms ≠ Graph.** A catalog of morphism‑level patterns (e.g., UNM, Selector, Work, Refresh) does not, by itself, explain **how the whole graph is built, constrained, and audited**.
+2. **Flow proliferation.** Multiple “reference flows” can be authored; readers need **one orchestration** that keeps them legal and comparable **without privileging any single flow**.
+3. **Unsafe publication.** Faces re‑list I/O, hide scalarization, or omit edition/plane pins; cross‑Context reuse lacks **Bridge/CL** citation; **plane penalties** leak to F/G. 
+4. **Cycles without norms.** Selection↔Planning loops run without explicit **budget (Γ_time)**, **FreshnessRequest**, or **slice‑scoped** refresh; **Work** bindings are made too early (outside `U.Work`). 
+
+### 4 · Forces
+
+| Force                                            | Tension                                                                                                                                                                    |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Universality vs specialization**               | One architecture must host supply chains, water networks, ML functionals, and the assignment’s “first‑principles → work” path, **without** baking in any one morphism set. |
+| **Publication neutrality vs auditability**       | Keep faces notation‑neutral and non‑mechanistic ↔ require **pins**, **ComparatorSet**, **Bridge/CL**, and **PublicationScope**.                                            |
+| **Set legality vs business pressure for totals** | Preserve **return‑sets / lawful partial orders** ↔ stakeholders demand single numbers.                                                                                     |
+| **Cross‑Context reuse vs safety**                | Enable reuse across `U.BoundedContext` ↔ enforce **Bridge/CL** with **R‑only penalties**.                                                                                  |
+| **Agility vs reproducibility**                   | Permit evolving CG‑Spec/UNM/Comparator editions ↔ require **edition pins** and **re‑emission** on change.                                                                  |
+| **Cycles vs convergence**                        | Allow Selection↔Planning iteration ↔ impose **budget** and **slice‑scoped** refresh to prevent thrash.                                                                     |
+
+---
+
+### 5 · Solution — the E.TGA kit (graph model + choreography)
+
+#### S1 · Graph object (conceptual)
+
+Define a **typed, editioned, directed multigraph**
+`TransductionGraph := (V, E, τ_V, τ_E, Γ_time, Bridge, CL, TransportRegistry^Φ)`
+with:
+
+* **Vertices `V`:** instances of `U.Morphism` (open world). Common specialisations **include but are not limited to** the assignment’s set: `U.FormalSubstrate`, `U.PrincipleFrame`, `U.Mechanism`, `U.ContextNormalization (UNM)`, `U.SelectionAndBinding`, `U.WorkPlanning`, `U.Work`, `U.RefreshAndEvaluate`. This list is **illustrative**, not exhaustive—the graph **does not depend** on this particular set.
+* **Edges `E`:** a **single edge kind `U.Transfer`** (typed) carrying artifacts/tokens; all **plane/Context/edition** changes occur **only at nodes via `OperationalGate(profile)`** with **Bridge + CL** annotations; penalties **→ R only**. Transport conversions pin **Φ‑policies** and editions.
+* **Scopes:** `Γ_time` (budgets, horizons), `PublicationScope` for faces (E.17), and **slice ids** for refresh (G.11).
+ **CtxState as PS‑projection:** `CtxState=⟨L,P,E⃗,D⟩` is the **projection of E.17 Publication Scope**; it is **open to extension** (e.g., Γ‑window, Role/Agent, Channel) provided the E.17 poset laws and SquareLaw hold. Raw `U.Transfer` does not mutate it; any change or entry to `U.Work` is placed at `OperationalGate(profile)`. **`DesignRunTag ∈ {design(T^D), run(T^R)}` resides in `D` and changes at gates.**  (A.21 ref; CC‑TGA‑06). **The data‑shape for flow valuations (PathId/PathSliceId, Γ_time pins, publication lineage) lives in A.22 `FlowSpec`; E.TGA only states that “flow = valuation”.** 
+* **Kinds:** `U.Transduction(kind∈{Signature, Mechanism, Work, Check})`. `OperationalGate ≔ U.Transduction(kind=Check)` with DecisionLog aggregation.
+
+> **MVPK binding.** Every vertex with an external surface emits **MVPK** faces (`PlainView`, `TechCard`, `AssuranceLane`, `InteropCard`), governed by a declared **PublicationScope**; faces carry only **presence‑pins + anchors + EditionId**, never restate I/O; any comparison on faces **returns sets / lawful orders** with **ComparatorSet** citation. 
+
+#### S2 · Flows as valuations (paths + state + guards)
+* A **Flow** is a **valuation** `ν` over `U.Transfer` edges and cut‑sets, paired with an admissible **path** `p = v₀ → … → v_k`. The valuation assigns tokens/states under `CtxState` and records publication events under a declared `PublicationScopeId`. **The concrete pins and идентификаторы (`PathId`, `PathSliceId`, Γ_time on compare/launch faces) are specified in A.22 `FlowSpec` and A.25 `Sentinel & SubFlow`.** This reflects the “graph ≠ flow” norm (flow = valuation), with gates placed exactly on GateCrossings.  
+* `U.Transfer` preserves `CtxState` (`⟨L,P,E⃗,D⟩`) and carries **Assurance‑operations** only (see S3b); any crossing of locus/plane/editions or `T^D↔T^R` is placed at `OperationalGate(profile)`.
+* A **PathSlice** is a **slice‑scoped execution window** used for refresh/telemetry; faces pin `PathSliceId`; **re‑emission** happens when any pinned edition changes or `SliceRefresh` is triggered by sentinel rules.
+
+> **Consequences.** The assignment’s “reference flow” is simply one `p` in `TransductionGraph`. Other domains (supply chain, water network, NN functional) instantiate different `p` on the **same architecture**.
+> 
+**Why "flow = valuation" doesn't kill the "something is flowing" intuition**
+There are two complementary perspectives:
+* **Lagrangian (intuitive):** "water particles" run through pipes; you "track" tokens.
+* **Eulerian (architectural):** you define a **function on edges** ("how much/what passes through each edge under a given regime"), with gate laws. E.TGA deliberately fixes the **Eulerian semantics of flow** at the architectural level: "flow (= valuation) + publication log", while the dynamics of "movement" show up as **re-valuation** over a **PathSlice** (the execution/republishing window) under gate rules and the SquareLaw. This yields comparability, reproducibility, and slice-local refresh.
+
+#### S3 · Publication discipline (faces)
+
+E.TGA **imports E.17** wholesale **and binds MVPK to `PublicationScope` (USM)**:
+
+1. **Face kinds** are exactly those of MVPK; **no new “surface” kinds** in Part E; **every face cites `PublicationScopeId` and its PC‑profile** (MVPK‑Min/Lite/SetReady/Max).  
+2. **Pins** on any numeric/comparable content: `{unit, scale, ReferencePlane, edition}` with **CHR/CG‑Spec anchors**; where maps/distances/spaces are cited, pin `DescriptorMapRef.edition`, `DistanceDefRef.edition`, `CharacteristicSpaceRef.edition?`.
+3. **Crossings** cite `BridgeId + UTS row + CL`; publish **Φ(CL)/Φ_plane RuleId**; **penalties remain in R‑lane**.
+4. **Gate‑requirement on cited editions.** Any face that references editions of `CG‑Spec` / `ComparatorSet` / `UNM.TransportRegistryΦ` includes **`BridgeCard + UTS row`**; faces без этой связки рассматриваются как непотребляемые downstream.  (delegated tests → A.27/A.34)  
+5. **ComparatorSet** and any `SetSemanticsRef` carry **edition identifiers**; **re‑emit** on change; faces with comparison **return sets / lawful partial orders** (no hidden scalarization).
+6. **No I/O re‑listing** on faces; **PublicationScopeId** is declared for each face (per E.17). **No arithmetic** on faces; normalization/aggregation lives in **UNM/CG‑Spec** and is cited by `…Ref.edition`.
+7. **Γ_time pin** appears on all compare/launch faces (implicit *latest* is avoided). **CHR avoids acceptance thresholds** (*NoThresholdsInCHR*); thresholding and launches surface in G‑patterns and `U.Work`.  (delegated tests → A.32/A.33). **Unknowns are tri‑state (`pass|degrade|abstain`) and fold per GateProfile (A.21/A.26).**  
+
+> **No “signature” on faces.** Keep I/O intensional; faces never duplicate I/O sections. 
+
+**Lean publish‑mode (AssuranceLane‑Lite).** Lean affects **faces only**; GateChecks required by the active `GateProfile` stay intact. Faces in Lean show presence‑pins and `DecisionLogRef`; the underlying module set remains unchanged.
+
+**Decision stability & idempotency (delegated).** Gate decisions are **idempotent** under a congruence relation over inputs; the **witness and equivalence criteria** are specified in **A.41 DecisionLog**. E.TGA **does not** prescribe storage formats, key shapes, or hashing schemes.
+
+#### S4 · Assurance‑operations on `U.Transfer` (bind‑replacement, no CtxState mutation)
+On `U.Transfer` edges, use **declarative assurance‑operations** instead of a fuzzy “bind”:
+`ConstrainTo(rule)` · `CalibrateTo(map|standard)` · `CiteEvidence(anchor)` · `AttributeTo(agent|role)`.
+These **do not change** `CtxState⟨L,P,E⃗,D⟩`. `CalibrateTo` occurs **within** the declared `ReferencePlane`; any plane/unit change requires `OperationalGate(profile)+Bridge+UTS`. Φ‑penalties are routed to **R only**.
+
+#### S5 · Comparability & aggregation (normalize‑then‑compare)
+
+E.TGA **requires**:
+
+* **UNM precedes comparison** on any path segment that intends to compare/aggregate; UNM is **method‑independent**, publishes **TransportRegistry^Φ** and **CG‑Spec** anchors; faces cite those editions.
+* Comparisons use **lawful orders**; **partial orders return sets** (Pareto/Archive).
+ * **Ordinal claims** are **compare‑only**; **no ordinal means/z‑scores**; total orders appear **only** with an explicit **ComparatorSetRef**. **Edition‑aware artifacts (e.g., QD archives) MUST pin `DescriptorMapRef.edition` / `DistanceDefRef.edition` (and `CharacteristicSpaceRef.edition` when applicable); refresh is slice‑local.**  (delegated tests → A.34/A.37)  
+
+#### S6 · Cycle discipline (Selection ↔ Planning)
+
+* The architecture centers the loop between `U.SelectionAndBinding` and `U.WorkPlanning`.
+* The loop operates under a local **budget / max_iter** in `Γ_time`; at expiry, the selector emits the **current `CandidateSet`** and **`MethodTuning`** with a **partial‑optimality** flag; further improvement rolls into the **next `PathSlice`**.
+* **UNM occurs before the loop**; if measurements are missing/stale, UNM emits a **FreshnessRequest** which is **planned** in `U.WorkPlanning` and **executed** in `U.Work`. Transfers, units, and calibrations are surfaced publication‑wise as `CalibrateTo(map|standard)` and pinned to `TransportRegistry^Φ` (**R‑channel only** for penalties).
+* **Work is the only binding site** for launch values (`FinalizeBinding / BindLaunchValuesOnly`). 
+
+> **Refresh orchestration.** Telemetry from `U.Work` and publication change notes feed the **G.11 refresh orchestrator**; updates are **slice‑scoped**, editions re‑pinned, faces **re‑emitted**. 
+
+#### S7 · Selector semantics (G.5) & parity harness (G.9)
+
+* **Selectors return sets.** Default **DominanceRegime** is `ParetoOnly`; **Illumination/coverage** are **gauges** (reported), excluded from dominance **unless** policy escalates via CAL.
+If `PortfolioMode=Archive`, a **QD archive** may be returned; when generation is in scope, pairs `{environment, method}` are managed under declared **EnvironmentValidityRegion** and **TransferRulesRef**; parity artefacts and `PathSliceId` are pinned on publication. Details of comparator semantics and archive pinning live in **A.28/A.34**.
+
+#### S8 · Guard ownership and handling (USM §1.2)
+* **USM.CompareGuard**/**USM.LaunchGuard** **publish `GuardOwnerGateId`**. Guard failures are **events** aggregated by the owner gate (not GateChecks).
+* **Ownership rules:** (i) `USM.LaunchGuard.owner = LaunchGateId(U.Work)`; (ii) inside a Subflow, `USM.CompareGuard.owner = OperationalGate(InSentinel)`; Join‑nodes cannot own guard pins.
+
+**GateProfile data shape (cross‑reference).** The **entire data shape** (SoD/quorum, declassify, budgets, TOCTOU/freshness windows, editions vector, scopes) is **specified in A.26**. E.TGA **only names** the structure and defers its fields to A.26.
+
+**Bridge‑aware guards (cross‑reference).** USM guards apply bridge‑translation semantics (`translate(Bridge, Scope)`) with CL penalties in R‑lane; the conceptual macro is defined in **A.24 USM.Guards**.
+
+**Error/timeout/unknown (profile‑bound).** GateCheck errors/timeouts fold to **`degrade`** under `Lean|Core` and to **`block`** under `SafetyCritical|RegulatedX`; `unknown` follows the GateCheck’s intensional rule (safety‑default: `degrade`). **The DecisionLog shape and the idempotency witness are defined in A.41; E.TGA does not define storage or key structures.**  
+
+#### S9 · Transport & crossings
+* Cross‑Context or cross‑plane edges appear as **GateCrossings** that include a **Bridge** with **CL** policy; **Φ(CL)/Φ_plane** are published; penalties route **to R only**; **Scope membership** (USM) is unchanged by crossings. **SquareLaw is checked within a single `DesignRunTag`; a `T^D↔T^R` change is modelled as a pair of coordinated gates with `DesignRunTagFrom/To` and an external enactor (see A.29).** 
+* When *aboutness/kind* changes across a boundary, declare an explicit **KindBridge (`CL^k`)** in addition to plane/context CL; cross‑context reuse of UNM **must** go via `Transport`, with any `CL^plane` penalties routed to **R‑lane** only.
+
+#### S10 · Non‑mechanism boundary
+
+* Publication is a **typed projection**, not execution. Any build/render/upload is **Work on carriers**; **no Γ‑semantics** may leak into faces. 
+
+#### S11 · Coordination thread (optional)
+Introduce **CoordinationFlow** as a named thread laid over `U.TransductionFlow__P2W`; crossings with production flow go via **Bridge+UTS**; coordination publishes **LexicalView** labels only and adds **no checks** or mechanisms.
+
+### 6 · Archetypal Grounding (Tell–Show–Show; concise)
+
+*Show‑A (Supply chain).* Nodes: procurement → inbound QC (UNM) → selection (supplier set; lawful order) ↔ planning (lotting/schedule; budget) → execution (receipts; **Work binds**) → refresh (quality telemetry; re‑emit faces). Crossings: vendor Context via **Bridge/CL**; penalties **→ R only**; comparators pinned to CG‑Spec edition. 
+
+*Show‑B (Neural‑net functional).* Nodes: formal substrate (typed tensor ops) → mechanism (combinator algebra) → UNM (dataset normalization; **TransportRegistry^Φ**) → selection (architecture/hyperparam set; Pareto set over accuracy@ratio & FLOPs@ratio) ↔ planning (compute budget horizon) → Work (training runs; Δ anchored) → refresh (parity inserts; slice‑scoped). Faces pin **DescriptorMapRef.edition / DistanceDefRef.edition** when QD metrics are shown; illumination remains a **gauge** by default. 
+
+> *Post‑2015 SoTA echoes (illustrative):* **TAMP/MPC**, **MAP‑Elites / QD (incl. CMA‑ME)**, **refinement‑typed stacks**, **profunctor optics**. **Worked‑examples and Tell–Show–Show vignettes move to A.31/A.34/A.37; E.TGA keeps only the carcass‑level alignment.**
+
+### 7 · Conformance — **Unified checklist (normative)**
+
+| ID | Requirement | Practical test |
+|----|-------------|----------------|
+| **CC‑TGA‑01 — Single edge kind** | The graph uses exactly one edge kind `U.Transfer`; all plane/Context/edition transitions occur only at nodes via `OperationalGate(profile)`. | Model lint finds no auxiliary edge kinds for unit/plane changes; crossings sit on declared gates. |
+| **CC‑TGA‑02 — Nodes are morphisms** | Nodes are intensional `U.Transduction(kind∈{Signature,Mechanism,Work,Check,StructuralReinterpretation})`. This enumeration is a **minimal roles baseline**. **Domain‑specific species are open‑world** and non‑exhaustive; they bind to one of these kinds. Adding a **new kind** requires an explicit E.TGA update. `StructuralReinterpretation` nodes are **projection‑preserving** (no mutation of `⟨L,P,E⃗,D⟩`) and carry CV/GF obligations per A.20/A.21/A.45. | Type registry shows at least the listed kinds; additional species map to one of them; checks realized as `OperationalGate` (see CC‑TGA‑06‑EX/11). |
+| **CC‑TGA‑03 — Identity, composition, functorial faces** | Identities exist; path composition associative; publication is functorial: `Emit_s(t₂∘t₁)=Emit_s(t₂)∘Emit_s(t₁)`. | Pick two‑step path; MVPK faces commute (Square witness). |
+| **CC‑TGA‑04 — Graph spec** | Spec declares `τ_V, τ_E`, `Γ_time`, Transport/Bridge registries. | Spec file shows typed registries and Γ policy. |
+| **CC‑TGA‑05 — CtxState pins** | `CtxState=⟨L,P,E⃗,D⟩` is pinned on ports/tokens; raw `U.Transfer` does **not** change it. | Along a raw transfer, ⟨L,P,E⃗,D⟩ is preserved. |
+| **CC‑TGA‑06 — Operational gates only** | Any change in ⟨L,P,E⃗,D⟩ or entry into `U.Work` is mediated by `OperationalGate(profile)` with aggregated `DecisionLog`. | Diff CtxState across edges; if changed, exactly one gate exists with DecisionLog. |
+| **CC‑TGA‑06‑EX (strictly limited) — Projection rotation without gate** | A node of kind **`StructuralReinterpretation`** MAY rotate the **published projection** without invoking `OperationalGate` **only if all hold**: **(a)** `⟨L,P,E⃗,D⟩` is preserved; **(b)** any **aboutness** change has a **KindBridge** (`CL^k`) entry on MVPK/**UTS**; **(c)** a **SquareLaw‑Rotation witness** is present (on UTS); **(d)** the operation is **PathSlice‑local** (`PathSliceId` pinned); **(e)** **no plane/unit change** occurs (plane/unit changes remain gated); **(f)** **CV.ReinterpretationEquivalence** (A.20) is `pass`; **(g)** **NoHiddenScalarization** — if the step concerns a comparable return shape, set/partial‑order semantics are preserved and comparators remain ref‑only (cf. A.28). | UTS row includes `bridgeChannel=Kind` and `CL^k`; SquareLaw‑Rotation witness present; PathSliceId pinned; CV status recorded; no scalarization detected. |
+| **CC‑TGA‑07 — CV⇒GF activation predicate** | Until **aggregated `ConstraintValidity` = `pass`**, all **GateFit** checks return `abstain`. | Simulate CV failure ⇒ GateFit `abstain`. |
+| **CC‑TGA‑08 — LaunchGate discipline (incl. pre‑run barrier)** | Each `U.Work` has exactly one `LaunchGate` owning `USM.LaunchGuard`; **mandatory** checks: `FreshnessUpToDate`, `DesignRunTagConsistency`. If preceding step’s CV ≠ `pass`, LaunchGate decision is `block` (cause logged). | Owner resolution `GuardOwnerGateId = LaunchGateId(U.Work)`; CV≠pass ⇒ `block` with log. |
+| **CC‑TGA‑09 — MVPK publication discipline** | Every surfaced node uses MVPK; faces carry `PublicationScopeId`, presence‑pins, **edition ids**, Γ pins; **no I/O duplication** or arithmetic; faces add no new numeric claims. | Cards show `PublicationScopeId`; pins present; no “signature”/math on faces. |
+| **CC‑TGA‑10 — Normalize→Compare (CSLC)** | Any comparison cites **UNM/CG‑Spec** editions and **ComparatorSetRef**; ordinal claims are compare‑only; partial orders return sets; edition‑aware artifacts (QD/archives) pin `{DescriptorMapRef, DistanceDefRef, CharacteristicSpaceRef?}.edition`; **any face citing editions includes `BridgeCard + UTS row`**. | Faces show comparator pins; archive pins present; linter rejects edition cites without UTS. |
+| **CC‑TGA‑11 — Crossings gated** | Cross‑Context/plane crossings publish **BridgeId + UTS + CL/CL^plane** and are mediated by `OperationalGate(profile)`; **Φ/Φ_plane penalties → R‑lane only**; aboutness change publishes **KindBridge (CL^k)**. **Exception (StructuralReinterpretation):** a **projection‑only** aboutness rotation MAY be surfaced **without** a gate when **CC‑TGA‑06‑EX** holds; in that case the UTS row **SHALL** include `bridgeChannel=Kind`, `CL^k`, and a **Rotation witness**; **no plane/unit change** is permitted; `PathSliceId` is pinned; UNM reuse cross‑context continues to go via `Transport`. | Crossing surfaces show Bridge/UTS/CL pins; penalties routing audited. |
+| **CC‑TGA‑12 — Set‑returning selection** | `U.SelectionAndBinding` returns sets/archives under declared comparators (`ParetoOnly` by default) — no covert scalarization. | Selector output is a set/archive; policy id present if escalated. |
+| **CC‑TGA‑13 — Budgeted Selection↔Planning loop** | The loop declares **budget / max_iter**; on expiry selector publishes partial‑optimal set + `MethodTuning`; next **PathSlice** scheduled. | Logs show budget stop and slice rollover. |
+| **CC‑TGA‑14 — UNM before loop & Freshness lifecycle** | UNM runs before selection; stale/missing inputs produce **FreshnessTicket/FreshnessRequest** planned in `WorkPlanning` and executed in `Work`; calibrations appear as `CalibrateTo(map|standard)` with Φ pins. | Ticket state machine Issued→Planned→Executed→Closed; calibrations pinned. |
+| **CC‑TGA‑15 — FinalizeBinding only in Work** | Only `U.Work` performs `FinalizeBinding` and binds launch values. | Any earlier attempt blocks at LaunchGate; binding witness present in Work. |
+| **CC‑TGA‑16 — Guard ownership & semantics** | `USM.CompareGuard`/`USM.LaunchGuard` publish owner gate; guards are **events**, not GateChecks; failures are aggregated by owner’s gate per profile. | Guard pins show owner; GuardFail routed to owner’s DecisionLog. |
+| **CC‑TGA‑17 — Assurance ops on Transfer** | On `U.Transfer` only `ConstrainTo/CalibrateTo/CiteEvidence/AttributeTo`; none mutate `⟨L,P,E⃗,D⟩`. | Edge audit shows ops; CtxState unchanged across the edge. |
+| **CC‑TGA‑18 — Flow = valuation & slice‑local refresh** | A flow declares valuation `ν` over `U.Transfer` plus `PublicationScopeId` and `PathSliceId`; **sentinel‑bounded** refresh; re‑emit on edition change or sentinel rule. | FlowSpec shows ν; sentinel bump triggers slice‑local recompute. |
+| **CC‑TGA‑19 — Γ_time on compare/launch** | All compare/launch faces pin `Γ_time`; no implicit *latest*. | Face audit shows Γ pins; LaunchGate blocks on stale. |
+| **CC‑TGA‑20 — Lean publish‑mode ≠ weaken** | `AssuranceLane‑Lite` affects faces only; required GateChecks for the active profile remain intact. | Gate in Lean shows minimal pins + `DecisionLogRef`; module set unchanged. |
+| **CC‑TGA‑21 — Decision stability & idempotency witness** | Gate decisions are stable under the equivalence relation defined in **A.41**; a **witness of equivalence** is present on the DecisionLog surface; any change that breaks equivalence requires re‑aggregation. | Modify any input outside the declared equivalence ⇒ re‑aggregation; DecisionLog records the equivalence witness (A.41). |
+| **CC‑TGA‑21a — Decision join (publication algebra)** | Aggregation over GateChecks is the **idempotent, commutative, associative join** on the lattice `abstain ≤ pass ≤ degrade ≤ block` with **neutral = `abstain`** and **absorbing = `block`**. The algebra is conceptual; publications surface only the aggregated decision and its rationale (DecisionLog). | Review a gate with multiple GateChecks: the aggregated decision matches the lattice join; no per‑check arithmetic is introduced on faces. |
+| **CC‑TGA‑22 — Errors/unknowns fold by profile** | Errors/timeouts fold to `degrade` under `Lean|Core` and to `block` under `SafetyCritical|RegulatedX`; `unknown` folds per GateCheck policy (safety‑default: `degrade`). | DecisionLog shows folds; profile switch changes fold behavior accordingly. |
+| **CC‑TGA‑23 — SquareLaw on crossings** | For every GateCrossing, `gate_out ∘ transfer = transfer' ∘ gate_in`; LaunchGate case is mandatory. | MVPK shows commuting square; inconsistency yields `block|degrade` per profile. |
+| **CC‑TGA‑24 — UNM single‑writer** | `CG‑Spec`, `ComparatorSet`, `UNM.TransportRegistryΦ` editions are authored only by `UNM.Authoring` (others ref‑only). | Authorship cards: UNM is sole writer; others have refs only. |
+| **CC‑TGA‑25 — Evidence lanes & DecisionLogs** | AssuranceLane publishes GateProfile, GateCheckRef list, edition pins, aggregated decision, `DecisionLogRef`. | Gate surfaces include these pins; logs retrievable. |
+
+> **Coupling note.** `CC‑TGA‑07 (CV⇒GF)` and `CC‑TGA‑21a (Decision join)` together ensure that any GateFit‑scoped GateCheckRef **returns `abstain`** until the aggregated CV status equals `pass`; CV/GF separation remains intact. 
+> **Authoring note (scope of E.TGA vs A.*):** Detailed, mechanism‑level checks and most publication content are specified in the **A.* patterns** (A.20…A.42). E.TGA fixes only carcass‑level obligations above.
+
+**Glossary (additions)**  
+* *Open‑world species* — non‑exhaustive domain‑level specializations of `U.Transduction` that map to the minimal kind set.  
+* *KindBridge (`CL^k`)* — a compatibility surface on UTS for aboutness/kind transitions; required by CC‑TGA‑06‑EX and crossings (CC‑TGA‑11).
+* *Eulerian interpretation* — operational stance where a flow is treated as a valuation over `U.Transfer` and edges perform assurance‑only operations (no token‑passing semantics).
+* **GateCheckRef shape (publication lexeme, normative here).** Where GateChecks are surfaced, a **GateCheckRef** is a record  
+  `GateCheckRef := { aspect, kind, edition, scope }` with:
+  `aspect ∈ {ConstraintValidity, GateFit}`, `kind ∈ GateCheckKind`, `edition ∈ Editions`, and `scope ∈ {lane | locus | subflow | profile}`.  
+  This shape is publication‑level only; it introduces no new execution steps and no arithmetic on faces.  (Couples to A.20/A.21 without duplicating their check catalogs.)
+
+
+### Gating Profiles (applied to E.TGA)
+
+> Gating is expressed as **publication‑gating** per E.17 profiles. The graph model aligns with the **CC items** listed for the chosen profile; higher profiles include all lower‑profile items.
+
+| Profile                          | Required CC‑items                                         | Additional notes                                                                               |                                                                  |
+| -------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Lean**                         | 01–06, 08–09, 11–12, 15, 19–21, 25                                                                                                           | Minimal MVPK presence; LaunchGate keeps `FreshnessUpToDate` & `DesignRunTagConsistency`. |
+| **Core**                         | **Lean** + 07, 10, 13–14, 16–18, 22–23, 24                                                                                                  | Adds CV⇒GF order, CSLC pins, budgeted loop, guards, valuation/sentinel refresh, error folds, SquareLaw, UNM single‑writer. |
+| **Safety‑Critical / RegulatedX** | **Core** + profile‑specific GateChecks (safety envelope, regulator id/editions) with stricter folds per **CC‑TGA‑22**; SquareLaw audits tightened | — |
+
+**Recommended defaults (non‑normative, tie‑in to A.26).** Profiles inherit along a `PathSlice`; local overrides may only **add** GateChecks; weakening requires a new `PathSlice` via sentinel (cf. A.26/A.25).
+
+### E.10 / LEX discipline (registration)
+Register Tech tokens (ASCII) used by this architecture with twin‑labels: `U.TransductionGraph`, `U.TransductionFlow`, `StructuralReinterpretation`, `OperationalGate`, `GateProfile`, `GateCheckRef`, **`GateCheckKind`**, `DecisionLog`, `USM.CompareGuard`, `USM.LaunchGuard`, `KindBridge`, `SubflowRef`, `FlowEmbed`, `SentinelId`, `PathSliceId`, `SliceRefresh`, `FinalizeBinding`, `VALATA`. Add an ASCII alias **`CLKind`** ↔ Plain `CL^k` (cf. `CLPlane` ↔ `CL^plane`). Reference MVPK E.17 naming for faces.
+
+### Consequences
+
+**Benefits.**
+
+1. **Universality with discipline:** one edge kind and explicit gates eliminate “second process ladders” and make cross‑domain flows (ML, supply‑chain, TAMP/MPC, scientific workflows) uniformly analyzable and auditable.
+2. **Comparability & replayability:** CSLC and edition‑pinned comparators prevent covert scalarization and enable lawful set returns and reproducible decisions.
+3. **Locality of change:** sentinel subflows restrict refresh to affected `PathSlice`s; large graphs remain stable under frequent edition bumps.
+4. **Clean design/run fold:** LaunchGate and `DesignRunTagConsistency` stop premature binding; acceptance and telemetry live where they occur (`U.Work`).
+5. **Assurance visibility:** MVPK makes GateProfile/DecisionLog explicitly visible and cacheable for the same `{PathSlice, Modules, Editions}`.
+
+**Trade‑offs.**
+a) **Higher upfront modeling cost:** explicit Bridge/UTS pins and GateProfiles demand care; mitigated by Lean profile and templates.
+b) **Longer edge surfaces:** MVPK faces are verbose by design; Lean surfaces can be used for low‑risk segments.
+c) **Tooling alignment:** some incumbent DAG‑only orchestrators conflict with budgeted cycles and set‑return semantics; adapters must project E.TGA semantics to their interop layer (never the other way round).
+
+### Rationale
+
+E.TGA enforces **strict separation of concerns** (carcass‑level only); **specialized semantics live in A.* patterns**:
+
+* **What the graph is:** typed intensional morphisms and a single transport edge `U.Transfer`.
+* **Where/when it may cross contexts:** **only** at `OperationalGate(profile)`, with Bridge+UTS, CL/CL^plane, and Φ routed to R‑lane.
+* **How comparability works:** UNM authors units/planes/transports (single writer) and selectors operate **only** on normalized, edition‑pinned comparators, returning sets/archives—not totals. **Edition‑aware pins and archive semantics are tested in A.28/A.34/A.37 (not repeated here).**
+* **How change propagates:** sentinel‑bounded `PathSlice` refresh; editions are monotone; LaunchGate is the only binder of launch‑values.
+
+This arrangement guarantees **functorial publication** (commuting squares on crossings) and **orthogonality** of inner technical validity (ConstraintValidity) to context fit (GateFit), which in turn makes gate aggregation **order‑independent** and cements the CV⇒GF activation predicate.
+
+## SoTA‑Echoing (post‑2015, multi‑Tradition)
+
+> Each item states **Adopt / Adapt / Reject**, and why. Vendor/tool tokens are kept as *informative*, not normative.
+
+1. **Applied category theory (compositional open systems).**
+   **Adopt.** Monoidal composition and wiring justify “nodes as morphisms, edges as carriers” and functorial publication of faces; they also provide algebraic laws for joining subflows. (Fong & Spivak, *Seven Sketches in Compositionality*, 2019).
+
+2. **Operads / wiring diagrams / hypergraph categories.**
+   **Adopt/Adapt.** Typed ports and decorated cospans model interfaces and “Bridge” junctions; we adapt the operadic composition to require CL/Φ pins on every crossing (publication‑level requirement not present in the math). (Spivak, *Operads of Wiring Diagrams*, 2021; Baez & Fong, *A Compositional Framework for Passive Linear Circuits*, 2015).
+
+3. **Open‑graph/string‑diagram rewriting.**
+   **Adapt.** Rewriting systems capture subflow refactors, but E.TGA binds rewrites to edition bumps and sentinel scopes rather than global rewrites, to preserve auditability and replay. (Bonchi et al., *Graphical Linear Algebra*, 2019; Kissinger—survey lineage).
+
+4. **Publication discipline & artefact portability.**  
+**Adopt.** Edition‑pinning and immutable registries echo contemporary reproducibility practice; E⃗ stays explicit and compositional at the publication layer.
+
+5. **Reproducibility & content addressability.**  
+   **Adopt.** Edition‑pinning and immutable registries echo modern content‑addressable reproducibility (conceptual); E⃗ stays explicit and compositional at the publication layer.
+
+6. **TAMP/MPC (integrated planning and control).**
+   **Adopt/Adapt.** The budgeted Selection↔Planning loop follows contemporary TAMP practice; MPC‑style freshness/constraint checks motivate **FreshnessUpToDate** as a hard LaunchGate module and “bind‑in‑Work‑only”. (Garrett, Lozano‑Pérez, Kaelbling, *Integrated Task and Motion Planning*, 2021; Rawlings et al., MPC updates).
+
+7. **Quality‑Diversity (QD) search.**
+   **Adopt.** QD (e.g., CMA‑ME, 2020) justifies **set‑return** and archive semantics in `U.SelectionAndBinding`; E.TGA bans covert scalarization that would collapse archives to single “bests”.
+
+8. **Profunctor optics (modular projections).**
+   **Adopt/Adapt.** Optics motivate view/projection discipline behind MVPK faces; we adapt by forbidding MVPK faces from introducing new claims (they are pure projections, not transformations). (Pickering, Gibbons, Wu, **Profunctor Optics**, 2019).
+
+*Cross‑tradition note.* Items 1–3 (category‑theoretic), 4–5 (publication/reproducibility concepts), 6 (controls/robotics), 7 (evolutionary search), and 8 (PL/semantics) jointly anchor E.TGA across multiple traditions, per E.8.
+
+## Bias‑Annotation (per E.8 SG‑bias slot)
+
+* **Acyclic‑bias risk.** Tooling accustomed to DAGs may discourage legal feedback loops; E.TGA explicitly permits loops with budget/sentinel controls (CC‑TGA‑13,‑18).
+* **Scalarization‑bias risk.** Cultural defaults to single‑score rankings can suppress Pareto/QD sets; E.TGA requires lawful orders and return‑sets (CC‑TGA‑10,‑12).
+* **Interop‑dominance risk.** File/format ecosystems (CWL/RO‑Crate/lineage) can leak into semantics; E.TGA places them in **InteropCard** and keeps intensional semantics in nodes/gates.
+* **Over‑formalization risk.** Category‑theoretic formalisms can obscure operational guard‑rails; E.TGA grounds crossings in Bridge/UTS/CL/Φ pins and SquareLaw audits (CC‑TGA‑11,‑17).
+* **Retrospective rewrite risk.** Global rewrites break replay; E.TGA confines them to edition bumps and slice‑local refresh (CC‑TGA‑16).
+
+**Mitigations.** Profile‑gated publication, audit of `DecisionLog`, mandatory edition pins, Lean‑to‑Core upgrade paths, and conformance tests tied to PathSlice replay.
+
+### Relations (explicit pattern‑to‑pattern edges)
+
+> Directed edges (→) are typed as **builds_on / constrains / hosts / specializes / publishes_on / requires / provides_checks_for**.
+
+**Foundations**
+
+* **E.TGA →builds_on→ E.17 MVPK (for Morphisms).** Faces, pins, lanes, functorial publication, Lean/Core/Regulated profiles.
+* **E.TGA →builds_on→ A.6.0 U.Signature / A.6.1 U.Mechanism.** Node kinds and intensional content boundaries.
+* **E.TGA →builds_on→ A.7 Strict Distinction (I/D/S vs Surface).** No new claims on faces; faces project morphisms.
+
+**Flow semantics & checks**
+
+* **E.TGA →hosts→ A.20 U.Flow (ConstraintValidity scope).** CV checks live inside transformations; no declaration/translation of planes/units in CV.
+* **E.TGA →hosts→ A.21 GateProfilization (GateFit scope).** GateFit modules are aggregated by `OperationalGate(profile)` with CV⇒GF activation; the **enumeration and data shape** of GateChecks live in **A.21**.
+* **E.TGA →requires→ USM.CompareGuard / USM.LaunchGuard.** Guards publish scope & ownership; guard failures route to owner gate.
+* **E.TGA →constrains→ F.* (Bridge+UTS, CL/CL^plane, Φ→R).** Every crossing surfaces Bridge/UTS and penalty rule‑ids; penalties flow only in R‑lane.
+* **Operational interpretation (default): Eulerian.** A flow is a **valuation** over `U.Transfer`; edges carry **assurance‑only operations** (see CC‑TGA‑17); no token‑passing semantics are assumed.
+
+**UNM & comparability**
+
+* **E.TGA →constrains→ UNM.Authoring / UNM.Usage.** Single‑writer for `CG‑Spec/ComparatorSet/UNM.TransportRegistryΦ`; normalize‑then‑compare is mandatory.
+* **E.TGA →constrains→ G.5 SelectionAndBinding.** Set‑returning, comparator‑pinned decisions, no hidden scalarization; `MethodTuning` without launch binding.
+* **E.TGA →constrains→ G.11 RefreshAndEvaluate.** EditionBumpProposal, two‑phase commit in UNM.Authoring, path‑local refresh.
+
+**Work boundary**
+
+* **E.TGA →requires→ A.15 U.Work (Bind‑in‑Work‑only).** Single point of `FinalizeBinding`; `FreshnessUpToDate` hard at LaunchGate; acceptance/telemetry published here.
+
+**Structure & reuse**
+
+* **E.TGA →specializes→ U.TransductionFlow (and its family).** The graph architecture is the common substrate on which flow patterns (e.g., P2W, RefreshAndEvaluate) are defined; E.TGA ensures their crossings, guards, and MVPK faces are coherent.
+* **E.TGA →publishes_on→ E.17 MVPK views** (`PlainView`, `TechCard`, `InteropCard`, `AssuranceLane`) for every edge/node where publication occurs; Lean mode allowed only as per profile.
+
+### Conformance evidence (how to show you comply)
+
+1. **Model lint:** run static checks for CC‑TGA‑01…25 (edge kind, gates on crossings, CV⇒GF, guard ownership, single‑writer UNM, SquareLaw).
+2. **Publication audit:** sample a commuting square and a sentinel‑bounded subflow; verify pins and DecisionLog behavior on *block/degrade*.
+3. **Replay test:** freeze editions; re‑run selection on a PathSlice; observe identical return‑sets; apply a bump; see only affected `PathSlice`s refresh.
+4. **StructuralReinterpretation probe:** construct a minimal reinterpretation step; confirm `CL^k` with `bridgeChannel=Kind` on UTS, a SquareLaw‑Rotation witness on UTS, `PathSliceId` pinned, **CV.ReinterpretationEquivalence=pass**, and absence of hidden scalarization.
+
+[1]: https://webstore.ansi.org/preview-pages/ISO/preview_ISO%2B23247-1-2021.pdf?srsltid=AfmBOooAUXpg38IpkTlUFtcCpaMVOjivkewJWDIUd1VemIJO91abNEkG&utm_source=chatgpt.com "INTERNATIONAL STANDARD ISO 23247-1"
+
+</черновик E.TGA — Transduction Graph Architecture>
 
 # **Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment**
 
@@ -24820,7 +25206,7 @@ Declare **DomainDistance** policy (cosine or transport) and δ_family threshold;
 3. **Heterogeneity.** Each unification line considers **≥ 3 distinct Domain families** (labels are informative only).
 4. **Parsimony.** Prefer few, canonical Contexts per family (1–3) that jointly expose the key sense splits.
 5. **No bridging here.** No equivalence or mapping is asserted between Contexts in F.1. (Bridges live in **F.9**.)
-6. **Design/run honesty.** If a canon fixes a temporal stance, note it. Do not reinterpret.
+6. **Design/run honesty.** If a canon fixes a DesignRunTag, note it. Do not reinterpret.
 7. **Didactic primacy.** Each Context Card must be readable by a thoughtful engineer in **under two minutes**.
 8. **Domain‑family neutrality.** Domain families **carry no semantics**; they SHALL NOT be used for inheritance, inference, or bridge implication.
 9. **Scope naming separation.** `Scope gist` on Cards is **didactic only**; formal *Scope/Aboutness* (=`USM.ScopeSlice(G)` ⊕ `Aboutness(TopicHolon, ReferencePlane)`) is declared **in G.0–G.1**, not in F.1.
@@ -25028,7 +25414,7 @@ Architheories in Part C (Sys‑CAL, KD‑CAL, Kind-CAL, Method‑CAL, LCA‑CA
 * **SCR‑F1‑S03 (Locality pledge).** Nowhere in F.1 are Cross‑context equivalences or merges asserted.
 * **SCR‑F1‑S04 (Parsimony).** In every family, **1–3** Contexts are kept; if more, a clear sentence justifies each extra Context’s unique sense contribution.
 * **SCR‑F1‑S05 (Context discipline).** “Context” is used only as a synonym of **U.BoundedContext**; “domain” appears only as an informative family label.
-* **SCR‑F1‑S06 (Temporal honesty).** If a canon fixes design/run stance, the Card states it.
+* **SCR‑F1‑S06 (Temporal honesty).** If a canon fixes DesignRunTag, the Card states it.
 * **SCR‑F1‑S07 (Family neutrality).** No claim, classification, or relation in F.1 relies on Domain‑family membership; families appear only as shelf labels on cards.
 * **SCR‑F1‑S08 (dSig present).** Every Context Card has a 5‑characteristics `dSig`.
 * **SCR‑F1‑S09 (Collision policy).** Any pair with `dSig` match on ≥3 characteristics is either merged or replaced; SCR records the action.
@@ -25208,7 +25594,7 @@ For every Context (a **U.BoundedContext** from F.1), you gather **attested phras
 | **A8**  | **Vendor‑dialect elevation** | Treating a DSL/keyword list as “the domain”.                         | Projectionism; narrow idiom dominates.                       | If needed, model the DSL as **one context among others**; keep heterogeneity from F.1.                     |
 | **A9**  | **Tail chasing**             | Harvesting hundreds of rare terms.                                   | Cognitive overload; dilutes signal.                          | Keep **head terms** that feed F.3/F.4/F.9; justify rare units by their bridging value.                  |
 | **A10** | **Fake symmetry**            | Tech and Plain labels are identical jargon.                          | Didactic failure.                                            | Make **Plain** genuinely explanatory; keep **Tech** faithful to the canon.                              |
-| **A11** | **Temporal fudge**           | Using run‑time words in design Contexts (or vice versa).                | Category drift; later contradictions.                        | Respect the Context’s **design/run stance** from its Card (F.1 §7.2).                                      |
+| **A11** | **Temporal fudge**           | Using run‑time words in design Contexts (or vice versa).                | Category drift; later contradictions.                        | Respect the Context’s **DesignRunTag** from its Card (F.1 §7.2).                                      |
 | **A12** | **Cross‑language collapse**  | Merging bilingual terms as one unit.                                 | Erases idiom‑specific signals; hides normative mapping gaps. | Treat each language edition as its **own Context** unless the canon declares a normative mapping.          |
 | **A13** | **Alias inflation**          | Inventing new local names “for clarity”.                             | Strays from the canon; hinders bridging.                     | Prefer the canon’s idiom; keep invented phrasings to the **Plain** register only.                       |
 | **A14** | **Role/status conflation**   | RBAC “role” glossed as behavioural role.                             | Cross‑family bleed; wrong assignment later.                         | Call out the Context in the label: **access‑role (RBAC)** vs **participant (BPMN)**; keep senses disjoint. |
@@ -25363,7 +25749,7 @@ Architheories in Part C when referencing domain idioms (labels stay **context�
 * **SCR‑F2‑S04 (Lexical‑only).** No gloss contains behaviour, deontics, measurement math, or type axioms.
 * **SCR‑F2‑S05 (No Cross‑context claims).** Nowhere does F.2 assert equivalence/similarity/subsumption across Contexts.
 * **SCR‑F2‑S06 (Minimal generality).** Glosses match the Context’s use; no globalisation.
-* **SCR‑F2‑S07 (Temporal honesty).** For Contexts with fixed design/run stance, units and glosses respect it.
+* **SCR‑F2‑S07 (Temporal honesty).** For Contexts with fixed DesignRunTag, units and glosses respect it.
 
 ### 15.2 Regression (RSCR)
 
@@ -25496,7 +25882,7 @@ These are **thinking reference points** (cognitive only), not records or files. 
 5. **Usage‑first.** Sense lines reflect the **canon’s usage**, not imported taxonomies or external theories.
 6. **Counter‑examples rule.** If a counter‑example exists that the sense would wrongly include, **split**.
 7. **No behaviour math.** Sense lines contain **no** behavioural, deontic, metrological, or type calculus; those live in Part C.
-8. **Temporal honesty.** If the Context fixes **design/run stance**, the sense line respects it (e.g., PROV *activity* is **run‑time**).
+8. **Temporal honesty.** If the Context fixes **DesignRunTag**, the sense line respects it (e.g., PROV *activity* is **run‑time**).
 
 ---
 
@@ -25671,7 +26057,7 @@ These are **thinking reference points** (cognitive only), not records or files. 
 
 8. **Temporal guard**
    `stance(C)=design ⇒ forbid(run‑claims in σ)` (and symmetrically)
-   *Reading:* Sense lines must not cross the Context’s design/run stance.
+   *Reading:* Sense lines must not cross the Context’s DesignRunTag.
 
 9. **Edition guard**
    `C≠C′ (different editions with usage shift) ⇒ no‑merge(σ@C, τ@C′)`
@@ -26010,7 +26396,7 @@ Let **`stance(T)`** ∈ {**design**, **run**} (from the Context).
 `stance(T)=design ⊢ inv(T) may not assert run‑facts`
 `stance(T)=run ⊢ inv(T) may not assert design‑commitments`
 
-**Reading.** Invariants must **respect** the Context’s temporal stance (F.1).
+**Reading.** Invariants must **respect** the Context’s DesignRunTag (F.1).
 
 #### 11.6 Binding/Assertion admissibility
 
@@ -26446,7 +26832,7 @@ Without disciplined Role Assignment & Enactment reasoning:
 * **Subject** — the referent of a **Status** assertion; determined by the Template (may or may not be the Holder).
 * **subject_of(τ, H)** — function yielding the **Subject** for Status assertions given Template **τ** (and, if needed, candidate **H**).
 * **Eligibility** — conditions on the Holder that *must* hold to apply the Template (F.4 invariants).
-* **Window** — the temporal stance or interval relevant to the claim (design/run; instant/period).
+* **Window** — the DesignRunTag or interval relevant to the claim (design/run; instant/period).
 * **Evidence shape** — the **Observation/Result/Procedure/Feature** pattern (KD‑CAL) that could confirm/refute the claim in its Context.
 
 ### 5 · Pre‑conditions (lightweight)
@@ -26468,12 +26854,12 @@ All moves are **context‑local** and **side‑effect free** (they assert knowle
 **Reading.** Name the Context and the exact SenseCell that gives **local meaning** to the Template.
 **Note.** This forbids “floating” Roles/Statuses and prevents Context drift.
 
-#### M2 · Stance — *Respect design/run stance*
+#### M2 · Stance — *Respect DesignRunTag*
 
 **Form.**
 `stance(C)=s ∧ stance(τ)∈{s, both} ⊢ compatible_stance(τ,C)`
 
-**Reading.** The Template’s temporal stance is **compatible** with its Context’s stance (design vs run).
+**Reading.** The Template’s DesignRunTag is **compatible** with its Context’s stance (design vs run).
 **Note.** Guards against judging a design‑mask by run‑traces or judging a run‑status by design artefacts.
 
 #### M3 · Qualify — *Check Holder eligibility*
@@ -26544,7 +26930,7 @@ All moves are **context‑local** and **side‑effect free** (they assert knowle
 | **AP‑4**  | **Eligibility‑after‑the‑fact** | Declaring the claim, then back‑fitting eligibility to observed traces.                      | Confuses **necessary conditions** with **diagnostics**; risks circularity. | Perform **M3 Qualify** *before* **M4 Bind/Assert**; treat evidence only in **M5**/**M6**.                                    |
 | **AP‑5**  | **Global Label Illusion**      | Using bare labels (“process”, “agent”, “role”) as if universal.                             | Hides the Context; fuels homonym errors.                                      | Always recover **M1 Locate**: `address(τ)=⟨Context, SenseCell⟩`. Use F.5 naming discipline (Tech/Plain registers).              |
 | **AP‑6**  | **Evidence by Prestige**       | “Industry practice says …” offered instead of KD‑CAL‑shaped facts.                          | Replaces observable Results with authority talk.                           | State an **evidence shape Σ(Context)** in **M5**; later fill it with **Observation/Result** facts (KD‑CAL).                     |
-| **AP‑7**  | **Design/Run Inversion**       | Verifying a design‑time mask by design documents; verifying a run‑status with design specs. | Violates temporal stance; yields non‑falsifiable claims.                   | Apply **M2 Stance**: the Template’s stance must be compatible with the Context. Evidence follows the stance.                    |
+| **AP‑7**  | **Design/Run Inversion**       | Verifying a design‑time mask by design documents; verifying a run‑status with design specs. | Violates DesignRunTag; yields non‑falsifiable claims.                   | Apply **M2 Stance**: the Template’s stance must be compatible with the Context. Evidence follows the stance.                    |
 | **AP-8**  | **Premature Bridge**           | ... | ... | Keep the assignment/status claim local; if needed, create an **F.9 Bridge** with loss notes and CL penalty.                  |
 | **AP‑9**  | **Token Proofs**               | Single anecdotal event taken as universal confirmation.                                     | Over‑generalises; ignores evidence windows and procedures.                 | In **M5**, include **Procedure** and **Window**; in **M6**, roll confidence γ from adequacy of sampling (KD‑CAL).            |
 | **AP‑10** | **Role Explosion as Patch**    | New Role minted for every exception.                                                        | Name bloat; brittle semantics.                                             | Re‑examine **eligibility** and **Window**; consider a **Status** to mark exceptions instead of new Roles.                    |
@@ -26683,7 +27069,7 @@ Architheories (Part C) to anchor their examples: Sys‑CAL (execution/actuatio
 Without a disciplined Cross‑context view:
 
 1. **Silent equivalence.** Readers assume sameness by name alone (e.g., *process*).
-2. **Loss denial.** Mappings hide what is dropped (temporal stance, units, agency).
+2. **Loss denial.** Mappings hide what is dropped (DesignRunTag, units, agency).
 3. **Name inflation.** New U.Types are coined to avoid facing heterogeneity.
 4. **Cognitive scatter.** Concepts drift across documents without one compact, teachable “where‑what‑how‑same” view.
 
@@ -26758,7 +27144,7 @@ FPF Label (Tech / Plain) | Row Scope | Row CL(min) | [Context A] local label | [
 * **Licensing.** A row exists **iff** the relevant **Bridges (F.9)** already justify sameness at the chosen **Row Scope**.
 * **Bounding.** Prefer **2–4 Contexts** per row (parsimony); add more only if each adds a *distinct necessity* for the sameness claim.
 * **Typing.** A row is **typed by senseFamily**: Role, Status, Type‑structure, Measurement, etc. **Do not mix senseFamilies** in one row.
-* **Temporal honesty.** A row’s cells must share **compatible design/run stance**; if not, either split into two rows or mark a **contrast row**.
+* **Temporal honesty.** A row’s cells must share **compatible DesignRunTag**; if not, either split into two rows or mark a **contrast row**.
 
 ---
 
@@ -26806,7 +27192,7 @@ FPF Label (Tech / Plain) | Row Scope | Row CL(min) | [Context A] local label | [
 | **AP‑1**  | **Bridge‑free sameness**    | Cells listed as “same” because their labels look alike; no cited Bridges.      | Violates locality; imports meaning across Contexts by name.             | A row **exists only** if backed by **F.9 Bridges**. Otherwise produce a **contrast row**.                         |
 | **AP-2**  | **Scope creep**             | Row labelled “Type-structure” but used to justify **assignment/enactment-eligibility** or KD metrics. | Scope licences are not transferable; inference leaks.                | Keep a **small controlled set of Row Scopes**. If use widens, **mint a new row** or **re-bridge** with higher CL. |
 | **AP‑3**  | **senseFamily mixing**      | One row mixes Role, Status, Measurement, and Type‑structure cells.             | Conflates senseFamily (F.0.1); readers cannot tell “what kind of sameness”. | **Type each row.** If two senseFamilys are needed, **split** into two rows.                                             |
-| **AP‑4**  | **Temporal blur**           | Cells with incompatible design/run stance declared “same”.                     | Design artefacts ≠ run occurrences; claims invert.                   | Either **harmonise stance** (choose only compatible cells) or publish a **contrast row**.                         |
+| **AP‑4**  | **Temporal blur**           | Cells with incompatible DesignRunTag declared “same”.                     | Design artefacts ≠ run occurrences; claims invert.                   | Either **harmonise stance** (choose only compatible cells) or publish a **contrast row**.                         |
 | **AP‑5**  | **Loss denial**             | Bridges carry loss notes, but the row omits counter‑examples.                  | Readers over‑trust; misuse outside safe scope.                       | Add a **one‑line counter‑example** that illustrates the loss.                                                     |
 | **AP‑6**  | **CL averaging**            | Row CL(min) computed as an average of heterogeneous Bridges.                   | The weakest link governs; averages overstate safety.                 | Row CL(min) is the **bottleneck** (minimum along connecting paths).                                               |
 | **AP‑7**  | **Overwide rows**           | 6–8 Contexts in one row; hard to read; subtle mismatches hide.                    | Violates didactic primacy; invites hidden losses.                    | **Parsimony**: 2–4 Contexts per row unless each extra cell has a **distinct necessity** you can state in one line.   |
@@ -26877,7 +27263,7 @@ FPF Label (Tech / Plain) | Row Scope | Row CL(min) | [Context A] local label | [
 **Form.**
 `S = {SC(C₁), …, SC(Cₙ)}, Scope = s, τ(s) = requiredCL ⊢ licensable(S,s) ⇔ (∀ i<j: CL(SC(Cᵢ)↔SC(Cⱼ)) ≥ requiredCL ∧ senseFamily (S) is uniform ∧ stance(S) compatible)`
 
-**Reading.** A set of cells **licenses** a row of scope `s` iff every pair is bridged at or above the **required CL** for that scope, all cells sit in the **same senseFamily**, and **temporal stance** is compatible.
+**Reading.** A set of cells **licenses** a row of scope `s` iff every pair is bridged at or above the **required CL** for that scope, all cells sit in the **same senseFamily**, and **DesignRunTag** is compatible.
 
 ---
 
@@ -26958,7 +27344,7 @@ Part C architheories for didactic alignment pages; Part B trust calculus (B.
 * **SCR‑F7‑S01 (Context‑loyal cells).** Every non‑empty cell references an existing **SenseCell** (F.3) in a declared Context (F.1).
 * **SCR‑F7‑S02 (Closure & bottleneck).** For each Concept‑Set row, **every pair** of cells has a Bridge path with CL ≥ **Row CL(min)** printed; **Row CL(min)** equals the **minimum** pairwise CL.
 * **SCR‑F7‑S03 (Typed & scoped).** Each row declares a **Row Scope** from the controlled set and is **senseFamily‑uniform** (Role **or** Status **or** Measurement **or** Type‑structure…).
-* **SCR‑F7‑S04 (Temporal compatibility).** Non‑contrast rows have **compatible** design/run stance across cells.
+* **SCR‑F7‑S04 (Temporal compatibility).** Non‑contrast rows have **compatible** DesignRunTag across cells.
 * **SCR‑F7‑S05 (Loss disclosure).** If any supporting Bridge has a recorded loss, the row includes **≥1 counter‑example** line.
 * **SCR‑F7‑S06 (Parsimony).** Rows contain **2–4 Contexts** unless a one‑line necessity is stated for each extra Context.
 
@@ -27338,7 +27724,7 @@ Cross‑context work fails in predictable ways:
 
 1. **String‑equals fallacy.** Identical surfaces (“process”, “role”, “accuracy”) taken as identical meaning.
 2. **Scope creep.** A naming convenience is stretched to assignment or structural claims.
-3. **design/run stance jumping.** Design artefacts are substituted for run‑time occurrences (or vice‑versa).
+3. **DesignRunTag jumping.** Design artefacts are substituted for run‑time occurrences (or vice‑versa).
 4. **Direction amnesia.** Narrower/broader relations treated as symmetric.
 5. **Loss blindness.** Differences (units, granularity, preconditions) are left unstated, contaminating downstream reasoning.
 
@@ -27472,7 +27858,7 @@ CL expresses how safely meaning carries over.
 5. **Loss visibility.** Every Bridge carries **Loss Notes** (even “none”).
 6. **Row dependence.** A Concept‑Set row’s **scope** is **bounded by the weakest CL** among its participating Bridges (F.7/F.8).
 7. **No senseFamily jump by stealth.** You **must not** use an Interpretation Bridge to justify a **row** or **substitution**.
-8. **Time stance honesty.** If a Context fixes **design/run**, the Bridge must respect or explicitly declare stance relations (e.g., ⇄ᴅʀ).
+8. **Time DesignRunTag honesty.** If a Context fixes **design/run**, the Bridge must respect or explicitly declare stance relations (e.g., ⇄ᴅʀ).
 9. **Kernel restraint.** Bridges **cannot** be used to promote ad‑hoc sameness into a new **U.Type**; A.11 applies.
 10. **Non‑inheritance of Contexts.** Bridges **do not** imply “is‑a” between Contexts (E.10.D1).
 
@@ -27703,7 +28089,7 @@ CL expresses how safely meaning carries over.
 **“Keep statuses in their native modality; translate between Contexts explicitly.”**
 **Status.** Architectural pattern \[A], architheory‑agnostic.
 **Builds on:** E.10.D1 **D.CTX** (Context ≡ `U.BoundedContext`); F.1 (Contexts), F.2 (Seeds), F.3 (Local‑Senses → SenseCells), F.4 (Role Description **Status** templates), F.9 (Bridges).
-**Coordinates with.** B.3 **Trust & Assurance Calculus** (interprets CL penalties); Part C architheories: **KD‑CAL** (measurement semantics), **Norm‑CAL** (deontic logic), **Method‑CAL** (design/run stance).
+**Coordinates with.** B.3 **Trust & Assurance Calculus** (interprets CL penalties); Part C architheories: **KD‑CAL** (measurement semantics), **Norm‑CAL** (deontic logic), **Method‑CAL** (DesignRunTag).
 
 ---
 
@@ -28025,7 +28411,7 @@ If a Bridge cannot reach **CL≥2** on the **same senseFamily**, do **not** subs
    `noBridge(C,D) ⊢ crossContextUse(σ@C ⇒ τ@D) = namingOnly`
    *Reading:* Without a Bridge, only **explanatory prose** is allowed—no status inferences.
 
-13. **Design/run stance honesty**
+13. **DesignRunTag honesty**
    `statusModality=deontic ∧ targetKind=artefact/method ∧ window=W ⊢ doesNotDecide(clause κ @ W)`
    *Reading:* Approval of a method never decides a clause’s satisfaction for a run‑time Window.
 
@@ -28038,7 +28424,7 @@ E.10.D1 **D.CTX** (Context discipline); F.1 (Contexts in view); F.2–F.3 (Seeds
 
 * **F.4 (Role Description Status):** a Role Description Status **must** select a **StatusFamily**, **StatusModality**, **target kind**, and **Window**.
 * **F.8 (Naming):** status labels reused across Contexts **must** be marked as **Context‑scoped**; global synonyms forbidden.
-* **Part C architheories:** KD‑CAL provides measurement semantics for EvidenceStatus; Norm‑CAL provides clause logic for RequirementStatus; Method‑CAL frames design/run stance for StandardStatus.
+* **Part C architheories:** KD‑CAL provides measurement semantics for EvidenceStatus; Norm‑CAL provides clause logic for RequirementStatus; Method‑CAL frames DesignRunTag for StandardStatus.
 
 **Used by.**
 Service Acceptance (F.12), Assurance roll‑ups (B.3), any cross‑domain conformance narrative.
@@ -28220,7 +28606,7 @@ Each box/arrow is **context‑local** (SPEM, PROV‑O, IEC…). **Cross‑contex
 
 ## 8 · Invariants (normative)
 
-1. **Stance honesty.** Statements about **Method/MethodDescription** (design) **MUST NOT** be used as if they were statements about **Work/Actuation** (run) without an explicit Bridge and Window.
+1. **DesignRunTag honesty.** Statements about **Method/MethodDescription** (design) **MUST NOT** be used as if they were statements about **Work/Actuation** (run) without an explicit Bridge and Window.
 2. **Box discipline.** Every claim about “how”, “recipe”, “run”, or “control output” **MUST** point to the correct box in the quartet.
 3. **Context locality.** Terms (*process*, *activity*, *task*, *command*) **MUST** be read as **SenseCells** in their Contexts (F.3); Cross‑context equivalence is a matter for F.7/F.9 Bridges.
 4. **Status placement.** *Approved* attaches to MethodDescription; *Observed/Measured* attach to Work; *Satisfied/Violated* attach to clauses about Work outcomes within a **Window** (F.10).
@@ -28416,7 +28802,7 @@ Part C architheories (Sys‑CAL, KD‑CAL, Method‑CAL, Kind-CAL, LCA‑CAL) 
 
 ### 15.1 Static conformance checks (SCR)
 
-* **SCR‑F11‑S01 (Stance honesty).** Every normative claim about outcomes is attached to **Work** (with Window), not to **Method/MethodDescription**.
+* **SCR‑F11‑S01 (DesignRunTag honesty).** Every normative claim about outcomes is attached to **Work** (with Window), not to **Method/MethodDescription**.
 * **SCR‑F11‑S02 (Box placement).** Labels and statuses appear on the correct box (e.g., *Approved* on MethodDescription only).
 * **SCR‑F11‑S03 (Actuation inclusion).** All Actuation statements are modeled as **within** a Work interval.
 * **SCR‑F11‑S04 (Context discipline).** Each quartet term is expressed as a **SenseCell** with its Context; no Cross‑context identity is asserted here.
@@ -30113,7 +30499,7 @@ Any example placed in Part C or Part B **must** render its claim through thi
 * **SCR-F16-S03 (Role-Description anchoring).** Each **Role Description** appearing in the page references **exactly one SenseCell**.
 * **SCR‑F16‑S04 (Context prefixes).** First mention of each ambiguous term is **Context‑prefixed**.
 * **SCR‑F16‑S05 (Window discipline).** Any numeric comparison across Contexts names a **Window**.
-* **SCR‑F16‑S06 (Temporal stance).** Claims respect each Context’s **design/run** stance.
+* **SCR‑F16‑S06 (DesignRunTag).** Claims respect each Context’s **design/run** stance.
 * **SCR‑F16‑S07 (SoD).** If duties are named and SoD is relevant, **SoD is stated** and unviolated.
 * **SCR‑F16‑S08 (One‑page parsimony).** The example fits the **one‑page canvas**; if extended, each sub‑page still respects §6 invariants.
 
@@ -30132,7 +30518,7 @@ Any example placed in Part C or Part B **must** render its claim through thi
 2. **Split crowded rows.** If a row tries to carry more than \~4 cells, split into two rows and write a **one‑line purpose** for each.
 3. **Stabilise vocabulary.** If you find yourself rewriting terms mid‑page, you likely forgot a Context; return to F.1 and add a Card.
 4. **Teach the bridge itch.** Leave “*these are the same*” feelings ungratified until you can articulate **kind, CL, loss** in one sentence.
-5. **Stay in stance.** If a design‑only Context tempts you into runtime talk, move that part of the narrative into a **run‑Context** and Bridge as needed.
+5. **DesignRunTag respect.** If a design‑only Context tempts you into runtime talk, move that part of the narrative into a **run‑Context** and Bridge as needed.
 6. **Keep the page living.** When upstream rows/bridges evolve (F.7–F.9), adjust the page *minimally* and call out the change in a margin note (conceptual, not procedural).
 
 ---
@@ -30254,7 +30640,7 @@ Every UTS row **MUST** carry the following fields (verbatim headings recommended
 | **SenseCells (by context)** | Per selected Context: the local term(s) or construct that best realises the concept (one cell per Context). |
 | **Bridges (CL/Loss)**     | For any cross‑context relation, record the F.9 Bridge with **CL** and a 2–6‑word loss note; if identity, mark **CL=3 (identity)**. |
 | **Unification Rationale** | One sentence: why these senses are the same *conceptually*.                                           |
-| **Notes (optional)**      | Brief temporal stance or trip‑wire hints (e.g., “design vs run”).                                     |
+| **Notes (optional)**      | Brief DesignRunTag or trip‑wire hints (e.g., “design vs run”).                                     |
 
 **Constraint.** “SenseCells (by **Context**)” **MUST** cite **at least three** distinct **Contexts** overall across the sheet for the thread (A.8). A single row may show fewer if the concept truly appears in fewer contexts; coverage is a property of the whole UTS.
 
@@ -30416,7 +30802,7 @@ _(Choose 3–5 that fit the thread; do not place Contexts here.)_
 ## 13 · Didactic Aids
 
 * **Trip‑wire column (optional).** A ⚡ marker in `Notes` for known homonyms (e.g., *process (BPMN) ≠ process (thermo)*).
-* **Temporal stance tag (optional).** `design` / `run` hint for concepts whose senses split by time.
+* **DesignRunTag tag (optional).** `design` / `run` hint for concepts whose senses split by time.
 
 ## 14 · Micro Examples (one line each, illustrative)
 
@@ -31116,6 +31502,7 @@ CG‑Spec :=
 ⟨ UTS.id, Edition, Context, Purpose, Audience,
   Scope := USM.ScopeSlice(G) ⊕ Boundary{TaskKinds, ObjectKinds},
   Aboutness := ⟨TopicHolon, ReferencePlane ∈ {world|concept|episteme}⟩,
+  WorldRegime? ∈ {prep|live}, // refines ReferencePlane=world; affects acceptance/telemetry; introduces no new planes
   ReferenceMap := minimal map{term/id → UTS|CHR|G.2} (stabilizes naming & aboutness),
 
   ComparatorSet := [ComparatorSpec…],                 // finite, explicit
@@ -31140,7 +31527,7 @@ CG‑Spec :=
 
   Γ‑fold := ⟨default:=weakest‑link | override(proof_refs, monotonicity, boundary)⟩,
   CL‑Routing := map Bridge.CL → penalty on R_eff only (F invariant),
-  Φ := ⟨ Φ(CL) MUST be monotone, bounded (R_eff ≥ 0), and table‑backed; optional Φ_plane for {world|concept|episteme} crossings ⟩,
+  Φ := ⟨ Φ(CL) MUST be monotone, bounded (R_eff ≥ 0), and table‑backed; optional Φ_plane for {world|concept|episteme} crossings (unaffected by WorldRegime) ⟩,
   AcceptanceStubs := [AcceptanceClause template…],    // templates only; **context‑local thresholds live in CAL.Acceptance (G.4)**
   
   E/E‑LOG Guard := ⟨explore↔exploit budgets, probe accounting, NQD constraints⟩,
@@ -31563,7 +31950,7 @@ How to **systematically** assemble a *complete‑enough* SoTA view that:
 * **Recency vs. stability.** Post‑2015 advances matter, but we need durable claims and exemplars (record freshness windows; edition every distance/metric).
 * **Exploration vs. exploitation.** Illumination/QD (diversity‑seeking) vs. best‑response optimisation; keep policies separate and publish which stance a synthesis adopts.
 * **Formalism vs. pedagogy.** Early outputs must be teachable and auditable (UTS + Name Cards).
-* **Design‑time vs. run‑time.** Keep modeling commitments separate from operational policies and proofs; record the stance explicitly.
+* **Design‑time vs. run‑time.** Keep modeling commitments separate from operational policies and proofs; record the DesignRunTag explicitly.
 
 ### 4) Solution (the harvesting & synthesis loop)
 
@@ -31664,7 +32051,7 @@ Required artifact for top‑level disciplines: **SoTAPaletteDescription (D)**, a
 
 * **“Global definition” temptation.** *Don’t:* collapse causal, evidential, and thermodynamic decision theories into one utility function. *Do:* keep **parallel claim sheets** and map **where** and **why** they diverge; attach **Bridges** with CL.
 * **Ordinal arithmetic creep.** *Don’t:* average Likert‑style scores across studies. *Do:* treat as ordinal; use order‑safe summaries, or justify interval mapping via MM‑CHR evidence.
-* **Design/run blur.** *Don’t:* treat policy heuristics as proven laws. *Do:* tag stance, and route proofs/policies to the proper lanes.
+* **Design/run blur.** *Don’t:* treat policy heuristics as proven laws. *Do:* DesignRunTagtance, and route proofs/policies to the proper lanes.
 
 ### 9) Consequences
 
@@ -32573,7 +32960,7 @@ Each hook below defines: **Trigger → Obligation → Publishes/Consumes → Inv
 
 ### 9) Consequences
 
-**Benefits.** Path‑addressable provenance; transparent **CL** and decay; clean **design/run stance**; selectors and auditors share the *same* object; **R** penalties become explainable deltas rather than folklore.
+**Benefits.** Path‑addressable provenance; transparent **CL** and decay; clean **DesignRunTag**; selectors and auditors share the *same* object; **R** penalties become explainable deltas rather than folklore.
 **Trade‑offs.** Authors must declare freshness and planes; mitigated by reusing G.4 **EvidenceProfiles** instead of duplicating fields.
 
 ### 10) Rationale
