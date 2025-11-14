@@ -66,10 +66,9 @@ September 2025
 | A.17 | **A.CHR-NORM — Canonical “Characteristic” & rename (Dimension/Axis → Characteristic)** | Stable | *Keywords:* characteristic, measurement, property, attribute, dimension, axis. *Queries:* "What is the correct term for a measurable property?", "How to define a metric?" | **Prerequisite for:** A.18, A.19, C.16. |
 | A.18 | **A.CSLC-KERNEL — Minimal CSLC in Kernel (Characteristic/Scale/Level/Coordinate)** | Stable | *Keywords:* CSLC, scale, level, coordinate, measurement Standard. *Queries:* "What is the CSLC Standard?", "How to ensure measurements are comparable?" | **Builds on:** A.17. **Prerequisite for:** all metric-based patterns. |
 | A.19 | **A.CHR-SPACE — CharacteristicSpace & Dynamics hook** | Stable | *Keywords:* state space, CharacteristicSpace, dynamics, state model, RSG. *Queries:* "How to define a system's state space?", "How does FPF model change over time?" | **Builds on:** A.17, A.18, A.2.5. **Prerequisite for:** A.3.3. |
-
-| ***Cluster A.VI · Constitutional Principles of the Kernel*** | | | | |
-
-
+| A.19 | **A.CHR-SPACE — CharacteristicSpace & Dynamics hook** | Stable | *Keywords:* state space, CharacteristicSpace, dynamics, state model, RSG. *Queries:* "How to define a system's state space?", "How does FPF model change over time?" | **Builds on:** A.17, A.18, A.2.5. **Prerequisite for:** A.3.3. |
+| A.19.D1| **CN‑frame (comparability & normalization)** | Stable | *Keywords:* CN-frame, comparability, normalization, CG-Spec, UNM, CharacteristicSpace, chart, RSG, RSCR. *Queries:* "What is a CN-frame in FPF?", "How does FPF handle normalization for comparison?", "What is a CN-Spec?" | **Builds on:** A.19. **Coordinates with:** G.0. |
+| A.20 | **U.Flow.ConstraintValidity — Eulerian** | Stable | *Keywords:* flow, ConstraintValidity, Eulerian, TransductionFlow, GateFit, MVPK, SquareLaw, Sentinel, PathSlice. *Queries:* "What is ConstraintValidity in FPF?", "What is the Eulerian stance in FPF flows?", "How does E.TGA relate to flows?" | **Builds on:** E.18 (E.TGA). **Coordinates with:** A.21, A.22, A.25, A.27, A.28, A.31, A.45. |
 
 **Part B — Trans-disciplinary Reasoning Cluster**
 
@@ -9152,7 +9151,303 @@ Lifecycle:
 
 A.19.D1 gives A.19 some **teeth**: a *CN‑Spec* you can put on one page, a **Registry** that stops sprawl, **Bridges** that carry explicit loss, and a **checklist + harness** that make comparability **auditable**. It obeys the **mandatory pattern structure** of Part E (style, checklists, DRR, guard‑rails) while remaining tool‑agnostic and context‑local.
 
+## A.20 — **U.Flow.ConstraintValidity — Eulerian** \[A]
 
+**Tech‑name.** `U.Flow.ConstraintValidity` (`U.Flow` genus)
+**Plain‑name.** Flow constraint validity (Eulerian interpretation)
+**Type / Status.** [A] Architectural pattern — **normative** for flows hosted by E.TGA (E.18) under the Eulerian operational interpretation
+
+## 0) Intention
+
+**One‑liner** Defines cross‑cutting **ConstraintValidity** rules for all `U.Flow` instances. `U.TransductionFlow` inherits these rules and may refine **CV class specializations** for transduction‑specific semantics (species‑binding only; genus rules remain unchanged). The CV core is **kind‑agnostic** and assumes an **open‑world** catalogue of node **species**; the enumeration of node **kinds** in E.TGA is a **minimal roles baseline**.
+**Operational interpretation.** **Eulerian** stance: **flow = valuation** over `U.Transfer`; **CV is attached to transformations (steps)** and evaluated **before any GateFit**; edges carry **assurance‑only operations**; no token‑passing semantics are assumed.
+
+### 1) Problem frame
+
+E.TGA makes *nodes = morphisms* and enforces a *single edge kind* (`U.Transfer`). **GateFit** checks aggregate only in `OperationalGate(profile)` with the activation predicate **CV ⇒ GF**: until aggregated **ConstraintValidity = pass**, all **GateFit** checks return **abstain**. Equivalently, while **ConstraintValidity ≠ pass**, any GateFit‑oriented explanation **does not apply**. To keep flows comparable and auditable, this pattern delimits **internal step constraints** (CV) from **external gate fit** (GF), preventing any second ladder of processes beside the graph.
+
+### 2) Problem
+
+Without a clear CV core:
+
+* internal step laws (domains/ranges, invariants, units coherence, Lipschitz/stability) bleed into gate **profile**;
+* plane or comparator declarations sneak into mechanisms;
+* freshness and design/run concerns appear inside mechanisms;
+* reproducibility suffers because transfers start carrying hidden semantics beyond `⟨L,P,E⃗,D⟩`.
+
+Under this pattern, CV is evaluated **inside** transformations. **If** a check declares planes/units/comparators or depends on an active `GateProfile`, **then** it is treated as **GateFit at gates** and the CV explanation **does not apply**.
+
+### 3) Forces
+
+* **Separation of concerns.** Internal mechanism laws vs. external profile fit.
+* **Auditability.** MVPK faces include pins/references only; no new numeric claims; editions and Γ are pinned where applicable.
+* **Graph discipline.** One edge kind; all crossings mediated by gates; SquareLaw on every crossing.
+* **Reproducible valuation.** Flow = valuation over `U.Transfer`, with slice‑local refresh bounded by sentinels.
+* **LEX hygiene.** ASCII Tech labels, twin Tech/Plain registers, registered tokens.
+
+### 4) Solution 
+
+#### 4.1 Intent & Scope
+
+**Intent.** Establish the **ConstraintValidity core** for the **`U.Flow` genus**: the normative set of **internal step constraints** and how they are surfaced and aggregated, **independent of GateFit profiles** (publication follows MVPK without adding new numeric claims). Where CV speaks about admissibility, phrase criteria **counterfactually**: *“If the admissibility conditions hold, then the CV explanation applies; otherwise this explanation does not apply.”* Avoid duty verbs unless stating the **normative** CC minima.
+
+**Scope (genus).** CV covers **intra‑step** properties checkable from the transformation’s own signature/mechanism. The canonical CV classes are **genus‑level and non‑exhaustive**:
+`MechanismUnitsCoherence`, `LawSetInvariants`, `AdmissibilityConditionsSatisfaction`, `LipschitzBounds`, `TypeDomainRange`, and—only for **`StructuralReinterpretation`**—`ReinterpretationEquivalence` (correspondence/reversibility witness).
+
+**Species binding (`U.TransductionFlow`).** The above classes bind to `U.Transduction(kind ∈ {Signature, Mechanism, Work, Check, StructuralReinterpretation})` with **`OperationalGate = kind=Check`**; no additional CV classes are introduced here (species‑specific semantics reside in A.31 and A.45).
+
+**Out‑of‑scope (CV):** declaring/translating `ReferencePlane/Units/ComparatorSet`; CSLC comparability; Freshness; Role/Channel; Regulated‑X; `DesignRunTagConsistency` — all reside in **GateFit** (A.21).
+
+#### 4.2 Intensional object(s)
+
+**Genus.** `U.Flow` leaves step‑kinds abstract; CV/GF separation applies to any lawful instantiation.
+**Species (`U.TransductionFlow`).** `U.Transduction(kind) ∈ {Signature, Mechanism, Work, Check, StructuralReinterpretation}`; this set of **kinds** is a **minimum roles baseline** defined in E.TGA. The **species** space (e.g., `UNM.Authoring/Usage`, `SelectionAndBinding`, `WorkPlanning`, `RefreshAndEvaluate`, …) is **open‑world** and non‑exhaustive. `OperationalGate = U.Transduction(kind=Check)`. `StructuralReinterpretation` is **projection‑preserving** (no mutation of `⟨L,P,E⃗,D⟩`) and may rotate **aboutness** under CC‑TGA‑06‑EX; see also A.45.
+
+**`AdmissibilityConditionsSatisfaction`** — **If** the declared admissibility conditions hold on the step’s inputs and context, **then** the CV explanation **applies**; **otherwise** this explanation **does not apply**.
+**`LipschitzBounds`** — **If** inputs vary within the stated domain \(X\) and perturbations/noise \(≤ ε\), **then** the step’s estimate remains within **δ** of the reference; **otherwise** this explanation **does not apply**.
+**`MechanismUnitsCoherence / TypeDomainRange`** — **If** units/types/domains match the mechanism’s signature and closed‑world assumptions for the step, **then** the CV explanation **applies**; **otherwise** this explanation **does not apply**.
+
+**Terminology & bindings (normative)**
+* **Status/witness lexicon (E.10 discipline).** In CV scope, publications use **Status/Witness** terminology; **GateDecision…** lexemes belong to GateFit (A.21) and do **not** apply to CV.
+* **Aboutness = KindBridge.** Any CV mention of “aboutness” SHALL be read via **`KindBridge (CL^k)`** on **UTS** (A.27 / C.3.3). CV **does not** declare or translate planes/units/comparators.
+* **Rotation/witness binding.** For `U.Transduction(kind=StructuralReinterpretation)`, the CV class **`ReinterpretationEquivalence`** SHALL surface **`CV.WitnessRef := ReinterpWitness`** over the addressed `PathSliceId`; the UTS **`SquareLaw‑Rotation` witness** is referenced from MVPK/UTS and **linked** from the CV witness without duplication.
+* **`ReinterpWitness` record (normative).**  
+  `ReinterpWitness := { PathSliceId, PublicationScopeId, mapping:{kind: iso|optic, laws: PutGet/GetPut}, commutingSquares:[TransferId], definedOn: PathSliceId, properties:{invertible?:bool, idempotent?:bool}, UTS.RowId, NoHiddenScalarization:true }`.
+
+#### 4.3 MVPK Faces (PlainView · TechCard · InteropCard · AssuranceLane)
+
+Minimum pins on faces that surface CV outcomes (**Lean surfacing** allowed by profile but without weakening checks):
+
+* **CtxState pins.** `⟨L,P,E⃗,D⟩` on ports/tokens; raw `U.Transfer` preserves them.
+* **Path pins.** `PathId` and `PathSliceId` appear where slice‑local refresh or reinterpretation witnesses are relevant (valuation semantics per A.22).
+* **CV pins.** `CV.Status ∈ {abstain, pass, degrade, block}`, `CV.WitnessRef?` (refs only).
+* **Edition pins.** If a face cites `CG‑Spec`, `ComparatorSet`, or `UNM.TransportRegistryΦ`, the face **includes** the compatibility surface **as per A.27 (BridgeCard + UTS row, with `CL/CL^plane`)** for downstream consumption. A.20 references this requirement; it does not introduce or modify Bridge/UTS formats.
+* **Face scope.** Each face includes `PublicationScopeId` with an **MVPK profile** (Min/Lite/SetReady/Max) — no new surface kinds.
+* **Register discipline.** Tech names ASCII; twin labels; required LEX tokens follow E.10 (e.g., `SentinelId`, `PathSliceId`, `SliceRefresh`).
+
+> **No new numeric claims.** Faces add pins and references; they do **not** introduce fresh computed scalars beyond what the mechanism already entails (MVPK functoriality).
+
+**Publication lexeme (per‑check).** Each surfaced CV check is referenced as  
+`GateCheckRef := { aspect=ConstraintValidity, kind, edition, scope }` with `scope ∈ {lane|locus|subflow|profile}`. This adds no execution steps and introduces no numeric claims on faces; it records what CV classes were considered and under which editions.
+
+#### 4.4 GateChecks (table) — CV only
+
+**Activation predicate (in E.TGA).** *Until aggregated `CV = pass`, all GateFit checks return `abstain` (CV⇒GF).*
+
+| Check class (A.20)                                                                                | aspect | Mandatory | Allowed | Forbidden |
+| ------------------------------------------------------------------------------------------------- | -----: | :-------: | :-----: | :-------: |
+| MechanismUnitsCoherence                                                                           |     CV |     ✓     |    —    |     —     |
+| LawSetInvariants                                                                                  |     CV |     ✓     |    —    |     —     |
+| AdmissibilityConditionsSatisfaction                                                               |     CV |     ✓     |    —    |     —     |
+| LipschitzBounds / stability                                                                       |     CV |     ✓     |    —    |     —     |
+| TypeDomainRange                                                                                   |     CV |     ✓     |    —    |     —     |
+| ReinterpretationEquivalence (StructuralReinterpretation only; witness present)                    |     CV |     ✓     |    —    |     —     |
+| Any `ReferencePlaneCrossing`, CSLC, Freshness, Role/Channel, Regulated‑X, DesignRunTagConsistency |     GF |     —     |    —    |     ✓     |
+
+CV **must not** declare/translate `Units/ReferencePlane/ComparatorSet`; crossings and CSLC comparability live only in A.21.
+
+#### 4.5 SWP matrix (single‑writer discipline)
+
+* **Writes (faces).** `CV.Status` (and optional `CV.WitnessRef`) only.
+* **Reads (ref‑only).** Any `CG‑Spec/ComparatorSet/TransportRegistryΦ` editions (when referenced); UNM remains single writer as per CC‑TGA‑24.
+
+#### 4.6 CtxState & GateCrossing
+
+* **Crossings only at `OperationalGate(profile)`** (plane/unit/context) with a **strict exception** for **`StructuralReinterpretation`**: a **projection‑only rotation** MAY occur without a gate **iff** `⟨L,P,E⃗,D⟩` is preserved, **KindBridge (`CL^k`)** and a **SquareLaw‑Rotation witness** are present on MVPK/UTS, and the action is **PathSlice‑local** (`PathSliceId` pinned).
+* **Projection vs aboutness (normative reduction).** “Projection” denotes a change of **MVPK published view** that is point‑wise identity on the intensional transformation; “aboutness” is the **Kind‑channel** on UTS evidenced by a `CL^k` row. “No unit/plane change” holds iff `P` is equal on both sides and **no `CL^plane`** is emitted for the step.
+* **Projection/aboutness normalization (normative).** In the context of `StructuralReinterpretation`, the terms **projection** and **aboutness** are read **via UTS**: projection = change of **published view coordinates** only; aboutness = **Kind‑channel** change under `CL^k`. A **“no unit/plane change”** test SHALL verify that `ReferencePlane(src)=ReferencePlane(tgt)` and `CL^plane` is absent (or `= ⊤`), otherwise the step is a gated crossing.
+* **Assurance operations on edges.** `ConstrainTo/CalibrateTo/CiteEvidence/AttributeTo` reside on `U.Transfer` and do **not** alter `⟨L,P,E⃗,D⟩`; plane/unit changes occur only at gates; Φ/`CL^plane` penalties route in **R‑lane**. Aboutness/kind transitions are surfaced as **`KindBridge (CL^k)`** on **UTS** (see A.27 / C.3.3). Aboutness/kind transitions use **KindBridge (`CL^k`)** (A.27/E.TGA); under CC‑TGA‑06‑EX this appears without a gate and remains PathSlice‑local.
+
+**Terminology binding (TGA‑specific, normative)**
+* **Status/witness lexicon (E.10 discipline).** In CV scope, publications use **Status/Witness** terminology; **GateDecision…** lexemes belong to GateFit (A.21) and do **not** apply to CV.
+* **Aboutness = KindBridge.** Any CV mention of “aboutness” SHALL be read via **`KindBridge (CL^k)`** on **UTS** (A.27 / C.3.3). CV **does not** declare or translate planes/units/comparators.
+* **Rotation/witness binding.** For `U.Transduction(kind=StructuralReinterpretation)`, the CV class **`ReinterpretationEquivalence`** SHALL surface **`CV.WitnessRef := ReinterpWitness`** over the addressed `PathSliceId`; the UTS **`SquareLaw‑Rotation` witness** is referenced from MVPK/UTS and **linked** from the CV witness without duplication.
+* **`ReinterpWitness` record (normative).**  
+  `ReinterpWitness := { PathSliceId, PublicationScopeId, mapping:{kind: iso|optic, laws: PutGet/GetPut}, commutingSquares:[TransferId], definedOn: PathSliceId, properties:{invertible?:bool, idempotent?:bool}, UTS.RowId, NoHiddenScalarization:true }`.
+
+#### 4.7 SquareLaw
+
+For any gate‑mediated crossing adjacent to CV‑checked steps:
+`gate_out ∘ transfer = transfer' ∘ gate_in`.
+For **projection rotations** under `StructuralReinterpretation`, a **SquareLaw‑Rotation witness** shows that the **view rotation commutes** with transfers on the PathSlice. Inconsistencies lead to `degrade`/`block` per active profile (GateFit decision).
+
+**Rotation witness shape (normative, UTS‑level).** A **SquareLaw‑Rotation witness** is an artifact that demonstrates commutativity of a published‑projection rotation over the addressed **`PathSliceId`**:  
+  1) identifies **`PathSliceId`** and **`PublicationScopeId`**;  
+  2) presents a **bidirectional view mapping** between projections either as an **iso** or as a **profunctor optic** (`get : A→B`, `put : (B×A)→A`) satisfying **Put‑Get / Get‑Put** laws;  
+  3) enumerates the **commuting squares** for the cut‑set edges considered (ids of transfers before/after the rotation);  
+  4) declares properties (**invertible?**, **idempotent?**) and the **definedness area**;  
+  5) cites the **UTS.RowId** and links the **DecisionLog** entries that rely on this witness.  
+Realizations via **profunctor optics (post‑2017)** are permitted; the optic/lens laws serve as the proof template of commutativity.
+
+**CV witness for reinterpretation (normative, CV‑level).** `CV.ReinterpretationEquivalence` SHALL surface a **ReinterpretationEquivalenceWitness** distinct from the UTS rotation witness and scoped to the mechanism state over the same **`PathSliceId`**:
+  — `PathSliceId`, `PublicationScopeId`, and **definedness region** (domain constraints);  
+  — a **pair of internal transformations** (or an optic) with **Put‑Get / Get‑Put** obligations **over mechanism state** (not faces);  
+  — a **list of commuting squares** for the **adjacent raw transfers** (before/after reinterpretation) showing SquareLaw at CV boundary;  
+  — an explicit **NoHiddenScalarization assertion** (see §4.9) for any comparable return shape;  
+  — **edition neutrality**: no new editions are authored; only refs/pins appear.  
+This CV witness links to the UTS `SquareLaw‑Rotation` witness when present, but does not duplicate UTS fields.
+
+**CV witness binding (normative).** For the CV class **`ReinterpretationEquivalence`**, the witness **SHALL** be a `ReinterpWitness` record:
+`ReinterpWitness := { PathSliceId, PublicationScopeId, mapping: {kind: iso|optic, laws: PutGet/GetPut}, commutingSquares: [TransferId], definedOn: PathSliceId, properties: {invertible?: bool, idempotent?: bool}, UTS.RowId, NoHiddenScalarization: true }`.
+The record is **PathSlice‑local** and does not declare or translate planes/units or comparators.
+
+#### 4.8 Sentinel & PathSlice (path‑local refresh)
+
+* Flows are **valuations** over `U.Transfer`, re‑emitting **slice‑locally** under sentinel rules or edition bumps (A.22/A.25). CV contributes to the **prepare/refresh** conditions but does not expand scope beyond the addressed `PathSliceId`.
+* **Delimitation & planning (normative).** A `PathSlice` **closes** on: (i) any pinned edition change, (ii) Γ‑window boundary relevant to the face, (iii) `GateProfile` change along the path, or (iv) an explicit sentinel rule. **Concurrency:** at most **one active recompute** per `{PathSliceId}`; parallel recomputes are permitted across **distinct** `PathSliceId`s.
+* **CV‑triggered refresh (minimum list).** Re‑emit the addressed `PathSliceId` when any holds: (a) `CV.Status` changes across the lattice; (b) `ReinterpWitness` is added/updated/withdrawn; (c) `AdmissibilityDecl.edition` or `LipschitzBoundRef.edition` changes; (d) updates arrive from A.27 (Bridge) or A.28 (ComparatorSet/UNM.TransportRegistryΦ); (e) error/timeout transitions to a resolved `pass` for a previously `abstain|degrade` CV class.
+
+* **CV‑to‑refresh triggers (normative).** A **SliceRefresh(PathSliceId)** SHALL be scheduled when any of the following occurs:  
+  (T1) a **CV status flip** on the slice (`pass↔degrade`, `pass↔block`, or `error/timeout→{degrade|block}` under profile rules);  
+  (T2) arrival of a new **ReinterpretationEquivalenceWitness** or a change in its **definedness region**;  
+  (T3) updates to adjacent **UTS/Bridge** facts for the slice (e.g., `CL^k`, `BridgeId`, `Φ`/`Ψ` policy‑ids) coming from A.27;  
+  (T4) edition changes referenced by CSLC (A.28) on the slice (`ComparatorSetRef.edition`, `DescriptorMapRef.edition`, `DistanceDefRef.edition`, …);  
+  (T5) **FreshnessTicket** lifecycle changes impacting the slice window (A.40);  
+  (T6) sentinel rules explicitly attached to the **PathSliceId**.  
+Scheduling is **slice‑local**; recompute does not fan‑out beyond the addressed `PathSliceId`.
+
+  **Id‑scheme:** `PathSliceId := PathId × Γ_time selector × ReferencePlane × SentinelFingerprint × IterationCounter`.  
+  **Locking for replay:** within a recompute, the effective `E⃗` is **frozen**; outputs carry a **replay fingerprint** resolvable via `DecisionLog`.
+
+#### 4.9 ReturnShape & CSLC (comparability discipline)
+
+When the mechanism yields comparable artifacts, the return surface is **set‑valued / partially ordered**; **no hidden scalarization**. Any comparator citation is **ref‑only** and (if editions are cited) requires `Bridge+UTS` per CSLC (A.28). Actual CSLC checks are GateFit (A.21).
+
+Under **`StructuralReinterpretation`**, **projection changes MUST NOT introduce hidden scalarization**; set‑return semantics remain intact; comparator cites stay ref‑only with UTS discipline.
+
+**Detectable signs of hidden scalarization (normative checklist).** A face **SHALL** be flagged when any holds:  
+  (H1) introduction of a **new scalar** not entailed by the mechanism, or any **cardinality‑reducing** fold of a set return (e.g., argmax/best‑of) without a cited **ComparatorSetRef**;  
+  (H2) omission of a required **ComparatorSetRef** or its **edition pins** where comparison is implied;  
+  (H3) presence of an **order‑imposing coordinate** without a **CoordinatePolicy** and legality annotations (scale/units/illegal ops);  
+  (H4) cross‑plane/units numeric combination without a **Bridge+UTS** row;  
+  (H5) for `StructuralReinterpretation`, any change of return **plane/units** (violates “projection‑only”).  
+Failing (H1–H5) degrades or blocks per GateProfile (§4.4/CC‑TGA‑21a).
+
+#### 4.10 Γ‑windows / Freshness
+
+* No implicit *latest*. Any face expected to be consumed at compare/launch pins `Γ_time`; Freshness enforcement occurs at gates; CV neither issues Freshness tickets nor evaluates staleness (see A.33/A.40).
+* **Granularity of Γ (normative).** Γ SHALL be one of: **snapshot** (`effective_at=t`) or **interval** (`[t₀,t₁)` with a named folding policy). Faces SHALL surface which selector is used.  
+* **CV time‑stamping.** Each CV computation surfaces `t_cv` and the **Γ selector** it assumed; replay binds `t_cv` to `PathSliceId`.  
+* **Temporal policy types (binding).** Γ‑pins refer to the **canonical selectors** of §22 (*`effective_at`*, *`latest_effective_before`*, *`windowed(W, policy)`*) and to **folding policies** that are **IDEM/MONO/WLNK‑safe**. Units/time scales **SHALL** be explicit. Overrides of the default **weakest‑link** fold **SHALL** cite CAL proofs of monotonicity and boundary behavior.
+
+#### 4.11 Unknown/Timeout/Error policy
+
+Each CV class yields `abstain | pass | degrade | block`. Errors/timeouts at CV stage imply **CV ≠ pass**; therefore GateFit abstains by the global activation predicate and any GateFit‑oriented explanation **does not apply**. The **aggregated CV decision** uses the join on `abstain ≤ pass ≤ degrade ≤ block` (neutral = `abstain`; absorbing = `block`).  
+**Minimal default (profile‑bound, normative):** **Lean/Core ⇒ `error|timeout → degrade`**, **SafetyCritical/RegulatedX ⇒ `error|timeout → block`**; `unknown` folds per GateCheck policy (safety‑default: `degrade`). (Consistent with **CC‑TGA‑22**.)
+
+#### 4.12 Idempotency / congruence discipline
+
+Any surface influencing gate decisions references **A.41** for **equivalence** of inputs and **idempotency witness**; A.20 does not introduce keys, hashes, or cache policies.
+**Minimal lexeme set for CV‑adjacent equivalence (normative).** Where CV outcomes influence a gate decision, the **equivalence witness** SHALL identify at least: `{PathSliceId, GateProfileId, Γ selector (+window bounds if interval), E⃗ editions vector for cited registries, ReturnShape kind (if comparable), CV class/kind set considered}`. Changing any of these breaks equivalence and requires re‑aggregation.
+
+### 5) Archetypal Grounding (Tell–Show–Show)  ✱
+
+**Show‑1 (compiler build → run).**
+A typed module `M` exposes `f : State_d → Artifact_d` under a declared `LawSet` (e.g., determinism under fixed toolchain) and `TypeDomainRange`. **CV** checks: (i) `MechanismUnitsCoherence` (toolchain/flags units coherent), (ii) `LawSetInvariants` (reproducible outputs under same `E⃗`), (iii) `Admissibility` (inputs well‑typed), (iv) optional Lipschitz/stability surrogate (bounded perturbation in sandbox). `CtxState` is preserved along raw transfers. Entering `U.Work(run)` requires `LaunchGate` with `FreshnessUpToDate` and `DesignRunTagConsistency` — **GateFit**, not CV.
+
+**Show‑2 (selection archive in QD/AutoML).**
+A mechanism emits a **set** (front/portfolio/archive). **CV** ensures only: valid descriptor ranges, internal metric continuity bounds, archive invariants (idempotent insert). No ranking or acceptance thresholds are introduced at CV; comparators and acceptance policies bind at gates via CSLC and profiles (A.21/A.28). Edition‑aware pins on faces carry `DescriptorMapRef.edition` only with `Bridge+UTS`.
+
+**Anchors.** Algebraic effects & handlers separate signatures from handlers (Koka/Effekt, 2015+); reproducible pipelines isolate mechanism constraints from deployment **profiles** (Bazel/Nix); optics/profunctors and open/hypergraph categories motivate composition on open graphs without adding facts on faces; QD/MAP‑Elites/CMA‑ME/DQD motivate **set‑return + lawful orders** (2015–2022).
+
+### 6) Bias‑Annotation
+
+The pattern constrains *how* internal constraints are surfaced; it does not encode profile‑bound thresholds or Role/Channel fit — those sit in GateFit. This separation reduces leakage of profile concerns into mechanism semantics.
+
+### 7) Conformance Checklist  ✱
+
+**Static lint (graph & surfaces)**
+
+* CC‑TGA‑01: only `U.Transfer` edges; crossings appear only on gates.
+* CC‑TGA‑05: `⟨L,P,E⃗,D⟩` unchanged across raw transfers.
+* CC‑TGA‑09: MVPK faces present; edition & Γ pins where expected; no new numeric claims on faces (E.17).
+
+**CV discipline**
+
+ * CV classes present exactly as {UnitsCoherence, LawSetInvariants, Admissibility, LipschitzBounds, TypeDomainRange}; **plus** `ReinterpretationEquivalence` when the node kind is `StructuralReinterpretation`. None declare/translate planes/comparators.
+ * **Open‑world species.** Any node **species** binds to one of the minimal kinds; adding a new **kind** is out of scope for A.20 and requires an E.TGA update.
+* Aggregated **CV.Status** computed; errors/timeouts ⇒ `CV ≠ pass`.
+
+**Gate coupling**
+
+* CC‑TGA‑07: when **CV ≠ pass**, all GateFit checks report **abstain**.
+* CC‑TGA‑23: SquareLaw witnesses present on crossings adjacent to CV‑checked steps.
+* Any edition citation on faces includes `Bridge+UTS` (A.27; CSLC in A.28).
+
+**UNM single‑writer**
+
+* CC‑TGA‑24: UNM.Authoring is the sole writer for `CG‑Spec/ComparatorSet/TransportRegistryΦ`; CV is ref‑only.
+
+**Valuation & refresh**
+
+* CC‑TGA‑18/19: Flow publishes valuation with `PublicationScopeId`/`PathSliceId`; Γ pinned at compare/launch surfaces; sentinel triggers slice‑local refresh.
+
+### 8) Consequences
+
+**Benefits.**
+*Clarity & composability.* Mechanisms remain pure carriers of internal laws; gates are the sole policy junction.
+*Replayability.* With valuation + MVPK pins, re‑runs under fixed `E⃗` are comparable and slice‑scoped (A.22/A.25).
+*Didactic hygiene.* Readers can see what is mechanism truth vs. gate policy.
+
+**Trade‑offs.**
+
+* Two places to look (CV vs. GF) impose author discipline; mitigated by the activation predicate and MVPK links.
+
+### 9) Rationale
+
+E.TGA hosts A.20 and A.21 as orthogonal cores: CV **inside** transformations; GF **at** gates with join‑aggregation and DecisionLog. This mirrors effects/handlers (signature vs. handler), and reproducible build vs. deployment‑profile separation.
+
+### 10) SoTA‑Echoing (post‑2015)
+
+* **Algebraic effects & handlers** (Koka, Effekt): signatures vs. handlers as a model for CV vs. GF.
+* **Reproducible pipelines** (Bazel, Nix): hermetic builds ≈ CV; release/deploy gates ≈ GF.
+* **Optics/profunctors; open/hypergraph categories** (2017–2019+): composition over open graphs without extra face semantics.
+* **Quality‑Diversity / MAP‑Elites / CMA‑ME / DQD (2015–2022):** set‑return with lawful partial orders; no hidden scalarization.
+  These anchors justify the separation and the set‑return discipline (CSLC) embedded in the flow family.
+
+### 11) Relations
+
+ * **Hosted by E.TGA.** Nodes are morphisms; only `U.Transfer` edges; **open‑world species over a minimal kind set**; CV⇒GF activation; MVPK faces; SquareLaw on crossings; CC‑TGA‑06‑EX for `StructuralReinterpretation`.
+* **A.21 (GateProfilization).** Sole point for GateFit checks and profile‑bound folds.
+* **A.22 (FlowSpec—valuation).** Declares valuation and slice‑refresh semantics used by this flow family.
+* **A.27 (Bridge+UTS).** Boundary‑surface requirement whenever faces cite editions.
+* **A.28 (CSLC).** Comparability discipline; CV does not compare; it only ensures internal readiness for lawful comparison.
+* **A.41 (DecisionLog & Idempotency).** Equivalence witness binding for any surfaces affecting gate decisions.
+* **E.10 (LEX).** Token classes and ASCII Tech names; twin labels and aliasing for Γ/CL/Φ as per LEX‑BUNDLE.
+
+### 12) Footer marker (authoring template)
+
+Conforms to E.8 heading order and safety subsections (Archetypal Grounding, Conformance, SoTA).
+
+### Appendix A — CV Class Gloss (normative)
+
+* **MechanismUnitsCoherence.** Internal unit/scale coherence within the step; no declarations or translations of units/planes (GateFit scope).
+* **LawSetInvariants.** Mechanism‑declared invariants hold (e.g., mass/energy balance in a model, determinism under fixed editions).
+* **AdmissibilityConditionsSatisfaction.** Inputs lie within admissible windows/guards declared by the mechanism’s **AdmissibilityConditions**; failure yields `degrade` or `abstain` per class policy.
+  **Minimum declaration (normative):**
+  `AdmissibilityDecl := { domains: {name: set/poset}+, guards: [predicate_id]*, windows: {Γ_time: snapshot|interval|policy}, observables: [signal_id]*, edition: EditionId }`.
+  The declaration is surfaced on MVPK as references only; it introduces no arithmetic on faces.
+* **LipschitzBounds / stability.** Bounded sensitivity to perturbations as declared by mechanism; optional where meaningful.
+  **Method binding (normative):**
+  `LipschitzBoundRef := { method ∈ {spectral_norm|CROWN|IBP|rand_smoothing|other}, metric_space: {X: norm_id, Y: norm_id}, bound: value_or_interval, units/plane: P, validity_window: Γ_time(basis), edition: EditionId }`.
+  The bound is **edition‑pinned** and **plane/units‑declared**; proofs/witness artefacts are referenced (no new numeric claims on faces).
+  **Minimal declaration template (normative):**  
+  `AdmissibilityConditions := { Domains[]{var, type, range, units, plane}, Guards[]{predicate, editionRefs}, ObservationWindows[]{Γ selector, freshness window}, ObservableSigns[]{name, detection rule}, Editions{...} }`  
+  — **No authoring of units/planes** here; only references. — Γ selectors must be explicit.
+* **TypeDomainRange.** Type/domain/range compliance of inputs/outputs (ref‑only to definitions).
+* **ReinterpretationEquivalence.** Mechanism’s reinterpretation preserves internal meaning on a **PathSlice**.  
+  **Witness (normative):** **ReinterpretationEquivalenceWitness** (see §4.7) with: `(i)` `PathSliceId`, `PublicationScopeId`, `(ii)` bidirectional mapping (iso/optic) with Put‑Get/Get‑Put obligations, `(iii)` commuting squares for adjacent raw transfers, `(iv)` **NoHiddenScalarization** assertion (if comparable), `(v)` definedness region.  
+  — **No plane/unit change**; any aboutness change must have `KindBridge (CL^k)` on UTS.
+* **LipschitzBounds / stability.** Bounded sensitivity of the mechanism under a declared metric.  
+  **Certificate (normative):** `LipschitzCertificate := { metricId (with units/plane), bound L, methodId, methodRef (e.g., spectral estimate / cert. robustness bound), validity region (inputs/state), proof sketch/ref }`.  
+  — The **method** MUST be cited; **units/plane** of the metric MUST be explicit; bounds are **ref‑only** at CV; any acceptance action remains GateFit.
+* **TypeDomainRange.** Well‑typedness and domain/range consistency for the transformation signature.
+  (Enumeration mandated by A.20; GF matters excluded).
+* **ReinterpretationEquivalence (StructuralReinterpretation).** Existence of a correspondence/reversibility witness between source and rotated projections; preservation of `⟨L,P,E⃗,D⟩`; no comparator/plane/unit declaration or translation at CV. The witness is **PathSlice‑local** and supports **idempotence & reversibility** within the addressed slice. The normative record is `ReinterpWitness` (see §4.7).
+
+#### Appendix B — LEX discipline (summary)
+
+Register token classes (Tech) include: `U.TransductionFlow`, `U.TransductionGraph`, `OperationalGate`, `GateProfile`, `GateCheckKind`, `GateCheckRef`, `DecisionLog`, `FreshnessTicket`, `FinalizeBinding`, `SubflowRef`, `FlowEmbed`, `SentinelId`, `PathSliceId`, `SliceRefresh`, `VALATA`; discriminators use `Base__P2W`, `Base__RefreshAndEvaluate`; Tech names are ASCII; aliases `GammaTimeRule/Plane`, `CLPlane`, `Phi` follow E.10. A.20 references these tokens; it does not introduce additional LEX classes. **For each surfaced CV check, `GateCheckRef.aspect` is fixed to `ConstraintValidity`.** *MVPK minima for CV faces also include `PathId/PathSliceId` where slice‑local refresh applies (A.22).*
 
 # Part B – Trans‑disciplinary Reasoning Cluster
 
@@ -19505,7 +19800,7 @@ Define a **portable minimal set** of CHR **slots**. Each slot is **CHR-typed** (
 
 ### 5 · Interfaces & Data Paths
 
-* **Inputs.** `U.Discipline` from **C.20** (composition), SoTA **Palette**/**BridgeMatrix** from **G.2** (включая **DHC‑SenseCells**), EvidenceProfiles from **G.4/G.6**.
+* **Inputs.** `U.Discipline` from **C.20** (composition), SoTA **Palette**/**BridgeMatrix** from **G.2** (**DHC‑SenseCells** included), EvidenceProfiles from **G.4/G.6**.
 * **Outputs.** Per‑Context **DHC rows** (these six slots), **UTS** Name Cards with twin labels (E.5/F.17–F.18), **Registry/RSCR hooks** on method edition changes; feeds **G.12** (time‑series).
 * **Cross-Context reuse.** Only via **F.9 Bridges** with **CL** and **loss notes**; **Φ(CL)** penalties applied to **R** (never F/G).
 
@@ -23147,6 +23442,12 @@ A **GateCrossing** between tiers (e.g., AT0→AT1, AT1→AT2, AT2→AT3) **MUST*
 
 #### 5.2 Evidence lanes & CL routing
 
+**Lane taxonomy (normative).**  
+  — **F‑lane (Form):** mechanism‑internal laws (units/coherence, law‑set invariants, type/domain/range). Aggregation default: **min**; unaffected by CL penalties.  
+  — **G‑lane (Grounding):** scope coverage and applicability to the declared `PublicationScope`. Aggregation: **intersection along a path; SpanUnion across independent lines**.  
+  — **R‑lane (Assurance):** residual risk/assurance accounting; receives **Φ(CL)**/**Ψ(`CL^k`)**/**Φ_plane** penalties (all **monotone, bounded, table‑backed**) that **do not** mutate F/G.  
+Materialisation: **SCR/RSCR** carry lane‑split; **UTS rows** cite policy‑ids and `CrossingRef`s; **VALATA** tables provide value annotations; carriers stay referenced via SCR/RSCR.
+
 * **Lane separation.** Keep **Form (F)**, **Grounding (G)**, **Assurance (R)** evidence **disentangled** across all tiers (publish lanes explicitly).
 * **CL routing.** Under **KD‑CAL**, **CL/CL^k/CL^plane penalties route to R only** and **MUST NOT** mutate F/G invariants. When planes differ, apply **CL^plane** in the assurance penalty; **Φ(CL)**/**Ψ(CL^k)**/**Φ_plane** MUST be **monotone** and **table‑backed**; publish **policy‑ids** in SCR **and cite them on the UTS row**.
 * **Lane provenance.** Each evidence item carries: `LaneId`, `SourceTier`, `ContextId`, `BridgeId` (if imported), **ReferencePlane**, and (if applicable) **CL^plane**.
@@ -24256,7 +24557,7 @@ The catalog **MAY** be extended (see “Extensibility” below); PCs **must** re
 1) prevent geometric leakage (no “axes”);  
 2) keep publication neutral yet auditable;  
 3) enable lawful set/ordering behavior on faces via explicit **ComparatorSet**;  
-4) make plane/crossing obligations first‑class and checkable by declared publication checks / **OperationalGate(profile)** modules.
+4) make plane/crossing obligations first‑class and checkable by declared publication checks / **OperationalGate(profile)** GateChecks.
 
 **Extensibility.**
 * **E17‑PC‑Ext‑1 (Open catalog).** New PCs MAY be added under `U.PubCharacteristic` provided they are declarative and CHR/UNM‑grounded.  
@@ -24334,7 +24635,7 @@ U :  X ──f──▶ Y ──g──▶ Z    X ──f──▶ Y ──g─�
 ```
 * **Author** chooses `Σ_viewpoints` (declared concerns + conformance rules).    
 * **MVPK** emits `U.ViewFamily(f)` for each arrow `f`.    
-* **Gate‑based validation** (via declared publication checks / OperationalGate(profile) modules) verifies that pins/anchors/IDs are present and that MVPK laws are respected.    
+* **Gate‑based validation** (via declared publication checks / OperationalGate(profile) GateChecks) verifies that pins/anchors/IDs are present and that MVPK laws are respected.
 
 ### 8 · Examples (SoTA‑echoing)
 
@@ -24476,13 +24777,39 @@ with:
 * **Vertices `V`:** instances of `U.Morphism` (open world). Common specialisations **include but are not limited to** the assignment’s set: `U.FormalSubstrate`, `U.PrincipleFrame`, `U.Mechanism`, `U.ContextNormalization (UNM)`, `U.SelectionAndBinding`, `U.WorkPlanning`, `U.Work`, `U.RefreshAndEvaluate`. This list is **illustrative**, not exhaustive—the graph **does not depend** on this particular set.
 * **Edges `E`:** a **single edge kind `U.Transfer`** (typed) carrying artifacts/tokens; all **plane/Context/edition** changes occur **only at nodes via `OperationalGate(profile)`** with **Bridge + CL** annotations; penalties **→ R only**. Transport conversions pin **Φ‑policies** and editions.
 * **Scopes:** `Γ_time` (budgets, horizons), `PublicationScope` for faces (E.17), and **slice ids** for refresh (G.11).
- **CtxState as PS‑projection:** `CtxState=⟨L,P,E⃗,D⟩` is the **projection of E.17 Publication Scope**; it is **open to extension** (e.g., Γ‑window, Role/Agent, Channel) provided the E.17 poset laws and SquareLaw hold. Raw `U.Transfer` does not mutate it; any change or entry to `U.Work` is placed at `OperationalGate(profile)`. **`DesignRunTag ∈ {design(T^D), run(T^R)}` resides in `D` and changes at gates.**  (A.21 ref; CC‑TGA‑06). **The data‑shape for flow valuations (PathId/PathSliceId, Γ_time pins, publication lineage) lives in A.22 `FlowSpec`; E.TGA only states that “flow = valuation”.** 
-* **Kinds:** `U.Transduction(kind∈{Signature, Mechanism, Work, Check})`. `OperationalGate ≔ U.Transduction(kind=Check)` with DecisionLog aggregation.
+
+ **CtxState (PS‑projection; closed slots):** `CtxState = ⟨L, P, E⃗, D⟩` is the **projection of E.17 Publication Scope**.
+ **Slot definitions (normative):**
+  • `L := Locus` — an element of a partially ordered **ContextSlice** poset; addresses *where* claims apply (disciplinary / organizational / holonic slice).
+  • `P := ReferencePlane` — the reference plane/units registry id; **no plane/unit declarations or translations** occur in CV; crossings remain gated (A.21).
+  • `E⃗ := Edition vector` — a **partial map** `edition_key ↦ EditionId` over named families `{CG‑Spec, ComparatorSet, UNM.TransportRegistryΦ}` and optional `{DescriptorMapRef, DistanceDefRef, CharacteristicSpaceRef}` when cited.
+  • `D := DesignRunTag` — `design(T^D)` or `run(T^R)`, used by **LaunchGate** and acceptance/telemetry duties.
+ **Invariants.** Raw `U.Transfer` does **not** mutate `⟨L,P,E⃗,D⟩`; any change or entry to `U.Work` occurs at `OperationalGate(profile)`.
+ **Extension discipline.** Any extra slot beyond ⟨L,P,E⃗,D⟩ **SHALL** be registered in the **E.17/LEX “CtxState Extension Registry”** with slot‑id, intent, partial‑order law (neutral/absorbing), and SquareLaw compatibility; unregistered extensions are non‑conformant.
+ **Data‑shape location.** Concrete record shapes for `PathId/PathSliceId`, Γ‑pins, and lineage remain in A.22 `FlowSpec`; E.TGA fixes that **flow = valuation** and that `CtxState` is preserved across raw transfers.
+
+* **Kinds:** `U.Transduction(kind∈{Signature, Mechanism, Work, Check, StructuralReinterpretation})`. `OperationalGate ≔ U.Transduction(kind=Check)` with DecisionLog aggregation. `StructuralReinterpretation` is **projection‑preserving** (no mutation of `⟨L,P,E⃗,D⟩`) and MAY rotate **aboutness** under **CC‑TGA‑06‑EX** with **KindBridge (`CL^k`)** and a **SquareLaw‑Rotation witness** present on UTS; the operation remains **PathSlice‑local** and performs **no plane/unit change**.  (See also CC‑TGA‑11 for crossings.)
 
 > **MVPK binding.** Every vertex with an external surface emits **MVPK** faces (`PlainView`, `TechCard`, `AssuranceLane`, `InteropCard`), governed by a declared **PublicationScope**; faces carry only **presence‑pins + anchors + EditionId**, never restate I/O; any comparison on faces **returns sets / lawful orders** with **ComparatorSet** citation. 
 
+**GateCrossing (normative)**
+**Definition.** A **GateCrossing** is the typed transition at a node that changes any of:
+  (i) `U.BoundedContext` (**Context**), (ii) **ReferencePlane**, (iii) any member of the **Edition vector** `E⃗` (e.g., `CG‑Spec`, `ComparatorSet`, `UNM.TransportRegistryΦ`, `DescriptorMapRef`, `DistanceDefRef`, `CharacteristicSpaceRef`), (iv) **DesignRunTag** (`T^D↔T^R`), or (v) **Kind/aboutness** (only under `StructuralReinterpretation` subject to **CC‑TGA‑06‑EX**).
+**Invariants.** Raw `U.Transfer` preserves `CtxState`; a GateCrossing occurs at exactly one `OperationalGate(profile)` (SquareLaw applies).
+**Required pins (minimum).** `BridgeCard + UTS row`; `CL` for scope bridges; `CL^plane` for plane crossings; `CL^k` with `bridgeChannel=Kind` for kind transitions; `PublicationScopeId`; `PathSliceId`; Γ‑pins on compare/launch faces.
+**Canonical reference.** `CrossingRef := ⟨GateId, channel, from, to, UTS.RowId, PathSliceId⟩`. Any DecisionLog entry whose rationale depends on a crossing **SHALL** cite `CrossingRef`.
+**Term separation.** **Transfer** denotes the sole edge kind `U.Transfer` (graph edges). **Transport** denotes Φ‑governed conversion **policies/registries** (**`TransportRegistry^Φ`** under UNM). Wording “reuse via Transport” refers to registries/policies, not to an additional graph edge.
+
 #### S2 · Flows as valuations (paths + state + guards)
-* A **Flow** is a **valuation** `ν` over `U.Transfer` edges and cut‑sets, paired with an admissible **path** `p = v₀ → … → v_k`. The valuation assigns tokens/states under `CtxState` and records publication events under a declared `PublicationScopeId`. **The concrete pins and идентификаторы (`PathId`, `PathSliceId`, Γ_time on compare/launch faces) are specified in A.22 `FlowSpec` and A.25 `Sentinel & SubFlow`.** This reflects the “graph ≠ flow” norm (flow = valuation), with gates placed exactly on GateCrossings.  
+* A **Flow** is a **valuation** `ν` over `U.Transfer` edges and cut‑sets, paired with an **admissible path** `p = v₀ → … → v_k`. The valuation assigns tokens/states under `CtxState` and records publication events under a declared `PublicationScopeId`. **The concrete pins and identifiers (`PathId`, `PathSliceId`, Γ_time on compare/launch faces) are specified in A.22 `FlowSpec` and A.25 `Sentinel & SubFlow`.** This reflects the “graph ≠ flow” norm (flow = valuation), with gates placed exactly on GateCrossings.  
+* **Admissible path (definition).** A path `p` is **admissible** iff:  
+  (a) node/edge types match the declared `τ_V, τ_E`;  
+  (b) any change to `⟨L,P,E⃗,D⟩` (or kind‑rotation under `StructuralReinterpretation`) appears at **exactly one** `OperationalGate(profile)`;  
+  (c) each GateCrossing on `p` has a **SquareLaw witness** (CC‑TGA‑23) and, where applicable, a **SquareLaw‑Rotation witness** (CC‑TGA‑06‑EX);  
+  (d) no hidden crossings occur across raw transfers;  
+  (e) Γ‑pins are present on compare/launch faces;  
+  (f) `T^D↔T^R` occurs **only** at `LaunchGate`.
+
 * `U.Transfer` preserves `CtxState` (`⟨L,P,E⃗,D⟩`) and carries **Assurance‑operations** only (see S3b); any crossing of locus/plane/editions or `T^D↔T^R` is placed at `OperationalGate(profile)`.
 * A **PathSlice** is a **slice‑scoped execution window** used for refresh/telemetry; faces pin `PathSliceId`; **re‑emission** happens when any pinned edition changes or `SliceRefresh` is triggered by sentinel rules.
 
@@ -24507,22 +24834,32 @@ E.TGA **imports E.17** wholesale **and binds MVPK to `PublicationScope` (USM)**:
 
 > **No “signature” on faces.** Keep I/O intensional; faces never duplicate I/O sections. 
 
-**Lean publish‑mode (AssuranceLane‑Lite).** Lean affects **faces only**; GateChecks required by the active `GateProfile` stay intact. Faces in Lean show presence‑pins and `DecisionLogRef`; the underlying module set remains unchanged.
+**Lean publish‑mode (AssuranceLane‑Lite).** Lean affects **faces only** (`PlainView`/`AssuranceLane` minimal), not checks; publication shows `GateProfile`, `GateCheckRef[]`, and `DecisionLogRef`; the underlying GateChecks list remains unchanged.
 
 **Decision stability & idempotency (delegated).** Gate decisions are **idempotent** under a congruence relation over inputs; the **witness and equivalence criteria** are specified in **A.41 DecisionLog**. E.TGA **does not** prescribe storage formats, key shapes, or hashing schemes.
 
-#### S4 · Assurance‑operations on `U.Transfer` (bind‑replacement, no CtxState mutation)
-On `U.Transfer` edges, use **declarative assurance‑operations** instead of a fuzzy “bind”:
-`ConstrainTo(rule)` · `CalibrateTo(map|standard)` · `CiteEvidence(anchor)` · `AttributeTo(agent|role)`.
-These **do not change** `CtxState⟨L,P,E⃗,D⟩`. `CalibrateTo` occurs **within** the declared `ReferencePlane`; any plane/unit change requires `OperationalGate(profile)+Bridge+UTS`. Φ‑penalties are routed to **R only**.
+**KindBridge admissibility (publication)**
+Treat a step as an **aboutness/kind** transition (including `StructuralReinterpretation` under CC‑TGA‑06‑EX) **iff** the **UTS row** contains at least:  
+  — the **A.27** minimal fields (`Identity`, `ReferencePlane`, `CL/CL^plane`, `edition‑pins{CG‑Spec, ComparatorSet, TransportRegistryΦ}`, `ComparatorSetRef`, `BridgeId`, `Φ‑RuleIds`), and  
+  — the **KindBridge contract fields** per C.3 (**mapping or signature‑translation**, **order‑preservation claims**, **`CL^k`**, **loss notes**, **definedness area**, **determinism**).  
+Otherwise this KindBridge explanation does not apply (the step falls back to a gated crossing). When the gate owns the crossing, `CrossingRef` is surfaced and linked from the `DecisionLog`.
 
-#### S5 · Comparability & aggregation (normalize‑then‑compare)
+#### S4 · Assurance‑operations on `U.Transfer` (counterfactual admissibility)
+On `U.Transfer` edges, an operation is interpreted as a **declarative assurance‑operation** **iff** it is one of  
+`ConstrainTo(rule)` · `CalibrateTo(map|standard)` · `CiteEvidence(anchor)` · `AttributeTo(agent|role)`; otherwise this explanation does not apply.
+Under this interpretation, `CtxState⟨L,P,E⃗,D⟩` is preserved.  
+If an effect entails a plane/unit change, the assurance‑operations explanation does not apply and the step is handled as a gated crossing (`OperationalGate(profile)+Bridge+UTS`).  
+If Φ assigns penalties, they appear in the R‑lane; otherwise no penalties are surfaced here.
 
-E.TGA **requires**:
+#### S5 · Comparability & aggregation (normalize‑then‑compare; counterfactual form)
 
-* **UNM precedes comparison** on any path segment that intends to compare/aggregate; UNM is **method‑independent**, publishes **TransportRegistry^Φ** and **CG‑Spec** anchors; faces cite those editions.
-* Comparisons use **lawful orders**; **partial orders return sets** (Pareto/Archive).
- * **Ordinal claims** are **compare‑only**; **no ordinal means/z‑scores**; total orders appear **only** with an explicit **ComparatorSetRef**. **Edition‑aware artifacts (e.g., QD archives) MUST pin `DescriptorMapRef.edition` / `DistanceDefRef.edition` (and `CharacteristicSpaceRef.edition` when applicable); refresh is slice‑local.**  (delegated tests → A.34/A.37)  
+The comparison explanation applies under the following admissibility conditions:
+
+* If a path segment intends to compare/aggregate, it is admissible as a comparison **only when** UNM precedes it; UNM is **method‑independent**, publishes **TransportRegistry^Φ** and **CG‑Spec** anchors, and faces cite those editions; otherwise this comparison explanation does not apply.
+* If the comparator defines a **lawful partial order**, then returns are **sets/archives** (Pareto/Archive); if a **total order** is declared, it is the one provided by the comparator; otherwise set semantics apply and covert scalarization is out of scope here.
+* If a claim is **ordinal‑only**, then only comparisons are surfaced; arithmetic transforms (e.g., means/z‑scores) are out of scope of this explanation and belong to declared comparators or downstream policy.
+
+**Edition‑aware artifacts (e.g., QD archives) MUST pin `DescriptorMapRef.edition` / `DistanceDefRef.edition` (and `CharacteristicSpaceRef.edition` when applicable); refresh is slice‑local.**  (delegated tests → A.34/A.37)  
 
 #### S6 · Cycle discipline (Selection ↔ Planning)
 
@@ -24559,6 +24896,48 @@ If `PortfolioMode=Archive`, a **QD archive** may be returned; when generation is
 #### S11 · Coordination thread (optional)
 Introduce **CoordinationFlow** as a named thread laid over `U.TransductionFlow__P2W`; crossings with production flow go via **Bridge+UTS**; coordination publishes **LexicalView** labels only and adds **no checks** or mechanisms.
 
+### S12 · Viewpoint families → E.TGA constructs (neutral, holonic)
+
+**ISO 42010 alignment (terminology bridge).**  
+* A **viewpoint** maps to `MVPK.ViewpointId` (the rule set that generates a bundle of faces).  
+* A **view** corresponds to a `PublicationSurface` bundle (`PlainView/TechCard/InteropCard/AssuranceLane`) for the same morphism(s); *surfaces are not the thing described*.  
+* Stakeholder **concerns** are addressed via `GateProfile`s and explicit check catalogs exposed on `OperationalGate(profile)`.  
+* The **architecture description** is the **E.TGA graph + MVPK surfaces**, with crossings mediated by **Bridge+UTS** and CL policies; penalties accrue to `R` only.  
+This alignment keeps FPF’s **local‑first** meaning discipline intact (F.18) while supporting ISO‑style viewpoints and views.
+
+**Purpose.** Provide a neutral (F.18) mapping from recurring engineering *viewpoint families* to E.TGA constructs so that the same **holon** can be described functionally, procedurally, structurally, or as a module‑and‑interface architecture without changing the underlying graph.
+
+**Holon target.** The mapping applies to any holon, with the constraint that **only `U.System` enacts `U.Work`** (A.3/A.15). Supervisory and structural hierarchies remain distinct (B.2.5).
+
+**Viewpoint family → primary E.TGA constructs**
+1) **Function‑Oriented View (capability‑flow)** — “what transformation is achieved under roles”
+   * **Flow substrate:** `U.TransductionFlow__P2W` through nodes `Signature → Mechanism → UNM → SelectionAndBinding ↔ WorkPlanning → Work → RefreshAndEvaluate`.
+   * **Publication:** MVPK views per E.17; comparable claims pin to `CG‑Spec/ComparatorSet` editions; crossings surface via `Bridge+UTS` and `CL/CL^plane`. 
+   * **Checks:** A.20 (CV) inside transformations; A.21 (GateFit) at gates; enforce CSLC/No‑Hidden‑Scalarization per A.28. 
+   * **Holonic note:** `U.Episteme` does not *act*; it is used by systems acting on carriers; `U.Work` appears only for `U.System`. 
+
+1) **Procedure‑Oriented View (step/time storyboard)** — “what steps occur and when”
+   * **Artifacts:** `U.WorkPlan` (A.15.2) for intent/schedule; `U.Work` for enactment.
+   * **Boundary:** entry into `U.Work` is via `OperationalGate(profile)` with `USM.LaunchGuard`; `DesignRunTag` separates design time from run time; `DesignRunTagFrom/To` appear only at gates. 
+   * **Holonic note:** Applies to any `U.System` scope (single holon or a supervised sub‑holon cluster); supervisory layering is handled by roles rather than structural mereology (B.2.5).
+
+1) **Device‑Structure View (principle‑schematic)** — “what carrier/ports/constraints exist”
+   * **Artifacts:** Effect *signatures* appear as `Signature` nodes (CHR‑typed); realizations appear as `Mechanism` nodes; **no** additional edge kinds are introduced—`U.Transfer` remains the only edge kind. 
+   * **Publication:** MVPK faces are **typed projections**, not executable artifacts; faces add **no new numeric claims** (E.17). Constraints and compatibility appear as CV checks (A.20). 
+   * **Holonic note:** Structural mereology (part/whole of the carrier) is modeled in Part A; E.TGA binds interface/exposure semantics to morphisms and gates.
+
+4) **Module‑Interface View (physical architecture)** — “what modules exist and how they contract across interfaces”
+   * **Artifacts:** Module *interfaces* are `Signature` nodes; module realizations are `Mechanism` nodes; inter‑module dependencies traverse `U.Transfer`, with gates on crossings. 
+   * **Aboutness switch:** When a view *reinterprets* “function ↔ element”, use `StructuralReinterpretation`, publish a **`KindBridge (CL^k)`** on the UTS, and include a **SquareLaw‑Rotation witness**; `⟨L,P,E⃗,D⟩` is preserved; **no plane/unit change occurs** (CC‑TGA‑06‑EX). 
+   * **Holonic note:** The same module may appear as a holon in multiple views; supervisory loops (B.2.5) remain orthogonal to structural composition.
+
+This is an expandable list of viewpoint families; TGA is intentionally viewpoint‑neutral. 
+
+**Traditional functional/logical vs physical views in systems engineering**
+* **Functional view (definition).** A publication bundle whose *aboutness* is the **capability** of a holon under a role (`Method`/`Mechanism`), expressed as a **flow of morphisms** with comparators and gates (E.TGA + A.20/A.21/A.28).  
+* **Physical view (definition).** A publication bundle whose *aboutness* is the **carrier** (holon as structure with interfaces/ports/constraints), surfaced as typed projections (E.17) and realized by `Signature`/`Mechanism` without altering `U.Transfer`.
+* **Switching rule (projection‑preserving).** To switch between the two views, the model MAY use **`StructuralReinterpretation`** (when only aboutness rotates) if and only if: CtxState `⟨L,P,E⃗,D⟩` is preserved; a **`KindBridge (CL^k)`** is published on the `UTS`; a **SquareLaw‑Rotation witness** exists; the operation is **PathSlice‑local**; **no plane/unit change** occurs; and `CV.ReinterpretationEquivalence` = `pass` (CC‑TGA‑06‑EX).
+
 ### 6 · Archetypal Grounding (Tell–Show–Show; concise)
 
 *Show‑A (Supply chain).* Nodes: procurement → inbound QC (UNM) → selection (supplier set; lawful order) ↔ planning (lotting/schedule; budget) → execution (receipts; **Work binds**) → refresh (quality telemetry; re‑emit faces). Crossings: vendor Context via **Bridge/CL**; penalties **→ R only**; comparators pinned to CG‑Spec edition. 
@@ -24581,23 +24960,25 @@ Introduce **CoordinationFlow** as a named thread laid over `U.TransductionFlow__
 | **CC‑TGA‑07 — CV⇒GF activation predicate** | Until **aggregated `ConstraintValidity` = `pass`**, all **GateFit** checks return `abstain`. | Simulate CV failure ⇒ GateFit `abstain`. |
 | **CC‑TGA‑08 — LaunchGate discipline (incl. pre‑run barrier)** | Each `U.Work` has exactly one `LaunchGate` owning `USM.LaunchGuard`; **mandatory** checks: `FreshnessUpToDate`, `DesignRunTagConsistency`. If preceding step’s CV ≠ `pass`, LaunchGate decision is `block` (cause logged). | Owner resolution `GuardOwnerGateId = LaunchGateId(U.Work)`; CV≠pass ⇒ `block` with log. |
 | **CC‑TGA‑09 — MVPK publication discipline** | Every surfaced node uses MVPK; faces carry `PublicationScopeId`, presence‑pins, **edition ids**, Γ pins; **no I/O duplication** or arithmetic; faces add no new numeric claims. | Cards show `PublicationScopeId`; pins present; no “signature”/math on faces. |
-| **CC‑TGA‑10 — Normalize→Compare (CSLC)** | Any comparison cites **UNM/CG‑Spec** editions and **ComparatorSetRef**; ordinal claims are compare‑only; partial orders return sets; edition‑aware artifacts (QD/archives) pin `{DescriptorMapRef, DistanceDefRef, CharacteristicSpaceRef?}.edition`; **any face citing editions includes `BridgeCard + UTS row`**. | Faces show comparator pins; archive pins present; linter rejects edition cites without UTS. |
-| **CC‑TGA‑11 — Crossings gated** | Cross‑Context/plane crossings publish **BridgeId + UTS + CL/CL^plane** and are mediated by `OperationalGate(profile)`; **Φ/Φ_plane penalties → R‑lane only**; aboutness change publishes **KindBridge (CL^k)**. **Exception (StructuralReinterpretation):** a **projection‑only** aboutness rotation MAY be surfaced **without** a gate when **CC‑TGA‑06‑EX** holds; in that case the UTS row **SHALL** include `bridgeChannel=Kind`, `CL^k`, and a **Rotation witness**; **no plane/unit change** is permitted; `PathSliceId` is pinned; UNM reuse cross‑context continues to go via `Transport`. | Crossing surfaces show Bridge/UTS/CL pins; penalties routing audited. |
+| **CC‑TGA‑10 — Normalize→Compare (CSLC)** | Any comparison cites **UNM/CG‑Spec** editions and **ComparatorSetRef**; ordinal claims are compare‑only; partial orders return sets; edition‑aware artifacts (QD/archives) pin `{DescriptorMapRef, DistanceDefRef, CharacteristicSpaceRef?}.edition`; **any face citing editions includes `BridgeCard + UTS row`**. **NoHiddenScalarization — detection criteria:** (1) return shape is **set/poset**, not scalar; (2) `ComparatorSetRef` is present and edition‑pinned; (3) MVPK faces add **no new numeric claims**; (4) any summarisation is **order‑preserving & set‑valued**; otherwise conformance fails. | Faces show comparator pins; archive pins present; linter rejects edition cites without UTS; scalarisation checks pass.
+| **CC‑TGA‑11 — Crossings gated** | Cross‑Context/plane crossings publish **BridgeId + UTS + CL/CL^plane** and are mediated by `OperationalGate(profile)`; **Φ/Φ_plane penalties → R‑lane only**; aboutness change publishes **KindBridge (CL^k)**. **Exception (StructuralReinterpretation):** a **projection‑only** aboutness rotation is surfaced **without** a gate **iff** **CC‑TGA‑06‑EX** holds; then the UTS row includes `bridgeChannel=Kind`, `CL^k`, and a **Rotation witness**; any plane/unit change falls back to a gated crossing; `PathSliceId` is pinned; UNM reuse cross‑context continues via `Transport`. | Crossing surfaces show Bridge/UTS/CL pins; penalties routing audited. |
 | **CC‑TGA‑12 — Set‑returning selection** | `U.SelectionAndBinding` returns sets/archives under declared comparators (`ParetoOnly` by default) — no covert scalarization. | Selector output is a set/archive; policy id present if escalated. |
 | **CC‑TGA‑13 — Budgeted Selection↔Planning loop** | The loop declares **budget / max_iter**; on expiry selector publishes partial‑optimal set + `MethodTuning`; next **PathSlice** scheduled. | Logs show budget stop and slice rollover. |
 | **CC‑TGA‑14 — UNM before loop & Freshness lifecycle** | UNM runs before selection; stale/missing inputs produce **FreshnessTicket/FreshnessRequest** planned in `WorkPlanning` and executed in `Work`; calibrations appear as `CalibrateTo(map|standard)` with Φ pins. | Ticket state machine Issued→Planned→Executed→Closed; calibrations pinned. |
 | **CC‑TGA‑15 — FinalizeBinding only in Work** | Only `U.Work` performs `FinalizeBinding` and binds launch values. | Any earlier attempt blocks at LaunchGate; binding witness present in Work. |
 | **CC‑TGA‑16 — Guard ownership & semantics** | `USM.CompareGuard`/`USM.LaunchGuard` publish owner gate; guards are **events**, not GateChecks; failures are aggregated by owner’s gate per profile. | Guard pins show owner; GuardFail routed to owner’s DecisionLog. |
 | **CC‑TGA‑17 — Assurance ops on Transfer** | On `U.Transfer` only `ConstrainTo/CalibrateTo/CiteEvidence/AttributeTo`; none mutate `⟨L,P,E⃗,D⟩`. | Edge audit shows ops; CtxState unchanged across the edge. |
+| **CC‑TGA‑17a — Assurance ops contracts (normative)** | **ConstrainTo(region|policy)**: tightens declared region/policy; **pre**: region⊆current; **post**: `⟨L,P,E⃗,D⟩` unchanged; **idem.** and **monotone** under composition. **CalibrateTo(map|standard)**: attaches **editioned** calibration map/standard with Φ‑policy id; lawful per CG‑Spec; **post**: `⟨L,P,E⃗,D⟩` unchanged; **idem.** on same edition; penalties **→ R only**. **CiteEvidence(anchor)**: binds carriers via **SCR/RSCR**; adds no numeric claims; **idem.**; missing carriers ⇒ **abstain**. **AttributeTo(role|source)**: provenance only; decision algebra unaffected; **idem.** Hidden GateChecks, plane/unit changes, or edition writes on edges are **forbidden**. | Contracts visible on edge audit; violations fail lint. |
 | **CC‑TGA‑18 — Flow = valuation & slice‑local refresh** | A flow declares valuation `ν` over `U.Transfer` plus `PublicationScopeId` and `PathSliceId`; **sentinel‑bounded** refresh; re‑emit on edition change or sentinel rule. | FlowSpec shows ν; sentinel bump triggers slice‑local recompute. |
 | **CC‑TGA‑19 — Γ_time on compare/launch** | All compare/launch faces pin `Γ_time`; no implicit *latest*. | Face audit shows Γ pins; LaunchGate blocks on stale. |
-| **CC‑TGA‑20 — Lean publish‑mode ≠ weaken** | `AssuranceLane‑Lite` affects faces only; required GateChecks for the active profile remain intact. | Gate in Lean shows minimal pins + `DecisionLogRef`; module set unchanged. |
-| **CC‑TGA‑21 — Decision stability & idempotency witness** | Gate decisions are stable under the equivalence relation defined in **A.41**; a **witness of equivalence** is present on the DecisionLog surface; any change that breaks equivalence requires re‑aggregation. | Modify any input outside the declared equivalence ⇒ re‑aggregation; DecisionLog records the equivalence witness (A.41). |
-| **CC‑TGA‑21a — Decision join (publication algebra)** | Aggregation over GateChecks is the **idempotent, commutative, associative join** on the lattice `abstain ≤ pass ≤ degrade ≤ block` with **neutral = `abstain`** and **absorbing = `block`**. The algebra is conceptual; publications surface only the aggregated decision and its rationale (DecisionLog). | Review a gate with multiple GateChecks: the aggregated decision matches the lattice join; no per‑check arithmetic is introduced on faces. |
+| **CC‑TGA‑19a — Γ_time pin shape (normative)** | The `Γ_time` pin is one of: `snapshot(t)`, `interval[t1,t2]` (closed), or `policy(Γ_timeRuleId)` that resolves to either; CV computations record the **resolved time basis** in `DecisionLog` and do not widen Γ at publication time. | DecisionLog shows basis; linter rejects missing/implicit Γ. |
+| **CC‑TGA‑20 — Lean publish‑mode ≠ weaken** | `AssuranceLane‑Lite` affects faces only; required GateChecks for the active profile remain intact. | Gate in Lean/Core shows minimal pins; GateChecks list unchanged. |
+| **CC‑TGA‑21 — Decision stability & idempotency witness** | Gate decisions are stable under the equivalence relation defined in **A.41**; a **witness of equivalence** is present on the DecisionLog surface; any change that breaks equivalence requires re‑aggregation. **Minimum lexeme (CV‑relevant surfaces):** `EquivalenceWitness := { keys, E⃗, Γ_time(basis), PathSliceId?, ReturnShapeClass, ComparatorSetRef?, profile }`. | Modify any input outside the declared equivalence ⇒ re‑aggregation; DecisionLog records the witness (A.41); lexeme present.
+| **CC‑TGA‑21a — Decision join (publication algebra)** | Aggregation over GateChecks is the **idempotent, commutative, associative join** on the lattice `abstain ≤ pass ≤ degrade ≤ block` with **neutral = `abstain`** and **absorbing = `block`**. The algebra is conceptual; publications surface only (i) the aggregated **GateDecision** and (ii) its **GateDecisionRationale** recorded in the **DecisionLog**. A **GateDecisionExplanation** is an optional human‑readable narrative derived from the GateDecisionRationale; it is **not** a decision and MUST NOT be used as one. If aggregated `ConstraintValidity ≠ pass` or the active profile suppresses narratives, any GateFit‑oriented GateDecisionExplanation **does not apply**. | Review a gate with multiple GateChecks: the aggregated decision matches the lattice join; no per‑check arithmetic is introduced on faces. |
 | **CC‑TGA‑22 — Errors/unknowns fold by profile** | Errors/timeouts fold to `degrade` under `Lean|Core` and to `block` under `SafetyCritical|RegulatedX`; `unknown` folds per GateCheck policy (safety‑default: `degrade`). | DecisionLog shows folds; profile switch changes fold behavior accordingly. |
 | **CC‑TGA‑23 — SquareLaw on crossings** | For every GateCrossing, `gate_out ∘ transfer = transfer' ∘ gate_in`; LaunchGate case is mandatory. | MVPK shows commuting square; inconsistency yields `block|degrade` per profile. |
 | **CC‑TGA‑24 — UNM single‑writer** | `CG‑Spec`, `ComparatorSet`, `UNM.TransportRegistryΦ` editions are authored only by `UNM.Authoring` (others ref‑only). | Authorship cards: UNM is sole writer; others have refs only. |
-| **CC‑TGA‑25 — Evidence lanes & DecisionLogs** | AssuranceLane publishes GateProfile, GateCheckRef list, edition pins, aggregated decision, `DecisionLogRef`. | Gate surfaces include these pins; logs retrievable. |
+| **CC‑TGA‑25 — Evidence lanes & DecisionLogs** | AssuranceLane surfaces GateProfile, GateCheckRef list, edition pins, aggregated decision, `DecisionLogRef`; **evidence pins follow a two‑layer scheme**: **carriers** are pinned via **`SCR/RSCR`**, and **value annotations** are surfaced under **`VALATA (VA/LA/TA)`**. | Gate surfaces include these pins; logs retrievable. |
 
 > **Coupling note.** `CC‑TGA‑07 (CV⇒GF)` and `CC‑TGA‑21a (Decision join)` together ensure that any GateFit‑scoped GateCheckRef **returns `abstain`** until the aggregated CV status equals `pass`; CV/GF separation remains intact. 
 > **Authoring note (scope of E.TGA vs A.*):** Detailed, mechanism‑level checks and most publication content are specified in the **A.* patterns** (A.20…A.42). E.TGA fixes only carcass‑level obligations above.
@@ -24606,11 +24987,22 @@ Introduce **CoordinationFlow** as a named thread laid over `U.TransductionFlow__
 * *Open‑world species* — non‑exhaustive domain‑level specializations of `U.Transduction` that map to the minimal kind set.  
 * *KindBridge (`CL^k`)* — a compatibility surface on UTS for aboutness/kind transitions; required by CC‑TGA‑06‑EX and crossings (CC‑TGA‑11).
 * *Eulerian interpretation* — operational stance where a flow is treated as a valuation over `U.Transfer` and edges perform assurance‑only operations (no token‑passing semantics).
-* **GateCheckRef shape (publication lexeme, normative here).** Where GateChecks are surfaced, a **GateCheckRef** is a record  
+* **GateCheckRef shape (publication lexeme, normative here).** Where GateChecks are surfaced, a **GateCheckRef** is a record
   `GateCheckRef := { aspect, kind, edition, scope }` with:
-  `aspect ∈ {ConstraintValidity, GateFit}`, `kind ∈ GateCheckKind`, `edition ∈ Editions`, and `scope ∈ {lane | locus | subflow | profile}`.  
-  This shape is publication‑level only; it introduces no new execution steps and no arithmetic on faces.  (Couples to A.20/A.21 without duplicating their check catalogs.)
+  `aspect ∈ {ConstraintValidity, GateFit}`, `kind ∈ GateCheckKind`, `edition ∈ Editions`, and `scope ∈ {lane | locus | subflow | profile}`. 
+* **GateDecision / GateDecisionRationale / GateDecisionExplanation (terminology).**
+  — **GateDecision** — the aggregated lattice value produced by `OperationalGate(profile)` for a specific `{GateProfile, GateCheckRef[]}`.
+  — **GateDecisionRationale** — the minimal structured support **for that GateDecision**: per‑check outcomes, profile‑bound folds, and surfaced evidence/witness references on the DecisionLog; it records **why the GateDecision is admissible** under the active profile.
+  — **GateDecisionExplanation** — an optional human‑readable narrative derived from the GateDecisionRationale; it **does not carry decision status**. While aggregated `ConstraintValidity ≠ pass`, GateFit‑scoped checks return `abstain`; any GateFit‑oriented GateDecisionExplanation **does not apply**.
+> **Clarity note.** **GateDecision ≠ GateDecisionExplanation**; narratives are optional and derivative of GateDecisionRationale.
 
+* **GateFit (aspect, not an entity).** GateFit names the **aspect** of checks that evaluate **profile‑fit**; there is no separate GateFit entity. “Gate decision under GateFit” means “the gate’s decision computed from GateChecks with `aspect=GateFit`”.
+
+  This shape is publication‑level only; it introduces no new execution steps and no arithmetic on faces.  (Couples to A.20/A.21 without duplicating their check catalogs.)
+* *VALATA (VA/LA/TA)* — value‑annotation scheme used on **AssuranceLane**; **carriers** are referenced via **SCR/RSCR**; detailed obligations live in A.10/A.29. Included here so evidence pins are self‑describing in E‑level texts.
+* *Transfer vs Transport* — **Transfer** = the sole graph edge kind `U.Transfer`. **Transport** = Φ‑policy/registry‑defined conversions (`TransportRegistry^Φ`) referenced by UNM; “reuse via Transport” refers to the latter.
+* *GateCrossing* — a typed node transition that changes a CtxState slot or the kind‑channel; see **S1.b** for the normative list and required pins.
+* *Admissible path* — a typed path obeying the GateCrossing discipline (no hidden crossings; witnesses present), Γ‑pinned on compare/launch, and `T^D↔T^R` only at `LaunchGate`; see **S2**.
 
 ### Gating Profiles (applied to E.TGA)
 
@@ -24625,7 +25017,8 @@ Introduce **CoordinationFlow** as a named thread laid over `U.TransductionFlow__
 **Recommended defaults (non‑normative, tie‑in to A.26).** Profiles inherit along a `PathSlice`; local overrides may only **add** GateChecks; weakening requires a new `PathSlice` via sentinel (cf. A.26/A.25).
 
 ### E.10 / LEX discipline (registration)
-Register Tech tokens (ASCII) used by this architecture with twin‑labels: `U.TransductionGraph`, `U.TransductionFlow`, `StructuralReinterpretation`, `OperationalGate`, `GateProfile`, `GateCheckRef`, **`GateCheckKind`**, `DecisionLog`, `USM.CompareGuard`, `USM.LaunchGuard`, `KindBridge`, `SubflowRef`, `FlowEmbed`, `SentinelId`, `PathSliceId`, `SliceRefresh`, `FinalizeBinding`, `VALATA`. Add an ASCII alias **`CLKind`** ↔ Plain `CL^k` (cf. `CLPlane` ↔ `CL^plane`). Reference MVPK E.17 naming for faces.
+Register Tech tokens (ASCII) used by this architecture with twin‑labels: `U.TransductionGraph`, `U.TransductionFlow`, `StructuralReinterpretation`, `OperationalGate`, `GateProfile`, `GateCheckRef`, **`GateCheckKind`**, `DecisionLog`, `USM.CompareGuard`, `USM.LaunchGuard`, `KindBridge`, `SubflowRef`, `FlowEmbed`, `SentinelId`, `PathSliceId`, `SliceRefresh`, `FinalizeBinding`, `VALATA`. Add an ASCII alias **`CLKind`** ↔ Plain `CL^k` (cf. `CLPlane` ↔ `CL^plane`). Reference MVPK E.17 naming for faces.  
+**CtxState Extension Registry.** Register any extra CtxState slot beyond ⟨L,P,E⃗,D⟩ with: slot id, informal intent, partial‑order law (with neutral/absorbing), SquareLaw compatibility note, and the owning Gate profile(s) that may change it. Absence of registration ⇒ **non‑conformant**.
 
 ### Consequences
 
@@ -24635,7 +25028,7 @@ Register Tech tokens (ASCII) used by this architecture with twin‑labels: `U.Tr
 2. **Comparability & replayability:** CSLC and edition‑pinned comparators prevent covert scalarization and enable lawful set returns and reproducible decisions.
 3. **Locality of change:** sentinel subflows restrict refresh to affected `PathSlice`s; large graphs remain stable under frequent edition bumps.
 4. **Clean design/run fold:** LaunchGate and `DesignRunTagConsistency` stop premature binding; acceptance and telemetry live where they occur (`U.Work`).
-5. **Assurance visibility:** MVPK makes GateProfile/DecisionLog explicitly visible and cacheable for the same `{PathSlice, Modules, Editions}`.
+5. **Assurance visibility:** MVPK makes GateProfile/DecisionLog surfaces locally checkable and cacheable for the same `{PathSlice, GateChecks, Editions}`.
 
 **Trade‑offs.**
 a) **Higher upfront modeling cost:** explicit Bridge/UTS pins and GateProfiles demand care; mitigated by Lean profile and templates.
@@ -24705,10 +25098,13 @@ This arrangement guarantees **functorial publication** (commuting squares on cro
 
 **Flow semantics & checks**
 
-* **E.TGA →hosts→ A.20 U.Flow (ConstraintValidity scope).** CV checks live inside transformations; no declaration/translation of planes/units in CV.
-* **E.TGA →hosts→ A.21 GateProfilization (GateFit scope).** GateFit modules are aggregated by `OperationalGate(profile)` with CV⇒GF activation; the **enumeration and data shape** of GateChecks live in **A.21**.
+* **E.TGA →hosts→ A.20 U.Flow (ConstraintValidity scope).** CV checks live inside transformations; no declaration/translation of planes/units in CV; **error/timeout/unknown folds** follow **CC‑TGA‑22** as the **minimum default** (profiles may be stricter).
+  **Terminology discipline (A.20 boundary).** In CV scope, publications use **status/witness** language; **GateDecisionRationale/GateDecisionExplanation** are reserved for gating and do not apply to CV.
+
+* **E.TGA →hosts→ A.21 GateProfilization (GateFit scope).** **GateFit-scoped GateChecks** are aggregated by `OperationalGate(profile)` with CV⇒GF activation; the **enumeration and publication shape** of GateChecks live in **A.21**. **Equivalently:** a GateFit decision different from `abstain` appears only when aggregated `ConstraintValidity = pass`; otherwise the **GateDecisionExplanation (GateFit‑oriented)** does not apply.
 * **E.TGA →requires→ USM.CompareGuard / USM.LaunchGuard.** Guards publish scope & ownership; guard failures route to owner gate.
-* **E.TGA →constrains→ F.* (Bridge+UTS, CL/CL^plane, Φ→R).** Every crossing surfaces Bridge/UTS and penalty rule‑ids; penalties flow only in R‑lane.
+* **E.TGA →constrains→ F.* (Bridge+UTS, CL/CL^plane, Φ→R).** A transition is treated as a **Crossing** iff `Bridge+UTS` and the appropriate `CL/CL^plane` are surfaced; otherwise this crossing explanation does not apply. Where Φ defines penalties, they appear in the R‑lane only.
+
 * **Operational interpretation (default): Eulerian.** A flow is a **valuation** over `U.Transfer`; edges carry **assurance‑only operations** (see CC‑TGA‑17); no token‑passing semantics are assumed.
 
 **UNM & comparability**
