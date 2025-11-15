@@ -227,9 +227,27 @@ jobs:
           WARP_TOKEN: ${{ secrets.WARP_TOKEN }}
         id: agent
         run: |
-          echo "::notice::Running agent: fpf-diff-evaluator"
-          warp-cli agent run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt
-          echo "::notice::Analysis complete"
+          set -euo pipefail
+
+          if [ -z "${WARP_TOKEN:-}" ]; then
+            echo "::error title=Missing Secret::WARP_TOKEN is required for Warp agent analysis"
+            exit 1
+          fi
+
+          echo "::notice title=Warp Agent::Running agent: fpf-diff-evaluator"
+
+          # Add timeout to prevent hanging
+          if ! timeout 300 warp-cli agent run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt; then
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 124 ]; then
+              echo "::error title=Timeout::Warp agent timed out after 300 seconds"
+            else
+              echo "::error title=Agent Failed::Warp agent failed with exit code $EXIT_CODE"
+            fi
+            exit 1
+          fi
+
+          echo "::notice title=Complete::Warp agent analysis completed successfully"
           echo "ANALYSIS_SOURCE=warp-cli" >> "$GITHUB_ENV"
           echo "ANALYSIS_MODEL=fpf-diff-evaluator" >> "$GITHUB_ENV"
 
