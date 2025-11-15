@@ -15,32 +15,45 @@ jobs:
   diff-eval:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    env:
-      KAT_API_BASE: ${{ secrets.KAT_API_BASE }}
-      KAT_API_KEY: ${{ secrets.KAT_API_KEY }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      KAT_ENDPOINT: ${{ secrets.KAT_ENDPOINT }}
-      KAT_LOCAL_MODEL: ${{ secrets.KAT_LOCAL_MODEL }}
-      KAT_FAKE_OUTPUT: ${{ secrets.KAT_FAKE_OUTPUT }}
-      KAT_REQUEST_TIMEOUT_MS: ${{ secrets.KAT_REQUEST_TIMEOUT_MS }}
-      KAT_REQUEST_RETRIES: ${{ secrets.KAT_REQUEST_RETRIES }}
-      KAT_REQUEST_BACKOFF_MS: ${{ secrets.KAT_REQUEST_BACKOFF_MS }}
+    concurrency:
+      group: diff-eval-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
       - name: Install Warp CLI
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget gpg
-          wget -qO- https://releases.warp.dev/linux/keys/warp.asc | gpg --dearmor > warpdotdev.gpg
+          set -euo pipefail
+          echo "::notice title=Warp CLI::Installing Warp CLI for agentic analysis"
+          sudo apt-get update || echo "::warning::apt-get update failed, continuing..."
+          sudo apt-get install -y wget gpg || {
+            echo "::error title=Installation Failed::Could not install prerequisites"
+            exit 1
+          }
+
+          if ! wget -qO- https://releases.warp.dev/linux/keys/warp.asc | gpg --dearmor > warpdotdev.gpg; then
+            echo "::error title=Key Download Failed::Could not download Warp GPG key"
+            exit 1
+          fi
+
           sudo install -D -o root -g root -m 644 warpdotdev.gpg /etc/apt/keyrings/warpdotdev.gpg
           sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/warpdotdev.gpg] https://releases.warp.dev/linux/deb stable main" > /etc/apt/sources.list.d/warpdotdev.list'
           rm warpdotdev.gpg
-          sudo apt-get update
-          sudo apt-get install -y warp-cli
+
+          if ! sudo apt-get update; then
+            echo "::error title=Update Failed::Could not update package lists after adding Warp repository"
+            exit 1
+          fi
+
+          if ! sudo apt-get install -y warp-cli; then
+            echo "::error title=Installation Failed::Could not install warp-cli package"
+            exit 1
+          fi
+
+          echo "::notice title=Success::Warp CLI installed successfully"
 
       - name: Set base ref
         id: base
@@ -50,6 +63,11 @@ jobs:
 
       - name: Validate local analysis config
         if: env.ACT == 'true'
+        env:
+          KAT_API_BASE: ${{ secrets.KAT_API_BASE }}
+          KAT_API_KEY: ${{ secrets.KAT_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          KAT_LOCAL_MODEL: ${{ secrets.KAT_LOCAL_MODEL }}
         run: |
           set -euo pipefail
 
@@ -85,39 +103,69 @@ jobs:
 
       - name: Cache Bun toolchain
         if: env.ACT == 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
         with:
           path: ~/.bun
           key: bun-${{ runner.os }}-${{ hashFiles('scripts/kat-dev.ts') }}
 
       - name: Install Bun (local)
         if: env.ACT == 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2.0.1
         with:
           bun-version: latest
 
       - name: Compute diff
         id: diff
         run: |
-          git --no-pager diff --no-color --unified=5 "${{ steps.base.outputs.ref }}"...HEAD -- "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md" > diff.txt
+          set -euo pipefail
 
-          if [[ -s diff.txt ]]; then
-            LINES=$(wc -l < diff.txt)
-            echo "::notice::Found $LINES lines of changes"
+          # Create temporary file for diff
+          DIFF_FILE=$(mktemp)
+          trap 'rm -f "$DIFF_FILE"' EXIT
+
+          echo "::notice title=Diff Computation::Computing changes in FPF document"
+
+          if ! git --no-pager diff --no-color --unified=5 "${{ github.base_ref }}"...HEAD -- "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md" > "$DIFF_FILE"; then
+            echo "::warning title=Diff Warning::git diff returned non-zero exit code"
+          fi
+
+          if [[ -s "$DIFF_FILE" ]]; then
+            LINES=$(wc -l < "$DIFF_FILE")
+            echo "::notice title=Changes Found::Found $LINES lines of changes"
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            # Copy to workspace for next steps
+            cp "$DIFF_FILE" diff.txt
           else
-            echo "::notice::No changes detected"
+            echo "::notice title=No Changes::No changes detected in target file"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Build agent prompt
         if: steps.diff.outputs.has_changes == 'true'
         run: |
-          echo "::notice::Building prompt from agent definition"
+          set -euo pipefail
 
-          # Extract agent instructions from markdown
-          sed -n '/^---$/,/^---$/d; /^---$/q; p' .github/agents/fpf-diff-evaluator.md > prompt.txt
-          tail -n +$(grep -n "^---$" .github/agents/fpf-diff-evaluator.md | tail -1 | cut -d: -f1) .github/agents/fpf-diff-evaluator.md | tail -n +2 >> prompt.txt
+          echo "::notice title=Prompt Building::Building agent prompt from definition"
+
+          # Validate agent file exists
+          if [ ! -f .github/agents/fpf-diff-evaluator.md ]; then
+            echo "::error title=Missing Agent::Agent definition file not found"
+            exit 1
+          fi
+
+          # Use simpler, more robust extraction
+          # Skip frontmatter (between --- markers) and use the rest
+          awk '
+            BEGIN { in_frontmatter=0; past_frontmatter=0 }
+            /^---$/ {
+              if (!past_frontmatter) {
+                in_frontmatter = !in_frontmatter
+                if (!in_frontmatter) past_frontmatter = 1
+                next
+              }
+            }
+            past_frontmatter { print }
+          ' .github/agents/fpf-diff-evaluator.md > prompt.txt
 
           # Add context
           echo "" >> prompt.txt
@@ -128,36 +176,97 @@ jobs:
           echo "## Diff" >> prompt.txt
           echo "" >> prompt.txt
           echo '```diff' >> prompt.txt
+          # Limit diff size to prevent token overflow
           head -c 120000 diff.txt >> prompt.txt
           echo '```' >> prompt.txt
 
+          PROMPT_SIZE=$(wc -c < prompt.txt)
+          echo "::notice title=Prompt Ready::Generated prompt with $PROMPT_SIZE bytes"
+
       - name: Run KAT Dev analysis (local)
         if: steps.diff.outputs.has_changes == 'true' && env.ACT == 'true'
+        env:
+          KAT_API_BASE: ${{ secrets.KAT_API_BASE }}
+          KAT_API_KEY: ${{ secrets.KAT_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          KAT_ENDPOINT: ${{ secrets.KAT_ENDPOINT }}
+          KAT_LOCAL_MODEL: ${{ secrets.KAT_LOCAL_MODEL }}
+          KAT_FAKE_OUTPUT: ${{ secrets.KAT_FAKE_OUTPUT }}
+          KAT_REQUEST_TIMEOUT_MS: ${{ secrets.KAT_REQUEST_TIMEOUT_MS }}
+          KAT_REQUEST_RETRIES: ${{ secrets.KAT_REQUEST_RETRIES }}
+          KAT_REQUEST_BACKOFF_MS: ${{ secrets.KAT_REQUEST_BACKOFF_MS }}
         run: |
+          set -euo pipefail
+
           MODEL="${KAT_LOCAL_MODEL:-openai/gpt-oss-20b}"
           export KAT_API_BASE="${KAT_API_BASE:-http://host.docker.internal:1234/v1}"
           export KAT_API_KEY="${KAT_API_KEY:-lmstudio}"
           export KAT_ENDPOINT="${KAT_ENDPOINT:-chat/completions}"
           export KAT_LOCAL_MODEL="$MODEL"
-          echo "::notice::Running local KAT Dev analysis via ${KAT_API_BASE} (model: $MODEL)"
-          bun scripts/kat-dev.ts dev --agent "fpf-diff-evaluator" --model "$MODEL" --input-file prompt.txt > agent_output.txt
-          echo "::notice::KAT Dev analysis complete"
+
+          echo "::notice title=KAT Dev::Running local analysis via ${KAT_API_BASE} (model: $MODEL)"
+
+          # Add timeout to prevent hanging
+          if ! timeout 300 bun scripts/kat-dev.ts dev --agent "fpf-diff-evaluator" --model "$MODEL" --input-file prompt.txt > agent_output.txt; then
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 124 ]; then
+              echo "::error title=Timeout::KAT Dev analysis timed out after 300 seconds"
+            else
+              echo "::error title=Analysis Failed::KAT Dev analysis failed with exit code $EXIT_CODE"
+            fi
+            exit 1
+          fi
+
+          echo "::notice title=Complete::KAT Dev analysis completed successfully"
           echo "ANALYSIS_SOURCE=kat-dev (local)" >> "$GITHUB_ENV"
           echo "ANALYSIS_MODEL=$MODEL" >> "$GITHUB_ENV"
 
       - name: Run Warp agent analysis
         if: steps.diff.outputs.has_changes == 'true' && env.ACT != 'true'
+        env:
+          WARP_TOKEN: ${{ secrets.WARP_TOKEN }}
         id: agent
         run: |
-          echo "::notice::Running agent: fpf-diff-evaluator"
-          warp-cli agent run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt
-          echo "::notice::Analysis complete"
+          set -euo pipefail
+
+          if [ -z "${WARP_TOKEN:-}" ]; then
+            echo "::error title=Missing Secret::WARP_TOKEN is required for Warp agent analysis"
+            exit 1
+          fi
+
+          echo "::notice title=Warp Agent::Running agent: fpf-diff-evaluator"
+
+          # Add timeout to prevent hanging
+          if ! timeout 300 warp-cli agent run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt; then
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 124 ]; then
+              echo "::error title=Timeout::Warp agent timed out after 300 seconds"
+            else
+              echo "::error title=Agent Failed::Warp agent failed with exit code $EXIT_CODE"
+            fi
+            exit 1
+          fi
+
+          echo "::notice title=Complete::Warp agent analysis completed successfully"
           echo "ANALYSIS_SOURCE=warp-cli" >> "$GITHUB_ENV"
           echo "ANALYSIS_MODEL=fpf-diff-evaluator" >> "$GITHUB_ENV"
 
       - name: Format report
         if: steps.diff.outputs.has_changes == 'true'
         run: |
+          set -euo pipefail
+
+          # Validate agent output exists and is not empty
+          if [ ! -f agent_output.txt ]; then
+            echo "::error title=Missing Output::Agent output file not found"
+            exit 1
+          fi
+
+          if [ ! -s agent_output.txt ]; then
+            echo "::warning title=Empty Output::Agent produced no output, creating placeholder"
+            echo "Analysis completed but no output was generated." > agent_output.txt
+          fi
+
           {
             echo "<!-- agentic-diff-eval -->"
             echo "# 🤖 Agentic Diff Analysis"
@@ -173,7 +282,7 @@ jobs:
             echo ""
             cat agent_output.txt
           } > analysis.md
-          echo "::notice::Report formatted for PR comment"
+          echo "::notice title=Report Ready::Formatted analysis report for PR comment"
 
       - name: Skip message
         if: steps.diff.outputs.has_changes == 'false'
@@ -186,20 +295,35 @@ jobs:
 
       - name: Comment results on PR
         if: env.ACT != 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
             const fs = require('fs');
+
+            if (!fs.existsSync('analysis.md')) {
+              core.setFailed('Analysis file not found');
+              return;
+            }
+
             const body = fs.readFileSync('analysis.md', 'utf8');
+
+            if (!body || body.trim().length === 0) {
+              core.setFailed('Analysis file is empty');
+              return;
+            }
+
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
               per_page: 100
             });
+
             const marker = '<!-- agentic-diff-eval -->';
             const existing = comments.find(c => c.body && c.body.includes(marker));
+
             if (existing) {
+              core.info(`Updating existing comment ${existing.id}`);
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -207,6 +331,7 @@ jobs:
                 body
               });
             } else {
+              core.info('Creating new comment');
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,

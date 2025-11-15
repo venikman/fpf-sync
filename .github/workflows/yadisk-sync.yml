@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
 
@@ -33,11 +33,58 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Input validation
+          if [[ ! "$TARGET_NAME" =~ ^[a-zA-Z0-9\ \(\)—\-\.]+$ ]]; then
+            echo "::error title=Invalid Input::TARGET_NAME contains invalid characters"
+            exit 1
+          fi
+
+          if [[ ! "$PUBLIC_URL" =~ ^https://disk\.yandex\.(ru|com)/ ]]; then
+            echo "::error title=Invalid Input::PUBLIC_URL must be a valid Yandex Disk URL"
+            exit 1
+          fi
+
+          # Retry helper function
+          retry_curl() {
+            local max_attempts=3
+            local timeout=2
+            local attempt=1
+
+            while [ $attempt -le $max_attempts ]; do
+              if "$@"; then
+                return 0
+              fi
+              echo "::warning title=Retry::Attempt $attempt/$max_attempts failed, retrying in ${timeout}s..."
+              sleep $timeout
+              attempt=$((attempt + 1))
+              timeout=$((timeout * 2))
+            done
+
+            echo "::error title=Failed::All $max_attempts retry attempts exhausted"
+            return 1
+          }
+
           API_BASE="https://cloud-api.yandex.net/v1/disk/public/resources"
           PUBLIC_KEY_ENCODED=$(printf '%s' "$PUBLIC_URL" | jq -sRr @uri)
 
-          echo "::notice::Fetching file info"
-          LIST_JSON=$(curl -fsSL "$API_BASE?public_key=$PUBLIC_KEY_ENCODED&limit=1000")
+          echo "::notice title=API Request::Fetching file info from Yandex Disk API"
+          if ! LIST_JSON=$(retry_curl curl -fsSL -A "fpf-sync-bot/1.0" \
+            "$API_BASE?public_key=$PUBLIC_KEY_ENCODED&limit=1000"); then
+            echo "::error title=API Error::Failed to fetch file listing from Yandex Disk"
+            exit 1
+          fi
+
+          # Validate API response
+          if ! echo "$LIST_JSON" | jq -e . >/dev/null 2>&1; then
+            echo "::error title=Invalid Response::API returned invalid JSON"
+            exit 1
+          fi
+
+          # Check for pagination warning
+          TOTAL_COUNT=$(echo "$LIST_JSON" | jq -r '._embedded.total // 0')
+          if [ "$TOTAL_COUNT" -gt 1000 ]; then
+            echo "::warning title=Pagination::Directory has $TOTAL_COUNT items, only first 1000 fetched"
+          fi
 
           # Try to find file in folder items, fallback to direct file
           FILE_PATH=$(echo "$LIST_JSON" | jq -r --arg name "$TARGET_NAME" '
@@ -47,28 +94,58 @@ jobs:
           ')
 
           if [ -z "$FILE_PATH" ]; then
-            echo "::error::File not found: $TARGET_NAME"
+            echo "::error title=File Not Found::Cannot find file: $TARGET_NAME"
+            echo "::error::Available files:"
+            echo "$LIST_JSON" | jq -r '._embedded.items[]? | select(.type == "file") | .name' || echo "Could not list files"
             exit 1
           fi
 
-          echo "::notice::Getting download URL"
-          HREF=$(curl -fsSL "$API_BASE/download?public_key=$PUBLIC_KEY_ENCODED&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)" | jq -r '.href')
+          echo "::notice title=File Found::Located file at path: $FILE_PATH"
 
-          echo "::notice::Downloading to: $DEST_PATH/$DEST_FILENAME"
+          echo "::notice title=Download URL::Requesting download URL from API"
+          if ! DOWNLOAD_RESPONSE=$(retry_curl curl -fsSL -A "fpf-sync-bot/1.0" \
+            "$API_BASE/download?public_key=$PUBLIC_KEY_ENCODED&path=$(printf '%s' "$FILE_PATH" | jq -sRr @uri)"); then
+            echo "::error title=API Error::Failed to get download URL"
+            exit 1
+          fi
+
+          HREF=$(echo "$DOWNLOAD_RESPONSE" | jq -r '.href')
+          if [ -z "$HREF" ] || [ "$HREF" = "null" ]; then
+            echo "::error title=Invalid Response::No download URL in API response"
+            exit 1
+          fi
+
+          echo "::notice title=Download::Downloading to: $DEST_PATH/$DEST_FILENAME"
           mkdir -p "$DEST_PATH"
-          curl -fsSL -o "$DEST_PATH/$DEST_FILENAME" "$HREF"
 
-          echo "::notice::Downloaded $(stat -c%s "$DEST_PATH/$DEST_FILENAME" 2>/dev/null || stat -f%z "$DEST_PATH/$DEST_FILENAME") bytes"
+          if ! retry_curl curl -fsSL -A "fpf-sync-bot/1.0" -o "$DEST_PATH/$DEST_FILENAME" "$HREF"; then
+            echo "::error title=Download Failed::Failed to download file from Yandex Disk"
+            exit 1
+          fi
+
+          # Verify download
+          if [ ! -f "$DEST_PATH/$DEST_FILENAME" ]; then
+            echo "::error title=Download Failed::File was not created at destination"
+            exit 1
+          fi
+
+          FILE_SIZE=$(stat -c%s "$DEST_PATH/$DEST_FILENAME" 2>/dev/null || stat -f%z "$DEST_PATH/$DEST_FILENAME")
+          if [ "$FILE_SIZE" -eq 0 ]; then
+            echo "::error title=Empty File::Downloaded file is empty"
+            exit 1
+          fi
+
+          echo "::notice title=Success::Downloaded $FILE_SIZE bytes successfully"
 
       - name: Create Pull Request
         if: ${{ env.ACT != 'true' }}
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
         with:
           commit-message: 'chore(sync): Yandex Disk update'
           title: 'Sync: Yandex Disk update'
           body: |
             Automated sync from Yandex Disk public share.
-            - Source: ${{ env.PUBLIC_URL }} ${{ env.PUBLIC_PATH && format('(path: {0})', env.PUBLIC_PATH) }}
+            - Source: `${{ env.PUBLIC_URL }}`${{ env.PUBLIC_PATH && format(' (path: `{0}`)', env.PUBLIC_PATH) }}
             - Main FPF document: https://github.com/${{ github.repository }}/blob/main/${{ env.DEST_PATH }}/${{ env.DEST_FILENAME }}
             - Agentic diff evaluation will run automatically in this PR.
           branch: sync/yadisk
