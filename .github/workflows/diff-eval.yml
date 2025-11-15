@@ -237,7 +237,7 @@ jobs:
           echo "::notice title=Warp Agent::Running agent: fpf-diff-evaluator"
 
           # Add timeout to prevent hanging
-          if ! timeout 300 warp-cli agents run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt; then
+          if ! timeout 300 warp-cli agent run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt; then
             EXIT_CODE=$?
             if [ $EXIT_CODE -eq 124 ]; then
               echo "::error title=Timeout::Warp agent timed out after 300 seconds"
