@@ -150,7 +150,7 @@ jobs:
         id: agent
         run: |
           echo "::notice::Running agent: fpf-diff-evaluator"
-          warp-cli agents run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt
+          warp-cli agent run --agent "fpf-diff-evaluator" --input-file prompt.txt > agent_output.txt
           echo "::notice::Analysis complete"
           echo "ANALYSIS_SOURCE=warp-cli" >> "$GITHUB_ENV"
           echo "ANALYSIS_MODEL=fpf-diff-evaluator" >> "$GITHUB_ENV"
