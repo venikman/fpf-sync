@@ -6,6 +6,7 @@ on:
     branches: [ main ]
     paths:
       - 'yadisk/**'
+      - 'github/**'
 
 permissions:
   contents: read
@@ -125,18 +126,40 @@ jobs:
 
           echo "::notice title=Diff Computation::Computing changes in FPF document"
 
-          if ! git --no-pager diff --no-color --unified=5 "${{ github.base_ref }}"...HEAD -- "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md" > "$DIFF_FILE"; then
+          # Detect which source directory changed
+          TARGET_FILE=""
+          SOURCE_LABEL=""
+          
+          if git --no-pager diff --name-only "${{ github.base_ref }}"...HEAD | grep -q "^yadisk/"; then
+            TARGET_FILE="yadisk/First Principles Framework — Core Conceptual Specification (holonic).md"
+            SOURCE_LABEL="Yandex Disk"
+          elif git --no-pager diff --name-only "${{ github.base_ref }}"...HEAD | grep -q "^github/"; then
+            TARGET_FILE="github/First Principles Framework — Core Conceptual Specification (holonic).md"
+            SOURCE_LABEL="GitHub"
+          fi
+
+          if [ -z "$TARGET_FILE" ]; then
+            echo "::notice title=No Changes::No changes detected in FPF source directories"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "::notice title=Source Detected::Analyzing changes from $SOURCE_LABEL"
+          echo "source=$SOURCE_LABEL" >> $GITHUB_OUTPUT
+
+          if ! git --no-pager diff --no-color --unified=5 "${{ github.base_ref }}"...HEAD -- "$TARGET_FILE" > "$DIFF_FILE"; then
             echo "::warning title=Diff Warning::git diff returned non-zero exit code"
           fi
 
           if [[ -s "$DIFF_FILE" ]]; then
             LINES=$(wc -l < "$DIFF_FILE")
-            echo "::notice title=Changes Found::Found $LINES lines of changes"
+            echo "::notice title=Changes Found::Found $LINES lines of changes in $TARGET_FILE"
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "target_file=$TARGET_FILE" >> $GITHUB_OUTPUT
             # Copy to workspace for next steps
             cp "$DIFF_FILE" diff.txt
           else
-            echo "::notice title=No Changes::No changes detected in target file"
+            echo "::notice title=No Changes::No changes detected in $TARGET_FILE"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
@@ -168,10 +191,14 @@ jobs:
           ' .github/agents/fpf-diff-evaluator.md > prompt.txt
 
           # Add context
+          TARGET_FILE="${{ steps.diff.outputs.target_file }}"
+          SOURCE="${{ steps.diff.outputs.source }}"
+          
           echo "" >> prompt.txt
           echo "## Context" >> prompt.txt
           echo "" >> prompt.txt
-          echo "**Target File**: yadisk/First Principles Framework — Core Conceptual Specification (holonic).md" >> prompt.txt
+          echo "**Source**: $SOURCE" >> prompt.txt
+          echo "**Target File**: $TARGET_FILE" >> prompt.txt
           echo "" >> prompt.txt
           echo "## Diff" >> prompt.txt
           echo "" >> prompt.txt
@@ -181,7 +208,7 @@ jobs:
           echo '```' >> prompt.txt
 
           PROMPT_SIZE=$(wc -c < prompt.txt)
-          echo "::notice title=Prompt Ready::Generated prompt with $PROMPT_SIZE bytes"
+          echo "::notice title=Prompt Ready::Generated prompt with $PROMPT_SIZE bytes from $SOURCE"
 
       - name: Run KAT Dev analysis (local)
         if: steps.diff.outputs.has_changes == 'true' && env.ACT == 'true'
@@ -267,16 +294,20 @@ jobs:
             echo "Analysis completed but no output was generated." > agent_output.txt
           fi
 
+          TARGET_FILE="${{ steps.diff.outputs.target_file }}"
+          SOURCE="${{ steps.diff.outputs.source }}"
+          
           {
             echo "<!-- agentic-diff-eval -->"
             echo "# 🤖 Agentic Diff Analysis"
             echo ""
             echo "_Agent: [fpf-diff-evaluator](.github/agents/fpf-diff-evaluator.md)_"
             echo ""
+            echo "**Source**: $SOURCE"
             echo "**Engine**: ${ANALYSIS_SOURCE:-warp-cli}"
             echo "**Model**: ${ANALYSIS_MODEL:-fpf-diff-evaluator}"
             echo ""
-            echo "**Target**: \`yadisk/First Principles Framework — Core Conceptual Specification (holonic).md\`"
+            echo "**Target**: \`$TARGET_FILE\`"
             echo ""
             echo "---"
             echo ""
@@ -290,7 +321,7 @@ jobs:
           {
             echo "# 🤖 Agentic Diff Analysis"
             echo ""
-            echo "No changes detected in \`yadisk/First Principles Framework — Core Conceptual Specification (holonic).md\`"
+            echo "No changes detected in FPF source directories (\`yadisk/\`, \`github/\`)"
           } > analysis.md
 
       - name: Comment results on PR

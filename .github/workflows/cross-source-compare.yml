@@ -1,0 +1,216 @@
+name: Cross-Source Comparison
+
+on:
+  schedule:
+    # Run daily at 18:00 UTC (after both syncs complete)
+    - cron: '0 18 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Compare sources
+        id: compare
+        run: |
+          set -euo pipefail
+
+          YADISK_FILE="yadisk/First Principles Framework — Core Conceptual Specification (holonic).md"
+          GITHUB_FILE="github/First Principles Framework — Core Conceptual Specification (holonic).md"
+
+          echo "::notice title=Comparison::Comparing Yandex Disk and GitHub sources"
+
+          # Check if both files exist
+          if [ ! -f "$YADISK_FILE" ]; then
+            echo "::warning title=Missing File::Yandex Disk file not found: $YADISK_FILE"
+            echo "yadisk_exists=false" >> $GITHUB_OUTPUT
+          else
+            echo "yadisk_exists=true" >> $GITHUB_OUTPUT
+            YADISK_SIZE=$(stat -c%s "$YADISK_FILE" 2>/dev/null || stat -f%z "$YADISK_FILE")
+            echo "yadisk_size=$YADISK_SIZE" >> $GITHUB_OUTPUT
+            echo "::notice title=Yandex File::Size: $YADISK_SIZE bytes"
+          fi
+
+          if [ ! -f "$GITHUB_FILE" ]; then
+            echo "::warning title=Missing File::GitHub file not found: $GITHUB_FILE"
+            echo "github_exists=false" >> $GITHUB_OUTPUT
+          else
+            echo "github_exists=true" >> $GITHUB_OUTPUT
+            GITHUB_SIZE=$(stat -c%s "$GITHUB_FILE" 2>/dev/null || stat -f%z "$GITHUB_FILE")
+            echo "github_size=$GITHUB_SIZE" >> $GITHUB_OUTPUT
+            echo "::notice title=GitHub File::Size: $GITHUB_SIZE bytes"
+          fi
+
+          # If both exist, compare them
+          if [ -f "$YADISK_FILE" ] && [ -f "$GITHUB_FILE" ]; then
+            if diff -q "$YADISK_FILE" "$GITHUB_FILE" >/dev/null 2>&1; then
+              echo "::notice title=Identical::Sources are identical"
+              echo "identical=true" >> $GITHUB_OUTPUT
+              echo "has_divergence=false" >> $GITHUB_OUTPUT
+            else
+              echo "::warning title=Divergence::Sources have diverged"
+              echo "identical=false" >> $GITHUB_OUTPUT
+              
+              # Compute diff stats
+              DIFF_OUTPUT=$(mktemp)
+              diff -u "$YADISK_FILE" "$GITHUB_FILE" > "$DIFF_OUTPUT" || true
+              
+              DIFF_LINES=$(wc -l < "$DIFF_OUTPUT")
+              ADDED_LINES=$(grep -c "^+" "$DIFF_OUTPUT" | tail -1 || echo "0")
+              REMOVED_LINES=$(grep -c "^-" "$DIFF_OUTPUT" | tail -1 || echo "0")
+              
+              echo "diff_lines=$DIFF_LINES" >> $GITHUB_OUTPUT
+              echo "added_lines=$ADDED_LINES" >> $GITHUB_OUTPUT
+              echo "removed_lines=$REMOVED_LINES" >> $GITHUB_OUTPUT
+              
+              echo "::notice title=Diff Stats::Lines: $DIFF_LINES, Added: $ADDED_LINES, Removed: $REMOVED_LINES"
+              
+              # Determine if divergence is significant (>100 lines changed)
+              TOTAL_CHANGES=$((ADDED_LINES + REMOVED_LINES))
+              if [ "$TOTAL_CHANGES" -gt 100 ]; then
+                echo "::warning title=Significant Divergence::$TOTAL_CHANGES lines differ between sources"
+                echo "has_divergence=true" >> $GITHUB_OUTPUT
+                
+                # Save diff for issue
+                cp "$DIFF_OUTPUT" divergence.diff
+              else
+                echo "::notice title=Minor Divergence::$TOTAL_CHANGES lines differ (threshold: 100)"
+                echo "has_divergence=false" >> $GITHUB_OUTPUT
+              fi
+              
+              rm -f "$DIFF_OUTPUT"
+            fi
+          else
+            echo "has_divergence=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Check sync metadata if available
+          if [ -f "yadisk/.last-sync-time" ]; then
+            YADISK_SYNC=$(cat "yadisk/.last-sync-time")
+            echo "::notice title=Last Sync::Yandex Disk: $YADISK_SYNC"
+          fi
+
+          if [ -f "github/.last-sync-time" ]; then
+            GITHUB_SYNC=$(cat "github/.last-sync-time")
+            echo "::notice title=Last Sync::GitHub: $GITHUB_SYNC"
+          fi
+
+      - name: Create divergence issue
+        if: steps.compare.outputs.has_divergence == 'true' && env.ACT != 'true'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const fs = require('fs');
+            
+            const yadiskSize = '${{ steps.compare.outputs.yadisk_size }}';
+            const githubSize = '${{ steps.compare.outputs.github_size }}';
+            const diffLines = '${{ steps.compare.outputs.diff_lines }}';
+            const addedLines = '${{ steps.compare.outputs.added_lines }}';
+            const removedLines = '${{ steps.compare.outputs.removed_lines }}';
+            
+            // Check if divergence issue already exists
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'source:divergence'
+            });
+            
+            const divergenceIssue = issues.find(issue => 
+              issue.title.includes('Source Divergence Detected')
+            );
+            
+            const issueBody = `## Source Divergence Alert
+            
+            The automated cross-source comparison has detected significant divergence between
+            the Yandex Disk and GitHub sources of the FPF document.
+            
+            ### Comparison Details
+            
+            - **Yandex Disk**: ${yadiskSize} bytes
+            - **GitHub**: ${githubSize} bytes
+            - **Diff Lines**: ${diffLines}
+            - **Lines Added**: ${addedLines}
+            - **Lines Removed**: ${removedLines}
+            
+            ### Action Required
+            
+            Please review the sources and determine:
+            1. Which source is authoritative?
+            2. Should one source be updated to match the other?
+            3. Is this divergence expected (e.g., different versions)?
+            
+            ### Files to Review
+            
+            - Yandex Disk: \`yadisk/First Principles Framework — Core Conceptual Specification (holonic).md\`
+            - GitHub: \`github/First Principles Framework — Core Conceptual Specification (holonic).md\`
+            
+            ### Next Steps
+            
+            1. Review both files manually
+            2. Determine the source of divergence
+            3. Update the appropriate source or configuration
+            4. Close this issue once resolved
+            
+            ---
+            
+            _This issue was automatically created by the cross-source comparison workflow._
+            _Last checked: ${new Date().toISOString()}_
+            `;
+            
+            if (divergenceIssue) {
+              // Update existing issue
+              core.info(`Updating existing divergence issue #${divergenceIssue.number}`);
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: divergenceIssue.number,
+                body: `## Updated Divergence Report\n\n${issueBody}`
+              });
+            } else {
+              // Create new issue
+              core.info('Creating new divergence issue');
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '⚠️ Source Divergence Detected',
+                body: issueBody,
+                labels: ['source:divergence', 'needs-review']
+              });
+            }
+
+      - name: Post summary
+        if: always() && env.ACT != 'true'
+        run: |
+          {
+            echo "## Cross-Source Comparison Summary"
+            echo ""
+            if [ "${{ steps.compare.outputs.yadisk_exists }}" = "true" ]; then
+              echo "✅ Yandex Disk: ${{ steps.compare.outputs.yadisk_size }} bytes"
+            else
+              echo "❌ Yandex Disk: File not found"
+            fi
+            
+            if [ "${{ steps.compare.outputs.github_exists }}" = "true" ]; then
+              echo "✅ GitHub: ${{ steps.compare.outputs.github_size }} bytes"
+            else
+              echo "❌ GitHub: File not found"
+            fi
+            
+            echo ""
+            if [ "${{ steps.compare.outputs.identical }}" = "true" ]; then
+              echo "🎉 Sources are **identical**"
+            elif [ "${{ steps.compare.outputs.has_divergence }}" = "true" ]; then
+              echo "⚠️ **Significant divergence detected** (${{ steps.compare.outputs.added_lines }} added, ${{ steps.compare.outputs.removed_lines }} removed)"
+            elif [ "${{ steps.compare.outputs.identical }}" = "false" ]; then
+              echo "ℹ️ Minor differences detected (within acceptable threshold)"
+            fi
+          } >> $GITHUB_STEP_SUMMARY

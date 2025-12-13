@@ -1,10 +1,23 @@
-# Local Workflow Testing
+# FPF Sync - Multi-Source Integration Hub
 
-This repository uses GitHub Actions to (1) download the latest First Principles Framework
-document from Yandex Disk and open a pull request when it changes, and (2) run an agentic
-diff analysis on any pull request that touches the synced document. You can execute both
-workflows locally with [act](https://github.com/nektos/act) so you can iterate without
-waiting for CI.
+This repository uses GitHub Actions to sync the First Principles Framework (FPF) document
+from multiple sources and run agentic diff analysis on changes. Currently supports:
+- **Yandex Disk** sync (original source)
+- **GitHub** sync (https://github.com/ailev/FPF)
+
+When either source changes, the repository opens a pull request and runs automated diff
+analysis. You can execute workflows locally with [act](https://github.com/nektos/act) for
+faster iteration without waiting for CI.
+
+## Architecture
+
+The repository maintains separate directories for each sync source:
+- `yadisk/` - Synced from Yandex Disk public share
+- `github/` - Synced from GitHub repository (ailev/FPF)
+
+Both sources are synced daily at 17:00 UTC and trigger the same agentic diff analysis
+workflow. See [GITHUB_INTEGRATION_PLAN.md](./GITHUB_INTEGRATION_PLAN.md) for detailed
+architecture and integration strategy.
 
 ## Prerequisites
 
@@ -63,17 +76,30 @@ To avoid retyping the platform override, add this line to `.actrc` (optional):
 -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:full-22.04
 ```
 
-> Note: the Yandex sync workflow automatically skips the PR creation step when `ACT=true`
+> Note: Both sync workflows automatically skip the PR creation step when `ACT=true`
 > so local runs will not push branches even if you provide a valid PAT.
 
-## Run the Yandex sync workflow
+## Run the sync workflows
 
-This workflow fetches the document from Yandex Disk and stages it in `yadisk/…`. Run it
+### Yandex Disk Sync
+
+This workflow fetches the document from Yandex Disk and stages it in `yadisk/`. Run it
 with either the schedule event (default cron) or manually:
 
-```
+```bash
 ACT=true act schedule \
   -W .github/workflows/yadisk-sync.yml \
+  -j sync \
+  --secret-file .secrets
+```
+
+### GitHub Sync
+
+This workflow fetches the document from GitHub (ailev/FPF) and stages it in `github/`:
+
+```bash
+ACT=true act schedule \
+  -W .github/workflows/github-sync.yml \
   -j sync \
   --secret-file .secrets
 ```

@@ -1,0 +1,165 @@
+name: Sync GitHub FPF to PR
+
+on:
+  schedule:
+    - cron: '0 17 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  GITHUB_REPO: ailev/FPF
+  SOURCE_FILE: "First Principles Framework — Core Conceptual Specification (holonic).md"
+  DEST_PATH: github
+  DEST_FILENAME: "First Principles Framework — Core Conceptual Specification (holonic).md"
+
+jobs:
+  sync:
+    concurrency:
+      group: sync-github-fpf
+      cancel-in-progress: true
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Fetch and download file from GitHub
+        run: |
+          set -euo pipefail
+
+          # Input validation
+          if [[ ! "$SOURCE_FILE" =~ ^[a-zA-Z0-9\ \(\)—\-\.]+$ ]]; then
+            echo "::error title=Invalid Input::SOURCE_FILE contains invalid characters"
+            exit 1
+          fi
+
+          if [[ ! "$GITHUB_REPO" =~ ^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$ ]]; then
+            echo "::error title=Invalid Input::GITHUB_REPO must be in format owner/repo"
+            exit 1
+          fi
+
+          # Retry helper function
+          retry_curl() {
+            local max_attempts=3
+            local timeout=2
+            local attempt=1
+
+            while [ $attempt -le $max_attempts ]; do
+              if "$@"; then
+                return 0
+              fi
+              echo "::warning title=Retry::Attempt $attempt/$max_attempts failed, retrying in ${timeout}s..."
+              sleep $timeout
+              attempt=$((attempt + 1))
+              timeout=$((timeout * 2))
+            done
+
+            echo "::error title=Failed::All $max_attempts retry attempts exhausted"
+            return 1
+          }
+
+          # URL encode the file path
+          FILE_PATH_ENCODED=$(printf '%s' "$SOURCE_FILE" | jq -sRr @uri)
+          API_URL="https://api.github.com/repos/$GITHUB_REPO/contents/$FILE_PATH_ENCODED"
+
+          echo "::notice title=API Request::Fetching file info from GitHub API"
+          
+          # Use GITHUB_TOKEN if available for higher rate limits
+          if [ -n "${GITHUB_TOKEN:-}" ]; then
+            AUTH_HEADER=(-H "Authorization: Bearer $GITHUB_TOKEN")
+          else
+            AUTH_HEADER=()
+          fi
+
+          if ! FILE_JSON=$(retry_curl curl -fsSL -A "fpf-sync-bot/1.0" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "${AUTH_HEADER[@]}" \
+            "$API_URL"); then
+            echo "::error title=API Error::Failed to fetch file info from GitHub"
+            exit 1
+          fi
+
+          # Validate API response
+          if ! echo "$FILE_JSON" | jq -e . >/dev/null 2>&1; then
+            echo "::error title=Invalid Response::API returned invalid JSON"
+            exit 1
+          fi
+
+          # Check if file exists
+          FILE_TYPE=$(echo "$FILE_JSON" | jq -r '.type // empty')
+          if [ "$FILE_TYPE" != "file" ]; then
+            echo "::error title=Not a File::Response does not indicate a file type"
+            echo "::error::Response: $FILE_JSON"
+            exit 1
+          fi
+
+          # Extract download URL and metadata
+          DOWNLOAD_URL=$(echo "$FILE_JSON" | jq -r '.download_url // empty')
+          FILE_SHA=$(echo "$FILE_JSON" | jq -r '.sha // empty')
+          FILE_SIZE=$(echo "$FILE_JSON" | jq -r '.size // 0')
+
+          if [ -z "$DOWNLOAD_URL" ] || [ "$DOWNLOAD_URL" = "null" ]; then
+            echo "::error title=Invalid Response::No download URL in API response"
+            exit 1
+          fi
+
+          echo "::notice title=File Found::File SHA: $FILE_SHA, Size: $FILE_SIZE bytes"
+
+          echo "::notice title=Download::Downloading to: $DEST_PATH/$DEST_FILENAME"
+          mkdir -p "$DEST_PATH"
+
+          if ! retry_curl curl -fsSL -A "fpf-sync-bot/1.0" -o "$DEST_PATH/$DEST_FILENAME" "$DOWNLOAD_URL"; then
+            echo "::error title=Download Failed::Failed to download file from GitHub"
+            exit 1
+          fi
+
+          # Verify download
+          if [ ! -f "$DEST_PATH/$DEST_FILENAME" ]; then
+            echo "::error title=Download Failed::File was not created at destination"
+            exit 1
+          fi
+
+          DOWNLOADED_SIZE=$(stat -c%s "$DEST_PATH/$DEST_FILENAME" 2>/dev/null || stat -f%z "$DEST_PATH/$DEST_FILENAME")
+          if [ "$DOWNLOADED_SIZE" -eq 0 ]; then
+            echo "::error title=Empty File::Downloaded file is empty"
+            exit 1
+          fi
+
+          # Verify size matches (allow small difference for line ending conversion)
+          SIZE_DIFF=$((DOWNLOADED_SIZE > FILE_SIZE ? DOWNLOADED_SIZE - FILE_SIZE : FILE_SIZE - DOWNLOADED_SIZE))
+          if [ "$SIZE_DIFF" -gt 100 ]; then
+            echo "::warning title=Size Mismatch::Downloaded size ($DOWNLOADED_SIZE) differs from API size ($FILE_SIZE) by $SIZE_DIFF bytes"
+          fi
+
+          echo "::notice title=Success::Downloaded $DOWNLOADED_SIZE bytes successfully (SHA: $FILE_SHA)"
+
+          # Store metadata for future comparison
+          echo "$FILE_SHA" > "$DEST_PATH/.last-sync-sha"
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > "$DEST_PATH/.last-sync-time"
+
+      - name: Create Pull Request
+        if: ${{ env.ACT != 'true' }}
+        uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
+        with:
+          commit-message: 'chore(sync): GitHub FPF update'
+          title: 'Sync: GitHub FPF update'
+          body: |
+            Automated sync from GitHub repository.
+            - Source: https://github.com/${{ env.GITHUB_REPO }}
+            - File: `${{ env.SOURCE_FILE }}`
+            - Main FPF document: https://github.com/${{ github.repository }}/blob/main/${{ env.DEST_PATH }}/${{ env.DEST_FILENAME }}
+            - Agentic diff evaluation will run automatically in this PR.
+          branch: sync/github-fpf
+          delete-branch: true
+          labels: |
+            sync:auto-merge
+            source:github
+          add-paths: |
+            ${{ env.DEST_PATH }}/${{ env.DEST_FILENAME }}
+            ${{ env.DEST_PATH }}/.last-sync-sha
+            ${{ env.DEST_PATH }}/.last-sync-time
