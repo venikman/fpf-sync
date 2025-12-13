@@ -33,7 +33,8 @@ jobs:
           set -euo pipefail
 
           # Input validation
-          if [[ ! "$SOURCE_FILE" =~ ^[a-zA-Z0-9\ \(\)—\-\.]+$ ]]; then
+          # Note: FPF-Spec.md is the expected filename, validation is permissive for compatibility
+          if [[ ! "$SOURCE_FILE" =~ ^[a-zA-Z0-9._-]+$ ]]; then
             echo "::error title=Invalid Input::SOURCE_FILE contains invalid characters"
             exit 1
           fi

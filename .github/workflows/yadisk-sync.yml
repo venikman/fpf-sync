@@ -137,6 +137,10 @@ jobs:
 
           echo "::notice title=Success::Downloaded $FILE_SIZE bytes successfully"
 
+          # Store metadata for cross-source comparison
+          echo "$FILE_SHA" > "$DEST_PATH/.last-sync-sha"
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > "$DEST_PATH/.last-sync-time"
+
       - name: Create Pull Request
         if: ${{ env.ACT != 'true' }}
         uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
@@ -152,5 +156,8 @@ jobs:
           delete-branch: true
           labels: |
             sync:auto-merge
+            source:yadisk
           add-paths: |
             ${{ env.DEST_PATH }}/${{ env.DEST_FILENAME }}
+            ${{ env.DEST_PATH }}/.last-sync-sha
+            ${{ env.DEST_PATH }}/.last-sync-time

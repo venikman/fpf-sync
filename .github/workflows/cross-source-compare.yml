@@ -64,8 +64,8 @@ jobs:
               diff -u "$YADISK_FILE" "$GITHUB_FILE" > "$DIFF_OUTPUT" || true
               
               DIFF_LINES=$(wc -l < "$DIFF_OUTPUT")
-              ADDED_LINES=$(grep -c "^+" "$DIFF_OUTPUT" | tail -1 || echo "0")
-              REMOVED_LINES=$(grep -c "^-" "$DIFF_OUTPUT" | tail -1 || echo "0")
+              ADDED_LINES=$(grep -c "^+" "$DIFF_OUTPUT" || echo "0")
+              REMOVED_LINES=$(grep -c "^-" "$DIFF_OUTPUT" || echo "0")
               
               echo "diff_lines=$DIFF_LINES" >> $GITHUB_OUTPUT
               echo "added_lines=$ADDED_LINES" >> $GITHUB_OUTPUT
