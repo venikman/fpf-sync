@@ -87,14 +87,16 @@ jobs:
           fi
 
           # Try to find file in folder items, fallback to direct file
-          TARGET_REGEX=${TARGET_NAME//\./\\.}
-          TARGET_REGEX=${TARGET_REGEX//\(/\\(}
-          TARGET_REGEX=${TARGET_REGEX//\)/\\)}
+          TARGET_REGEX=$(python - <<'PY'
+import os, re
+print(re.escape(os.environ.get("TARGET_NAME", "")))
+PY
+)
           FILE_INFO=$(echo "$LIST_JSON" | jq -r --arg re "$TARGET_REGEX" '
             ([._embedded.items[]?] + [.])
             | map(select(.type == "file" and (.name | test($re))))
             | if length > 0 then (.[0] | [.path, .name] | @tsv) else empty end
-          ' | head -n1)
+          ')
 
           if [ -n "$FILE_INFO" ]; then
             IFS=$'\t' read -r FILE_PATH FILE_NAME <<< "$FILE_INFO"
