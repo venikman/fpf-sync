@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     branches: [ main ]
     paths:
-      - 'yadisk/**'
+      - 'yadisk/ML.3.md'
 
 permissions:
   contents: read
@@ -15,6 +15,8 @@ jobs:
   diff-eval:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      TARGET_FILE: "yadisk/ML.3.md"
     concurrency:
       group: diff-eval-${{ github.event.pull_request.number }}
       cancel-in-progress: true
@@ -125,7 +127,7 @@ jobs:
 
           echo "::notice title=Diff Computation::Computing changes in FPF document"
 
-          if ! git --no-pager diff --no-color --unified=5 "${{ github.base_ref }}"...HEAD -- "yadisk/First Principles Framework — Core Conceptual Specification (holonic).md" > "$DIFF_FILE"; then
+          if ! git --no-pager diff --no-color --unified=5 "${{ github.base_ref }}"...HEAD -- "$TARGET_FILE" > "$DIFF_FILE"; then
             echo "::warning title=Diff Warning::git diff returned non-zero exit code"
           fi
 
@@ -171,7 +173,7 @@ jobs:
           echo "" >> prompt.txt
           echo "## Context" >> prompt.txt
           echo "" >> prompt.txt
-          echo "**Target File**: yadisk/First Principles Framework — Core Conceptual Specification (holonic).md" >> prompt.txt
+          echo "**Target File**: $TARGET_FILE" >> prompt.txt
           echo "" >> prompt.txt
           echo "## Diff" >> prompt.txt
           echo "" >> prompt.txt
@@ -276,7 +278,7 @@ jobs:
             echo "**Engine**: ${ANALYSIS_SOURCE:-warp-cli}"
             echo "**Model**: ${ANALYSIS_MODEL:-fpf-diff-evaluator}"
             echo ""
-            echo "**Target**: \`yadisk/First Principles Framework — Core Conceptual Specification (holonic).md\`"
+            echo "**Target**: \`$TARGET_FILE\`"
             echo ""
             echo "---"
             echo ""
@@ -290,7 +292,7 @@ jobs:
           {
             echo "# 🤖 Agentic Diff Analysis"
             echo ""
-            echo "No changes detected in \`yadisk/First Principles Framework — Core Conceptual Specification (holonic).md\`"
+            echo "No changes detected in \`$TARGET_FILE\`"
           } > analysis.md
 
       - name: Comment results on PR

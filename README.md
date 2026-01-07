@@ -1,10 +1,10 @@
 # Local Workflow Testing
 
-This repository uses GitHub Actions to (1) download the latest First Principles Framework
-document from Yandex Disk and open a pull request when it changes, and (2) run an agentic
-diff analysis on any pull request that touches the synced document. You can execute both
-workflows locally with [act](https://github.com/nektos/act) so you can iterate without
-waiting for CI.
+This repository uses GitHub Actions to (1) download the latest **ML.3 pattern** from the
+First Principles Framework document on Yandex Disk and open a pull request when it changes,
+and (2) run an agentic diff analysis on any pull request that touches the synced pattern
+file. You can execute both workflows locally with [act](https://github.com/nektos/act) so
+you can iterate without waiting for CI.
 
 ## Prerequisites
 
@@ -68,8 +68,8 @@ To avoid retyping the platform override, add this line to `.actrc` (optional):
 
 ## Run the Yandex sync workflow
 
-This workflow fetches the document from Yandex Disk and stages it in `yadisk/…`. Run it
-with either the schedule event (default cron) or manually:
+This workflow fetches the document from Yandex Disk and stages it in `yadisk/ML.3.md`.
+Run it with either the schedule event (default cron) or manually:
 
 ```
 ACT=true act schedule \

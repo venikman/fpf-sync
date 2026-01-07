@@ -12,9 +12,9 @@ permissions:
 env:
   PUBLIC_URL: https://disk.yandex.ru/d/N2xaJZWo-hhFYw
   PUBLIC_PATH: ""
-  TARGET_NAME: "First Principles Framework — Core Conceptual Specification (holonic).md"
+  TARGET_NAME: "ML.3"
   DEST_PATH: yadisk
-  DEST_FILENAME: "First Principles Framework — Core Conceptual Specification (holonic).md"
+  DEST_FILENAME: "ML.3.md"
 
 jobs:
   sync:
@@ -87,20 +87,28 @@ jobs:
           fi
 
           # Try to find file in folder items, fallback to direct file
-          FILE_PATH=$(echo "$LIST_JSON" | jq -r --arg name "$TARGET_NAME" '
-            (._embedded.items[]? | select(.type == "file" and .name == $name) | .path) //
-            (select(.type == "file" and .name == $name) | .path) //
+          TARGET_REGEX=$(printf '%s' "$TARGET_NAME" | sed 's/[.[\*^$(){}|+?\\]/\\&/g')
+          FILE_INFO=$(echo "$LIST_JSON" | jq -r --arg re "\\b${TARGET_REGEX}\\b" '
+            (._embedded.items[]? | select(.type == "file" and (.name | test($re))) | [.path, .name] | @tsv) //
+            (select(.type == "file" and (.name | test($re))) | [.path, .name] | @tsv) //
             empty
-          ')
+          ' | head -n1)
+
+          if [ -n "$FILE_INFO" ]; then
+            IFS=$'\t' read -r FILE_PATH FILE_NAME <<< "$FILE_INFO"
+          else
+            FILE_PATH=""
+            FILE_NAME=""
+          fi
 
           if [ -z "$FILE_PATH" ]; then
-            echo "::error title=File Not Found::Cannot find file: $TARGET_NAME"
+            echo "::error title=File Not Found::Cannot find file matching pattern: $TARGET_NAME"
             echo "::error::Available files:"
             echo "$LIST_JSON" | jq -r '._embedded.items[]? | select(.type == "file") | .name' || echo "Could not list files"
             exit 1
           fi
 
-          echo "::notice title=File Found::Located file at path: $FILE_PATH"
+          echo "::notice title=File Found::Located file '$FILE_NAME' at path: $FILE_PATH"
 
           echo "::notice title=Download URL::Requesting download URL from API"
           if ! DOWNLOAD_RESPONSE=$(retry_curl curl -fsSL -A "fpf-sync-bot/1.0" \
