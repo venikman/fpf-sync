@@ -34,7 +34,7 @@ jobs:
           set -euo pipefail
 
           # Input validation
-          if [[ ! "$TARGET_NAME" =~ ^[a-zA-Z0-9\ \.\(\)—\-]+$ ]]; then
+          if [[ ! "$TARGET_NAME" =~ ^[a-zA-Z0-9 \.\(\)—-]+$ ]]; then
             echo "::error title=Invalid Input::TARGET_NAME contains invalid characters"
             exit 1
           fi
@@ -90,14 +90,21 @@ jobs:
           FILE_INFO=$(echo "$LIST_JSON" | jq -r --arg name "$TARGET_NAME" '
             ([._embedded.items[]?] + [.])
             | map(select(.type == "file" and (.name | startswith($name))))
-            | if length > 0 then (.[0] | [.path, .name] | @tsv) else empty end
+            | sort_by(.name)
+            | {first: (.[0] // empty), count: length}
+            | [.count, (.first.path // ""), (.first.name // "")] | @tsv
           ')
 
           if [ -n "$FILE_INFO" ]; then
-            IFS=$'\t' read -r FILE_PATH FILE_NAME <<< "$FILE_INFO"
+            IFS=$'\t' read -r MATCH_COUNT FILE_PATH FILE_NAME <<< "$FILE_INFO"
           else
+            MATCH_COUNT=0
             FILE_PATH=""
             FILE_NAME=""
+          fi
+
+          if [ "${MATCH_COUNT:-0}" -gt 1 ]; then
+            echo "::warning title=Multiple Matches::Found $MATCH_COUNT files starting with $TARGET_NAME, using '$FILE_NAME'"
           fi
 
           if [ -z "$FILE_PATH" ]; then
