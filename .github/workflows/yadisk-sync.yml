@@ -87,8 +87,9 @@ jobs:
           fi
 
           # Try to find file in folder items, fallback to direct file
-          TARGET_REGEX=$(printf '%s' "$TARGET_NAME" | sed 's/[.[\*^$(){}|+?\\]/\\&/g')
-          FILE_INFO=$(echo "$LIST_JSON" | jq -r --arg re "\\b${TARGET_REGEX}\\b" '
+          TARGET_REGEX=$(printf '%s' "$TARGET_NAME" | sed -E 's/[][(){}.^$|+*?\\-]/\\&/g')
+          TARGET_PATTERN="(^|[^0-9A-Za-z])${TARGET_REGEX}([^0-9A-Za-z]|$)"
+          FILE_INFO=$(echo "$LIST_JSON" | jq -r --arg re "$TARGET_PATTERN" '
             (._embedded.items[]? | select(.type == "file" and (.name | test($re))) | [.path, .name] | @tsv) //
             (select(.type == "file" and (.name | test($re))) | [.path, .name] | @tsv) //
             empty
