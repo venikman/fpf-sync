@@ -34,7 +34,7 @@ jobs:
           set -euo pipefail
 
           # Input validation
-          if [[ ! "$TARGET_NAME" =~ ^[a-zA-Z0-9\ \(\)—\-\.]+$ ]]; then
+          if [[ ! "$TARGET_NAME" =~ ^[a-zA-Z0-9\ \.\(\)—\-]+$ ]]; then
             echo "::error title=Invalid Input::TARGET_NAME contains invalid characters"
             exit 1
           fi
@@ -89,7 +89,7 @@ jobs:
           # Try to find file in folder items, fallback to direct file
           FILE_INFO=$(echo "$LIST_JSON" | jq -r --arg name "$TARGET_NAME" '
             ([._embedded.items[]?] + [.])
-            | map(select(.type == "file" and (.name | contains($name))))
+            | map(select(.type == "file" and (.name | startswith($name))))
             | if length > 0 then (.[0] | [.path, .name] | @tsv) else empty end
           ')
 
