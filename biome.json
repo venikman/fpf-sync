@@ -1,0 +1,46 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
+  "files": {
+    "includes": ["src/**", "test/**", ".github/workflows/**", ".codex/skills/**", "*.md", "*.json"]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "linter": {
+    "rules": {
+      "recommended": true,
+      "style": {
+        "useConst": "error",
+        "noParameterAssign": "error",
+        "useShorthandFunctionType": "error",
+        "noNonNullAssertion": "warn",
+        "noUnusedTemplateLiteral": "error",
+        "useForOf": "error",
+        "noEnum": "error"
+      },
+      "complexity": {
+        "useArrowFunction": "error",
+        "noForEach": "warn",
+        "noStaticOnlyClass": "error",
+        "noUselessConstructor": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noGlobalAssign": "error"
+      },
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "warn"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "always",
+      "quoteStyle": "single",
+      "arrowParentheses": "always"
+    }
+  }
+}

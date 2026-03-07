@@ -1,49 +1,13 @@
-# dependencies (bun install)
-node_modules
-
-# output
-out
-dist
-*.tgz
-
-# code coverage
-coverage
-*.lcov
-
-data
-
-# logs
-logs
+node_modules/
+coverage/
+dist/
 *.log
-report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# caches
-.eslintcache
-.cache
 *.tsbuildinfo
-
-# IntelliJ based IDEs
-.idea
-# VS Code
-.vscode
-
-# Finder (MacOS) folder config
-.DS_Store
-
-
-# Bun lockfiles
-bun.lock
-bun.lockb
-
-# npm lockfile (we use Bun exclusively)
-package-lock.json
-
 .env
+.env.local
 .secrets
+.DS_Store
+.idea/
+.vscode/
+bun.lockb
+package-lock.json

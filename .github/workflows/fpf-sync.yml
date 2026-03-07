@@ -1,0 +1,92 @@
+name: FPF Sync
+
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: fpf-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.9
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run sync
+        run: bun run sync
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Detect sync changes
+        id: detect
+        shell: bash
+        run: |
+          if git diff --quiet --exit-code -- FPF-Spec.md .fpf-sync.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          commit_sha="$(bun --eval "import { readFileSync } from 'node:fs'; const state = JSON.parse(readFileSync('.fpf-sync.json', 'utf8')); process.stdout.write(state.lastCommitSha);")"
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$commit_sha" >> "$GITHUB_OUTPUT"
+          echo "message=chore(sync): mirror ailev/FPF@$commit_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Commit mirrored files
+        if: steps.detect.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add FPF-Spec.md .fpf-sync.json
+          git commit -m "${{ steps.detect.outputs.message }}"
+
+      - name: Push directly to current branch
+        id: direct_push
+        if: steps.detect.outputs.changed == 'true'
+        continue-on-error: true
+        run: git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Push fallback branch
+        if: steps.detect.outputs.changed == 'true' && steps.direct_push.outcome == 'failure'
+        run: git push --force-with-lease origin HEAD:refs/heads/codex/fpf-sync
+
+      - name: Create or update fallback pull request
+        if: steps.detect.outputs.changed == 'true' && steps.direct_push.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          existing_number="$(gh pr list --base "${GITHUB_REF_NAME}" --head "codex/fpf-sync" --state open --json number --jq '.[0].number')"
+
+          if [[ -n "$existing_number" ]]; then
+            gh pr edit "$existing_number" \
+              --title "${{ steps.detect.outputs.message }}" \
+              --body "Automated upstream mirror update."
+            exit 0
+          fi
+
+          gh pr create \
+            --base "${GITHUB_REF_NAME}" \
+            --head "codex/fpf-sync" \
+            --title "${{ steps.detect.outputs.message }}" \
+            --body "Automated upstream mirror update."
