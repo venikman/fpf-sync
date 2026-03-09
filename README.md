@@ -19,26 +19,13 @@ the file, writes `FPF-Spec.md`, and updates `.fpf-sync.json`.
 
 - `bun install`
 - `bun run sync`
-- `bun run sync:dry-run`
 - `bun run lint`
 - `bun run format`
 - `bun run typecheck`
 - `bun run check`
 - `bun test`
 
-## Overrides
-
-The CLI accepts `--owner`, `--repo`, `--ref`, `--source-path`, `--target-path`, and
-`--state-path`. The matching environment variables are:
-
-- `FPF_SYNC_OWNER`
-- `FPF_SYNC_REPO`
-- `FPF_SYNC_REF`
-- `FPF_SYNC_SOURCE_PATH`
-- `FPF_SYNC_TARGET_PATH`
-- `FPF_SYNC_STATE_PATH`
-
-`--dry-run` plans the update and prints the same summary shape without writing files.
+The sync config is fixed in code.
 
 ## Workflow behavior
 

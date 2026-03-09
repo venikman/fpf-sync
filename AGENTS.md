@@ -10,7 +10,6 @@ Use Bun only:
 
 - `bun install`
 - `bun run sync`
-- `bun run sync:dry-run`
 - `bun run check`
 - `bun test`
 
@@ -30,6 +29,7 @@ Use these local skills when editing this repo:
 ## Guardrails
 
 - Do not add app, UI, server, or framework features.
+- Use Bun commands only for local work and CI changes.
 - Keep logic deterministic, bounded, and auditable.
 - Keep the mirror contract to one upstream source file and one committed state file.
 - Do not reintroduce forbidden legacy code, paths, or docs.

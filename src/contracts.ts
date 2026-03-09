@@ -1,6 +1,5 @@
 export type SyncConfig = {
   cwd: string;
-  dryRun: boolean;
   owner: string;
   repo: string;
   ref: string;
@@ -30,9 +29,8 @@ export type UpstreamCommit = {
 export type SyncSummary = {
   changed: boolean;
   commitSha: string;
-  dryRun: boolean;
   reason: 'upstream-changed' | 'upstream-unchanged';
-  status: 'dry-run' | 'noop' | 'synced';
+  status: 'noop' | 'synced';
   targetPath: string;
 };
 

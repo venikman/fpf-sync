@@ -20,7 +20,6 @@ Use this skill when changing the sync logic, state contract, or GitHub Actions w
 
 - If `lastCommitSha` matches the upstream SHA and the target file exists, return a no-op.
 - Otherwise plan a sync.
-- In dry-run mode, report the planned sync and write nothing.
 
 ## Apply
 

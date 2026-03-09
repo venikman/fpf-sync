@@ -1,4 +1,8 @@
+import ky, { HTTPError, TimeoutError } from 'ky';
+
 import type { SyncDependencies, UpstreamCommit } from './contracts.ts';
+
+type FetchLike = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
 type GitHubCommitResponse = {
   sha?: string;
@@ -13,7 +17,7 @@ type GitHubCommitResponse = {
 };
 
 type GitHubClientOptions = {
-  fetchImpl?: typeof fetch;
+  fetchImpl?: FetchLike;
   requestTimeoutMs?: number;
   token?: string;
 };
@@ -27,35 +31,43 @@ const encodePath = (path: string): string => {
     .join('/');
 };
 
-const readResponseBody = async (response: Response): Promise<string> => {
-  return response.text();
-};
-
-const request = async (
-  url: string,
-  init: RequestInit,
-  requestTimeoutMs: number,
-  fetchImpl: typeof fetch,
-): Promise<Response> => {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), requestTimeoutMs);
-
-  try {
-    return await fetchImpl(url, {
-      ...init,
-      signal: controller.signal,
-    });
-  } finally {
-    clearTimeout(timeoutId);
-  }
-};
-
 const buildHeaders = (token?: string): HeadersInit => {
   return {
     Accept: 'application/vnd.github+json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     'User-Agent': 'fpf-sync',
   };
+};
+
+const buildClient = (
+  fetchImpl: FetchLike,
+  requestTimeoutMs: number,
+  headers: HeadersInit,
+): ReturnType<typeof ky.create> => {
+  return ky.create({
+    fetch: fetchImpl as typeof fetch,
+    headers,
+    retry: 0,
+    timeout: requestTimeoutMs,
+  });
+};
+
+const formatHttpError = async (
+  error: unknown,
+  label: 'latest commit request' | 'source fetch',
+  requestTimeoutMs: number,
+): Promise<never> => {
+  if (error instanceof HTTPError) {
+    const responseBody = await error.response.text();
+
+    throw new Error(`${label} failed with ${error.response.status}: ${responseBody}`);
+  }
+
+  if (error instanceof TimeoutError) {
+    throw new Error(`${label} timed out after ${requestTimeoutMs}ms`);
+  }
+
+  throw error;
 };
 
 const parseLatestCommit = (payload: unknown): UpstreamCommit => {
@@ -82,49 +94,47 @@ const parseLatestCommit = (payload: unknown): UpstreamCommit => {
 export const createGitHubDependencies = (options: GitHubClientOptions = {}): SyncDependencies => {
   const fetchImpl = options.fetchImpl ?? fetch;
   const requestTimeoutMs = options.requestTimeoutMs ?? defaultTimeoutMs;
-  const headers = buildHeaders(options.token);
+  const apiClient = buildClient(fetchImpl, requestTimeoutMs, buildHeaders(options.token));
+  const rawClient = buildClient(
+    fetchImpl,
+    requestTimeoutMs,
+    options.token
+      ? {
+          Authorization: `Bearer ${options.token}`,
+          'User-Agent': 'fpf-sync',
+        }
+      : {
+          'User-Agent': 'fpf-sync',
+        },
+  );
 
   return {
     fetchLatestCommit: async (config) => {
-      const params = new URLSearchParams({
-        path: config.sourcePath,
-        per_page: '1',
-        sha: config.ref,
-      });
-      const url = `https://api.github.com/repos/${config.owner}/${config.repo}/commits?${params.toString()}`;
-      const response = await request(url, { headers, method: 'GET' }, requestTimeoutMs, fetchImpl);
-
-      if (!response.ok) {
-        throw new Error(
-          `latest commit request failed with ${response.status}: ${await readResponseBody(response)}`,
+      try {
+        return parseLatestCommit(
+          await apiClient
+            .get(`https://api.github.com/repos/${config.owner}/${config.repo}/commits`, {
+              searchParams: {
+                path: config.sourcePath,
+                per_page: '1',
+                sha: config.ref,
+              },
+            })
+            .json<unknown>(),
         );
+      } catch (error) {
+        return formatHttpError(error, 'latest commit request', requestTimeoutMs);
       }
-
-      return parseLatestCommit(await response.json());
     },
     fetchSourceText: async (config, commit) => {
       const encodedPath = encodePath(config.sourcePath);
       const url = `https://raw.githubusercontent.com/${config.owner}/${config.repo}/${commit.sha}/${encodedPath}`;
-      const response = await request(
-        url,
-        {
-          headers: {
-            ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
-            'User-Agent': 'fpf-sync',
-          },
-          method: 'GET',
-        },
-        requestTimeoutMs,
-        fetchImpl,
-      );
 
-      if (!response.ok) {
-        throw new Error(
-          `source fetch failed with ${response.status}: ${await readResponseBody(response)}`,
-        );
+      try {
+        return await rawClient.get(url).text();
+      } catch (error) {
+        return formatHttpError(error, 'source fetch', requestTimeoutMs);
       }
-
-      return response.text();
     },
     now: () => new Date().toISOString(),
   };

@@ -17,32 +17,11 @@ type ObservedSync = {
   targetPathAbs: string;
 };
 
-const reservedTokenInputs = [
-  ['y', 'a', 'n', 'd', 'e', 'x'],
-  ['y', 'a', 'd', 'i', 's', 'k'],
-  ['w', 'a', 'r', 'p'],
-] as const;
-
 const encodePath = (path: string): string => {
   return path
     .split('/')
     .map((segment) => encodeURIComponent(segment))
     .join('/');
-};
-
-const breakReservedTokens = (sourceText: string): string => {
-  let nextText = sourceText;
-
-  for (const tokenParts of reservedTokenInputs) {
-    const token = tokenParts.join('');
-    const pattern = new RegExp(token, 'gi');
-
-    nextText = nextText.replace(pattern, (match) => {
-      return `${match.slice(0, 1)}\u2060${match.slice(1)}`;
-    });
-  }
-
-  return nextText;
 };
 
 const readLocalState = async (statePathAbs: string): Promise<SyncState | null> => {
@@ -62,13 +41,17 @@ const readLocalState = async (statePathAbs: string): Promise<SyncState | null> =
   return parsed as SyncState;
 };
 
+const readTargetExists = async (targetPathAbs: string): Promise<boolean> => {
+  return Bun.file(targetPathAbs).exists();
+};
+
 const observeSync = async (config: SyncConfig, deps: SyncDependencies): Promise<ObservedSync> => {
   const targetPathAbs = join(config.cwd, config.targetPath);
   const statePathAbs = join(config.cwd, config.statePath);
   const [commit, localState, targetExists] = await Promise.all([
     deps.fetchLatestCommit(config),
     readLocalState(statePathAbs),
-    Bun.file(targetPathAbs).exists(),
+    readTargetExists(targetPathAbs),
   ]);
 
   return {
@@ -126,12 +109,11 @@ const writeOutputs = async (
     throw new Error('source content must be non-empty');
   }
 
-  const targetText = breakReservedTokens(sourceText);
   const nextState = buildState(config, observed.commit, deps.now());
 
   await mkdir(dirname(observed.targetPathAbs), { recursive: true });
   await mkdir(dirname(observed.statePathAbs), { recursive: true });
-  await Bun.write(observed.targetPathAbs, targetText);
+  await Bun.write(observed.targetPathAbs, sourceText);
   await Bun.write(observed.statePathAbs, `${JSON.stringify(nextState, null, 2)}\n`);
 
   await verifyWrite(observed.targetPathAbs, 'target');
@@ -147,7 +129,6 @@ const buildSummary = (
   return {
     changed,
     commitSha: commit.sha,
-    dryRun: config.dryRun,
     reason: changed ? 'upstream-changed' : 'upstream-unchanged',
     status,
     targetPath: config.targetPath,
@@ -160,10 +141,6 @@ export const runSync = async (config: SyncConfig, deps: SyncDependencies): Promi
 
   if (!nextSyncRequired) {
     return buildSummary(config, observed.commit, 'noop', false);
-  }
-
-  if (config.dryRun) {
-    return buildSummary(config, observed.commit, 'dry-run', true);
   }
 
   await writeOutputs(observed, config, deps);
