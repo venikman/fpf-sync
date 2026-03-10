@@ -76,7 +76,8 @@ When reviewing changes, watch for modifications to these foundational `U.*` type
    - Break a Conformance Checklist item (CC-*)
    - Violate Guard-Rails (E.5): DevOps Lexical Firewall (no tool/CI terms in Core), Notational Independence (no formalism lock-in)
    - Violate Lexical Discipline (E.10): overloaded terms, ambiguous vocabulary
-   - Violate heading discipline (H-1..H-9): wrong FullId format, missing footer marker
+   - Violate heading discipline (H-1..H-9): wrong FullId format
+   - Missing pattern footer marker (`:End`) per E.8 template requirements
    - Break cross-pattern Relations or Bridge Correspondence Lemmas
    - Alter the Canonical Evolution Loop (B.4) or Reasoning Cycle (B.5) in ways that affect downstream patterns
 
@@ -104,7 +105,7 @@ Write your analysis as a Markdown comment using this structure:
 |---|---|---|---|---|---|
 | 1 | A.1:4 Holonic Foundation | Kernel | ... | high | P-4, P-8 |
 | 2 | E.8:4.1 Heading discipline | Constitutional | ... | low | P-2 |
-| 3 | H.0 Glossary | Reference | ... | none | -- |
+| 3 | H.0 Glossary | SoTA / Reference | ... | none | -- |
 
 ### Integrity checks
 
