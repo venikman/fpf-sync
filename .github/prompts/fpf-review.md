@@ -71,6 +71,8 @@ When reviewing changes, watch for modifications to these foundational `U.*` type
    - **medium** -- refines or extends existing concepts (new examples, tightened constraints, added CC items)
    - **high** -- alters foundational invariants, introduces or removes `U.*` types, changes Pillar wording, breaks or creates cross-pattern dependencies
 
+   Set **Overall severity** to the highest per-change severity in the table (high > medium > low > none).
+
 5. Flag any change that might:
    - Violate a Pillar (P-1..P-11)
    - Break a Conformance Checklist item (CC-*)
@@ -85,7 +87,8 @@ When reviewing changes, watch for modifications to these foundational `U.*` type
 
 ## Output format
 
-Write your analysis as a Markdown comment using this structure:
+If you can write back to the pull request, post your analysis as a Markdown comment using the structure below.
+If pull-request commenting is unavailable, return the same analysis in the session output and explicitly state that PR write access was not available.
 
 ```markdown
 ## FPF Spec Change Review
