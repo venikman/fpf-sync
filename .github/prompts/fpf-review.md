@@ -1,20 +1,3 @@
----
-name: FPF Spec Review
-description: "Agentic review of changes to the First Principles Framework specification"
-
-on:
-  pull_request:
-    paths:
-      - "FPF-Spec.md"
-
-permissions:
-  contents: read
-  pull-requests: read
-
-safe-outputs:
-  add-comment:
----
-
 # FPF Spec Change Review
 
 You are reviewing a pull request that modifies **FPF-Spec.md** -- the **First Principles Framework (FPF) Core Conceptual Specification**.
