@@ -284,10 +284,10 @@ If pull-request commenting is unavailable, return the same analysis in the sessi
 
 - Reference patterns by their canonical ID (e.g. `A.1`, `B.3:5`, `E.2`).
 - Reference Pillars by ID (e.g. `P-8 Cross-Scale Consistency`).
-- Reference Conformance Checklist items by ID (e.g. `CC-P-1`, `CC-KD-07`, `CC-USM-10`).
+- Cite Conformance Checklist items by ID (e.g. `CC-A1.1.1`, `CC-A2.3-13`, `CC-ER-01`).
 - Be precise about which `U.*` types, algebras (`Gamma`), or Bridges are affected.
 - If the diff is too large to analyse fully, prioritise Kernel and Constitutional changes (highest blast radius) and note that the review is partial.
 - Do not suggest code changes. This is a specification document.
 - Keep the review concise but architecturally rigorous.
 - When reviewing changes to the A.2.3-A.2.9 cluster, trace the full chain: `U.PromiseContent` -> `U.Commitment` -> provider `U.RoleAssignment` -> `serviceSituation(...)` facet slots (A.6.8 lens) -> `U.Work + carriers` -> acceptance verdict.
-- When reviewing scope changes, verify against the USM conformance checklist (CC-USM-01 through CC-USM-10).
+- When reviewing scope changes, verify against the applicable USM-related conformance items (e.g. `CC-A2.2-10` for `Gamma_time` selectors, `CC-A2.3-13` for scope lexicon guards).
