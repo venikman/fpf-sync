@@ -124,11 +124,11 @@ The Unified Scope Mechanism (USM) defines a single, context-local scope mechanis
 
 ### Mandatory checks
 
-1. **Explicit `Gamma_time`:** Scope-sensitive guards MUST use explicit `Gamma_time` selectors. Flag any guard that omits a time window.
+1. **Explicit `Gamma_time`:** Scope-sensitive guards MUST use explicit `Gamma_time` selectors (point, window, or policy). Flag any guard that omits a `Gamma_time` selector.
 2. **PublicationScope subset rule:** `U.PublicationScope` MUST NOT widen beyond the underlying `U.ClaimScope`/`U.WorkScope`. CL penalties apply to R only (scope set membership is unaffected).
 3. **No scope-as-characteristic:** `U.Scope`, `U.ClaimScope`, `U.WorkScope`, and `U.PublicationScope` MUST NOT appear as slots in any `U.CharacteristicSpace` or have normalizations/scores attached.
 4. **Bridge + CL for cross-context:** Cross-context scope translations MUST cite Bridge + CL. "By-name reuse" is forbidden.
-5. **ScopeCoverage in guards:** Guards that admit Work MUST test that the holder's `WorkScope` covers the step's `JobSlice` (`WorkScope ⊇ JobSlice`) with explicit `Gamma_time` window bound.
+5. **ScopeCoverage in guards:** Guards that admit Work MUST test that the holder's `WorkScope` covers the step's `JobSlice` (`WorkScope ⊇ JobSlice`) with an explicit `Gamma_time` selector (point, window, or policy).
 
 ### Deprecated labels -- IMMEDIATE FAILURE
 
@@ -155,7 +155,7 @@ Flag these as **high severity** if found in normative prose (not informative exa
 
 2. **`ClaimScope` renamed to "applicability":** `U.ClaimScope (G)` is the canonical name. Renaming it to "applicability", "generality", or "envelope" in normative text violates A.2.6:9 lexical discipline.
 
-3. **Interface-as-agent confusion:** Treating an interface/API/endpoint as if it were an agent with goals or commitments. Interfaces are access points (`accessSpec` on `U.PromiseContent`), not principals.
+3. **Interface-as-agent confusion:** Treating an interface/API/endpoint as if it were an agent with goals or commitments. Interfaces are access specs (`accessSpecRef : MethodDescriptionRef`) or access points (`accessPointRef : SystemRef`), not principals (`providerPrincipalRef : AgentRef`).
 
 4. **Contract soup:** Mixing SLA/guarantee language without unpacking through `A.6.C` Contract Bundle. SLA documents are `U.SpeechAct` + carrier per A.2.9 + A.7; the binding obligation is `U.Commitment` referencing `U.PromiseContent`.
 
@@ -168,8 +168,10 @@ When the diff contains "service" language, verify that the appropriate facet is 
 | Facet | Kernel type | Example |
 |-------|-------------|---------|
 | Promise content (the "what") | `U.PromiseContent` (A.2.3) | "Month-end close service" -> promise content clause |
-| Provider principal (the "who") | `U.RoleAssignment` (A.2.1) | "Service provider" -> provider role-assignment |
-| Access point (the "where") | `accessSpec` on `U.PromiseContent` | "Service endpoint" -> access specification |
+| Provider assignment (the "who delivers") | `providerAssignmentRef : RoleAssignmentRef` (A.2.1) | "Service provider" -> provider role-assignment |
+| Provider principal (the "who is accountable") | `providerPrincipalRef : AgentRef` (derived) | "Service owner" -> accountable agent behind the assignment |
+| Access point (the "where") | `accessPointRef : SystemRef` (A.6.8) | "Service endpoint" -> system-level access point |
+| Access spec (the "interface") | `accessSpecRef : MethodDescriptionRef` (A.6.8) | "Service API" -> interface specification |
 | Work (the "doing") | `U.Work` (A.15) | "Service execution" -> Work instance |
 | Commitment (the "binding") | `U.Commitment` (A.2.8) | "SLA obligation" -> deontic commitment |
 | Speech act (the "saying") | `U.SpeechAct` (A.2.9) | "Service approval" -> communicative work |
