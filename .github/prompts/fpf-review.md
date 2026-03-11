@@ -155,7 +155,7 @@ Flag these as **high severity** if found in normative prose (not informative exa
 
 2. **`ClaimScope` renamed to "applicability":** `U.ClaimScope (G)` is the canonical name. Renaming it to "applicability", "generality", or "envelope" in normative text violates A.2.6:9 lexical discipline.
 
-3. **Interface-as-agent confusion:** Treating an interface/API/endpoint as if it were an agent with goals or commitments. Interfaces are access specs (`accessSpecRef : MethodDescriptionRef`) or access points (`accessPointRef : SystemRef`), not principals (`providerPrincipalRef : AgentRef`).
+3. **Interface-as-agent confusion:** Treating an interface/API/endpoint as if it were an agent with goals or commitments. Interfaces are access specs (`accessSpecRef : MethodDescriptionRef`) or access points (`accessPointRef : SystemRef`), not principals (`providerPrincipalRef : EntityRef`).
 
 4. **Contract soup:** Mixing SLA/guarantee language without unpacking through `A.6.C` Contract Bundle. SLA documents are `U.SpeechAct` + carrier per A.2.9 + A.7; the binding obligation is `U.Commitment` referencing `U.PromiseContent`.
 
@@ -169,7 +169,7 @@ When the diff contains "service" language, verify that the appropriate facet is 
 |-------|-------------|---------|
 | Promise content (the "what") | `U.PromiseContent` (A.2.3) | "Month-end close service" -> promise content clause |
 | Provider assignment (the "who delivers") | `providerAssignmentRef : RoleAssignmentRef` (A.2.1) | "Service provider" -> provider role-assignment |
-| Provider principal (the "who is accountable") | `providerPrincipalRef : AgentRef` (derived) | "Service owner" -> accountable agent behind the assignment |
+| Provider principal (the "who is accountable") | `providerPrincipalRef : EntityRef` (derived from role assignment) | "Service owner" -> accountable principal behind the assignment |
 | Access point (the "where") | `accessPointRef : SystemRef` (A.6.8) | "Service endpoint" -> system-level access point |
 | Access spec (the "interface") | `accessSpecRef : MethodDescriptionRef` (A.6.8) | "Service API" -> interface specification |
 | Work (the "doing") | `U.Work` (A.15) | "Service execution" -> Work instance |
