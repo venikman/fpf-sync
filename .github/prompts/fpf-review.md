@@ -323,6 +323,6 @@ If pull-request commenting is unavailable, return the same analysis in the sessi
 - If the diff is too large to analyse fully, prioritise Kernel and Constitutional changes (highest blast radius) and note that the review is partial.
 - Do not suggest code changes. This is a specification document.
 - Keep the review concise but architecturally rigorous.
-- When reviewing changes to the A.2.3-A.2.9 cluster, trace the full chain: `U.PromiseContent` -> `U.Commitment` -> provider `U.RoleAssignment` -> `serviceSituation(...)` facet slots (A.6.8 lens) -> `U.Work + carriers` -> acceptance verdict.
+- When reviewing changes to the A.2.3-A.2.9 cluster, trace the full chain: `U.PromiseContent` -> `U.Commitment` -> `U.SpeechAct` + carrier -> provider `U.RoleAssignment` -> `serviceSituation(...)` facet slots (A.6.8 lens) -> `U.Work` -> A.6.C contract-boundary unpacking -> acceptance verdict.
 - When reviewing scope changes, verify against the applicable USM-related conformance items (e.g. `CC-A2.2-10` for `Gamma_time` selectors, `CC-A2.3-13` for scope lexicon guards).
 - **Prompt maintenance:** If the diff introduces new `U.*` types, new review surfaces, new conformance checklist items, renamed/deprecated terms, or changed Pillar wording, always flag these in the Prompt self-check section. The review prompt must evolve with the spec it reviews.
