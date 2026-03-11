@@ -137,6 +137,7 @@ The following labels are **deprecated** as names for scope objects in normative 
 - **"applicability"** -- use `U.ClaimScope (G)` or `U.WorkScope` explicitly
 - **"envelope"** -- use `U.WorkScope` with explicit conditions
 - **"generality"** -- use `U.ClaimScope (G)` with set-valued predicates
+- **"universality"** -- use `U.ClaimScope (G)` with C-1 cross-domain predicates
 - **"capability envelope"** -- use `U.WorkScope` + `U.WorkMeasures`
 - **"validity"** -- use `U.ClaimScope (G)` + `Gamma_time`
 
