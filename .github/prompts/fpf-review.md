@@ -125,7 +125,12 @@ The Unified Scope Mechanism (USM) defines a single, context-local scope mechanis
 ### Mandatory checks
 
 1. **Explicit `Gamma_time`:** Scope-sensitive guards MUST use explicit `Gamma_time` selectors (point, window, or policy). Flag any guard that omits a `Gamma_time` selector.
-2. **PublicationScope subset rule:** `U.PublicationScope` MUST NOT widen beyond the underlying `U.ClaimScope`/`U.WorkScope`. CL penalties apply to R only (scope set membership is unaffected).
+2. **PublicationScope subset rule (`CC-USM-10`):**
+   - About an **episteme E:** `PublicationScope(view_E) ⊆ ClaimScope(E)`.
+   - About a **capability C:** `PublicationScope(view_C) ⊆ WorkScope(C)`.
+   - About a **composition and/or cross-context:** `PublicationScope(view) ⊆ translate(Bridge, ⋂ scopes of contributors)`; CL penalties apply to **R only** (scope set membership is unaffected).
+   - `PublicationScope` MAY be **narrower** (pin availability, audience constraints) but MUST NOT be **wider** than the underlying scope. Reindexing/promotion (`s ⪯ t`) MUST NOT widen `PublicationScope`.
+   - Do NOT flag lawful translated/intersected MVPK views as violations; only flag actual widening beyond the computed bound.
 3. **No scope-as-characteristic:** `U.Scope`, `U.ClaimScope`, `U.WorkScope`, and `U.PublicationScope` MUST NOT appear as slots in any `U.CharacteristicSpace` or have normalizations/scores attached.
 4. **Bridge + CL for cross-context:** Cross-context scope translations MUST cite Bridge + CL. "By-name reuse" is forbidden.
 5. **ScopeCoverage in guards:** Guards that admit Work MUST test that the holder's `WorkScope` covers the step's `JobSlice` (`WorkScope ⊇ JobSlice`) with an explicit `Gamma_time` selector (point, window, or policy).
@@ -142,6 +147,21 @@ The following labels are **deprecated** as names for scope objects in normative 
 - **"validity"** -- use `U.ClaimScope (G)` + `Gamma_time`
 
 Reference: A.2.3:4.2 and A.2.6:9 (Lexical Discipline).
+
+### USM Conformance Checklist (A.2.6:11)
+
+The spec defines `CC-USM-1` through `CC-USM-15`. Key items for review:
+
+| ID | Requirement summary |
+|----|--------------------|
+| `CC-USM-1` | Epistemes SHALL declare `U.ClaimScope`; capabilities SHALL declare `U.WorkScope`. |
+| `CC-USM-3` | Guards MUST use `Scope covers TargetSlice` predicates with `Gamma_time`. Fail closed. |
+| `CC-USM-4` | Serial dependency paths: effective scope = intersection; empty intersection invalidates path. |
+| `CC-USM-6` | Cross-context use MUST declare Bridge + CL; CL penalties apply to R, not F/G. |
+| `CC-USM-7` | No synonym drift: MUST use "Claim scope (G)" or "Work scope" in normative text. |
+| `CC-USM-10` | Publication carriers SHALL declare `U.PublicationScope`; subset of underlying scope; cross-context MUST cite Bridge + CL. |
+| `CC-USM-14` | USM operations/guards in signatures SHALL use explicit SlotSpecs per A.6.5 lexical discipline. |
+| `CC-USM-15` | Membership under unknown inputs: tri-state (abstain/degrade via R); unknown MUST NOT be coerced to false/0. |
 
 ## Service / contract language audit
 
@@ -324,5 +344,5 @@ If pull-request commenting is unavailable, return the same analysis in the sessi
 - Do not suggest code changes. This is a specification document.
 - Keep the review concise but architecturally rigorous.
 - When reviewing changes to the A.2.3-A.2.9 cluster, trace the full chain: `U.PromiseContent` -> `U.Commitment` -> `U.SpeechAct` + carrier -> provider `U.RoleAssignment` -> `serviceSituation(...)` facet slots (A.6.8 lens) -> `U.Work` -> A.6.C contract-boundary unpacking -> acceptance verdict.
-- When reviewing scope changes, verify against the applicable USM-related conformance items (e.g. `CC-A2.2-10` for `Gamma_time` selectors, `CC-A2.3-13` for scope lexicon guards).
+- When reviewing scope changes, verify against the USM conformance checklist (`CC-USM-1` through `CC-USM-15`, A.2.6:11). Key items: `CC-USM-3` for guard `Gamma_time`, `CC-USM-7` for synonym drift, `CC-USM-10` for publication discipline. Also check `CC-A2.2-10` for `Gamma_time` selectors and `CC-A2.3-13` for scope lexicon guards.
 - **Prompt maintenance:** If the diff introduces new `U.*` types, new review surfaces, new conformance checklist items, renamed/deprecated terms, or changed Pillar wording, always flag these in the Prompt self-check section. The review prompt must evolve with the spec it reviews.
