@@ -94,10 +94,19 @@ jobs:
             --arg prompt "$prompt" \
             '{ prompt: $prompt, idempotent: true }')"
 
-          response="$(curl -sf -X POST "https://api.devin.ai/v1/sessions" \
+          http_code="$(curl -s -o /tmp/devin-response.txt -w '%{http_code}' \
+            -X POST "https://api.devin.ai/v1/sessions" \
             -H "Authorization: Bearer $DEVIN_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$payload")"
+
+          if [[ "$http_code" -lt 200 || "$http_code" -ge 300 ]]; then
+            echo "::error::Devin API returned HTTP $http_code"
+            cat /tmp/devin-response.txt
+            exit 1
+          fi
+
+          response="$(cat /tmp/devin-response.txt)"
 
           session_id="$(echo "$response" | jq -r '.session_id')"
           session_url="$(echo "$response" | jq -r '.url')"
