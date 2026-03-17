@@ -89,23 +89,44 @@ jobs:
           fi
 
           prompt="$(cat /tmp/devin-prompt.txt)"
+          prompt_bytes="$(wc -c <<< "$prompt" | tr -d ' ')"
 
           payload="$(jq -n \
             --arg prompt "$prompt" \
             '{ prompt: $prompt, idempotent: true }')"
 
-          response="$(curl -sf -X POST "https://api.devin.ai/v1/sessions" \
+          http_code="$(curl -s -o /tmp/devin-response.txt -w '%{http_code}' \
+            -X POST "https://api.devin.ai/v1/sessions" \
             -H "Authorization: Bearer $DEVIN_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$payload")"
 
-          session_id="$(echo "$response" | jq -r '.session_id')"
-          session_url="$(echo "$response" | jq -r '.url')"
+          if [[ "$http_code" -lt 200 || "$http_code" -ge 300 ]]; then
+            echo "::error::Devin API returned HTTP $http_code"
+            cat /tmp/devin-response.txt
+
+            if [[ "$http_code" == "401" || "$http_code" == "403" ]]; then
+              echo "::error::Authenticate Devin API by rotating DEVIN_API_KEY and confirming the Devin GitHub App is installed with repo access."
+            fi
+
+            exit 1
+          fi
+
+          response="$(cat /tmp/devin-response.txt)"
+
+          session_id="$(echo "$response" | jq -r '.session_id // empty')"
+          session_url="$(echo "$response" | jq -r '.url // empty')"
+
+          if [[ -z "$session_id" || -z "$session_url" ]]; then
+            echo "::error::Devin API response missing session_id or url"
+            cat /tmp/devin-response.txt
+            exit 1
+          fi
 
           echo "session_id=$session_id" >> "$GITHUB_OUTPUT"
           echo "session_url=$session_url" >> "$GITHUB_OUTPUT"
 
-          echo "::notice::Devin review session created: $session_url"
+          echo "::notice::Devin review session created: $session_url (prompt size: ${prompt_bytes}B)"
 
       - name: Post session link as PR comment
         if: steps.diff.outputs.has_changes == 'true'
