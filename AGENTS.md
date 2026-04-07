@@ -2,20 +2,26 @@
 
 ## Purpose
 
-This repo exists to mirror exactly one upstream file into the repository root: `FPF-Spec.md`.
+This repo has two responsibilities:
+
+1. mirror the upstream `ailev/FPF` repository into `./FPF` via `.github/`
+2. provide a local-only, FPF-specific, PageIndex-style reasoning RAG tool over `FPF/FPF-Spec.md`
 
 ## Commands
 
-Use Bun only:
+Use Bun only for local work:
 
 - `bun install`
-- `bun run sync`
+- `bun run memory index`
+- `bun run memory tree`
+- `bun run memory retrieve "..."`
+- `bun run memory answer "..."`
 - `bun run check`
 - `bun test`
 
 ## Required validation
 
-Before finishing any change, run:
+Before finishing any code change, run:
 
 - `bun run check && bun test`
 
@@ -24,12 +30,13 @@ Before finishing any change, run:
 Use these local skills when editing this repo:
 
 - `.codex/skills/typescript-resharp-style/SKILL.md`
-- `.codex/skills/github-upstream-file-mirror/SKILL.md`
 
 ## Guardrails
 
 - Do not add app, UI, server, or framework features.
-- Use Bun commands only for local work and CI changes.
-- Keep logic deterministic, bounded, and auditable.
-- Keep the mirror contract to one upstream source file and one committed state file.
-- Do not reintroduce forbidden legacy code, paths, or docs.
+- Keep runtime local-only and deterministic apart from the explicitly local LM Studio model call.
+- Keep sync logic in `.github/`, not in `src/`.
+- Keep `.memory/` committed and rebuildable from `FPF/FPF-Spec.md`.
+- Keep `.memory/` scoped to FPF knowledge derived from `FPF/FPF-Spec.md` only.
+- Keep the implementation specialized for FPF rather than drifting back toward a generic memory framework.
+- Do not reintroduce forbidden legacy sync code, root-path mirror assumptions, or stale docs.

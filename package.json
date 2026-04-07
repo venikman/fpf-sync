@@ -1,5 +1,5 @@
 {
-  "name": "fpf-sync",
+  "name": "fpf-pageindex-local",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -8,19 +8,17 @@
     "bun": ">=1.3.0"
   },
   "scripts": {
-    "sync": "bun run src/sync-fpf.ts",
-    "check": "bun run lint && bun run typecheck",
-    "lint": "biome check .",
-    "format": "biome format --write .",
+    "memory": "bun run src/memory-cli.ts",
+    "check": "bun run lint",
+    "lint": "bun run typecheck",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "bun test"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.5",
     "@types/bun": "^1.3.10",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "ky": "^1.14.3"
+    "effect": "^3.21.0"
   }
 }
