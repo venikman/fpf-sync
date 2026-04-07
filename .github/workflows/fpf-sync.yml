@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 concurrency:
   group: fpf-sync
@@ -61,32 +60,5 @@ jobs:
           git commit -m "${{ steps.detect.outputs.message }}"
 
       - name: Push directly to current branch
-        id: direct_push
         if: steps.detect.outputs.changed == 'true'
-        continue-on-error: true
         run: git push origin "HEAD:${GITHUB_REF_NAME}"
-
-      - name: Push fallback branch
-        if: steps.detect.outputs.changed == 'true' && steps.direct_push.outcome == 'failure'
-        run: git push --force-with-lease origin HEAD:refs/heads/codex/fpf-sync
-
-      - name: Create or update fallback pull request
-        if: steps.detect.outputs.changed == 'true' && steps.direct_push.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          existing_number="$(gh pr list --base "${GITHUB_REF_NAME}" --head "codex/fpf-sync" --state open --json number --jq '.[0].number')"
-
-          if [[ -n "$existing_number" ]]; then
-            gh pr edit "$existing_number" \
-              --title "${{ steps.detect.outputs.message }}" \
-              --body "Automated upstream mirror update."
-            exit 0
-          fi
-
-          gh pr create \
-            --base "${GITHUB_REF_NAME}" \
-            --head "codex/fpf-sync" \
-            --title "${{ steps.detect.outputs.message }}" \
-            --body "Automated upstream mirror update."
