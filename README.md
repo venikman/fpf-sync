@@ -34,8 +34,9 @@ The sync config is fixed in code.
 When the sync changes the repo, the workflow:
 
 1. Commits with `chore(sync): mirror ailev/FPF@<sha>`.
-2. Pushes directly to the current branch when that branch accepts writes.
-3. Falls back to a small pull request flow only when the direct push is blocked.
+2. Pushes directly to the current branch.
+
+If the branch rejects direct writes, the workflow fails and leaves the mirror unchanged.
 
 ## State file
 
