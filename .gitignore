@@ -9,5 +9,6 @@ dist/
 .DS_Store
 .idea/
 .vscode/
+.pi/
 bun.lockb
 package-lock.json

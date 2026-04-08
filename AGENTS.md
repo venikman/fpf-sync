@@ -7,6 +7,13 @@ This repo has two responsibilities:
 1. mirror the upstream `ailev/FPF` repository into `./FPF` via `.github/`
 2. provide an OpenRouter-backed, FPF-specific, PageIndex-style reasoning RAG tool over `FPF/FPF-Spec.md`
 
+## Key boundaries
+
+- `.github/` owns upstream sync.
+- `src/` owns indexing and retrieval logic.
+- `FPF/` is the mirrored upstream source.
+- `.memory/` is committed derived state from `FPF/FPF-Spec.md`.
+
 ## Commands
 
 Use Bun only for local work:
@@ -25,11 +32,10 @@ Before finishing any code change, run:
 
 - `bun run check && bun test`
 
-## Local skills
+## Read first for non-trivial changes
 
-Use these local skills when editing this repo:
-
-- `.codex/skills/typescript-resharp-style/SKILL.md`
+- `README.md`
+- `MEMORY-SPEC.md`
 
 ## Guardrails
 

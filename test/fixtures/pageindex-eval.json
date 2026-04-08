@@ -46,5 +46,17 @@
     "question": "What does A.1.1:4.3 define?",
     "targetCanonicalId": "A.1.1:4.3",
     "category": "ability"
+  },
+  {
+    "id": "lexical-rules",
+    "question": "What does E.10 say about lexical rules?",
+    "targetCanonicalId": "E.10",
+    "category": "performance"
+  },
+  {
+    "id": "naming-discipline-types-and-roles",
+    "question": "Which pattern governs naming U.Types and roles?",
+    "targetCanonicalId": "F.5",
+    "category": "ability"
   }
 ]

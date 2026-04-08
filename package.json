@@ -9,6 +9,7 @@
   },
   "scripts": {
     "memory": "bun run src/memory-cli.ts",
+    "mcp": "bun run src/mcp-server.ts",
     "check": "bun run lint",
     "lint": "bun run typecheck",
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -20,8 +21,11 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@mastra/core": "^1.23.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "effect": "^3.21.0",
     "mdast-util-from-markdown": "^2.0.3",
-    "moo": "^0.5.3"
+    "moo": "^0.5.3",
+    "zod": "^4.3.6"
   }
 }

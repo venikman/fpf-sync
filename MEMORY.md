@@ -1,6 +1,6 @@
-# Local PageIndex Memory Model
+# PageIndex Memory Model
 
-This repo implements a local-only, PageIndex-style reasoning retriever over:
+This repo implements an OpenRouter-backed, Mastra-mediated, PageIndex-style reasoning retriever over:
 
 - `FPF/FPF-Spec.md`
 
@@ -102,6 +102,7 @@ bun run memory answer "What is bounded context?"
 - answering reads `.memory/`
 - runtime use is read-only
 - retrieval uses a two-stage search: branch selection, then bounded frontier selection
+- if branch-stage model routing times out, retrieval falls back to deterministic reduced-branch ranking
 - the frontier is seeded by exact question-id matches, branch roots, branch children, exact reference targets, and short-leaf siblings
 - over-budget routing nodes expand to children instead of becoming evidence
 - the model endpoint and model name are hard-coded in code
@@ -109,7 +110,7 @@ bun run memory answer "What is bounded context?"
 ## Retrieval workflow
 
 ### Stage 1 — branch routing
-Use `.memory/fpf-branches.json` to choose one or more plausible FPF branches when no exact question-id frontier exists.
+Use `.memory/fpf-branches.json` to choose one or more plausible FPF branches when no exact question-id frontier exists. If the branch-stage model request times out, fall back to deterministic reduced-branch ranking and continue from the seeded branch sections.
 
 ### Stage 2 — frontier selection
 Use `.memory/pageindex-tree.json` and the live frontier to choose up to three next nodes to inspect.
@@ -124,12 +125,17 @@ Seed exact reference targets, routing children, or short-leaf siblings after eac
 Synthesize an answer from gathered evidence only, with citations back to retrieved node ids.
 The final answer surface sorts citations by source order and adds human-readable citation labels.
 
-## Local model defaults
+## OpenRouter defaults
 
-- endpoint: `http://localhost:1234/api/v1/chat`
-- model: `google/gemma-4-26b-a4b`
+Required:
+- `OPENROUTER_API_KEY`
 
-## Local model JSON contract
+Optional:
+- `OPENROUTER_ENDPOINT` — defaults to `https://openrouter.ai/api/v1/chat/completions`
+- `OPENROUTER_MODEL` — defaults to `minimax/minimax-m2.7`
+- `OPENROUTER_TIMEOUT_MS` — defaults to `60000`
+
+## Model JSON contract
 
 ### Branch and frontier stages
 Accepted control outputs:

@@ -5,7 +5,7 @@ import { join } from 'node:path';
 
 import { ensurePageIndex } from '../src/memory.ts';
 import { runMemoryCli } from '../src/memory-cli.ts';
-import type { LocalModelRequest } from '../src/memory-use.ts';
+import type { LocalModelRequest, PageIndexTraceEvent } from '../src/memory-use.ts';
 
 const content = `# Part A
 
@@ -36,13 +36,18 @@ const createScriptedChat = (responses: readonly string[]) => {
   };
 };
 
-const createIo = (cwd: string, chat?: (request: LocalModelRequest) => Promise<string>) => {
+const createIo = (
+  cwd: string,
+  chat?: (request: LocalModelRequest) => Promise<string>,
+  trace?: (event: PageIndexTraceEvent) => void,
+) => {
   const stdout: string[] = [];
   const stderr: string[] = [];
 
   return {
     io: {
       ...(chat ? { chat } : {}),
+      ...(trace ? { trace } : {}),
       cwd,
       now: () => '2026-04-07T12:34:56.000Z',
       stderr: (text: string) => stderr.push(text),
@@ -135,6 +140,39 @@ describe('runMemoryCli', () => {
     expect(payload.steps[0]?.nodeIds).toEqual(['0003']);
   });
 
+  test('emits retrieval trace events while running answer', async () => {
+    await rm(join(cwd, 'FPF', 'FPF-Spec.md'));
+    const traceEvents: PageIndexTraceEvent[] = [];
+    const scripted = createScriptedChat([
+      JSON.stringify({
+        action: 'expand',
+        node_list: ['0001'],
+        rationale: 'Part A is the relevant branch.',
+      }),
+      JSON.stringify({
+        action: 'inspect',
+        node_list: ['0002'],
+        rationale: 'A.1.1 is the direct match.',
+      }),
+      JSON.stringify({
+        action: 'answer',
+        rationale: 'The selected node is sufficient.',
+        answer_plan: 'Use node 0002.',
+      }),
+      JSON.stringify({
+        answer: 'Bounded context defines local meaning.',
+        citations: ['0002'],
+      }),
+    ]);
+    const { io } = createIo(cwd, scripted.chat, (event) => traceEvents.push(event));
+
+    const result = await runMemoryCli(['answer', 'What is bounded context?'], io);
+
+    expect(result.exitCode).toBe(0);
+    expect(traceEvents.at(-2)?.stage).toBe('answer-request');
+    expect(traceEvents.at(-1)?.stage).toBe('answer-complete');
+  });
+
   test('runs answer with scripted local model reasoning and synthesis', async () => {
     await rm(join(cwd, 'FPF', 'FPF-Spec.md'));
     const scripted = createScriptedChat([
@@ -183,7 +221,7 @@ describe('runMemoryCli', () => {
     expect(readStderr()).toContain('missing question for retrieve');
   });
 
-  test('surfaces the local model error reason instead of a generic effect failure', async () => {
+  test('surfaces the model error reason instead of a generic effect failure', async () => {
     await rm(join(cwd, 'FPF', 'FPF-Spec.md'));
     const { io, readStderr } = createIo(cwd, async () => {
       throw new Error('LM Studio rejected the requested model');
@@ -192,7 +230,18 @@ describe('runMemoryCli', () => {
     const result = await runMemoryCli(['answer', 'Which pattern can be used for naming?'], io);
 
     expect(result.exitCode).toBe(1);
-    expect(readStderr()).toContain('local model error: LM Studio rejected the requested model');
+    expect(readStderr()).toContain('model error: LM Studio rejected the requested model');
+    expect(readStderr()).not.toContain('An error has occurred');
+  });
+
+  test('surfaces malformed model JSON instead of a generic effect failure', async () => {
+    await rm(join(cwd, 'FPF', 'FPF-Spec.md'));
+    const { io, readStderr } = createIo(cwd, async () => 'not json');
+
+    const result = await runMemoryCli(['retrieve', 'What', 'is', 'bounded', 'context?'], io);
+
+    expect(result.exitCode).toBe(1);
+    expect(readStderr()).toContain('model error: model did not return valid JSON');
     expect(readStderr()).not.toContain('An error has occurred');
   });
 });

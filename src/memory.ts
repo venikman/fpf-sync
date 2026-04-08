@@ -101,62 +101,15 @@ type ParsedNode = {
 };
 
 const schemaVersion = 2;
-const pageIndexBuildRevision = 'mdast-v1';
+const pageIndexBuildRevision = 'mdast-v4';
 const defaultMaxHeadingDepth = 6;
 const defaultInspectLineBudget = 140;
 const defaultInspectCharBudget = 6000;
 const maxSummaryChars = 220;
+const fpfBranchIds = ['PREFACE', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'] as const;
+type FpfBranchId = (typeof fpfBranchIds)[number];
+const fpfBranchIdSet = new Set<string>(fpfBranchIds);
 
-const FPF_BRANCH_PROFILES = {
-  PREFACE: {
-    focusAreas: ['orientation', 'scope', 'non-normative framing', 'how to read FPF'],
-    patternPrefixes: [],
-  },
-  A: {
-    focusAreas: ['kernel', 'bounded context', 'roles', 'methods', 'evidence', 'extension layering'],
-    patternPrefixes: ['A.'],
-  },
-  B: {
-    focusAreas: ['reasoning', 'abduction', 'trust', 'canonical reasoning cycle', 'aggregation'],
-    patternPrefixes: ['B.'],
-  },
-  C: {
-    focusAreas: ['kernel extensions', 'episteme', 'worldview', 'governed knowledge structures'],
-    patternPrefixes: ['C.'],
-  },
-  D: {
-    focusAreas: ['ethics', 'conflict', 'optimization', 'multi-scale trade-offs'],
-    patternPrefixes: ['D.'],
-  },
-  E: {
-    focusAreas: ['constitution', 'authoring', 'lexical rules', 'multi-view', 'publication discipline'],
-    patternPrefixes: ['E.'],
-  },
-  F: {
-    focusAreas: ['unification suite', 'alignment', 'bridge across contexts', 'meaning raw material'],
-    patternPrefixes: ['F.'],
-  },
-  G: {
-    focusAreas: ['discipline patterns', 'sota patterns', 'pattern kit'],
-    patternPrefixes: ['G.'],
-  },
-  H: {
-    focusAreas: ['glossary', 'definitions', 'pattern index'],
-    patternPrefixes: ['H.'],
-  },
-  I: {
-    focusAreas: ['annexes', 'tutorials', 'extended examples'],
-    patternPrefixes: ['I.'],
-  },
-  J: {
-    focusAreas: ['indexes', 'navigation aids'],
-    patternPrefixes: ['J.'],
-  },
-  K: {
-    focusAreas: ['lexical debt', 'cleanup', 'terminology debt'],
-    patternPrefixes: ['K.'],
-  },
-} as const;
 
 const sha1 = (input: string): string => {
   return createHash('sha1').update(input).digest('hex');
@@ -328,7 +281,7 @@ const isDocumentPreamble = (title: string): boolean => {
   );
 };
 
-const inferBranchId = (title: string, canonicalIds: readonly string[]): keyof typeof FPF_BRANCH_PROFILES | null => {
+const inferBranchRootId = (title: string): FpfBranchId | null => {
   const normalized = title.trim().toLowerCase();
 
   if (normalized.includes('table of content') || isDocumentPreamble(title)) {
@@ -341,53 +294,69 @@ const inferBranchId = (title: string, canonicalIds: readonly string[]): keyof ty
 
   const branchIdFromTitle = extractPartLetter(title);
 
-  if (branchIdFromTitle) {
-    return branchIdFromTitle as keyof typeof FPF_BRANCH_PROFILES;
-  }
-
-  for (const canonicalId of canonicalIds) {
-    const branchId = canonicalId.slice(0, 1).toUpperCase();
-
-    if (branchId in FPF_BRANCH_PROFILES && branchId !== 'P') {
-      return branchId as keyof typeof FPF_BRANCH_PROFILES;
-    }
+  if (branchIdFromTitle && fpfBranchIdSet.has(branchIdFromTitle)) {
+    return branchIdFromTitle as FpfBranchId;
   }
 
   return null;
 };
 
-const collectSubtreePatternPrefixes = (node: PageIndexNode): string[] => {
-  const prefixes = new Set<string>();
-  const isPartPrefix = (value: string | undefined): value is string => {
-    return value !== undefined && value.length === 1 && value >= 'A' && value <= 'K';
-  };
-
-  const visit = (current: PageIndexNode): void => {
-    for (const canonicalId of [...current.canonicalIds, ...current.references]) {
-      const [prefix] = canonicalId.split('.');
-
-      if (isPartPrefix(prefix)) {
-        prefixes.add(`${prefix}.`);
-      }
-    }
-
-    for (const child of current.subNodes) {
-      visit(child);
-    }
-  };
-
-  visit(node);
-
-  return [...prefixes].sort((left, right) => left.localeCompare(right));
+const inferFallbackFocusAreas = (input: string): string[] => {
+  return dedupeStrings(
+    input
+      .replace(/^[#\s-]+/, '')
+      .split(/[^A-Za-z0-9.]+/g)
+      .map((part) => part.trim())
+      .filter((part) => part.length > 2)
+      .slice(0, 12),
+  ).slice(0, 6);
 };
 
-const inferFallbackFocusAreas = (title: string): string[] => {
-  return title
-    .replace(/^[#\s-]+/, '')
-    .split(/[^A-Za-z0-9]+/g)
-    .map((part) => part.trim().toLowerCase())
-    .filter((part) => part.length > 2)
-    .slice(0, 6);
+const collectBranchPreviewLines = (branchId: FpfBranchId, sectionText: string): string[] => {
+  if (branchId === 'PREFACE') {
+    return dedupeStrings(
+      sectionText
+        .split(/\r?\n/)
+        .map((line) => stripMarkdownSyntax(line).trim())
+        .filter((line) => line.length > 0),
+    ).slice(0, 6);
+  }
+
+  const ownIdPattern = new RegExp(`\\b${branchId}\\.[A-Za-z0-9:.\\-]+`, 'i');
+
+  return dedupeStrings(
+    sectionText
+      .split(/\r?\n/)
+      .map((line) => stripMarkdownSyntax(line).trim())
+      .filter((line) => line.length > 0 && ownIdPattern.test(line)),
+  ).slice(0, 6);
+};
+
+const collectBranchFocusAreas = (
+  branchId: FpfBranchId,
+  rootTitle: string,
+  sectionText: string,
+  sectionRecords: readonly PageIndexContentRecord[],
+): string[] => {
+  const previewLines = collectBranchPreviewLines(branchId, sectionText).filter(
+    (line) => line !== normalizeTitle(rootTitle),
+  );
+
+  if (previewLines.length > 0) {
+    return previewLines;
+  }
+
+  const headingTitles = dedupeStrings(
+    sectionRecords
+      .map((record) => normalizeTitle(record.title))
+      .filter((title) => title.length > 0 && title !== normalizeTitle(rootTitle)),
+  ).slice(0, 6);
+
+  if (headingTitles.length > 0) {
+    return headingTitles;
+  }
+
+  return inferFallbackFocusAreas(sectionText);
 };
 
 const flattenTree = (tree: readonly PageIndexNode[]): PageIndexNode[] => {
@@ -408,38 +377,53 @@ const flattenTree = (tree: readonly PageIndexNode[]): PageIndexNode[] => {
   return nodes;
 };
 
-const buildFpfBranchIndex = (tree: readonly PageIndexNode[]): FpfBranchRecord[] => {
+const buildFpfBranchIndex = (
+  tree: readonly PageIndexNode[],
+  contents: readonly PageIndexContentRecord[],
+  sourceContent: string,
+): FpfBranchRecord[] => {
+  const sourceLines = sourceContent.split(/\r?\n/);
   const seen = new Set<string>();
-  const branches: FpfBranchRecord[] = [];
+  const branchRoots = flattenTree(tree)
+    .map((node) => {
+      const branchId = inferBranchRootId(normalizeTitle(node.title));
 
-  for (const node of flattenTree(tree)) {
-    const normalizedTitle = normalizeTitle(node.title);
-    const branchId = inferBranchId(normalizedTitle, node.canonicalIds);
+      return branchId ? { branchId, node } : null;
+    })
+    .filter((entry): entry is { branchId: FpfBranchId; node: PageIndexNode } => entry !== null)
+    .filter((entry) => {
+      if (seen.has(entry.branchId)) {
+        return false;
+      }
 
-    if (!branchId || seen.has(branchId)) {
-      continue;
-    }
+      seen.add(entry.branchId);
+      return true;
+    })
+    .sort((left, right) => left.node.startLine - right.node.startLine);
 
-    seen.add(branchId);
-    const profile = FPF_BRANCH_PROFILES[branchId];
-    const inferredPrefixes = collectSubtreePatternPrefixes(node);
+  return branchRoots.map((entry, index) => {
+    const sectionStart = entry.node.startLine;
+    const sectionEnd = index + 1 < branchRoots.length
+      ? branchRoots[index + 1]!.node.startLine - 1
+      : sourceLines.length;
+    const sectionText = sourceLines.slice(sectionStart - 1, sectionEnd).join('\n').trim();
+    const sectionRecords = contents.filter((record) =>
+      record.lineSpan.start >= sectionStart && record.lineSpan.start <= sectionEnd,
+    );
 
-    branches.push({
-      branchId,
-      nodeId: node.nodeId,
-      title: node.title,
+    return {
+      branchId: entry.branchId,
+      nodeId: entry.node.nodeId,
+      title: entry.node.title,
       lineSpan: {
-        start: node.startLine,
-        end: node.endLine,
+        start: sectionStart,
+        end: sectionEnd,
       },
-      summary: node.summary,
-      patternPrefixes:
-        profile.patternPrefixes.length > 0 ? [...profile.patternPrefixes] : inferredPrefixes,
-      focusAreas: profile.focusAreas.length > 0 ? [...profile.focusAreas] : inferFallbackFocusAreas(normalizedTitle),
-    });
-  }
-
-  return branches.sort((left, right) => left.lineSpan.start - right.lineSpan.start);
+      summary: summarizeContent(sectionText, entry.node.title),
+      patternPrefixes: entry.branchId === 'PREFACE' ? [] : [`${entry.branchId}.`],
+      focusAreas: collectBranchFocusAreas(entry.branchId, entry.node.title, sectionText, sectionRecords),
+    } satisfies FpfBranchRecord;
+  });
 };
 
 const buildTreeArtifacts = (
@@ -509,7 +493,7 @@ const buildTreeArtifacts = (
   return {
     tree,
     contents,
-    branches: buildFpfBranchIndex(tree),
+    branches: buildFpfBranchIndex(tree, contents, content),
     nodeCount: contents.length,
   };
 };

@@ -1,15 +1,17 @@
-# fpf-pageindex-local
+# fpf-sync
 
 This repo has two responsibilities:
 
 1. mirror the upstream `ailev/FPF` repo daily into `./FPF`
-2. provide a local-only, FPF-specific, PageIndex-style reasoning retriever over `FPF/FPF-Spec.md`
+2. provide an OpenRouter-backed, FPF-specific, PageIndex-style reasoning retriever over `FPF/FPF-Spec.md`
 
 It is not a generic memory framework. It is built for one source document family: FPF.
 
 ## Quickstart
 
 ```bash
+cp .env.example .env
+# then put your OpenRouter key into .env
 bun install
 bun run memory index
 bun run memory tree
@@ -22,7 +24,7 @@ Typical lifecycle:
 1. GitHub Actions syncs upstream `ailev/FPF` into `FPF/` daily.
 2. The same workflow rebuilds and commits `.memory/` from `FPF/FPF-Spec.md`.
 3. You pull the latest repo changes locally.
-4. You use `retrieve` / `answer` locally against LM Studio.
+4. You use `retrieve` / `answer` locally through OpenRouter.
 5. If you want to refresh derived memory locally after local edits, run `bun run memory index`.
 
 `./FPF` is committed. `.memory/` is also committed as derived repository state.
@@ -44,22 +46,35 @@ Important boundary:
 - `src/` owns indexing and local retrieval
 - runtime/app code contains no sync logic
 
-## Local model
+## OpenRouter model
 
-The local reasoning model is hard-coded to LM Studio defaults:
+The reasoning model is OpenRouter-backed, with Mastra handling runtime LLM interactions.
 
-- endpoint: `http://localhost:1234/api/v1/chat`
-- model: `google/gemma-4-26b-a4b`
+Bun loads `.env` automatically.
 
-Example LM Studio request shape:
+Required environment variable:
+
+- `OPENROUTER_API_KEY`
+
+Optional environment variables:
+
+- `OPENROUTER_MODEL` — defaults to `minimax/minimax-m2.7`
+- `OPENROUTER_ENDPOINT` — defaults to `https://openrouter.ai/api/v1/chat/completions`
+- `OPENROUTER_TIMEOUT_MS` — defaults to `60000`
+
+Example request shape:
 
 ```bash
-curl http://localhost:1234/api/v1/chat \
+curl https://openrouter.ai/api/v1/chat/completions \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "google/gemma-4-26b-a4b",
-    "system_prompt": "You answer only in rhymes.",
-    "input": "What is your favorite color?"
+    "model": "minimax/minimax-m2.7",
+    "messages": [
+      {"role": "system", "content": "You answer only in rhymes."},
+      {"role": "user", "content": "What is your favorite color?"}
+    ],
+    "temperature": 0
   }'
 ```
 
@@ -72,9 +87,26 @@ bun run memory index
 bun run memory tree
 bun run memory retrieve "What does A.10 say?"
 bun run memory answer "What is bounded context?"
+bun run mcp
 bun run check
 bun test
 ```
+
+If you want lower cost and more visibility into retrieval, prefer `retrieve` first. The CLI trace now logs per-call OpenRouter usage metadata when the provider returns it.
+
+## Local runtime surfaces
+
+The runtime is exposed in two local forms without shelling out to the CLI:
+
+- a typed in-process TypeScript API via `src/agentApi.ts`
+- a local stdio MCP server via `bun run mcp`
+
+Read-only MCP / API tools:
+
+- `fpf_list_branches`
+- `fpf_get_node`
+- `fpf_retrieve`
+- `fpf_state`
 
 ## Artifact map
 
@@ -105,17 +137,18 @@ The runtime follows a PageIndex-style loop specialized for FPF:
 
 1. read the reduced FPF branch index and the full tree
 2. if the question names exact FPF ids, seed those nodes into a bounded frontier immediately
-3. otherwise ask the local LLM to choose one or more high-level FPF branches
-4. seed a frontier with exact-id matches, branch roots, branch children, reference targets, and short-leaf siblings
-5. ask the local LLM to choose up to three frontier nodes per step
-6. inspect under-budget nodes as evidence; expand routing nodes into children instead of treating them as evidence
-7. repeat until the model says the evidence is sufficient, then synthesize the final answer from evidence only
+3. otherwise ask the OpenRouter model to choose one or more high-level FPF branches
+4. if branch routing times out, fall back to deterministic reduced-branch ranking
+5. seed a frontier with exact-id matches, branch roots, branch children, reference targets, and short-leaf siblings
+6. ask the OpenRouter model to choose up to three frontier nodes per step
+7. inspect under-budget nodes as evidence; expand routing nodes into children instead of treating them as evidence
+8. repeat until the model says the evidence is sufficient, then synthesize the final answer from evidence only
 
 This is:
 - vectorless
 - reasoning-based
 - section-coherent
-- local-only at inference time
+- OpenRouter-backed at inference time
 - multi-node within each bounded search step
 
 This is not:
@@ -125,9 +158,9 @@ This is not:
 - chat-history-aware retrieval
 - full PageIndex MCTS
 
-## Local model JSON contract
+## Model JSON contract
 
-The local model must return JSON-only control outputs.
+The reasoning model must return JSON-only control outputs.
 
 ### Branch selection
 

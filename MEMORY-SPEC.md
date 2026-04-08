@@ -1,11 +1,11 @@
-# Local PageIndex Specification
+# PageIndex Specification
 
 ## Purpose
 
 The repository exists to:
 
 1. mirror `ailev/FPF` daily into `./FPF`
-2. provide a local, PageIndex-style reasoning retriever over `FPF/FPF-Spec.md`
+2. provide an OpenRouter-backed, Mastra-mediated, PageIndex-style reasoning retriever over `FPF/FPF-Spec.md`
 
 The memory system is specialized for FPF, not a generic corpus.
 
@@ -48,8 +48,9 @@ Sync must:
 `bun run memory retrieve <question>` must:
 - read committed `.memory/`
 - seed exact question-id matches into a bounded frontier before branch search
-- ask the local model to choose high-level FPF branches only when the frontier is empty
-- ask the local model to choose up to 3 frontier nodes per step
+- ask the reasoning model to choose high-level FPF branches only when the frontier is empty
+- if branch-stage model routing times out, fall back to deterministic reduced-branch ranking and continue retrieval
+- ask the reasoning model to choose up to 3 frontier nodes per step
 - validate returned ids against the offered candidate set
 - iteratively gather evidence from coherent section content
 - expand over-budget routing nodes into children instead of treating them as evidence
@@ -60,7 +61,7 @@ Sync must:
 
 `bun run memory answer <question>` must:
 - run retrieval first
-- ask the local model to synthesize an answer from gathered evidence only
+- ask the reasoning model to synthesize an answer from gathered evidence only
 - return citations back to node ids and line spans
 - sort citations by source order / line span
 - add human-readable citation labels in the final answer surface
@@ -119,13 +120,17 @@ It must not contain:
 - vector indexes
 - derived knowledge from `FPF/Readme.md`
 
-## Local model defaults
+## OpenRouter defaults
 
-These are hard-coded:
-- endpoint: `http://localhost:1234/api/v1/chat`
-- model: `google/gemma-4-26b-a4b`
+Required:
+- `OPENROUTER_API_KEY`
 
-## Local model JSON contract
+Optional:
+- `OPENROUTER_ENDPOINT` — defaults to `https://openrouter.ai/api/v1/chat/completions`
+- `OPENROUTER_MODEL` — defaults to `minimax/minimax-m2.7`
+- `OPENROUTER_TIMEOUT_MS` — defaults to `60000`
+
+## Model JSON contract
 
 ### Retrieval control output
 The runtime must accept:
@@ -163,7 +168,7 @@ The runtime must accept:
 - embeddings
 - chunk similarity search
 - runtime sync logic in `src/`
-- remote hosted LLM providers
+- non-OpenRouter model providers
 - chat-history-aware retrieval
 - full PageIndex MCTS
 

@@ -7,6 +7,7 @@ import {
   retrievePageIndexEffect,
   type LocalModelRequest,
   type PageIndexAppError,
+  type PageIndexTraceEvent,
 } from './memory-use.ts';
 
 type ParsedCommand =
@@ -19,6 +20,7 @@ type MemoryCliIo = {
   cwd: string;
   now?: () => string;
   chat?: (request: LocalModelRequest) => Promise<string>;
+  trace?: (event: PageIndexTraceEvent) => void;
   stderr(text: string): void;
   stdout(text: string): void;
 };
@@ -65,7 +67,10 @@ const parseCommand = (args: readonly string[]): ParsedCommand => {
 };
 
 const executeCommand = (parsed: ParsedCommand, io: MemoryCliIo): Effect.Effect<unknown, PageIndexAppError> => {
-  const options = io.chat ? { chat: io.chat } : {};
+  const options = {
+    ...(io.chat ? { chat: io.chat } : {}),
+    ...(io.trace ? { trace: io.trace } : {}),
+  };
 
   switch (parsed.command) {
     case 'index':
@@ -76,6 +81,37 @@ const executeCommand = (parsed: ParsedCommand, io: MemoryCliIo): Effect.Effect<u
       return retrievePageIndexEffect(io.cwd, parsed.question, options);
     case 'answer':
       return answerWithPageIndexEffect(io.cwd, parsed.question, options);
+  }
+};
+
+const formatTraceEvent = (event: PageIndexTraceEvent): string => {
+  switch (event.stage) {
+    case 'retrieve-start':
+      return `start | ${event.message}`;
+    case 'question-match':
+      return `step ${event.step} | exact-match | ${event.message}`;
+    case 'branch-request':
+      return `step ${event.step} | branch-request | ${event.message}`;
+    case 'branch-selected':
+      return `step ${event.step} | branch-${event.action} | ${event.message}`;
+    case 'frontier-request':
+      return `step ${event.step} | frontier-request | ${event.message}`;
+    case 'frontier-selected':
+      return `step ${event.step} | frontier-${event.action} | ${event.message}`;
+    case 'step-finish':
+      return `step ${event.step} | ${event.action}-finish | ${event.message}`;
+    case 'answer-deferred':
+      return `step ${event.step} | answer-deferred | ${event.message}`;
+    case 'retrieve-complete':
+      return `retrieve-complete | ${event.message}`;
+    case 'retrieve-step-limit':
+      return `step-limit | ${event.message}`;
+    case 'answer-request':
+      return `answer-request | ${event.message}`;
+    case 'answer-complete':
+      return `answer-complete | ${event.message}`;
+    case 'model-usage':
+      return `model-usage | ${event.message}`;
   }
 };
 
@@ -90,7 +126,7 @@ const formatAppError = (error: PageIndexAppError): string => {
     case 'PageIndexNodeMissing':
       return `pageindex node missing: ${error.nodeId}`;
     case 'PageIndexModelError':
-      return `local model error: ${error.reason}`;
+      return `model error: ${error.reason}`;
     case 'PageIndexActionInvalid':
       return `invalid model action: ${error.reason}`;
     case 'PageIndexEvidenceMissing':
@@ -128,6 +164,7 @@ const main = async (): Promise<void> => {
   const result = await runMemoryCli(Bun.argv.slice(2), {
     cwd: process.cwd(),
     now: () => new Date().toISOString(),
+    trace: (event) => process.stderr.write(`[trace] ${formatTraceEvent(event)}\n`),
     stderr: (text) => process.stderr.write(text),
     stdout: (text) => process.stdout.write(text),
   });

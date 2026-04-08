@@ -5,23 +5,16 @@
     "title": "Preface (non-normative)",
     "lineSpan": {
       "start": 340,
-      "end": 341
+      "end": 764
     },
-    "summary": "Preface (non-normative)",
-    "patternPrefixes": [
-      "A.",
-      "B.",
-      "C.",
-      "D.",
-      "E.",
-      "F.",
-      "G."
-    ],
+    "summary": "Preface (non-normative) What this specification is (and how to use it) This document is the Core Conceptual Specification of the First Principles Framework (FPF) . It defines a small, domain-agnostic kernel and a set of…",
+    "patternPrefixes": [],
     "focusAreas": [
-      "orientation",
-      "scope",
-      "non-normative framing",
-      "how to read FPF"
+      "What this specification is (and how to use it)",
+      "This document is the Core Conceptual Specification of the First Principles Framework (FPF) . It defines a small, domain-agnostic kernel and a set of extension patterns for publishing, checking, and evolving conceptual work about systems and epistemes (knowledge claims) — and about the organisations and communities that build them. In FPF terms these are all holons : things that can be treated as wholes and as parts.",
+      "FPF is written as a pattern language . A pattern is not a tutorial and not a “best practice” blog post; it is a contract : Problem frame → Problem → Forces → Solution , ending with a Conformance Checklist . The canonical template, terminology registers, and the interpretation of RFC-2119/8174 keywords live in E.8 .",
+      "One important cluster of the Core deals with a recurrent real-world problem: teams often have to work with language that is not yet stable enough to count as a finished claim, endpoint judgement, or action record, but is already too important to leave as private intuition or carrier noise. In engineering, inquiry, and operator work this shows up as weak cues, partial formulations, route pressure, abductive prompts, and later endpoint publications.",
+      "FPF therefore treats this not as one vague maturity ladder but as a governed region of a declared language-state chart over U.CharacteristicSpace, with explicit facet owners, lawful transduction moves, route-bearing seam publications, and explicit handoff to later endpoint owners. That cluster is what lets an engineer-manager say, in a disciplined way, not only what is already known , but also what is emerging, how far it is articulated, how closed it is, how it is anchored, which routes remain live, and which later owner should receive it next ."
     ]
   },
   {
@@ -30,38 +23,19 @@
     "title": "Part A – Kernel Architecture Cluster",
     "lineSpan": {
       "start": 765,
-      "end": 766
+      "end": 24330
     },
-    "summary": "Part A – Kernel Architecture Cluster",
+    "summary": "Part A – Kernel Architecture Cluster A.0 - Onboarding Glossary (NQD & E/E‑LOG) One‑screen purpose (manager‑first). This pattern gives newcomers a plain‑language starter kit for FPF’s generative engine so they can run a…",
     "patternPrefixes": [
       "A."
     ],
     "focusAreas": [
-      "kernel",
-      "bounded context",
-      "roles",
-      "methods",
-      "evidence",
-      "extension layering"
-    ]
-  },
-  {
-    "branchId": "C",
-    "nodeId": "0027",
-    "title": "4.1 Plain one‑liners (normative on‑ramp; formal anchors in C.17–C.19)",
-    "lineSpan": {
-      "start": 800,
-      "end": 816
-    },
-    "summary": "4.1 Plain one‑liners (normative on‑ramp; formal anchors in C.17–C.19) Term Plain definition (on‑ramp) See ------------------------- ---------------------------------------------------------------------------------------…",
-    "patternPrefixes": [
-      "C."
-    ],
-    "focusAreas": [
-      "kernel extensions",
-      "episteme",
-      "worldview",
-      "governed knowledge structures"
+      "A.0 - Onboarding Glossary (NQD & E/E‑LOG)",
+      "Builds on. E.2 ( P‑10 Open‑Ended Evolution; P‑2 Didactic Primacy ), A.5, C.17–C.19 - Coordinates with. E.7, E.8, E.10; F.17 (UTS); G.5, G.9–G.12 - Constrains. Any pattern/UTS row that describes a generator, selector, or portfolio .",
+      "Builds on. E.2 Pillars (P-10, P-2, P-6), A.5 (Open-Ended Kernel), B.5/B.5.2.1 (Abductive loops + NQD integration), C.17–C.19 (Creativity-CHR, NQD-CAL, E/E-LOG).",
+      "A.0:End",
+      "A.1 - Holonic Foundation: Entity → Holon",
+      "A.1:1 - Problem Frame"
     ]
   },
   {
@@ -70,18 +44,40 @@
     "title": "Part B – Trans‑disciplinary Reasoning Cluster",
     "lineSpan": {
       "start": 24331,
-      "end": 24332
+      "end": 29110
     },
-    "summary": "Part B – Trans‑disciplinary Reasoning Cluster",
+    "summary": "Part B – Trans‑disciplinary Reasoning Cluster B.1 - Universal Algebra of Aggregation (Γ) B.1:1 - Problem Frame FPF views reality as a nested holarchy : parts → assemblies → systems → ecosystems; axioms → lemmas → theori…",
     "patternPrefixes": [
       "B."
     ],
     "focusAreas": [
-      "reasoning",
-      "abduction",
-      "trust",
-      "canonical reasoning cycle",
-      "aggregation"
+      "B.1 - Universal Algebra of Aggregation (Γ)",
+      "B.1:1 - Problem Frame",
+      "B.1:2 - Problem",
+      "B.1:3 - Forces",
+      "B.1:4 - Solution — The Invariant Quintet Standard",
+      "B.1:4.1 - The Universal Aggregation Operator"
+    ]
+  },
+  {
+    "branchId": "C",
+    "nodeId": "2331",
+    "title": "Part C — Kernel Extensions Specifications",
+    "lineSpan": {
+      "start": 29111,
+      "end": 38582
+    },
+    "summary": "Part C — Kernel Extensions Specifications § Pattern Tag Scope & Exports -------------------------------------------- ---------------------------------- --- ---------------------------------------------------------------…",
+    "patternPrefixes": [
+      "C."
+    ],
+    "focusAreas": [
+      "Cluster C.I – Core CALs / LOGs / CHRs",
+      "C.1 Sys‑CAL CAL Physical holon composition; conservation invariants; resource hooks.",
+      "C.2 - Epistemic holon composition (KD-CAL)",
+      "Formality F is the rigor characteristic defined normatively in C.2.3 . All KD‑CAL computations and guards SHALL use U.Formality (F0…F9) as specified there; no parallel “mode” ladders are allowed.",
+      "C.2:1 - Problem Frame",
+      "FPF fixes two archetypal sub‑holons: U.System (physical/operational) and U.Episteme (knowledge holon). KD‑CAL is the home pattern of U.Episteme, giving engineers a compact, testable way to say (a) how strictly an episteme is written ( F ), (b) how much structure it manages ( G ), (c) how well it is warranted by evidence or severe tests ( R ), and (d) how closely two epistemes coincide ( CL ). KD‑CAL is built atop C.2.1 U.Episteme — Semantic Triangle via Components , which reifies every episteme as Concept (claim‑graph), Object (describedEntity & evaluation rules), and Symbol (notation)— not the file itself ; carriers and work/executions remain outside and are linked via isCarriedBy / producedBy(U.Work)."
     ]
   },
   {
@@ -90,17 +86,19 @@
     "title": "Part D – Multi-scale Ethics & Conflict‑Optimisation",
     "lineSpan": {
       "start": 38583,
-      "end": 38599
+      "end": 38719
     },
     "summary": "Part D – Multi-scale Ethics & Conflict‑Optimisation § ID & Title Concise reminder — “what belongs here” ------- ------------------------------------ ----------------------------------------------------------------------…",
     "patternPrefixes": [
       "D."
     ],
     "focusAreas": [
-      "ethics",
-      "conflict",
-      "optimization",
-      "multi-scale trade-offs"
+      "D.1 Axiological Neutrality Principle No built‑in value hierarchy; ethics expressed as explicit preference lattices.",
+      "D.2 Multi‑Scale Ethics Framework Four nested arenas: Self → Team → Ecosystem → Planet ; scoping rules.",
+      "D.2.1 Local‑Agent Ethics Duties & permissions for a single U.System or U.Agent.",
+      "D.2.2 Group‑Ethics Standards Collective norms, veto mechanisms, subsidiarity rule.",
+      "D.2.3 Ecosystem Stewardship Inter‑FPF externalities; tragedy‑of‑commons mitigations.",
+      "D.2.4 Planetary‑Scale Precaution Catastrophic‑risk anchors; long‑termism discount curves."
     ]
   },
   {
@@ -109,18 +107,19 @@
     "title": "Part E - FPF Constitution and Authoring Cluster",
     "lineSpan": {
       "start": 38720,
-      "end": 38721
+      "end": 47291
     },
-    "summary": "Part E - FPF Constitution and Authoring Cluster",
+    "summary": "Part E - FPF Constitution and Authoring Cluster Section E‑I - The FPF Constitution E.1 - Vision & Mission: “Operating System for Thought” E.1:1 - Problem frame Modern engineering, science, and strategy all suffer from c…",
     "patternPrefixes": [
       "E."
     ],
     "focusAreas": [
-      "constitution",
-      "authoring",
-      "lexical rules",
-      "multi-view",
-      "publication discipline"
+      "E.1 - Vision & Mission: “Operating System for Thought”",
+      "E.1:1 - Problem frame",
+      "E.1:2 - Problem",
+      "E.1:3 - Forces",
+      "E.1:4 - Solution — FPF as an Operating System for Thought",
+      "E.1:5 - Conformance Checklist"
     ]
   },
   {
@@ -129,17 +128,19 @@
     "title": "Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment",
     "lineSpan": {
       "start": 47292,
-      "end": 47293
+      "end": 54270
     },
-    "summary": "Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment",
+    "summary": "Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment Cluster F.I — context of meaning & Raw Material F.0.1 - Contextual Lexicon Principles One‑sentence summary. All meanings in…",
     "patternPrefixes": [
       "F."
     ],
     "focusAreas": [
-      "unification suite",
-      "alignment",
-      "bridge across contexts",
-      "meaning raw material"
+      "Cluster F.I — context of meaning & Raw Material",
+      "F.0.1 - Contextual Lexicon Principles",
+      "Coordinates with. F.1 (Context Map via Context Cards), F.2 (local term capture), F.3 (intra‑Context clustering), F.7 (Concept‑Set Table), F.9 (Alignment & Bridge), B.3 (Trust & Assurance; CL penalties).",
+      "F.0.1:1 - Problem Frame",
+      "F.0.1:2 - The Three Principles (normative)",
+      "F.0.1:2.1 - P‑S - Source Localisation Principle — Speak with the Context."
     ]
   },
   {
@@ -148,16 +149,19 @@
     "title": "Part G – Discipline SoTA Patterns Kit",
     "lineSpan": {
       "start": 54271,
-      "end": 54272
+      "end": 60534
     },
-    "summary": "Part G – Discipline SoTA Patterns Kit",
+    "summary": "Part G – Discipline SoTA Patterns Kit G.Core - Part G Core Invariants Tag. Architectural pattern (Part‑G core invariants hub; refactoring/deduplication) Stage. design‑time (authoring discipline + ID‑stable routing; no r…",
     "patternPrefixes": [
       "G."
     ],
     "focusAreas": [
-      "discipline patterns",
-      "sota patterns",
-      "pattern kit"
+      "G.Core - Part G Core Invariants",
+      "Primary hooks. E.8 (pattern template), E.10 (lexical/ontological rules), E.19 (conformance discipline), A.6.7 (SuiteObligations + suite protocol pins), A.15.3 (planned baseline), A.19 (CN‑Spec), G.0 (CG‑Spec), A.19.CHR (CHR suite boundary), C.23 (SoS‑LOG), F.17 (UTS), F.15 (RSCR).",
+      "Placement. Part G → immediately after G.0 (without renumbering G.0…G.13)",
+      "Phase‑2 constraint. G.Core is the only new Part‑G pattern introduced in Phase‑2; discipline/method/generator specifics remain in G.x as Extensions, citations to existing owner‑patterns, or Phase‑3 seeds (appendix) without new Phase‑2 norms.",
+      "Post‑Phase‑2 evolvability policy. The Phase‑2 restriction above is historical. From Phase‑3 onward, new Part‑G PatternIds are permitted when (i) they introduce a genuinely new kit/pack class (typically levels G.2–G.5), or (ii) they are required to preserve single‑owner discipline and wiring‑only separation. Method/discipline/generator specifics SHOULD still default to GPatternExtension modules under G.x:Extensions (scoped by PatternScopeId = G.x:Ext. and SemanticOwnerPatternId), rather than adding new Part‑G patterns.",
+      "G.Core:1 - Problem frame"
     ]
   },
   {
@@ -173,9 +177,9 @@
       "H."
     ],
     "focusAreas": [
-      "glossary",
-      "definitions",
-      "pattern index"
+      "H.1 Alphabetic Glossary Every U.Type, relation & operator with four‑register naming.",
+      "H.2 Definitional Pattern Catalogue One‑page micro‑stubs of every definitional pattern for quick lookup.",
+      "H.3 Cross‑Reference Maps Bidirectional links: Part A ↔ Part C ↔ Part B terms."
     ]
   },
   {
@@ -191,9 +195,10 @@
       "I."
     ],
     "focusAreas": [
-      "annexes",
-      "tutorials",
-      "extended examples"
+      "I.1 Deprecated Aliases Legacy names kept for backward compatibility.",
+      "I.2 Detailed Walk‑throughs Route-indexed walkthroughs for the main first-practical entry routes: project alignment, partly-said discovery, boundary unpacking, lawful comparison/selection, generator/SoTA kit authoring, and same-entity rewrite/explanation/comparative reading.",
+      "I.3 Change‑Log (auto‑generated) Version history keyed to DRR ids.",
+      "I.4 External Standards Mappings Trace tables to ISO 15926, BORO, CCO, Constructor‑Theory terms."
     ]
   },
   {
@@ -202,15 +207,19 @@
     "title": "Part J – Indexes & Navigation Aids",
     "lineSpan": {
       "start": 60554,
-      "end": 60562
+      "end": 60575
     },
     "summary": "Part J – Indexes & Navigation Aids § ID & Title Concise reminder --- ------------------------ --- ------------------------------------------------------- J.1 Concept‑to‑Pattern Index Quick jump from idea (“boundary”) to…",
     "patternPrefixes": [
       "J."
     ],
     "focusAreas": [
-      "indexes",
-      "navigation aids"
+      "J.1 Concept‑to‑Pattern Index Quick jump from idea (“boundary”) to pattern (§, id).",
+      "J.2 Pattern‑to‑Example Index Table listing every archetypal grounding vignette.",
+      "J.3 Principle‑Trace Index Maps each Pillar / C‑rule / P‑rule to concrete clauses.",
+      "J.4 First Practical Entry Route Index Cross-links the main first-practical entry routes to their first honest burden, current route-bearing surfaces, first working outputs, typical next owners, and common reroutes.",
+      "J.4 - First Practical Entry Route Index",
+      "Project alignment role / method / plan / work confusion Preface, J.4, I.2, A.15 role / method / work separation and a first work sheet or UTS-ready alignment frame A.15.1, A.15.2, A.15.3, B.5.1, F.11, F.17 if the first honest artefact is still a cue, reroute to A.16; if the burden is boundary language, reroute to A.6"
     ]
   },
   {
@@ -219,16 +228,19 @@
     "title": "Part K  – Lexical debt",
     "lineSpan": {
       "start": 60576,
-      "end": 60576
+      "end": 60656
     },
-    "summary": "Part K – Lexical debt",
+    "summary": "Part K – Lexical debt Mandatory replacement map for measurement terms Rule: In all normative content (specifications, data schemas, etc.), the deprecated terms “axis” and “dimension” (and their plural or compound forms)…",
     "patternPrefixes": [
       "K."
     ],
     "focusAreas": [
-      "lexical debt",
-      "cleanup",
-      "terminology debt"
+      "Mandatory replacement map for measurement terms",
+      "Migration debt from A.2.6 (Scope, ClaimScope, WorkScope)",
+      "Deprecations (normative)",
+      "Affected locations and required edits (normative)",
+      "Migration playbook (informative)",
+      "Backwards compatibility (informative)"
     ]
   }
 ]
