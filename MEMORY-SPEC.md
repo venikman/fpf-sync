@@ -5,9 +5,9 @@
 The repository exists to:
 
 1. mirror `ailev/FPF` daily into `./FPF`
-2. provide a local, PageIndex-style reasoning RAG tool over `FPF/FPF-Spec.md`
+2. provide a local, PageIndex-style reasoning retriever over `FPF/FPF-Spec.md`
 
-The memory system is specialized for **FPF**, not a generic corpus.
+The memory system is specialized for FPF, not a generic corpus.
 
 ## Required behavior
 
@@ -19,18 +19,21 @@ Sync must:
 - run daily via GitHub Actions
 - keep app/runtime sync-free
 - rebuild `.memory/` after mirrored source changes
+- verify expected `.memory/` artifacts exist
+- log whether `FPF/` changed, `.memory/` changed, or the run was a no-op
 - commit both `FPF/` and `.memory/`
 
 ### Index
 
 `bun run memory index` must:
 - read `FPF/FPF-Spec.md`
-- build a hierarchical heading tree
+- build a hierarchical heading tree through heading depth 6
+- preserve canonical FPF ids such as `A.1.1:4.3`, `A.6.B`, `A.19.CHR`, and `G.0`
 - write a local node-content mapping
 - write `.memory/pageindex-state.json`
 - write `.memory/pageindex-tree.json`
 - write `.memory/fpf-branches.json`
-- derive the reduced FPF branch index from the actual mirrored top-level structure so new upstream structure can still be indexed
+- derive canonical FPF branches from `PREFACE` and `A`–`K`, without synthetic `ROOT-*` or `SECTION-*` ids
 - avoid rewriting `.memory/` when source content is unchanged
 
 ### Tree
@@ -44,10 +47,13 @@ Sync must:
 
 `bun run memory retrieve <question>` must:
 - read committed `.memory/`
-- ask the local model to choose the most plausible high-level FPF branch first from a reduced branch index
-- ask the local model to choose the most plausible exact section inside that branch
+- seed exact question-id matches into a bounded frontier before branch search
+- ask the local model to choose high-level FPF branches only when the frontier is empty
+- ask the local model to choose up to 3 frontier nodes per step
+- validate returned ids against the offered candidate set
 - iteratively gather evidence from coherent section content
-- auto-expand to child, sibling, or referenced nodes when an inspected section looks incomplete
+- expand over-budget routing nodes into children instead of treating them as evidence
+- follow exact references first, appendix labels second, and fuzzy fallback only last
 - return the reasoning steps and gathered evidence
 
 ### Answer
@@ -56,18 +62,25 @@ Sync must:
 - run retrieval first
 - ask the local model to synthesize an answer from gathered evidence only
 - return citations back to node ids and line spans
+- sort citations by source order / line span
+- add human-readable citation labels in the final answer surface
+- add a `rendered` field with the answer plus a compact source list
 
 ## Artifact contract
 
 ### `.memory/pageindex-state.json`
 Must contain at least:
-- source path
-- content hash
-- heading depth
-- node count
+- `schemaVersion`
+- `sourcePath`
+- `contentHash`
+- `maxHeadingDepth`
+- `inspectLineBudget`
+- `inspectCharBudget`
+- `nodeCount`
 
 ### `.memory/pageindex-tree.json`
 Must contain the full hierarchical tree used for exact section routing.
+Each node must include `canonicalIds`.
 
 ### `.memory/fpf-branches.json`
 Must contain the reduced FPF branch index used for branch-stage routing.
@@ -88,6 +101,7 @@ Each record must contain at least:
 - `lineSpan`
 - `summary`
 - `references`
+- `canonicalIds`
 - `parentNodeId`
 - `childNodeIds`
 - `content`
@@ -117,17 +131,15 @@ These are hard-coded:
 The runtime must accept:
 
 ```json
+{"action":"inspect","node_list":["0002","0003"],"rationale":"..."}
+```
+
+```json
 {"action":"inspect","node_id":"0002","rationale":"..."}
 ```
 
 ```json
 {"action":"answer","rationale":"...","answer_plan":"..."}
-```
-
-For exact section selection, the runtime must also accept:
-
-```json
-{"node_id":"0002","rationale":"..."}
 ```
 
 ### Answer output
@@ -139,10 +151,11 @@ The runtime must accept:
 
 ## FPF-specific routing requirements
 
-- branch routing must prefer actual mirrored top-level structure over hard-coded historical assumptions
+- branch routing must prefer canonical FPF part owners over synthetic title fallbacks
 - known FPF branch profiles may be used as hints
-- pattern-prefix and focus-area hints may be used to bias branch selection
-- new upstream top-level structure must still produce a usable reduced branch index after reindexing
+- pattern-prefix and focus-area hints may bias branch selection
+- exact canonical-id matches must outrank fuzzy summary/title matches
+- new upstream top-level structure must still produce a usable canonical reduced branch index after reindexing
 
 ## Non-goals
 
@@ -151,16 +164,20 @@ The runtime must accept:
 - chunk similarity search
 - runtime sync logic in `src/`
 - remote hosted LLM providers
+- chat-history-aware retrieval
+- full PageIndex MCTS
 
 ## Testing note
 
-Testing is not the current focus, but the repo should keep a plan and lightweight coverage for:
+Testing is not the current product focus, but the repo should keep lightweight coverage for:
 - index determinism
 - tree loading
 - reduced branch loading
-- branch → section navigation
-- auto-expansion behavior
+- lawful `node_list` validation
+- bounded frontier navigation
+- routing-node expansion behavior
 - answer synthesis with citations
+- eval-pack coverage for canonical FPF ids
 
 ## Validation
 

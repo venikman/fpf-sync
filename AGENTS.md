@@ -5,7 +5,7 @@
 This repo has two responsibilities:
 
 1. mirror the upstream `ailev/FPF` repository into `./FPF` via `.github/`
-2. provide a local-only, FPF-specific, PageIndex-style reasoning RAG tool over `FPF/FPF-Spec.md`
+2. provide an OpenRouter-backed, FPF-specific, PageIndex-style reasoning RAG tool over `FPF/FPF-Spec.md`
 
 ## Commands
 
@@ -34,7 +34,7 @@ Use these local skills when editing this repo:
 ## Guardrails
 
 - Do not add app, UI, server, or framework features.
-- Keep runtime local-only and deterministic apart from the explicitly local LM Studio model call.
+- Keep runtime deterministic apart from the explicitly remote OpenRouter model call.
 - Keep sync logic in `.github/`, not in `src/`.
 - Keep `.memory/` committed and rebuildable from `FPF/FPF-Spec.md`.
 - Keep `.memory/` scoped to FPF knowledge derived from `FPF/FPF-Spec.md` only.

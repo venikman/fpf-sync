@@ -1,9 +1,11 @@
 {
   "kind": "pageindex-state",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "sourcePath": "FPF/FPF-Spec.md",
-  "maxHeadingDepth": 3,
-  "generatedAt": "2026-04-07T23:10:25.356Z",
-  "contentHash": "2047eb06165eb24ef9f6dadd7f7b2a1e38e93163",
-  "nodeCount": 2887
+  "maxHeadingDepth": 6,
+  "inspectLineBudget": 140,
+  "inspectCharBudget": 6000,
+  "generatedAt": "2026-04-08T02:12:34.312Z",
+  "contentHash": "290159eac40ecfe9d9f08c77547cda79cea34644",
+  "nodeCount": 5083
 }

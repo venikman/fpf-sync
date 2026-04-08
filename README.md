@@ -2,10 +2,10 @@
 
 This repo has two responsibilities:
 
-1. **mirror the upstream `ailev/FPF` repo daily into `./FPF`**
-2. provide a **local-only, FPF-specific, PageIndex-style reasoning RAG tool** over `FPF/FPF-Spec.md`
+1. mirror the upstream `ailev/FPF` repo daily into `./FPF`
+2. provide a local-only, FPF-specific, PageIndex-style reasoning retriever over `FPF/FPF-Spec.md`
 
-It is not a generic memory framework. It is built for **one source document family**: FPF.
+It is not a generic memory framework. It is built for one source document family: FPF.
 
 ## Quickstart
 
@@ -42,7 +42,7 @@ Daily sync is handled entirely from `.github/`:
 Important boundary:
 - `.github/` owns sync
 - `src/` owns indexing and local retrieval
-- runtime/app code contains **no sync logic**
+- runtime/app code contains no sync logic
 
 ## Local model
 
@@ -63,7 +63,7 @@ curl http://localhost:1234/api/v1/chat \
   }'
 ```
 
-There are intentionally **no CLI flags** for model or endpoint right now.
+There are intentionally no CLI flags for model or endpoint right now.
 
 ## Commands
 
@@ -84,67 +84,86 @@ Indexing reads:
 Indexing writes committed derived artifacts under `.memory/`:
 
 - `.memory/pageindex-state.json`
-  - source path
-  - source content hash
-  - node count
+  - schema version
+  - source path and content hash
   - heading depth used for indexing
+  - inspect budgets used by retrieval
+  - node count
 - `.memory/pageindex-tree.json`
   - full hierarchical PageIndex tree
-  - used for exact subtree navigation
+  - canonical FPF ids per node
 - `.memory/fpf-branches.json`
-  - reduced **FPF branch index**
-  - used for branch-stage navigation
+  - reduced canonical FPF branch index
+  - branch-stage routing surface
 - `.memory/pageindex-content.jsonl`
   - `nodeId -> coherent section content`
-  - used as the raw evidence surface
+  - canonical FPF ids and exact references per node
 
 ## Runtime loop
 
-The runtime follows a PageIndex-style loop, specialized for FPF:
+The runtime follows a PageIndex-style loop specialized for FPF:
 
 1. read the reduced FPF branch index and the full tree
-2. ask the local LLM to choose the most plausible **high-level FPF branch**
-3. ask the local LLM to choose the most plausible **exact section** inside that branch
-4. load coherent section content for that section
-5. automatically expand to child, sibling, or referenced nodes when the section looks incomplete
-6. decide whether evidence is sufficient
-7. inspect another branch/section or synthesize an answer
+2. if the question names exact FPF ids, seed those nodes into a bounded frontier immediately
+3. otherwise ask the local LLM to choose one or more high-level FPF branches
+4. seed a frontier with exact-id matches, branch roots, branch children, reference targets, and short-leaf siblings
+5. ask the local LLM to choose up to three frontier nodes per step
+6. inspect under-budget nodes as evidence; expand routing nodes into children instead of treating them as evidence
+7. repeat until the model says the evidence is sufficient, then synthesize the final answer from evidence only
 
 This is:
 - vectorless
 - reasoning-based
 - section-coherent
 - local-only at inference time
+- multi-node within each bounded search step
 
 This is not:
 - embeddings-based retrieval
 - vector similarity search
 - fixed chunk retrieval
-- remote hosted inference
+- chat-history-aware retrieval
+- full PageIndex MCTS
 
 ## Local model JSON contract
 
-The local model must return **JSON-only** control outputs.
+The local model must return JSON-only control outputs.
 
-### Branch/section retrieval stages
+### Branch selection
 
-The retriever expects JSON like:
+Preferred shape:
 
 ```json
-{"action":"inspect","node_id":"0002","rationale":"..."}
+{"action":"inspect","node_list":["0021","1860"],"rationale":"..."}
 ```
 
-or:
+Legacy single-node shape still works:
+
+```json
+{"action":"inspect","node_id":"0021","rationale":"..."}
+```
+
+If evidence is already sufficient:
 
 ```json
 {"action":"answer","rationale":"...","answer_plan":"..."}
 ```
 
-For the section-selection stage, it also accepts:
+### Frontier selection
+
+Preferred shape:
 
 ```json
-{"node_id":"0002","rationale":"..."}
+{"action":"inspect","node_list":["1864","1871"],"rationale":"..."}
 ```
+
+Legacy single-node shape still works:
+
+```json
+{"action":"inspect","node_id":"1864","rationale":"..."}
+```
+
+The controller validates returned ids against the offered candidate set, dedupes them in model order, and caps each inspect batch at 3.
 
 ### Final answer stage
 
@@ -156,40 +175,42 @@ The answer synthesizer expects:
 
 Citations must point to node ids that were actually retrieved as evidence.
 
+The runtime then enriches the final output by:
+- sorting citations by source order / line span
+- adding human-readable citation labels
+- adding a `rendered` field with the answer plus a compact source list
+
 ## Why this is FPF-specific, not generic
 
 The reduced branch index is built specifically around FPF structure.
 
 It uses:
-- actual mirrored top-level FPF roots as the source of truth
-- current known FPF branch profiles such as `A`–`K` and `PREFACE` as hints
-- pattern-prefix hints like `A.`, `E.`, `F.`
-- FPF branch focus areas such as kernel, reasoning, constitution, bridge across contexts, glossary, annexes, and so on
+- canonical FPF part owners `PREFACE` and `A` through `K`
+- exact FPF ids such as `A.1.1:4.3`, `A.6.B`, `A.19.CHR`, and `G.0`
+- branch profile hints such as pattern prefixes and focus areas
+- exact appendix-label following before fuzzy fallback
 
-Important invariant:
-- if upstream FPF changes structure, reindexing derives a new reduced branch index from the **actual mirrored structure**
-- the system is not frozen to one historical FPF layout
+Important invariants:
+- branch routing is derived from the mirrored FPF structure, not hard-coded `ROOT-*` fallbacks
+- `.memory/` contains only knowledge derived from `FPF/FPF-Spec.md`
+- retrieval is lawful: model-selected ids must be members of the offered candidate set
 
 ## What `.memory/` contains
 
-Yes: the committed `.memory/` contains **only FPF-derived knowledge**.
-
-More precisely, it contains:
+Committed `.memory/` contains only:
 - structure derived from `FPF/FPF-Spec.md`
+- canonical ids and exact references derived from `FPF/FPF-Spec.md`
 - summaries derived from `FPF/FPF-Spec.md`
 - branch metadata specialized for FPF routing
 - coherent section content copied from `FPF/FPF-Spec.md`
 
-It does **not** contain:
+It does not contain:
 - chat history
 - user-specific notes
 - external corpora
 - embeddings
 - vector data
 - knowledge from `FPF/Readme.md`
-
-Current source of truth for `.memory/` is only:
-- `FPF/FPF-Spec.md`
 
 ## Sync and reindex lifecycle
 
@@ -198,6 +219,8 @@ Keep this distinction clear:
 ### GitHub daily sync
 - updates `FPF/`
 - rebuilds `.memory/`
+- verifies expected `.memory/` artifacts exist
+- logs whether `FPF/` changed, `.memory/` changed, or the run was a no-op
 - commits both `FPF/` and `.memory/`
 
 ### Local reindex
@@ -205,18 +228,18 @@ Keep this distinction clear:
 - rebuilds `.memory/`
 - is useful after local source changes or before local inspection of derived state
 
-## Testing status
+## Eval pack
 
-Testing is **not the current focus**, but we still want a plan and some safety.
+The repo includes a committed eval pack at `test/fixtures/pageindex-eval.json`.
 
-Current priority is:
-- keep `FPF/` up to date automatically
-- keep committed `.memory/` aligned with `FPF/FPF-Spec.md`
-- keep local retrieval local-only
+It is keyed by canonical FPF ids and currently covers:
+- `A.2.2`
+- `A.2.3`
+- `A.10`
+- `A.15.1`
+- `A.6.B`
+- `F.9`
+- `G.0`
+- `A.1.1:4.3`
 
-Planned longer-term coverage should keep focusing on:
-- index determinism
-- tree and branch loading
-- branch → section navigation
-- auto-expansion behavior
-- answer synthesis with citations
+The current tests use it to verify that the indexed corpus still contains the expected canonical targets for promise / ability / performance-style questions.

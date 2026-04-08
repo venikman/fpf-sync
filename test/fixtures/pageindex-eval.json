@@ -1,0 +1,50 @@
+[
+  {
+    "id": "capability",
+    "question": "What is A.2.2?",
+    "targetCanonicalId": "A.2.2",
+    "category": "ability"
+  },
+  {
+    "id": "promise-content",
+    "question": "What is A.2.3?",
+    "targetCanonicalId": "A.2.3",
+    "category": "promise"
+  },
+  {
+    "id": "evidence-graph",
+    "question": "What does A.10 say about evidence?",
+    "targetCanonicalId": "A.10",
+    "category": "performance"
+  },
+  {
+    "id": "method-work-alignment",
+    "question": "Where is A.15.1 defined?",
+    "targetCanonicalId": "A.15.1",
+    "category": "performance"
+  },
+  {
+    "id": "boundary-norm-square",
+    "question": "What is A.6.B in FPF?",
+    "targetCanonicalId": "A.6.B",
+    "category": "promise"
+  },
+  {
+    "id": "bridge-card",
+    "question": "What does F.9 cover?",
+    "targetCanonicalId": "F.9",
+    "category": "ability"
+  },
+  {
+    "id": "cg-spec",
+    "question": "What is G.0?",
+    "targetCanonicalId": "G.0",
+    "category": "performance"
+  },
+  {
+    "id": "bounded-context-interactions",
+    "question": "What does A.1.1:4.3 define?",
+    "targetCanonicalId": "A.1.1:4.3",
+    "category": "ability"
+  }
+]

@@ -1,10 +1,10 @@
 # Local PageIndex Memory Model
 
-This repo implements a local, PageIndex-style reasoning RAG over:
+This repo implements a local-only, PageIndex-style reasoning retriever over:
 
 - `FPF/FPF-Spec.md`
 
-It is intentionally specialized for **FPF** rather than a generic document corpus.
+It is intentionally specialized for FPF rather than a generic document corpus.
 
 ## Source and sync boundary
 
@@ -18,13 +18,22 @@ It is intentionally specialized for **FPF** rather than a generic document corpu
 Indexing writes committed derived artifacts:
 
 - `.memory/pageindex-state.json`
-  - source path, source hash, heading depth, node count
+  - `schemaVersion`
+  - `sourcePath`
+  - `contentHash`
+  - `maxHeadingDepth`
+  - `inspectLineBudget`
+  - `inspectCharBudget`
+  - `nodeCount`
 - `.memory/pageindex-tree.json`
   - full hierarchical PageIndex tree
+  - per-node `canonicalIds`
 - `.memory/fpf-branches.json`
-  - reduced FPF branch index for high-level branch routing
+  - reduced FPF branch index for branch-stage routing
+  - only canonical branch ids: `PREFACE`, `A`–`K`
 - `.memory/pageindex-content.jsonl`
   - exact `nodeId -> coherent section content` mapping
+  - per-node `canonicalIds` and exact `references`
 
 ## Knowledge scope
 
@@ -48,6 +57,7 @@ Each tree node carries:
 - `endLine`
 - `summary`
 - `references`
+- `canonicalIds`
 - `subNodes`
 
 ## Content mapping shape
@@ -58,6 +68,7 @@ Each content record carries:
 - `lineSpan`
 - `summary`
 - `references`
+- `canonicalIds`
 - `parentNodeId`
 - `childNodeIds`
 - `content`
@@ -73,8 +84,7 @@ Each reduced branch record carries:
 - `patternPrefixes`
 - `focusAreas`
 
-The reduced branch index is derived from the **actual mirrored top-level FPF structure**. Known
-FPF branch profiles are hints, not a rigid schema.
+The reduced branch index is derived from canonical FPF part owners. Internal cluster headings remain normal tree nodes and do not produce synthetic `ROOT-*` or `SECTION-*` branch ids.
 
 ## Commands
 
@@ -91,26 +101,28 @@ bun run memory answer "What is bounded context?"
 - retrieval reads `.memory/`
 - answering reads `.memory/`
 - runtime use is read-only
-- retrieval uses two-stage navigation: reduced FPF branch selection, then exact section selection
-- retrieval auto-expands to child, sibling, or referenced nodes when an inspected section looks incomplete
-- model endpoint and model name are hard-coded in code
+- retrieval uses a two-stage search: branch selection, then bounded frontier selection
+- the frontier is seeded by exact question-id matches, branch roots, branch children, exact reference targets, and short-leaf siblings
+- over-budget routing nodes expand to children instead of becoming evidence
+- the model endpoint and model name are hard-coded in code
 
 ## Retrieval workflow
 
 ### Stage 1 — branch routing
-Use `.memory/fpf-branches.json` to choose the most plausible FPF branch.
+Use `.memory/fpf-branches.json` to choose one or more plausible FPF branches when no exact question-id frontier exists.
 
-### Stage 2 — exact section routing
-Use `.memory/pageindex-tree.json` to choose the most plausible exact section inside the selected branch.
+### Stage 2 — frontier selection
+Use `.memory/pageindex-tree.json` and the live frontier to choose up to three next nodes to inspect.
 
 ### Stage 3 — evidence loading
 Use `.memory/pageindex-content.jsonl` to load coherent section content by `nodeId`.
 
-### Stage 4 — auto-expansion
-Expand to nearby child, sibling, or referenced nodes when the chosen section appears incomplete.
+### Stage 4 — frontier reseeding
+Seed exact reference targets, routing children, or short-leaf siblings after each inspect step.
 
 ### Stage 5 — answer synthesis
 Synthesize an answer from gathered evidence only, with citations back to retrieved node ids.
+The final answer surface sorts citations by source order and adds human-readable citation labels.
 
 ## Local model defaults
 
@@ -119,8 +131,12 @@ Synthesize an answer from gathered evidence only, with citations back to retriev
 
 ## Local model JSON contract
 
-### Retrieval stages
+### Branch and frontier stages
 Accepted control outputs:
+
+```json
+{"action":"inspect","node_list":["0002","0003"],"rationale":"..."}
+```
 
 ```json
 {"action":"inspect","node_id":"0002","rationale":"..."}
@@ -130,12 +146,6 @@ Accepted control outputs:
 {"action":"answer","rationale":"...","answer_plan":"..."}
 ```
 
-For exact section selection, the runtime also accepts:
-
-```json
-{"node_id":"0002","rationale":"..."}
-```
-
 ### Answer synthesis
 Accepted answer output:
 
@@ -143,6 +153,6 @@ Accepted answer output:
 {"answer":"...","citations":["0002","0003"]}
 ```
 
-## Testing note
+## Eval pack
 
-Testing exists and should keep growing, but it is not the current product focus.
+The repo carries a committed eval pack at `test/fixtures/pageindex-eval.json`. It is keyed by canonical FPF ids and used in tests to verify that the current repo spec still exposes the expected promise / ability / performance targets.

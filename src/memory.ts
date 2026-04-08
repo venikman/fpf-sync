@@ -1,6 +1,16 @@
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, rm } from 'node:fs/promises';
-import { basename, dirname, extname, join } from 'node:path';
+import { basename, extname, join } from 'node:path';
+
+import { Schema } from 'effect';
+
+import { parseMarkdownHeadings } from './memory-markdown.ts';
+import { PageIndexStateSchema } from './memory-schema.ts';
+import {
+  collectAppendixLabelValues,
+  collectCanonicalIdValues,
+  extractPartLetter,
+} from './memory-tokens.ts';
 
 export type LineSpan = {
   start: number;
@@ -15,6 +25,7 @@ export type PageIndexNode = {
   endLine: number;
   summary: string;
   references: string[];
+  canonicalIds: string[];
   subNodes: PageIndexNode[];
 };
 
@@ -25,6 +36,7 @@ export type PageIndexContentRecord = {
   lineSpan: LineSpan;
   summary: string;
   references: string[];
+  canonicalIds: string[];
   parentNodeId: string | null;
   childNodeIds: string[];
   content: string;
@@ -32,9 +44,11 @@ export type PageIndexContentRecord = {
 
 export type PageIndexState = {
   kind: 'pageindex-state';
-  schemaVersion: 1;
+  schemaVersion: 2;
   sourcePath: string;
   maxHeadingDepth: number;
+  inspectLineBudget: number;
+  inspectCharBudget: number;
   generatedAt: string;
   contentHash: string;
   nodeCount: number;
@@ -68,6 +82,7 @@ type ParsedHeading = {
   ordinal: number;
   depth: number;
   title: string;
+  normalizedTitle: string;
   line: number;
   parentOrdinal: number | null;
 };
@@ -76,18 +91,21 @@ type ParsedNode = {
   ordinal: number;
   depth: number;
   title: string;
+  normalizedTitle: string;
   lineSpan: LineSpan;
   parentOrdinal: number | null;
   content: string;
   summary: string;
   references: string[];
+  canonicalIds: string[];
 };
 
-const schemaVersion = 1;
-const defaultMaxHeadingDepth = 3;
+const schemaVersion = 2;
+const pageIndexBuildRevision = 'mdast-v1';
+const defaultMaxHeadingDepth = 6;
+const defaultInspectLineBudget = 140;
+const defaultInspectCharBudget = 6000;
 const maxSummaryChars = 220;
-const patternIdPattern = /\b([A-Z]\.[A-Z0-9]+(?:\.[A-Z0-9]+)*)\b/g;
-const appendixPattern = /\b(Appendix\s+[A-Z0-9]+)\b/g;
 
 const FPF_BRANCH_PROFILES = {
   PREFACE: {
@@ -160,6 +178,10 @@ const truncateText = (input: string, maxChars: number): string => {
   return `${input.slice(0, maxChars - 1).trimEnd()}…`;
 };
 
+const dedupeStrings = (values: readonly string[]): string[] => {
+  return [...new Set(values)];
+};
+
 const stripMarkdownSyntax = (input: string): string => {
   return input
     .replace(/!\[[^\]]*\]\(([^)]+)\)/g, '$1')
@@ -183,66 +205,37 @@ const summarizeContent = (content: string, fallback: string): string => {
   return truncateText(stripped, maxSummaryChars);
 };
 
-const dedupeStrings = (values: readonly string[]): string[] => {
-  return [...new Set(values)];
+const extractCanonicalIds = (input: string): string[] => {
+  return collectCanonicalIdValues(input);
+};
+
+const extractAppendixLabels = (input: string): string[] => {
+  return collectAppendixLabelValues(input);
 };
 
 const extractReferences = (input: string): string[] => {
-  const refs: string[] = [];
+  return dedupeStrings([
+    ...extractCanonicalIds(input),
+    ...extractAppendixLabels(input),
+  ]);
+};
 
-  for (const match of input.matchAll(patternIdPattern)) {
-    const value = match[1]?.trim();
-
-    if (value) {
-      refs.push(value);
-    }
-  }
-
-  for (const match of input.matchAll(appendixPattern)) {
-    const value = match[1]?.trim();
-
-    if (value) {
-      refs.push(value);
-    }
-  }
-
-  return dedupeStrings(refs);
+const normalizeTitle = (title: string): string => {
+  return stripMarkdownSyntax(title);
 };
 
 const padNodeId = (ordinal: number): string => {
   return String(ordinal).padStart(4, '0');
 };
 
-const findHeadings = (lines: readonly string[], maxHeadingDepth: number): ParsedHeading[] => {
+const findHeadings = (content: string, maxHeadingDepth: number): ParsedHeading[] => {
+  const markdownHeadings = parseMarkdownHeadings(content, maxHeadingDepth);
   const headings: ParsedHeading[] = [];
   const stack: ParsedHeading[] = [];
   let ordinal = 0;
-  let inFence = false;
-
-  for (const [index, rawLine] of lines.entries()) {
-    const line = rawLine.trim();
-
-    if (/^(```|~~~)/.test(line)) {
-      inFence = !inFence;
-      continue;
-    }
-
-    if (inFence) {
-      continue;
-    }
-
-    const match = /^(#{1,6})\s+(.+?)\s*$/.exec(rawLine);
-
-    if (!match) {
-      continue;
-    }
-
-    const [, hashes = '', rawTitle = ''] = match;
-    const depth = hashes.length;
-
-    if (depth > maxHeadingDepth) {
-      continue;
-    }
+ 
+  for (const markdownHeading of markdownHeadings) {
+    const depth = markdownHeading.depth;
 
     ordinal += 1;
 
@@ -256,11 +249,13 @@ const findHeadings = (lines: readonly string[], maxHeadingDepth: number): Parsed
       stack.pop();
     }
 
+    const title = markdownHeading.title.trim() || `Section ${ordinal}`;
     const heading: ParsedHeading = {
       ordinal,
       depth,
-      title: rawTitle.trim() || `Section ${ordinal}`,
-      line: index + 1,
+      title,
+      normalizedTitle: normalizeTitle(title),
+      line: markdownHeading.line,
       parentOrdinal: stack.at(-1)?.ordinal ?? null,
     };
 
@@ -273,7 +268,7 @@ const findHeadings = (lines: readonly string[], maxHeadingDepth: number): Parsed
 
 const parseNodes = (targetPath: string, content: string, maxHeadingDepth: number): ParsedNode[] => {
   const lines = content.split(/\r?\n/);
-  const headings = findHeadings(lines, maxHeadingDepth);
+  const headings = findHeadings(content, maxHeadingDepth);
   const baseTitle = basename(targetPath, extname(targetPath));
 
   if (headings.length === 0) {
@@ -284,6 +279,7 @@ const parseNodes = (targetPath: string, content: string, maxHeadingDepth: number
         ordinal: 1,
         depth: 1,
         title: baseTitle,
+        normalizedTitle: normalizeTitle(baseTitle),
         lineSpan: {
           start: 1,
           end: Math.max(1, lines.length),
@@ -292,6 +288,7 @@ const parseNodes = (targetPath: string, content: string, maxHeadingDepth: number
         content: fullContent,
         summary: summarizeContent(fullContent, baseTitle),
         references: extractReferences(fullContent),
+        canonicalIds: extractCanonicalIds(baseTitle),
       },
     ];
   }
@@ -305,61 +302,71 @@ const parseNodes = (targetPath: string, content: string, maxHeadingDepth: number
       ordinal: heading.ordinal,
       depth: heading.depth,
       title: heading.title,
+      normalizedTitle: heading.normalizedTitle,
       lineSpan: {
         start: heading.line,
         end: Math.max(heading.line, endLine),
       },
       parentOrdinal: heading.parentOrdinal,
       content: nodeContent,
-      summary: summarizeContent(nodeContent, heading.title),
+      summary: summarizeContent(nodeContent, heading.normalizedTitle || heading.title),
       references: extractReferences(nodeContent),
+      canonicalIds: dedupeStrings([
+        ...extractCanonicalIds(heading.normalizedTitle),
+        ...extractAppendixLabels(heading.normalizedTitle),
+      ]),
     };
   });
 };
 
-const classifyFpfBranch = (title: string): string | null => {
-  if (/table of content/i.test(title)) {
+const isDocumentPreamble = (title: string): boolean => {
+  const normalized = title.trim().toLowerCase();
+
+  return (
+    normalized.startsWith('first principles framework') ||
+    normalized.startsWith('table of content')
+  );
+};
+
+const inferBranchId = (title: string, canonicalIds: readonly string[]): keyof typeof FPF_BRANCH_PROFILES | null => {
+  const normalized = title.trim().toLowerCase();
+
+  if (normalized.includes('table of content') || isDocumentPreamble(title)) {
     return null;
   }
 
-  if (/preface/i.test(title)) {
+  if (normalized.startsWith('preface')) {
     return 'PREFACE';
   }
 
-  const partMatch = /^Part\s+([A-Z0-9]+)\b/i.exec(title);
+  const branchIdFromTitle = extractPartLetter(title);
 
-  if (partMatch?.[1]) {
-    return partMatch[1].toUpperCase();
+  if (branchIdFromTitle) {
+    return branchIdFromTitle as keyof typeof FPF_BRANCH_PROFILES;
   }
 
-  const sectionMatch = /^Section\s+([A-Z0-9-]+)\b/i.exec(title);
+  for (const canonicalId of canonicalIds) {
+    const branchId = canonicalId.slice(0, 1).toUpperCase();
 
-  if (sectionMatch?.[1]) {
-    return `SECTION-${sectionMatch[1].toUpperCase()}`;
+    if (branchId in FPF_BRANCH_PROFILES && branchId !== 'P') {
+      return branchId as keyof typeof FPF_BRANCH_PROFILES;
+    }
   }
 
-  return `ROOT-${title
-    .toUpperCase()
-    .replace(/[^A-Z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 32)}`;
+  return null;
 };
 
 const collectSubtreePatternPrefixes = (node: PageIndexNode): string[] => {
   const prefixes = new Set<string>();
+  const isPartPrefix = (value: string | undefined): value is string => {
+    return value !== undefined && value.length === 1 && value >= 'A' && value <= 'K';
+  };
+
   const visit = (current: PageIndexNode): void => {
-    for (const match of `${current.title} ${current.summary} ${current.references.join(' ')}`.matchAll(
-      patternIdPattern,
-    )) {
-      const patternId = match[1]?.trim();
+    for (const canonicalId of [...current.canonicalIds, ...current.references]) {
+      const [prefix] = canonicalId.split('.');
 
-      if (!patternId) {
-        continue;
-      }
-
-      const [prefix] = patternId.split('.');
-
-      if (prefix) {
+      if (isPartPrefix(prefix)) {
         prefixes.add(`${prefix}.`);
       }
     }
@@ -383,21 +390,38 @@ const inferFallbackFocusAreas = (title: string): string[] => {
     .slice(0, 6);
 };
 
+const flattenTree = (tree: readonly PageIndexNode[]): PageIndexNode[] => {
+  const nodes: PageIndexNode[] = [];
+
+  const visit = (node: PageIndexNode): void => {
+    nodes.push(node);
+
+    for (const child of node.subNodes) {
+      visit(child);
+    }
+  };
+
+  for (const node of tree) {
+    visit(node);
+  }
+
+  return nodes;
+};
+
 const buildFpfBranchIndex = (tree: readonly PageIndexNode[]): FpfBranchRecord[] => {
   const seen = new Set<string>();
   const branches: FpfBranchRecord[] = [];
 
-  for (const node of tree) {
-    const branchId = classifyFpfBranch(node.title);
+  for (const node of flattenTree(tree)) {
+    const normalizedTitle = normalizeTitle(node.title);
+    const branchId = inferBranchId(normalizedTitle, node.canonicalIds);
 
     if (!branchId || seen.has(branchId)) {
       continue;
     }
 
     seen.add(branchId);
-    const knownProfile = branchId in FPF_BRANCH_PROFILES
-      ? FPF_BRANCH_PROFILES[branchId as keyof typeof FPF_BRANCH_PROFILES]
-      : null;
+    const profile = FPF_BRANCH_PROFILES[branchId];
     const inferredPrefixes = collectSubtreePatternPrefixes(node);
 
     branches.push({
@@ -410,14 +434,12 @@ const buildFpfBranchIndex = (tree: readonly PageIndexNode[]): FpfBranchRecord[] 
       },
       summary: node.summary,
       patternPrefixes:
-        knownProfile && knownProfile.patternPrefixes.length > 0
-          ? [...knownProfile.patternPrefixes]
-          : inferredPrefixes,
-      focusAreas: knownProfile ? [...knownProfile.focusAreas] : inferFallbackFocusAreas(node.title),
+        profile.patternPrefixes.length > 0 ? [...profile.patternPrefixes] : inferredPrefixes,
+      focusAreas: profile.focusAreas.length > 0 ? [...profile.focusAreas] : inferFallbackFocusAreas(normalizedTitle),
     });
   }
 
-  return branches;
+  return branches.sort((left, right) => left.lineSpan.start - right.lineSpan.start);
 };
 
 const buildTreeArtifacts = (
@@ -431,11 +453,17 @@ const buildTreeArtifacts = (
   nodeCount: number;
 } => {
   const parsedNodes = parseNodes(targetPath, content, maxHeadingDepth);
+  const childrenByParentOrdinal = new Map<number | null, ParsedNode[]>();
+
+  for (const node of parsedNodes) {
+    const current = childrenByParentOrdinal.get(node.parentOrdinal) ?? [];
+    current.push(node);
+    childrenByParentOrdinal.set(node.parentOrdinal, current);
+  }
+
   const contents = parsedNodes.map((node) => {
     const nodeId = padNodeId(node.ordinal);
-    const childNodeIds = parsedNodes
-      .filter((candidate) => candidate.parentOrdinal === node.ordinal)
-      .map((candidate) => padNodeId(candidate.ordinal));
+    const childNodeIds = (childrenByParentOrdinal.get(node.ordinal) ?? []).map((candidate) => padNodeId(candidate.ordinal));
 
     return {
       nodeId,
@@ -444,6 +472,7 @@ const buildTreeArtifacts = (
       lineSpan: node.lineSpan,
       summary: node.summary,
       references: node.references,
+      canonicalIds: node.canonicalIds,
       parentNodeId: node.parentOrdinal ? padNodeId(node.parentOrdinal) : null,
       childNodeIds,
       content: node.content,
@@ -467,6 +496,7 @@ const buildTreeArtifacts = (
       endLine: node.lineSpan.end,
       summary: node.summary,
       references: node.references,
+      canonicalIds: node.canonicalIds,
       subNodes: (childrenByParent.get(node.nodeId) ?? [])
         .map((child) => contentsById.get(child.nodeId))
         .filter((child): child is PageIndexContentRecord => child !== undefined)
@@ -501,25 +531,15 @@ const getArtifactPaths = (memoryRoot: string): {
 const readState = async (statePath: string): Promise<PageIndexState | null> => {
   try {
     const raw = await readFile(statePath, 'utf8');
-    const parsed = JSON.parse(raw) as Partial<PageIndexState>;
-
-    if (
-      parsed.kind !== 'pageindex-state' ||
-      parsed.schemaVersion !== schemaVersion ||
-      typeof parsed.sourcePath !== 'string' ||
-      typeof parsed.maxHeadingDepth !== 'number' ||
-      typeof parsed.generatedAt !== 'string' ||
-      typeof parsed.contentHash !== 'string' ||
-      typeof parsed.nodeCount !== 'number'
-    ) {
-      return null;
-    }
+    const parsed = Schema.decodeUnknownSync(PageIndexStateSchema)(JSON.parse(raw) as unknown);
 
     return {
       kind: 'pageindex-state',
       schemaVersion,
       sourcePath: parsed.sourcePath,
       maxHeadingDepth: parsed.maxHeadingDepth,
+      inspectLineBudget: parsed.inspectLineBudget,
+      inspectCharBudget: parsed.inspectCharBudget,
       generatedAt: parsed.generatedAt,
       contentHash: parsed.contentHash,
       nodeCount: parsed.nodeCount,
@@ -563,7 +583,7 @@ export const ensurePageIndex = async (
   const artifactRoot = '.memory';
   const memoryRoot = join(input.cwd, artifactRoot);
   const maxHeadingDepth = input.maxHeadingDepth ?? defaultMaxHeadingDepth;
-  const contentHash = sha1(input.content);
+  const contentHash = sha1(`${pageIndexBuildRevision}\0${input.content}`);
   const paths = getArtifactPaths(memoryRoot);
   const currentState = await readState(paths.statePath);
 
@@ -572,6 +592,8 @@ export const ensurePageIndex = async (
     currentState.contentHash === contentHash &&
     currentState.sourcePath === input.targetPath &&
     currentState.maxHeadingDepth === maxHeadingDepth &&
+    currentState.inspectLineBudget === defaultInspectLineBudget &&
+    currentState.inspectCharBudget === defaultInspectCharBudget &&
     (await artifactsExist(paths))
   ) {
     return {
@@ -591,6 +613,8 @@ export const ensurePageIndex = async (
     schemaVersion,
     sourcePath: input.targetPath,
     maxHeadingDepth,
+    inspectLineBudget: defaultInspectLineBudget,
+    inspectCharBudget: defaultInspectCharBudget,
     generatedAt: input.generatedAt,
     contentHash,
     nodeCount,

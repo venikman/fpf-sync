@@ -1,29 +1,8 @@
 [
   {
-    "branchId": "ROOT-FIRST-PRINCIPLES-FRAMEWORK-FPF-C",
-    "nodeId": "0001",
-    "title": "First Principles Framework (FPF) — Core Conceptual Specification",
-    "lineSpan": {
-      "start": 1,
-      "end": 6
-    },
-    "summary": "First Principles Framework (FPF) — Core Conceptual Specification by Anatoly Levenchuk and assortment of LLMs. March 2026 Pattern and headers templates are explained in pattern E.8.",
-    "patternPrefixes": [
-      "E."
-    ],
-    "focusAreas": [
-      "first",
-      "principles",
-      "framework",
-      "fpf",
-      "core",
-      "conceptual"
-    ]
-  },
-  {
     "branchId": "PREFACE",
     "nodeId": "0003",
-    "title": "**Preface** (non-normative)",
+    "title": "Preface (non-normative)",
     "lineSpan": {
       "start": 340,
       "end": 341
@@ -67,60 +46,27 @@
     ]
   },
   {
-    "branchId": "ROOT-CLUSTER-A-IV-A-SIGNATURE-STACK-B",
-    "nodeId": "0301",
-    "title": "**Cluster A.IV.A - Signature Stack & Boundary Discipline (A.6.\\*)**",
+    "branchId": "C",
+    "nodeId": "0027",
+    "title": "4.1 Plain one‑liners (normative on‑ramp; formal anchors in C.17–C.19)",
     "lineSpan": {
-      "start": 6556,
-      "end": 6557
+      "start": 800,
+      "end": 816
     },
-    "summary": "Cluster A.IV.A - Signature Stack & Boundary Discipline (A.6.\\ )",
+    "summary": "4.1 Plain one‑liners (normative on‑ramp; formal anchors in C.17–C.19) Term Plain definition (on‑ramp) See ------------------------- ---------------------------------------------------------------------------------------…",
     "patternPrefixes": [
-      "A.",
-      "B.",
-      "C.",
-      "D.",
-      "E.",
-      "F.",
-      "G."
+      "C."
     ],
     "focusAreas": [
-      "cluster",
-      "signature",
-      "stack",
-      "boundary",
-      "discipline"
-    ]
-  },
-  {
-    "branchId": "ROOT-CLUSTER-A-V-CONSTITUTIONAL-PRINC",
-    "nodeId": "0579",
-    "title": "Cluster A.V - Constitutional Principles of the Kernel",
-    "lineSpan": {
-      "start": 16040,
-      "end": 16041
-    },
-    "summary": "Cluster A.V - Constitutional Principles of the Kernel",
-    "patternPrefixes": [
-      "A.",
-      "B.",
-      "C.",
-      "D.",
-      "E.",
-      "F.",
-      "G."
-    ],
-    "focusAreas": [
-      "cluster",
-      "constitutional",
-      "principles",
-      "the",
-      "kernel"
+      "kernel extensions",
+      "episteme",
+      "worldview",
+      "governed knowledge structures"
     ]
   },
   {
     "branchId": "B",
-    "nodeId": "1012",
+    "nodeId": "1830",
     "title": "Part B – Trans‑disciplinary Reasoning Cluster",
     "lineSpan": {
       "start": 24331,
@@ -139,149 +85,66 @@
     ]
   },
   {
-    "branchId": "ROOT-PART-C-KERNEL-EXTENSIONS-SPECIFI",
-    "nodeId": "1321",
-    "title": "**Part C — Kernel Extensions Specifications**",
-    "lineSpan": {
-      "start": 29111,
-      "end": 29117
-    },
-    "summary": "Part C — Kernel Extensions Specifications § Pattern Tag Scope & Exports -------------------------------------------- ---------------------------------- --- ---------------------------------------------------------------…",
-    "patternPrefixes": [
-      "A.",
-      "B.",
-      "C.",
-      "D.",
-      "E.",
-      "F.",
-      "G.",
-      "M."
-    ],
-    "focusAreas": [
-      "part",
-      "kernel",
-      "extensions",
-      "specifications"
-    ]
-  },
-  {
-    "branchId": "ROOT-PART-D-MULTI-SCALE-ETHICS-CONFLI",
-    "nodeId": "1829",
-    "title": "**Part D – Multi-scale Ethics & Conflict‑Optimisation**",
+    "branchId": "D",
+    "nodeId": "3322",
+    "title": "Part D – Multi-scale Ethics & Conflict‑Optimisation",
     "lineSpan": {
       "start": 38583,
       "end": 38599
     },
     "summary": "Part D – Multi-scale Ethics & Conflict‑Optimisation § ID & Title Concise reminder — “what belongs here” ------- ------------------------------------ ----------------------------------------------------------------------…",
     "patternPrefixes": [
-      "B.",
-      "D.",
-      "E."
+      "D."
     ],
     "focusAreas": [
-      "part",
-      "multi",
-      "scale",
       "ethics",
       "conflict",
-      "optimisation"
+      "optimization",
+      "multi-scale trade-offs"
     ]
   },
   {
-    "branchId": "ROOT-PART-E-FPF-CONSTITUTION-AND-AUTH",
-    "nodeId": "1841",
-    "title": "**Part E - FPF Constitution and Authoring Cluster**",
+    "branchId": "E",
+    "nodeId": "3337",
+    "title": "Part E - FPF Constitution and Authoring Cluster",
     "lineSpan": {
       "start": 38720,
       "end": 38721
     },
     "summary": "Part E - FPF Constitution and Authoring Cluster",
-    "patternPrefixes": [],
-    "focusAreas": [
-      "part",
-      "fpf",
-      "constitution",
-      "and",
-      "authoring",
-      "cluster"
-    ]
-  },
-  {
-    "branchId": "SECTION-E",
-    "nodeId": "1842",
-    "title": "Section E‑I - The FPF Constitution",
-    "lineSpan": {
-      "start": 38722,
-      "end": 38723
-    },
-    "summary": "Section E‑I - The FPF Constitution",
     "patternPrefixes": [
-      "A.",
-      "B.",
-      "C.",
-      "D.",
-      "E.",
-      "F.",
-      "G.",
-      "J.",
-      "P.",
-      "U."
+      "E."
     ],
     "focusAreas": [
-      "section",
-      "the",
-      "fpf",
-      "constitution"
+      "constitution",
+      "authoring",
+      "lexical rules",
+      "multi-view",
+      "publication discipline"
     ]
   },
   {
-    "branchId": "ROOT-PART-F-THE-UNIFICATION-SUITE-U-S",
-    "nodeId": "2269",
-    "title": "**Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment**",
+    "branchId": "F",
+    "nodeId": "4058",
+    "title": "Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment",
     "lineSpan": {
       "start": 47292,
       "end": 47293
     },
     "summary": "Part F — The Unification Suite (U‑Suite): Concept‑Sets, SenseCells & Contextual Role Assignment",
-    "patternPrefixes": [],
-    "focusAreas": [
-      "part",
-      "the",
-      "unification",
-      "suite",
-      "suite",
-      "concept"
-    ]
-  },
-  {
-    "branchId": "ROOT-CLUSTER-F-I-CONTEXT-OF-MEANING-R",
-    "nodeId": "2270",
-    "title": "Cluster F.I — context of meaning & Raw Material",
-    "lineSpan": {
-      "start": 47294,
-      "end": 47295
-    },
-    "summary": "Cluster F.I — context of meaning & Raw Material",
     "patternPrefixes": [
-      "A.",
-      "B.",
-      "C.",
-      "D.",
-      "E.",
-      "F.",
-      "G."
+      "F."
     ],
     "focusAreas": [
-      "cluster",
-      "context",
-      "meaning",
-      "raw",
-      "material"
+      "unification suite",
+      "alignment",
+      "bridge across contexts",
+      "meaning raw material"
     ]
   },
   {
     "branchId": "G",
-    "nodeId": "2655",
+    "nodeId": "4700",
     "title": "Part G – Discipline SoTA Patterns Kit",
     "lineSpan": {
       "start": 54271,
@@ -298,9 +161,9 @@
     ]
   },
   {
-    "branchId": "ROOT-PART-H-GLOSSARY-DEFINITIONAL-PAT",
-    "nodeId": "2876",
-    "title": "**Part H – Glossary & Definitional Pattern Index**",
+    "branchId": "H",
+    "nodeId": "5072",
+    "title": "Part H – Glossary & Definitional Pattern Index",
     "lineSpan": {
       "start": 60535,
       "end": 60543
@@ -310,17 +173,15 @@
       "H."
     ],
     "focusAreas": [
-      "part",
       "glossary",
-      "definitional",
-      "pattern",
-      "index"
+      "definitions",
+      "pattern index"
     ]
   },
   {
-    "branchId": "ROOT-PART-I-ANNEXES-EXTENDED-TUTORIAL",
-    "nodeId": "2877",
-    "title": "**Part I – Annexes & Extended Tutorials**",
+    "branchId": "I",
+    "nodeId": "5073",
+    "title": "Part I – Annexes & Extended Tutorials",
     "lineSpan": {
       "start": 60544,
       "end": 60553
@@ -330,54 +191,44 @@
       "I."
     ],
     "focusAreas": [
-      "part",
       "annexes",
-      "extended",
-      "tutorials"
+      "tutorials",
+      "extended examples"
     ]
   },
   {
-    "branchId": "ROOT-PART-J-INDEXES-NAVIGATION-AIDS",
-    "nodeId": "2878",
-    "title": "**Part J – Indexes & Navigation Aids**",
+    "branchId": "J",
+    "nodeId": "5074",
+    "title": "Part J – Indexes & Navigation Aids",
     "lineSpan": {
       "start": 60554,
       "end": 60562
     },
     "summary": "Part J – Indexes & Navigation Aids § ID & Title Concise reminder --- ------------------------ --- ------------------------------------------------------- J.1 Concept‑to‑Pattern Index Quick jump from idea (“boundary”) to…",
     "patternPrefixes": [
-      "A.",
-      "B.",
-      "E.",
-      "F.",
-      "G.",
-      "I.",
       "J."
     ],
     "focusAreas": [
-      "part",
       "indexes",
-      "navigation",
-      "aids"
+      "navigation aids"
     ]
   },
   {
-    "branchId": "ROOT-PART-K-LEXICAL-DEBT",
-    "nodeId": "2880",
-    "title": "**Part K  – Lexical debt**",
+    "branchId": "K",
+    "nodeId": "5076",
+    "title": "Part K  – Lexical debt",
     "lineSpan": {
       "start": 60576,
       "end": 60576
     },
     "summary": "Part K – Lexical debt",
     "patternPrefixes": [
-      "A.",
-      "C."
+      "K."
     ],
     "focusAreas": [
-      "part",
-      "lexical",
-      "debt"
+      "lexical debt",
+      "cleanup",
+      "terminology debt"
     ]
   }
 ]

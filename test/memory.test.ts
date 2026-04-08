@@ -7,9 +7,11 @@ import { ensurePageIndex } from '../src/memory.ts';
 
 type PageIndexState = {
   kind: 'pageindex-state';
-  schemaVersion: 1;
+  schemaVersion: 2;
   sourcePath: string;
   maxHeadingDepth: number;
+  inspectLineBudget: number;
+  inspectCharBudget: number;
   generatedAt: string;
   contentHash: string;
   nodeCount: number;
@@ -23,6 +25,7 @@ type PageIndexNode = {
   endLine: number;
   summary: string;
   references: string[];
+  canonicalIds: string[];
   subNodes: PageIndexNode[];
 };
 
@@ -32,6 +35,7 @@ type PageIndexContentRecord = {
   depth: number;
   summary: string;
   references: string[];
+  canonicalIds: string[];
   parentNodeId: string | null;
   childNodeIds: string[];
   lineSpan: {
@@ -77,20 +81,31 @@ afterEach(async () => {
 });
 
 describe('ensurePageIndex', () => {
-  test('writes a PageIndex tree and node-content mapping for markdown headings', async () => {
+  test('writes schema-v2 artifacts with canonical ids and deep heading coverage', async () => {
     const content = [
       '# Part A',
       '',
       'Overview text.',
       '',
-      '## A.1.1 - U.BoundedContext',
+      '## A.1.1 - `U.BoundedContext`',
       '',
       'Bounded context defines local meaning.',
-      'See Appendix G and A.10.',
       '',
-      '### A.1.1.a - Local boundary note',
+      '### A.1.1:4 - Solution',
       '',
-      'Nested detail for local interpretation.',
+      'See Appendix G and A.1.1:4.3.',
+      '',
+      '#### A.1.1:4.3 - Context interactions',
+      '',
+      'Normative detail.',
+      '',
+      '##### A.1.1:4.3.a - Lower detail',
+      '',
+      'Even more detail.',
+      '',
+      '###### A.1.1:4.3.a.1 - Sixth level note',
+      '',
+      'Leaf detail.',
     ].join('\n');
 
     const result = await ensurePageIndex({
@@ -116,97 +131,77 @@ describe('ensurePageIndex', () => {
     expect(result).toEqual({
       artifactRoot: '.memory',
       changed: true,
-      nodeCount: 3,
+      nodeCount: 6,
     });
     expect(state).toMatchObject({
       kind: 'pageindex-state',
-      schemaVersion: 1,
+      schemaVersion: 2,
       sourcePath: 'FPF-Spec.md',
-      maxHeadingDepth: 3,
+      maxHeadingDepth: 6,
+      inspectLineBudget: 140,
+      inspectCharBudget: 6000,
       generatedAt: '2026-04-07T12:00:00.000Z',
-      nodeCount: 3,
+      nodeCount: 6,
     });
-    expect(tree).toEqual([
-      {
-        nodeId: '0001',
-        title: 'Part A',
-        depth: 1,
-        startLine: 1,
-        endLine: 4,
-        summary: 'Part A Overview text.',
-        references: [],
-        subNodes: [
-          {
-            nodeId: '0002',
-            title: 'A.1.1 - U.BoundedContext',
-            depth: 2,
-            startLine: 5,
-            endLine: 9,
-            summary: 'A.1.1 - U.BoundedContext Bounded context defines local meaning. See Appendix G and A.10.',
-            references: ['A.1.1', 'A.10', 'Appendix G'],
-            subNodes: [
-              {
-                nodeId: '0003',
-                title: 'A.1.1.a - Local boundary note',
-                depth: 3,
-                startLine: 10,
-                endLine: 12,
-                summary: 'A.1.1.a - Local boundary note Nested detail for local interpretation.',
-                references: ['A.1.1'],
-                subNodes: [],
-              },
-            ],
-          },
-        ],
-      },
+    expect(tree[0]?.canonicalIds).toEqual([]);
+    expect(tree[0]?.subNodes[0]?.canonicalIds).toEqual(['A.1.1']);
+    expect(tree[0]?.subNodes[0]?.subNodes[0]?.canonicalIds).toEqual(['A.1.1:4']);
+    expect(tree[0]?.subNodes[0]?.subNodes[0]?.subNodes[0]?.canonicalIds).toEqual(['A.1.1:4.3']);
+    expect(
+      tree[0]?.subNodes[0]?.subNodes[0]?.subNodes[0]?.subNodes[0]?.canonicalIds,
+    ).toEqual(['A.1.1:4.3.a']);
+    expect(
+      tree[0]?.subNodes[0]?.subNodes[0]?.subNodes[0]?.subNodes[0]?.subNodes[0]?.canonicalIds,
+    ).toEqual(['A.1.1:4.3.a.1']);
+    expect(tree[0]?.subNodes[0]?.subNodes[0]?.references).toEqual(['A.1.1:4', 'A.1.1:4.3', 'Appendix G']);
+    expect(branches.map((branch) => branch.branchId)).toEqual(['A']);
+    expect(contents.map((item) => item.canonicalIds)).toEqual([
+      [],
+      ['A.1.1'],
+      ['A.1.1:4'],
+      ['A.1.1:4.3'],
+      ['A.1.1:4.3.a'],
+      ['A.1.1:4.3.a.1'],
     ]);
-    expect(branches).toEqual([
-      {
-        branchId: 'A',
-        nodeId: '0001',
-        title: 'Part A',
-        lineSpan: { start: 1, end: 4 },
-        summary: 'Part A Overview text.',
-        patternPrefixes: ['A.'],
-        focusAreas: ['kernel', 'bounded context', 'roles', 'methods', 'evidence', 'extension layering'],
-      },
-    ]);
-    expect(contents).toEqual([
-      {
-        nodeId: '0001',
-        title: 'Part A',
-        depth: 1,
-        summary: 'Part A Overview text.',
-        references: [],
-        parentNodeId: null,
-        childNodeIds: ['0002'],
-        lineSpan: { start: 1, end: 4 },
-        content: '# Part A\n\nOverview text.',
-      },
-      {
-        nodeId: '0002',
-        title: 'A.1.1 - U.BoundedContext',
-        depth: 2,
-        summary: 'A.1.1 - U.BoundedContext Bounded context defines local meaning. See Appendix G and A.10.',
-        references: ['A.1.1', 'A.10', 'Appendix G'],
-        parentNodeId: '0001',
-        childNodeIds: ['0003'],
-        lineSpan: { start: 5, end: 9 },
-        content:
-          '## A.1.1 - U.BoundedContext\n\nBounded context defines local meaning.\nSee Appendix G and A.10.',
-      },
-      {
-        nodeId: '0003',
-        title: 'A.1.1.a - Local boundary note',
-        depth: 3,
-        summary: 'A.1.1.a - Local boundary note Nested detail for local interpretation.',
-        references: ['A.1.1'],
-        parentNodeId: '0002',
-        childNodeIds: [],
-        lineSpan: { start: 10, end: 12 },
-        content: '### A.1.1.a - Local boundary note\n\nNested detail for local interpretation.',
-      },
-    ]);
+  });
+
+  test('derives canonical FPF branches without synthetic ROOT records', async () => {
+    const content = [
+      '# First Principles Framework (FPF) — Core Conceptual Specification',
+      '',
+      '# Table of Content',
+      '',
+      '# **Preface** (non-normative)',
+      '',
+      'Overview.',
+      '',
+      '# Part A – Kernel Architecture Cluster',
+      '',
+      'Part A overview.',
+      '',
+      '## **Cluster A.IV.A - Signature Stack & Boundary Discipline (A.6.\\*)**',
+      '',
+      'Internal cluster detail.',
+      '',
+      '# Part B – Reasoning Architecture Cluster',
+      '',
+      'Part B overview.',
+    ].join('\n');
+
+    await ensurePageIndex({
+      cwd,
+      targetPath: 'FPF-Spec.md',
+      content,
+      generatedAt: '2026-04-07T12:00:00.000Z',
+    });
+
+    const branches = JSON.parse(
+      await readFile(join(cwd, '.memory/fpf-branches.json'), 'utf8'),
+    ) as FpfBranchRecord[];
+
+    expect(branches.map((branch) => branch.branchId)).toEqual(['PREFACE', 'A', 'B']);
+    expect(branches.some((branch) => branch.branchId.startsWith('ROOT-'))).toBe(false);
+    expect(branches.some((branch) => branch.branchId.startsWith('SECTION-'))).toBe(false);
   });
 
   test('does not rewrite local pageindex artifacts when source content is unchanged', async () => {

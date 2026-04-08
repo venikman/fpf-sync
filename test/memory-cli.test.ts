@@ -109,11 +109,14 @@ describe('runMemoryCli', () => {
   test('runs retrieve with scripted local model reasoning', async () => {
     await rm(join(cwd, 'FPF', 'FPF-Spec.md'));
     const scripted = createScriptedChat([
-      JSON.stringify({ action: 'inspect', node_id: '0001', rationale: 'Part A is the correct branch.' }),
-      JSON.stringify({ node_id: '0003', rationale: 'A.10 is the direct match inside Part A.' }),
+      JSON.stringify({
+        action: 'inspect',
+        node_list: ['0003'],
+        rationale: 'A.10 is explicitly named in the question.',
+      }),
       JSON.stringify({
         action: 'answer',
-        rationale: 'The selected node is sufficient.',
+        rationale: 'The exact A.10 node is sufficient.',
         answer_plan: 'Use node 0003.',
       }),
     ]);
@@ -123,18 +126,28 @@ describe('runMemoryCli', () => {
     const payload = JSON.parse(readStdout()) as {
       status: string;
       evidence: Array<{ nodeId: string }>;
+      steps: Array<{ nodeIds: string[] }>;
     };
 
     expect(result.exitCode).toBe(0);
     expect(payload.status).toBe('complete');
     expect(payload.evidence[0]?.nodeId).toBe('0003');
+    expect(payload.steps[0]?.nodeIds).toEqual(['0003']);
   });
 
   test('runs answer with scripted local model reasoning and synthesis', async () => {
     await rm(join(cwd, 'FPF', 'FPF-Spec.md'));
     const scripted = createScriptedChat([
-      JSON.stringify({ action: 'inspect', node_id: '0001', rationale: 'Part A is the correct branch.' }),
-      JSON.stringify({ node_id: '0002', rationale: 'A.1.1 is the direct match inside Part A.' }),
+      JSON.stringify({
+        action: 'inspect',
+        node_list: ['0001'],
+        rationale: 'Part A is the relevant branch.',
+      }),
+      JSON.stringify({
+        action: 'inspect',
+        node_list: ['0002'],
+        rationale: 'A.1.1 is the direct match.',
+      }),
       JSON.stringify({
         action: 'answer',
         rationale: 'The selected node is sufficient.',
@@ -148,11 +161,17 @@ describe('runMemoryCli', () => {
     const { io, readStdout } = createIo(cwd, scripted.chat);
 
     const result = await runMemoryCli(['answer', 'What is bounded context?'], io);
-    const payload = JSON.parse(readStdout()) as { answer: string; citations: Array<{ nodeId: string }> };
+    const payload = JSON.parse(readStdout()) as {
+      answer: string;
+      rendered: string;
+      citations: Array<{ nodeId: string; label: string }>;
+    };
 
     expect(result.exitCode).toBe(0);
     expect(payload.answer).toBe('Bounded context defines local meaning.');
+    expect(payload.rendered).toContain('Sources:');
     expect(payload.citations[0]?.nodeId).toBe('0002');
+    expect(payload.citations[0]?.label).toContain('lines');
   });
 
   test('fails with a helpful message when retrieve is missing a question', async () => {
@@ -162,5 +181,18 @@ describe('runMemoryCli', () => {
 
     expect(result.exitCode).toBe(1);
     expect(readStderr()).toContain('missing question for retrieve');
+  });
+
+  test('surfaces the local model error reason instead of a generic effect failure', async () => {
+    await rm(join(cwd, 'FPF', 'FPF-Spec.md'));
+    const { io, readStderr } = createIo(cwd, async () => {
+      throw new Error('LM Studio rejected the requested model');
+    });
+
+    const result = await runMemoryCli(['answer', 'Which pattern can be used for naming?'], io);
+
+    expect(result.exitCode).toBe(1);
+    expect(readStderr()).toContain('local model error: LM Studio rejected the requested model');
+    expect(readStderr()).not.toContain('An error has occurred');
   });
 });
