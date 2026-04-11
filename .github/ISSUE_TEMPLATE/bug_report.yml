@@ -63,7 +63,7 @@ body:
     id: logs
     attributes:
       label: Error output / logs
-      description: Paste any relevant error messages or logs.
+      description: Paste relevant errors/logs only, and redact secrets/tokens/PII before submitting.
       render: shell
     validations:
       required: false

@@ -34,6 +34,7 @@
 ## Agent metadata
 
 <!-- Fill in if this PR was authored or co-authored by an AI agent -->
+<!-- Do not include secrets, credentials, tokens, private URLs, or PII in Session/Prompt fields -->
 
 | Field   | Value |
 |---------|-------|
