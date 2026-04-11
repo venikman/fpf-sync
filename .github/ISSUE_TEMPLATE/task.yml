@@ -1,0 +1,78 @@
+name: Task
+description: A concrete work item — research, refactor, chore, or agent-delegable task
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for actionable work items that aren't bugs or feature requests.
+        Tasks can be picked up by humans or AI agents.
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What needs to be done and what does "done" look like?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - research / exploration
+        - refactor
+        - chore (deps, CI, cleanup)
+        - docs
+        - test coverage
+        - other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - src/ (indexing & retrieval)
+        - .github/ (sync workflow)
+        - .memory/ (derived state)
+        - MCP server
+        - CLI
+        - Docs
+        - Cross-cutting
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Checklist or conditions that mark this task as complete.
+      placeholder: |
+        - [ ] criterion 1
+        - [ ] criterion 2
+    validations:
+      required: false
+
+  - type: dropdown
+    id: agent_delegable
+    attributes:
+      label: Agent-delegable?
+      description: Can an AI agent (Devin, Claude Code, Hermes, Codex, etc.) handle this autonomously?
+      options:
+        - "yes"
+        - "partially — needs human review"
+        - "no — requires human judgement"
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Links, prior art, constraints, or related issues.
+    validations:
+      required: false
