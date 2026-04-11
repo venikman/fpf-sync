@@ -18,7 +18,7 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: Expected behaviour
+      label: Expected behavior
       description: What should have happened instead?
     validations:
       required: true
@@ -45,6 +45,7 @@ body:
         - MCP server
         - CLI
         - Docs
+        - Cross-cutting
         - Other
     validations:
       required: true

@@ -19,7 +19,7 @@ body:
     id: proposal
     attributes:
       label: Proposed solution
-      description: How should it work? Include API surface, CLI flags, or behaviour changes.
+      description: How should it work? Include API surface, CLI flags, or behavior changes.
     validations:
       required: true
 
@@ -34,6 +34,7 @@ body:
         - MCP server
         - CLI
         - Docs
+        - Cross-cutting
         - Other
     validations:
       required: true

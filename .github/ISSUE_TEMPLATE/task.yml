@@ -65,7 +65,7 @@ body:
       options:
         - "yes"
         - "partially — needs human review"
-        - "no — requires human judgement"
+        - "no — requires human judgment"
     validations:
       required: false
 
