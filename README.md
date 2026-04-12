@@ -19,7 +19,7 @@ If nothing changed, the run is a no-op.
 
 ## Repo structure
 
-```
+```text
 FPF/                        # mirrored upstream content
 .github/scripts/sync-fpf.sh # sync script
 .github/workflows/fpf-sync.yml # daily sync workflow
