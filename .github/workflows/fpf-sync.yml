@@ -37,7 +37,9 @@ jobs:
         run: |
           set -euo pipefail
 
-          if git diff --quiet --exit-code -- FPF; then
+          git add FPF
+
+          if git diff --cached --quiet --exit-code -- FPF; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No sync changes detected in FPF/."
             exit 0
@@ -47,7 +49,7 @@ jobs:
           echo "message=chore(sync): mirror ailev/FPF@${{ steps.sync.outputs.upstream_sha }}" >> "$GITHUB_OUTPUT"
 
           echo "Detected changes in FPF/:"
-          git diff --stat -- FPF
+          git diff --cached --stat -- FPF
 
       - name: Commit mirrored repo
         if: steps.detect.outputs.changed == 'true'
