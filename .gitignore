@@ -1,14 +1,3 @@
-node_modules/
-coverage/
-dist/
-*.log
-*.tsbuildinfo
-.env
-.env.local
-.secrets
 .DS_Store
 .idea/
 .vscode/
-.pi/
-bun.lockb
-package-lock.json
