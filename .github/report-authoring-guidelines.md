@@ -50,5 +50,5 @@ Each report must include:
 ## Publishing Rules
 
 - Never edit `FPF/`.
-- After adding or updating reports, run `npm run build`.
+- After adding or updating reports, run `bun run build`.
 - Commit only `reports/` and `docs/` when publishing generated output.

@@ -468,7 +468,7 @@ function renderHomePage(reports: Report[]): string {
       '  </section>',
       '  <section className="empty-block story-column">',
       '    <div className="empty-state">',
-      '      <p>Add a report under <code>reports/</code>, then rerun <code>npm run build</code> to publish the first story page.</p>',
+      '      <p>Add a report under <code>reports/</code>, then rerun <code>bun run build</code> to publish the first story page.</p>',
       '    </div>',
       '  </section>',
       '</main>',

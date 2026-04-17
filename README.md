@@ -56,7 +56,7 @@ The generated site is intended to publish from the `main` branch `/docs` folder 
 
 ## Local build
 
-Install dependencies once with `npm install`, then run:
+Install dependencies once with `bun install`, then run:
 
-- `npm run build` to regenerate `.site/` and build the Pages output into `docs/`
-- `npm run dev` to regenerate `.site/` and start the local Rspress dev server
+- `bun run build` to regenerate `.site/` and build the Pages output into `docs/`
+- `bun run dev` to regenerate `.site/` and start the local Rspress dev server
