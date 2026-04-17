@@ -3,37 +3,54 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
     <title>FPF Report Archive</title>
+    <meta name="description" content="Archive of plain-language reports for the mirrored FPF repository." />
     <link rel="canonical" href="https://venikman.github.io/fpf-sync/archive/" />
     <link rel="stylesheet" href="../assets/site.css" />
   </head>
   <body>
-    <main class="site-shell">
-      <div class="top-nav">
-        <a class="nav-link" href="../">Home</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="../">FPF Reports</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="./">Archive</a>
+          <a href="https://github.com/venikman/fpf-sync">GitHub</a>
+        </nav>
       </div>
-      <section class="hero">
-        <p class="eyebrow">Archive</p>
-        <h1>All published FPF reports.</h1>
-        <p class="lede">Newest first. Every entry links to the full write-up and keeps the canonical JSON report in sync.</p>
-      </section>
-      <section class="panel" style="margin-top: 1.2rem;">
-        <div class="report-grid">
-        <article class="report-card">
-          <div class="report-card-head">
-            <div>
-              <p class="eyebrow">Report</p>
-              <h3><a href="../reports/2026-04-15-08e8e6fd/">FPF now explains decisions, exploration, and tool planning more plainly</a></h3>
+    </header>
+    <main>
+      <section class="hero-band">
+        <div class="hero-band__inner">
+          <div class="hero-card">
+            <p class="kicker">Archive</p>
+            <h1>Every published report, newest first.</h1>
+            <div class="hero-copy">
+              <p>The archive stays secondary to the latest story, but every earlier write-up remains available with the same canonical JSON backing it.</p>
             </div>
-            <span class="chip">2026-04-17</span>
           </div>
-          <div class="summary">
-          <p>This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers, and the spec adds a dedicated decision chapter for the moment when a team already has options on the table and needs to choose, reject the set, or justify one more round of evidence-gathering.</p>
-          <p>The same cleanup also sharpens the boundaries between four different jobs that often get blurred together: keeping multiple options alive, selecting a public shortlist, planning tool-based execution, and making a final decision. In practice, the framework is becoming less hand-wavy about what a finished result should look like at each of those stages.</p>
+        </div>
+      </section>
+      <section class="archive-band wide-column" style="margin-top: -3.35rem;">
+        <div class="archive-list">
+        <article class="archive-card">
+          <div class="archive-card__top">
+            <p class="archive-card__date">April 17, 2026</p>
+            <a class="archive-card__link" href="../reports/2026-04-15-08e8e6fd/">Open report</a>
+          </div>
+          <h3 class="archive-card__title">FPF now explains decisions, exploration, and tool planning more plainly</h3>
+          <div class="archive-card__summary">
+            <p>This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers, and the spec adds a dedicated decision chapter for the moment when a team already has options on the table and needs to choose, reject the set, or justify one more round of evidence-gathering.</p>
           </div>
         </article>
         </div>
       </section>
     </main>
+    <footer class="page-footer">
+      <div class="page-footer__inner">
+        <p class="footer-note">Plain-language reporting for the mirrored FPF repository.</p>
+        <p class="footer-note">Source repo: <a href="https://github.com/venikman/fpf-sync">venikman/fpf-sync</a></p>
+      </div>
+    </footer>
   </body>
 </html>
