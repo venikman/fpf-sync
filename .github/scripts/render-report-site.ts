@@ -62,7 +62,7 @@ const REQUIRED_FIELDS = [
 ] as const;
 
 function parseIso(value: string): Date {
-  return new Date(value.replace('Z', '+00:00'));
+  return new Date(value);
 }
 
 function displayDate(value: string): string {
@@ -662,6 +662,15 @@ async function loadReports(): Promise<Report[]> {
       if (!(field in parsed)) {
         throw new Error(`${reportPath} is missing required field: ${field}`);
       }
+    }
+    if (!Array.isArray(parsed.highlights)) {
+      throw new Error(`${reportPath}.highlights must be an array`);
+    }
+    if (!Array.isArray(parsed.sections)) {
+      throw new Error(`${reportPath}.sections must be an array`);
+    }
+    if (!Array.isArray(parsed.source_sections)) {
+      throw new Error(`${reportPath}.source_sections must be an array`);
     }
 
     reports.push(parsed as Report);
