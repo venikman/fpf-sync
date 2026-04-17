@@ -4,14 +4,6 @@
   "type": "module",
   "packageManager": "bun@1.3.0",
   "scripts": {
-    "build:site-data": "bunx tsc -p tsconfig.render.json && bun .github/scripts/dist/render-report-site.js",
-    "build": "bun run build:site-data && bunx rspress build",
-    "dev": "bun run build:site-data && bunx rspress dev",
-    "preview": "bunx rspress preview"
-  },
-  "devDependencies": {
-    "@rspress/core": "^2.0.9",
-    "@types/node": "^25.6.0",
-    "typescript": "^6.0.3"
+    "build": "bun .github/scripts/render-report-site.ts"
   }
 }

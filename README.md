@@ -17,7 +17,7 @@ A separate Codex automation runs after the mirror job. It:
 1. Detects new sync commits on `main`.
 2. Collects upstream compare metadata and changed section context from the mirrored `FPF` sources.
 3. Writes one canonical JSON report per upstream change set into `./reports`.
-4. Generates Rspress source files from the reports and builds a static site into `./docs`.
+4. Renders a static HTML/CSS site from the reports into `./docs`.
 5. Commits and pushes only `reports/` and `docs/` so GitHub Pages can publish the latest report.
 
 ## Upstream contract
@@ -32,9 +32,8 @@ FPF/                        # mirrored upstream content
 .github/scripts/sync-fpf.sh # sync script
 .github/workflows/fpf-sync.yml # daily sync workflow
 .github/scripts/collect-report-context.py # report context collector
-.github/scripts/render-report-site.ts     # report-to-MDX generator
-theme/styles.css            # shared site styles for Rspress pages
-rspress.config.ts           # Rspress configuration
+.github/scripts/render-report-site.ts     # static Pages renderer
+theme/styles.css            # shared site styles
 reports/                    # canonical plain-language report JSON
 docs/                       # generated GitHub Pages site
 ```
@@ -56,7 +55,4 @@ The generated site is intended to publish from the `main` branch `/docs` folder 
 
 ## Local build
 
-Install dependencies once with `bun install`, then run:
-
-- `bun run build` to regenerate `.site/` and build the Pages output into `docs/`
-- `bun run dev` to regenerate `.site/` and start the local Rspress dev server
+Run `bun run build` to regenerate the Pages output in `docs/`.

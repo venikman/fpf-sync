@@ -1,28 +1,216 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FPF now explains decisions, exploration, and tool planning more plainly</title>
-<link href="/fpf-sync/static/css/styles.1682cb1c80.css" rel="stylesheet">
-<script defer src="/fpf-sync/static/js/styles.59e64a6eb5.js"></script>
-<script defer src="/fpf-sync/static/js/lib-react.182b5d7749.js"></script>
-<script defer src="/fpf-sync/static/js/lib-router.7ba0456b92.js"></script>
-<script defer src="/fpf-sync/static/js/205.69ae3bed15.js"></script>
-<script defer src="/fpf-sync/static/js/index.011638fa4a.js"></script>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Rspress v2.0.9">
-<meta property="og:type" content="website">
-<meta property="og:title" content="FPF now explains decisions, exploration, and tool planning more plainly">
-<meta name="description" content="This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers, ...">
-<meta property="og:description" content="This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers, ...">
-<meta property="og:url" content="https://venikman.github.io/fpf-sync/reports/2026-04-15-08e8e6fd/">
-<link rel="canonical" href="https://venikman.github.io/fpf-sync/reports/2026-04-15-08e8e6fd/"></head>
-
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>FPF now explains decisions, exploration, and tool planning more plainly</title>
+    <meta name="description" content="This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers,..." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="FPF now explains decisions, exploration, and tool planning more plainly" />
+    <meta property="og:description" content="This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers,..." />
+    <meta property="og:url" content="https://venikman.github.io/fpf-sync/reports/2026-04-15-08e8e6fd/" />
+    <link rel="canonical" href="https://venikman.github.io/fpf-sync/reports/2026-04-15-08e8e6fd/" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+  </head>
   <body>
-    <div id="__rspress_root"><!--$-->
-<header class="site-header"><div class="site-header__inner"><a class="site-brand" href="../../">FPF Reports</a><nav class="site-nav" aria-label="Primary"><a href="../../archive/">Archive</a><a href="https://github.com/venikman/fpf-sync">GitHub</a></nav></div></header>
-<main><section class="hero-band"><div class="hero-band__inner"><div class="hero-card"><p class="kicker">Plain-language report</p><h1>FPF now explains decisions, exploration, and tool planning more plainly</h1><div class="hero-copy"><p>This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers, and the spec adds a dedicated decision chapter for the moment when a team already has options on the table and needs to choose, reject the set, or justify one more round of evidence-gathering.</p><p>The same cleanup also sharpens the boundaries between four different jobs that often get blurred together: keeping multiple options alive, selecting a public shortlist, planning tool-based execution, and making a final decision. In practice, the framework is becoming less hand-wavy about what a finished result should look like at each of those stages.</p></div><div class="meta-strip"><div class="meta-pill"><span class="meta-pill__label">Published</span><span class="meta-pill__value">April 17, 2026</span></div><div class="meta-pill"><span class="meta-pill__label">Upstream head</span><span class="meta-pill__value meta-pill__value--mono">08e8e6fd</span></div><div class="meta-pill"><span class="meta-pill__label">Sync commit</span><span class="meta-pill__value meta-pill__value--mono">320580cb</span></div></div></div></div></section><section class="story-column"><div class="story-header"><p class="section-label"><a class="text-link" href="../../">Latest story</a> / <a class="text-link" href="../../archive/">Archive</a></p><h2 class="story-header__title">Read the report in order, then drop into the source appendix if you need evidence.</h2></div></section><article class="story-shell story-column"><nav class="story-map" aria-label="Section navigation"><p class="section-label">Story map</p><h2 class="story-map__title">Jump to a section</h2><div class="story-map__links"><a href="#report-section-1-a-dedicated-chapter-for-real-decisions">A dedicated chapter for real decisions</a><a href="#report-section-2-the-introduction-is-easier-to-use">The introduction is easier to use</a><a href="#report-section-3-selection-and-planning-stages-now-have-clearer-endings">Selection and planning stages now have clearer endings</a><a href="#report-section-4-terminology-cleanup-is-moving-toward-plainer-public-language">Terminology cleanup is moving toward plainer public language</a></div></nav><section class="highlights-block"><p class="section-label">In this update</p><h2>What to expect before you keep reading</h2><ul class="highlight-list"><li>Adds a full decision-making chapter for choose-now versus probe-more situations.</li><li>Rewrites the README opening into a newcomer-friendly route menu instead of a single reading order.</li><li>Makes exploration policy, shortlist publication, and tool-call planning end in explicit, named outputs.</li><li>Tightens glossary language around fronts, archives, shortlists, and other set-like result types.</li></ul></section><div class="story-body"><section class="story-section" id="report-section-1-a-dedicated-chapter-for-real-decisions"><span class="section-index">01</span><div class="story-section__content"><p class="section-label">Section 01</p><h2>A dedicated chapter for real decisions</h2><div class="story-copy"><p class="story-copy__paragraph">The biggest substantive addition is a new chapter for cases where the options already exist and the hard part is choosing among them. The text now treats this as its own problem instead of letting it blur into option generation, ranking, or implementation planning. It also spells out the lawful outcomes more plainly: choose now, reject the current set, run one more justified probe, or reroute to a different kind of work.</p><p class="story-copy__paragraph">Sources: <code>FPF/FPF-Spec.md</code> -&gt; <code>C.11 - Decision Theory (Decsn-CAL)</code>.</p></div></div></section><section class="story-section" id="report-section-2-the-introduction-is-easier-to-use"><span class="section-index">02</span><div class="story-section__content"><p class="section-label">Section 02</p><h2>The introduction is easier to use</h2><div class="story-copy"><p class="story-copy__paragraph">The README front door has been rewritten as a practical menu of starting points. Instead of pushing readers through one implied trunk path, it tells them how to start based on the burden they actually have: alignment, early signal capture, boundary cleanup, comparison, portfolio building, or explanation. That makes the project read more like an operating handbook and less like a text that must be absorbed in order.</p><p class="story-copy__paragraph">Sources: <code>FPF/Readme.md</code> -&gt; <code>Start here</code>.</p></div></div></section><section class="story-section" id="report-section-3-selection-and-planning-stages-now-have-clearer-endings"><span class="section-index">03</span><div class="story-section__content"><p class="section-label">Section 03</p><h2>Selection and planning stages now have clearer endings</h2><div class="story-copy"><p class="story-copy__paragraph">Several later sections are now stricter about what counts as a finished result. The exploration policy chapter says a run should end with an explicit treatment of the live pool, such as keeping several lines open or narrowing to a subset. The shortlist publication chapter clarifies when an internal retained set becomes a public shortlist or ranked shortlist. The tool-planning chapter separately defines what a finished execution plan or checkpoint should contain. Together, these edits reduce the chance that different stages of work get described with the same vague language.</p><p class="story-copy__paragraph">Sources: <code>FPF/FPF-Spec.md</code> -&gt; <code>C.19 - Explore–Exploit Governor (E/E-LOG)</code> and <code>C.24 - Agentic Tool-Use &amp; Call-Planning (C.Agent-Tools-CAL)</code> and <code>G.5:4.4b - Published selected-set result and closure rule</code>.</p></div></div></section><section class="story-section" id="report-section-4-terminology-cleanup-is-moving-toward-plainer-public-language"><span class="section-index">04</span><div class="story-section__content"><p class="section-label">Section 04</p><h2>Terminology cleanup is moving toward plainer public language</h2><div class="story-copy"><p class="story-copy__paragraph">The terminology pass is not just cosmetic. The onboarding glossary now spends more effort on plain labels for things like candidate pools, retained archives, and published shortlists, and it tells readers how those labels should be used in public-facing outputs. That matters because much of the rest of the spec depends on being able to tell whether a team is keeping options alive, publishing a narrowed set, or naming a mathematical object underneath a public result.</p><p class="story-copy__paragraph">Sources: <code>FPF/FPF-Spec.md</code> -&gt; <code>A.0:QF.0a - Scope of this glossary</code> and <code>A.0:QF.1 - Early set-surface and metric-kind vocabulary</code>.</p></div></div></section></div><section class="trace-block"><details><summary>Source commit details</summary><dl class="trace-list"><div><dt>Upstream base</dt><dd>3bd014659bef856badd8a40978553cbb81e107ab</dd></div><div><dt>Upstream head</dt><dd>08e8e6fddd70186eebf545d2066356d195f97cc6</dd></div><div><dt>Sync commit</dt><dd>320580cb0cc7f83daf6d3b3904fc4c71ed262f35</dd></div></dl></details></section><section class="appendix" aria-labelledby="evidence-heading"><p class="section-label">Evidence appendix</p><h2 id="evidence-heading">Source sections behind this report</h2><p class="appendix-intro">These excerpts stay after the narrative so the story reads straight through before the supporting evidence appears.</p><div class="appendix-list"><article class="appendix-entry"><p class="appendix-file">FPF/Readme.md</p><p class="appendix-meta">modified | head</p><h3>First Principles Framework (FPF) - Core Conceptual Specification / Start here</h3><div class="appendix-copy"><p class="appendix-copy__paragraph">FPF is a core conceptual specification and pattern language with multiple entry routes for engineering, research, and mixed human/AI teams. It is most useful when the hard part is coordination, vocabulary stability, explicit trade-offs, and clean hand-offs.</p></div></article><article class="appendix-entry"><p class="appendix-file">FPF/FPF-Spec.md</p><p class="appendix-meta">added | head</p><h3>Part C — Kernel Extensions Specifications / C.11 - Decision Theory (Decsn-CAL)</h3><div class="appendix-copy"><p class="appendix-copy__paragraph">C.11 is the choice-calculus pattern for the moment when options already exist and the working question is which option to choose, including whether another probe is worth its cost before commitment.</p></div></article><article class="appendix-entry"><p class="appendix-file">FPF/FPF-Spec.md</p><p class="appendix-meta">modified | head</p><h3>Part C — Kernel Extensions Specifications / C.19 - Explore–Exploit Governor (E/E-LOG) / C.19:4.1 - Explicit pool-policy result</h3><div class="appendix-copy"><p class="appendix-copy__paragraph">A finished C.19 pass should publish one explicit pool-policy result rather than one atmospheric statement that exploration will continue somehow.</p></div></article><article class="appendix-entry"><p class="appendix-file">FPF/FPF-Spec.md</p><p class="appendix-meta">modified | head</p><h3>Part C — Kernel Extensions Specifications / C.24 - Agentic Tool‑Use &amp; Call‑Planning (C.Agent‑Tools‑CAL) / C.24:4.4 - Explicit enactment outputs and closure rule</h3><div class="appendix-copy"><p class="appendix-copy__paragraph">A finished C.24 pass should publish one enactment result rather than one vague statement that the system now has a plan.</p></div></article><article class="appendix-entry"><p class="appendix-file">FPF/FPF-Spec.md</p><p class="appendix-meta">modified | head</p><h3>Part G – Discipline SoTA Patterns Kit / G.5 - Multi‑Method Dispatcher &amp; MethodFamily Registry / G.5:4 - Solution / G.5:4.4b - Published selected-set result and closure rule</h3><div class="appendix-copy"><p class="appendix-copy__paragraph">A finished G.5 pass should publish one explicit selected-set result from the dispatcher or registry burden rather than one selector trace that leaves the public artifact implicit.</p></div></article><article class="appendix-entry"><p class="appendix-file">FPF/FPF-Spec.md</p><p class="appendix-meta">modified | head</p><h3>Part A – Kernel Architecture Cluster / A.0 - Onboarding Glossary (NQD &amp; E/E‑LOG) / A.0:QF.1 - Early set-surface and metric-kind vocabulary</h3><div class="appendix-copy"><p class="appendix-copy__paragraph">Use Front only for a non-dominated set under one declared dominance basis, Archive for a retained set kept for coverage or future expansion, and Shortlist for the set chosen from one declared source surface by one named lens.</p></div></article></div></section><section class="story-end"><p class="section-label">Continue reading</p><div class="story-end-links"><a href="../../">Latest story</a><a href="../../archive/">Browse the archive</a></div></section></article></main>
-<footer class="page-footer"><div class="page-footer__inner"><p class="footer-note">Plain-language reporting for the mirrored FPF repository.</p><p class="footer-note">Source repo: <a href="https://github.com/venikman/fpf-sync">venikman/fpf-sync</a></p></div></footer><!--/$--></div>
-    <div id="__rspress_modal_container"></div>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="../../">FPF Reports</a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../../archive/">Archive</a>
+          <a href="https://github.com/venikman/fpf-sync">GitHub</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section class="hero-band">
+        <div class="hero-band__inner">
+          <div class="hero-card">
+            <p class="kicker">Plain-language report</p>
+            <h1>FPF now explains decisions, exploration, and tool planning more plainly</h1>
+            <div class="hero-copy">
+            <p>This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers, and the spec adds a dedicated decision chapter for the moment when a team already has options on the table and needs to choose, reject the set, or justify one more round of evidence-gathering.</p>
+            <p>The same cleanup also sharpens the boundaries between four different jobs that often get blurred together: keeping multiple options alive, selecting a public shortlist, planning tool-based execution, and making a final decision. In practice, the framework is becoming less hand-wavy about what a finished result should look like at each of those stages.</p>
+            </div>
+            <div class="meta-strip">
+          <div class="meta-pill">
+            <span class="meta-pill__label">Published</span>
+            <span class="meta-pill__value">April 17, 2026</span>
+          </div>
+          <div class="meta-pill">
+            <span class="meta-pill__label">Upstream head</span>
+            <span class="meta-pill__value meta-pill__value--mono">08e8e6fd</span>
+          </div>
+          <div class="meta-pill">
+            <span class="meta-pill__label">Sync commit</span>
+            <span class="meta-pill__value meta-pill__value--mono">320580cb</span>
+          </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="story-column">
+        <div class="story-header">
+          <p class="section-label"><a class="text-link" href="../../">Latest story</a> / <a class="text-link" href="../../archive/">Archive</a></p>
+          <h2 class="story-header__title">Read the report in order, then drop into the source appendix if you need evidence.</h2>
+        </div>
+      </section>
+    <article class="story-shell story-column">
+      <nav class="story-map" aria-label="Section navigation">
+        <p class="section-label">Story Map</p>
+        <h2 class="story-map__title">Jump to a section</h2>
+        <div class="story-map__links">
+          <a href="#report-section-1-a-dedicated-chapter-for-real-decisions">A dedicated chapter for real decisions</a>
+          <a href="#report-section-2-the-introduction-is-easier-to-use">The introduction is easier to use</a>
+          <a href="#report-section-3-selection-and-planning-stages-now-have-clearer-endings">Selection and planning stages now have clearer endings</a>
+          <a href="#report-section-4-terminology-cleanup-is-moving-toward-plainer-public-language">Terminology cleanup is moving toward plainer public language</a>
+        </div>
+      </nav>
+      <section class="highlights-block">
+        <p class="section-label">In This Update</p>
+        <h2>What to expect before you keep reading</h2>
+        <ul class="highlight-list">
+          <li>Adds a full decision-making chapter for choose-now versus probe-more situations.</li>
+          <li>Rewrites the README opening into a newcomer-friendly route menu instead of a single reading order.</li>
+          <li>Makes exploration policy, shortlist publication, and tool-call planning end in explicit, named outputs.</li>
+          <li>Tightens glossary language around fronts, archives, shortlists, and other set-like result types.</li>
+        </ul>
+      </section>
+      <div class="story-body">
+      <section class="story-section" id="report-section-1-a-dedicated-chapter-for-real-decisions">
+        <span class="section-index">01</span>
+        <div class="story-section__content">
+          <p class="section-label">Section 01</p>
+          <h2>A dedicated chapter for real decisions</h2>
+          <div class="story-copy">
+            <p class="story-copy__paragraph">The biggest substantive addition is a new chapter for cases where the options already exist and the hard part is choosing among them. The text now treats this as its own problem instead of letting it blur into option generation, ranking, or implementation planning. It also spells out the lawful outcomes more plainly: choose now, reject the current set, run one more justified probe, or reroute to a different kind of work.</p>
+            <p class="story-copy__paragraph">Sources: `FPF/FPF-Spec.md` -&gt; `C.11 - Decision Theory (Decsn-CAL)`.</p>
+          </div>
+        </div>
+      </section>
+      <section class="story-section" id="report-section-2-the-introduction-is-easier-to-use">
+        <span class="section-index">02</span>
+        <div class="story-section__content">
+          <p class="section-label">Section 02</p>
+          <h2>The introduction is easier to use</h2>
+          <div class="story-copy">
+            <p class="story-copy__paragraph">The README front door has been rewritten as a practical menu of starting points. Instead of pushing readers through one implied trunk path, it tells them how to start based on the burden they actually have: alignment, early signal capture, boundary cleanup, comparison, portfolio building, or explanation. That makes the project read more like an operating handbook and less like a text that must be absorbed in order.</p>
+            <p class="story-copy__paragraph">Sources: `FPF/Readme.md` -&gt; `Start here`.</p>
+          </div>
+        </div>
+      </section>
+      <section class="story-section" id="report-section-3-selection-and-planning-stages-now-have-clearer-endings">
+        <span class="section-index">03</span>
+        <div class="story-section__content">
+          <p class="section-label">Section 03</p>
+          <h2>Selection and planning stages now have clearer endings</h2>
+          <div class="story-copy">
+            <p class="story-copy__paragraph">Several later sections are now stricter about what counts as a finished result. The exploration policy chapter says a run should end with an explicit treatment of the live pool, such as keeping several lines open or narrowing to a subset. The shortlist publication chapter clarifies when an internal retained set becomes a public shortlist or ranked shortlist. The tool-planning chapter separately defines what a finished execution plan or checkpoint should contain. Together, these edits reduce the chance that different stages of work get described with the same vague language.</p>
+            <p class="story-copy__paragraph">Sources: `FPF/FPF-Spec.md` -&gt; `C.19 - Explore–Exploit Governor (E/E-LOG)` and `C.24 - Agentic Tool-Use &amp; Call-Planning (C.Agent-Tools-CAL)` and `G.5:4.4b - Published selected-set result and closure rule`.</p>
+          </div>
+        </div>
+      </section>
+      <section class="story-section" id="report-section-4-terminology-cleanup-is-moving-toward-plainer-public-language">
+        <span class="section-index">04</span>
+        <div class="story-section__content">
+          <p class="section-label">Section 04</p>
+          <h2>Terminology cleanup is moving toward plainer public language</h2>
+          <div class="story-copy">
+            <p class="story-copy__paragraph">The terminology pass is not just cosmetic. The onboarding glossary now spends more effort on plain labels for things like candidate pools, retained archives, and published shortlists, and it tells readers how those labels should be used in public-facing outputs. That matters because much of the rest of the spec depends on being able to tell whether a team is keeping options alive, publishing a narrowed set, or naming a mathematical object underneath a public result.</p>
+            <p class="story-copy__paragraph">Sources: `FPF/FPF-Spec.md` -&gt; `A.0:QF.0a - Scope of this glossary` and `A.0:QF.1 - Early set-surface and metric-kind vocabulary`.</p>
+          </div>
+        </div>
+      </section>
+      </div>
+      <section class="trace-block">
+        <details>
+          <summary>Source commit details</summary>
+          <dl class="trace-list">
+            <div>
+              <dt>Upstream base</dt>
+              <dd>3bd014659bef856badd8a40978553cbb81e107ab</dd>
+            </div>
+            <div>
+              <dt>Upstream head</dt>
+              <dd>08e8e6fddd70186eebf545d2066356d195f97cc6</dd>
+            </div>
+            <div>
+              <dt>Sync commit</dt>
+              <dd>320580cb0cc7f83daf6d3b3904fc4c71ed262f35</dd>
+            </div>
+          </dl>
+        </details>
+      </section>
+      <section class="appendix" aria-labelledby="evidence-heading">
+        <p class="section-label">Evidence Appendix</p>
+        <h2 id="evidence-heading">Source sections behind this report</h2>
+        <p class="appendix-intro">These excerpts stay after the narrative so the story reads straight through before the supporting evidence appears.</p>
+        <div class="appendix-list">
+          <article class="appendix-entry">
+            <p class="appendix-file">FPF/Readme.md</p>
+            <p class="appendix-meta">modified | head</p>
+            <h3>First Principles Framework (FPF) - Core Conceptual Specification / Start here</h3>
+            <div class="appendix-copy">
+            <p class="appendix-copy__paragraph">FPF is a core conceptual specification and pattern language with multiple entry routes for engineering, research, and mixed human/AI teams. It is most useful when the hard part is coordination, vocabulary stability, explicit trade-offs, and clean hand-offs.</p>
+            </div>
+          </article>
+          <article class="appendix-entry">
+            <p class="appendix-file">FPF/FPF-Spec.md</p>
+            <p class="appendix-meta">added | head</p>
+            <h3>Part C — Kernel Extensions Specifications / C.11 - Decision Theory (Decsn-CAL)</h3>
+            <div class="appendix-copy">
+            <p class="appendix-copy__paragraph">C.11 is the choice-calculus pattern for the moment when options already exist and the working question is which option to choose, including whether another probe is worth its cost before commitment.</p>
+            </div>
+          </article>
+          <article class="appendix-entry">
+            <p class="appendix-file">FPF/FPF-Spec.md</p>
+            <p class="appendix-meta">modified | head</p>
+            <h3>Part C — Kernel Extensions Specifications / C.19 - Explore–Exploit Governor (E/E-LOG) / C.19:4.1 - Explicit pool-policy result</h3>
+            <div class="appendix-copy">
+            <p class="appendix-copy__paragraph">A finished C.19 pass should publish one explicit pool-policy result rather than one atmospheric statement that exploration will continue somehow.</p>
+            </div>
+          </article>
+          <article class="appendix-entry">
+            <p class="appendix-file">FPF/FPF-Spec.md</p>
+            <p class="appendix-meta">modified | head</p>
+            <h3>Part C — Kernel Extensions Specifications / C.24 - Agentic Tool‑Use &amp; Call‑Planning (C.Agent‑Tools‑CAL) / C.24:4.4 - Explicit enactment outputs and closure rule</h3>
+            <div class="appendix-copy">
+            <p class="appendix-copy__paragraph">A finished C.24 pass should publish one enactment result rather than one vague statement that the system now has a plan.</p>
+            </div>
+          </article>
+          <article class="appendix-entry">
+            <p class="appendix-file">FPF/FPF-Spec.md</p>
+            <p class="appendix-meta">modified | head</p>
+            <h3>Part G – Discipline SoTA Patterns Kit / G.5 - Multi‑Method Dispatcher &amp; MethodFamily Registry / G.5:4 - Solution / G.5:4.4b - Published selected-set result and closure rule</h3>
+            <div class="appendix-copy">
+            <p class="appendix-copy__paragraph">A finished G.5 pass should publish one explicit selected-set result from the dispatcher or registry burden rather than one selector trace that leaves the public artifact implicit.</p>
+            </div>
+          </article>
+          <article class="appendix-entry">
+            <p class="appendix-file">FPF/FPF-Spec.md</p>
+            <p class="appendix-meta">modified | head</p>
+            <h3>Part A – Kernel Architecture Cluster / A.0 - Onboarding Glossary (NQD &amp; E/E‑LOG) / A.0:QF.1 - Early set-surface and metric-kind vocabulary</h3>
+            <div class="appendix-copy">
+            <p class="appendix-copy__paragraph">Use Front only for a non-dominated set under one declared dominance basis, Archive for a retained set kept for coverage or future expansion, and Shortlist for the set chosen from one declared source surface by one named lens.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="story-end">
+        <p class="section-label">Continue Reading</p>
+        <div class="story-end-links">
+          <a href="../../">Latest story</a>
+          <a href="../../archive/">Browse the archive</a>
+        </div>
+      </section>
+    </article>
+    </main>
+    <footer class="page-footer">
+      <div class="page-footer__inner">
+        <p class="footer-note">Plain-language reporting for the mirrored FPF repository.</p>
+        <p class="footer-note">Source repo: <a href="https://github.com/venikman/fpf-sync">venikman/fpf-sync</a></p>
+      </div>
+    </footer>
   </body>
 </html>

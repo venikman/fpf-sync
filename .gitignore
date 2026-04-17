@@ -9,5 +9,3 @@ __pycache__/
 *.pyc
 node_modules/
 package-lock.json
-.site/
-.github/scripts/dist/
