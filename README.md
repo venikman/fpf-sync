@@ -17,7 +17,7 @@ A separate Codex automation runs after the mirror job. It:
 1. Detects new sync commits on `main`.
 2. Collects upstream compare metadata and changed section context from the mirrored `FPF` sources.
 3. Writes one canonical JSON report per upstream change set into `./reports`.
-4. Renders a static site into `./docs`.
+4. Renders a static HTML/CSS site from the reports into `./docs`.
 5. Commits and pushes only `reports/` and `docs/` so GitHub Pages can publish the latest report.
 
 ## Upstream contract
@@ -32,7 +32,8 @@ FPF/                        # mirrored upstream content
 .github/scripts/sync-fpf.sh # sync script
 .github/workflows/fpf-sync.yml # daily sync workflow
 .github/scripts/collect-report-context.py # report context collector
-.github/scripts/render-report-site.py     # static Pages renderer
+.github/scripts/render-report-site.ts     # static Pages renderer
+theme/styles.css            # shared site styles
 reports/                    # canonical plain-language report JSON
 docs/                       # generated GitHub Pages site
 ```
@@ -51,3 +52,7 @@ The sync script lives at `.github/scripts/sync-fpf.sh`.
 The generated site is intended to publish from the `main` branch `/docs` folder as a project Pages site for:
 
 - `https://venikman.github.io/fpf-sync/`
+
+## Local build
+
+Run `bun run build` to regenerate the Pages output in `docs/`.
