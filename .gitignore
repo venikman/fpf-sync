@@ -5,3 +5,5 @@
 .env.local
 .secrets
 *.log
+__pycache__/
+*.pyc

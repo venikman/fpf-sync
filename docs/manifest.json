@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-04-17T13:46:41+00:00",
+  "site_url": "https://venikman.github.io/fpf-sync/",
+  "reports": [
+    {
+      "slug": "2026-04-15-08e8e6fd",
+      "published_at": "2026-04-17T13:45:38Z",
+      "headline": "FPF now explains decisions, exploration, and tool planning more plainly",
+      "summary": "This update makes the framework easier to approach and more explicit about how work should end. The opening README now reads like a route map for newcomers, and the spec adds a dedicated decision chapter for the moment when a team already has options on the table and needs to choose, reject the set, or justify one more round of evidence-gathering.\n\nThe same cleanup also sharpens the boundaries between four different jobs that often get blurred together: keeping multiple options alive, selecting a public shortlist, planning tool-based execution, and making a final decision. In practice, the framework is becoming less hand-wavy about what a finished result should look like at each of those stages.",
+      "upstream_base_sha": "3bd014659bef856badd8a40978553cbb81e107ab",
+      "upstream_head_sha": "08e8e6fddd70186eebf545d2066356d195f97cc6",
+      "sync_commit": "320580cb0cc7f83daf6d3b3904fc4c71ed262f35",
+      "path": "reports/2026-04-15-08e8e6fd/"
+    }
+  ]
+}
