@@ -1,0 +1,16 @@
+{
+  "name": "fpf-sync",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:site-data": "tsc -p tsconfig.render.json && node .github/scripts/dist/render-report-site.js",
+    "build": "npm run build:site-data && rspress build",
+    "dev": "npm run build:site-data && rspress dev",
+    "preview": "rspress preview"
+  },
+  "devDependencies": {
+    "@rspress/core": "^2.0.9",
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3"
+  }
+}

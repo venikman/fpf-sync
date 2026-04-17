@@ -50,5 +50,5 @@ Each report must include:
 ## Publishing Rules
 
 - Never edit `FPF/`.
-- After adding or updating reports, run `.github/scripts/render-report-site.py`.
+- After adding or updating reports, run `npm run build`.
 - Commit only `reports/` and `docs/` when publishing generated output.

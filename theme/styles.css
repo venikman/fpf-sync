@@ -1,6 +1,5 @@
 :root {
   --bg: #f4f0e6;
-  --bg-soft: #faf7f1;
   --paper: rgba(255, 252, 247, 0.96);
   --paper-muted: #efe8d8;
   --ink: #18211b;
@@ -10,7 +9,6 @@
   --accent: #3d8a54;
   --accent-strong: #2c6b41;
   --line: rgba(24, 33, 27, 0.12);
-  --line-strong: rgba(24, 33, 27, 0.2);
   --shadow: 0 18px 50px rgba(18, 27, 21, 0.08);
   --radius-lg: 28px;
   --radius-md: 18px;
@@ -46,6 +44,14 @@ a {
 
 img {
   max-width: 100%;
+}
+
+code {
+  font-family: var(--mono);
+}
+
+main {
+  display: block;
 }
 
 .site-header {
@@ -93,8 +99,7 @@ img {
   gap: 0.55rem;
 }
 
-.site-nav a,
-.site-nav span {
+.site-nav a {
   text-decoration: none;
   border: 1px solid rgba(250, 247, 241, 0.16);
   border-radius: 999px;
@@ -211,21 +216,12 @@ h3 {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.meta-pill--light {
-  border-color: var(--line);
-  background: rgba(61, 138, 84, 0.08);
-}
-
 .meta-pill__label {
   display: block;
   font-size: 0.74rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(249, 246, 239, 0.68);
-}
-
-.meta-pill--light .meta-pill__label {
-  color: var(--ink-soft);
 }
 
 .meta-pill__value {
@@ -292,14 +288,10 @@ h3 {
   box-shadow: var(--shadow);
 }
 
-.story-shell + .story-shell {
-  margin-top: 1.5rem;
-}
-
 .story-header {
   display: grid;
   gap: 1.15rem;
-  padding: 0 0 2rem;
+  padding: 2rem 0;
 }
 
 .story-header__title {
@@ -524,6 +516,10 @@ h3 {
   background: rgba(255, 252, 247, 0.74);
 }
 
+.archive-band--raised {
+  margin-top: -3.35rem;
+}
+
 .archive-heading {
   display: grid;
   gap: 0.55rem;
@@ -592,10 +588,6 @@ h3 {
   padding: 1.5rem;
   background: var(--paper);
   box-shadow: var(--shadow);
-}
-
-code {
-  font-family: var(--mono);
 }
 
 @media (max-width: 780px) {
