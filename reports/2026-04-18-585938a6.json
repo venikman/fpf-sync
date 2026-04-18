@@ -1,0 +1,124 @@
+{
+  "slug": "2026-04-18-585938a6",
+  "published_at": "2026-04-18T11:43:11Z",
+  "upstream_base_sha": "08e8e6fddd70186eebf545d2066356d195f97cc6",
+  "upstream_head_sha": "585938a6b20c656aa54d9e0d670c8b8b5df70450",
+  "sync_commit": "11b16f66e26fe31b75b62a99915160d692f180fc",
+  "headline": "FPF now separates measurement, exploration, and explanation more clearly",
+  "summary": "This update gives the framework a more explicit mathematical backbone for talking about measurable state. It now defines the state space a model moves through, how states can be compared inside that space, and where that core definition stops so later sections do not quietly smuggle in search, outcome, or publishing rules.\n\nThe rest of the change applies the same separation to explanatory views and naming. The spec now distinguishes the space used to search options from the space used to judge outcomes, treats richer comparison views as optional reading aids rather than the main object, and adds writing rules that keep mappings, metrics, and loss notes visible instead of hiding them inside one vague \"space\" or \"view\" label.",
+  "highlights": [
+    "Adds a formal state-space model for measurable system state, comparability, and dynamics typing.",
+    "Introduces separate search-side and outcome-side space references instead of one catch-all space label.",
+    "Defines lighter versus heavier explanatory views so richer comparison overlays do not replace the base model.",
+    "Extends glossary, naming, and prose-repair rules to keep mappings, metrics, and loss notes explicit.",
+    "Pushes publication and selection decisions back to their owning sections instead of letting view language smuggle them in."
+  ],
+  "sections": [
+    {
+      "title": "A real model of measurable state",
+      "body": "The biggest addition is a new mathematical section for the space of measurable states that a system can occupy. It defines how that space is assembled from declared properties, how states can be compared, and where the boundary sits between the space itself and later consumer-specific uses of it. For an outsider, the practical effect is simple: the framework can now say what a model measures before it starts talking about rankings, forecasts, or decisions.\n\nSources: `FPF/FPF-Spec.md` -> `A.19 - CharacteristicSpace & Dynamics Hook (A.CHR-SPACE)`."
+    },
+    {
+      "title": "Searching and judging outcomes get separate lanes",
+      "body": "The glossary and the new cross-surface layer now distinguish the space used to search or navigate options from the space used to judge realized outcomes. That separation matters because many process descriptions sound rigorous while quietly mixing exploration, evaluation, mapping, and publication into one sentence. The updated spec now requires those roles to be named separately, which makes later claims easier to audit and harder to overstate.\n\nSources: `FPF/FPF-Spec.md` -> `A.0:QF.2a - Support-stack reading glosses` and `A.19.SURF-SPACE:0.2 - What this buys`."
+    },
+    {
+      "title": "Rich comparison views stay optional",
+      "body": "Another important clarification is that a richer explanatory view is treated as optional help for reading an already-declared base model. The spec now distinguishes a lighter support view from a heavier atlas-style one and says the stronger form is only justified when several views, spaces, mappings, or caveats must stay visible together. In practical terms, this reduces the temptation to let a sophisticated diagram or comparison overlay quietly take over the meaning of the underlying work.\n\nSources: `FPF/FPF-Spec.md` -> `A.19.SUPPORT-VIEW:4 - Solution` and `G.2:4.7 - Atlas views stay optional neighboring support over one declared palette and declared set surfaces`."
+    },
+    {
+      "title": "The writing rules now enforce the same boundary",
+      "body": "The cleanup does not stop at the math layer. The naming protocol and the prose-repair section now explicitly warn against collapsing search space, outcome space, support views, and publication results into one generic \"space\" or \"view.\" They also require a base surface to remain visible when a richer naming or explanation layer is used. That makes the framework more usable in practice because its own documentation is less likely to blur the boundary between description, interpretation, and public output.\n\nSources: `FPF/FPF-Spec.md` -> `A.6.P:8 - Common Anti-Patterns and How to Avoid Them` and `F.18:11 - Application Guidance (how to apply, step by step)` and `F.18:15 - Conformance Criteria (normative \"CC-F18\")`."
+    }
+  ],
+  "source_sections": [
+    {
+      "file": "FPF/FPF-Spec.md",
+      "version": "head",
+      "change_type": "added",
+      "heading_path": [
+        "Cluster A.V - Constitutional Principles of the Kernel",
+        "A.19 - CharacteristicSpace & Dynamics Hook (A.CHR-SPACE)",
+        "A.19:1 - Intent & Scope (Normative)"
+      ],
+      "excerpt": "Use A.19 to declare the space object itself: the declared `CharacteristicSpace`, its slots, its optional overlays, and the `U.Dynamics.stateSpace` typing hook. Do not use it to declare consumer-side ref positions that merely point to a declared space, and do not use it to declare relation kinds between several such refs."
+    },
+    {
+      "file": "FPF/FPF-Spec.md",
+      "version": "head",
+      "change_type": "added",
+      "heading_path": [
+        "Part A - Kernel Architecture Cluster",
+        "A.0 - Onboarding Glossary (NQD & E/E-LOG)",
+        "A.0:QF.2a - Support-stack reading glosses"
+      ],
+      "excerpt": "`SearchSpaceRef` is the declared reference to the space currently used to search, compare, or navigate candidate possibilities. `OutcomeSpaceRef` is the declared reference to the space used to judge outcomes, effects, or realized value."
+    },
+    {
+      "file": "FPF/FPF-Spec.md",
+      "version": "head",
+      "change_type": "added",
+      "heading_path": [
+        "Cluster A.V - Constitutional Principles of the Kernel",
+        "A.19.SURF-SPACE - Cross-Surface / Cross-Space Substrate",
+        "A.19.SURF-SPACE:0.2 - What this buys"
+      ],
+      "excerpt": "This pattern buys one conservative but expressive contract: the active source surface stays visible; the search-side and outcome-side references stay distinct; and the relation between those refs becomes inspectable instead of being hidden in one overloaded noun or verb."
+    },
+    {
+      "file": "FPF/FPF-Spec.md",
+      "version": "head",
+      "change_type": "added",
+      "heading_path": [
+        "Cluster A.V - Constitutional Principles of the Kernel",
+        "A.19.SUPPORT-VIEW - Cross-Surface Support View",
+        "A.19.SUPPORT-VIEW:4 - Solution",
+        "A.19.SUPPORT-VIEW:4.3 - Contract laws (SV-0..SV-8)"
+      ],
+      "excerpt": "Ordinary `CrossSurfaceSupportView` is a complete lawful profile, not a placeholder. `CrossSurfaceAtlasView` is used only when the stronger composite support burden is real."
+    },
+    {
+      "file": "FPF/FPF-Spec.md",
+      "version": "head",
+      "change_type": "modified+added",
+      "heading_path": [
+        "Part G - Discipline SoTA Patterns Kit",
+        "G.2 - SoTA Harvester & Synthesis",
+        "G.2:4 - Solution",
+        "G.2:4.7 - Atlas views stay optional neighboring support over one declared palette and declared set surfaces"
+      ],
+      "excerpt": "`TraditionAtlasView` is one declared optional neighboring support view over one palette and any declared front, archive, or shortlist surfaces drawn from it. It is not the default meaning of `Tradition` or `SoTAPaletteDescription`."
+    },
+    {
+      "file": "FPF/FPF-Spec.md",
+      "version": "head",
+      "change_type": "added",
+      "heading_path": [
+        "Cluster A.IV.A - Signature Stack & Boundary Discipline (A.6.*)",
+        "A.6.P - U.RelationalPrecisionRestorationSuite - Relational Precision Restoration (RPR) - Kind-Explicit Qualified Relation Discipline",
+        "A.6.P:8 - Common Anti-Patterns and How to Avoid Them"
+      ],
+      "excerpt": "The new anti-pattern warns against collapsing space, view, and publication layers into one \"space\" or \"view\" because search, outcome, support, and publication surfaces then become indistinguishable. The repair is to restore the declared space, the active source or set surface, the support view if any, and any mapping or distortion note before making the claim."
+    },
+    {
+      "file": "FPF/FPF-Spec.md",
+      "version": "head",
+      "change_type": "added+modified",
+      "heading_path": [
+        "F.18 - Local-First Unification Naming Protocol",
+        "F.18:11 - Application Guidance (how to apply, step by step)"
+      ],
+      "excerpt": "When a naming pass talks about one palette, front, archive, shortlist, or candidate surface, keep that base surface recoverable on the Name Card. Escalate to atlas wording only when the naming explanation truly depends on several declared views, spaces, mappings, or distortion qualifiers being visible together."
+    },
+    {
+      "file": "FPF/FPF-Spec.md",
+      "version": "head",
+      "change_type": "added",
+      "heading_path": [
+        "F.18 - Local-First Unification Naming Protocol",
+        "F.18:15 - Conformance Criteria (normative \"CC-F18\")"
+      ],
+      "excerpt": "When a Name Card or worked naming note uses support-view or atlas wording, it shall keep the base palette, front, archive, shortlist, or candidate surface recoverable. It shall use atlas wording only when several declared views or qualifiers are jointly load-bearing for the naming explanation."
+    }
+  ]
+}

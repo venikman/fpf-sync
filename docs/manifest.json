@@ -1,7 +1,17 @@
 {
-  "generated_at": "2026-04-17T18:40:43Z",
+  "generated_at": "2026-04-18T13:57:12Z",
   "site_url": "https://venikman.github.io/fpf-sync/",
   "reports": [
+    {
+      "slug": "2026-04-18-585938a6",
+      "published_at": "2026-04-18T11:43:11Z",
+      "headline": "FPF now separates measurement, exploration, and explanation more clearly",
+      "summary": "This update gives the framework a more explicit mathematical backbone for talking about measurable state. It now defines the state space a model moves through, how states can be compared inside that space, and where that core definition stops so later sections do not quietly smuggle in search, outcome, or publishing rules.\n\nThe rest of the change applies the same separation to explanatory views and naming. The spec now distinguishes the space used to search options from the space used to judge outcomes, treats richer comparison views as optional reading aids rather than the main object, and adds writing rules that keep mappings, metrics, and loss notes visible instead of hiding them inside one vague \"space\" or \"view\" label.",
+      "upstream_base_sha": "08e8e6fddd70186eebf545d2066356d195f97cc6",
+      "upstream_head_sha": "585938a6b20c656aa54d9e0d670c8b8b5df70450",
+      "sync_commit": "11b16f66e26fe31b75b62a99915160d692f180fc",
+      "path": "reports/2026-04-18-585938a6/"
+    },
     {
       "slug": "2026-04-15-08e8e6fd",
       "published_at": "2026-04-17T13:45:38Z",
