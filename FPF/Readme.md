@@ -3,94 +3,114 @@
 > Operating system for thought for engineering, research, and mixed human/AI teams.
 
 **Author:** Anatoly Levenchuk (with AI-agents assistance)  
-**Version:** March 2026  
+**Version:** April 2026  
 **Status:** Normative kernel, "eternal alpha" - already used in working projects and development programmes, while still evolving.
 
-FPF helps when the bottleneck is no longer raw ideation, but coordination.
+FPF helps when raw insight is not enough: meanings, claims, alternatives,
+evidence, boundaries, and outputs must remain stable across contexts, time,
+people, tools, or AI agents.
 
-It turns a vague multi-actor problem into:
+It helps turn a vague, high-stakes, or multi-context problem into:
+
 - a bounded-context map and a stable shared vocabulary,
-- explicit decision criteria, route guards, and comparison characteristics,
-- a small portfolio of lawful alternatives or next routes,
-- an evidence / test gap list, gates, and auditable hand-offs,
-- a durable working form such as a UTS, a DRR, or another route-specific output form,
+- explicit decision criteria, boundary guards, and comparison characteristics,
+- a small portfolio of lawful alternatives or candidate directions,
+- an evidence / test gap list and auditable responsibility boundaries,
+- a durable working form such as a UTS, a DRR, or another burden-specific output form,
 - aligned outputs for engineers, managers, researchers, and auditors.
 
 Use FPF when:
+
 - work is split across specialists, teams, or AI agents;
 - the real-world oracle is slow, expensive, noisy, or risky;
 - different audiences need different views of the same underlying work;
 - your current vocabulary is breaking down;
-- you need state-of-the-art (SoTA) work as a managed portfolio, not a leaderboard snapshot.
+- you need state-of-the-art (SoTA) work as a managed portfolio, not a leaderboard snapshot;
+- a solo or small-team decision still needs durable reasoning, auditability, or stable publication.
 
-Do not start here when:
-- one person or one team can solve the task end-to-end,
-- the vocabulary is already stable,
+FPF may be too heavy when:
+
+- the task is small,
+- vocabulary is already stable,
 - feedback is fast and cheap,
 - the cost of semantic drift is low,
-- or you mainly need a quick answer, not durable shared artefacts.
+- no durable shared reasoning form is needed,
+- or you mainly need a quick answer rather than a reusable reasoning form.
 
-## Start here
+## First entry
 
-FPF is a core conceptual specification and pattern language with multiple entry routes for engineering, research, and mixed human/AI teams. It is most useful when the hard part is coordination, vocabulary stability, explicit trade-offs, and clean hand-offs.
+This README is high-recall, low-detail. `Preface` gives coarse orientation,
+`J.4` is the compact canonical entry index, and `I.2` is the worked-reading
+depth role. A pattern's own `Problem frame` is the local high-precision
+first-reading role.
 
-Choose your first route by the first honest burden, not by document order.
-If you are new to FPF, read the route title and opening sentence first; use the pattern IDs only after you know the route matches your situation.
+Choose your first entry by what you are really trying to decide, stabilize, or
+publish, not by document order. If you are new to FPF, read the entry title and
+opening sentence first; use pattern IDs only after you know the entry matches
+your situation.
 
-A first practical session should usually leave:
-- a map of who means what and where the hand-offs are;
-- explicit decision criteria, comparison characteristics, or route guards;
+A first practical session often stabilizes one or more of:
+
+- who means what, and which responsibility boundaries matter;
+- explicit decision criteria, comparison characteristics, or burden guards;
 - a small alternative set when selection is part of the burden;
 - a visible list of missing evidence or tests before commitment;
-- a starter UTS (a structured term sheet for unstable or overloaded vocabulary), a starter DRR (a short decision-rationale record), or another route-specific output form.
+- a starter terminology, a starter ADR, or another particular need.
 
-If you first need to decide whether FPF fits your situation, start with `E.1-E.2`.
-If you need to write or review patterns, start with `E.8` and `E.19`.
+If you first need to decide whether FPF fits your situation, inspect `E.1-E.2`.
+If you need to write or review patterns, inspect `E.8` and `E.19`.
 
-Use this repository as a route menu, not as one universal starter trunk:
+Use this repository as an entry menu, not as one universal starter trunk:
 
 1. **Project alignment**  
-   Use this when: the team keeps mixing up responsibilities, working method, plans, and what actually happened.  
-   You will leave with: a clean separation between responsibility, method, plan, and actual execution, plus a first work sheet or alignment frame.  
-   Start with: `A.1.1`, then `A.15`, then `A.15.2 / A.15.3`, then `B.5.1`. Add `F.11` when method/work vocabulary itself must be aligned across contexts, and `F.9` where bridge discipline matters. Land on `F.17 (UTS)`.
+   Use this when: responsibilities, working method, plans, and what actually happened are being mixed.  
+   Typical stabilizing result: a clean separation between responsibility, method, plan, and actual execution, plus a first worksheet, alignment frame, or term sheet.  
+   First inspect: `A.1.1`, `A.15`, `A.15.2 / A.15.3`, and `B.5.1`. Consider `F.11` when method/work vocabulary itself must be aligned across contexts, `F.9` where bridge discipline matters, and `F.17 (UTS)` when vocabulary stabilization is live.
 
 2. **Partly-said / language-state discovery**  
    Use this when: you have a serious cue, concern, or emerging idea that is too important to ignore but too early to present as a settled claim, requirement, or work record.  
-   You will leave with: a short preservation-and-routing note or cue pack that says what was noticed, how mature it is, and who should receive it next.  
-   Start with: `C.2.2a`, then `C.2.LS / C.2.4-C.2.7`, then `A.16 / A.16.1 / A.16.2`, then `B.4.1 / B.5.2.0`, and only then move into the relevant endpoint owner.
+   Typical stabilizing result: a short preservation-and-burden note that says what was noticed, how mature it is, and what kind of pattern should inspect it next.  
+   First inspect: `C.2.2a`, `C.2.LS / C.2.4-C.2.7`, `A.16 / A.16.1 / A.16.2`, and `B.4.1 / B.5.2.0`; consider endpoint patterns only when the burden is actually endpoint-owned.
 
 3. **Boundary unpacking**  
    Use this when: contract, API, protocol, compliance, or SLA language is mixing rules, gates, duties, and evidence in one blurred boundary story.  
-   You will leave with: a Claim Register, meaning a split list of rules, gates, duties, and evidence claims.  
-   Start with: `A.6`, then `A.6.B`, then `A.6.C`. When the boundary text hides overloaded quality language or generic doing-words, continue with `A.6.P`, then `A.6.Q` or `A.6.A`.
+   Typical stabilizing result: a Claim Register or routed atomic claim set.  
+   First inspect: `A.6`, `A.6.B`, and `A.6.C`. If the first question is only what description you are seeing, inspect `A.6.RSIG`; when the boundary text hides overloaded quality or action language, add `A.6.P`, then `A.6.Q` or `A.6.A`.
 
-4. **Lawful comparison / selection**  
-   Use this when: you need to compare alternatives honestly, keep a disciplined shortlist live, or make a selection without hiding the comparison logic.  
-   You will leave with: declared characteristics, a comparison frame, and sometimes a shortlist or acceptable option set rather than one forced winner.  
-   Start with: `A.19:0`, then `A.17-A.19`, then `G.0`, then `A.19.CPM` and `A.19.SelectorMechanism`, and then `G.5`.
+4. **Lawful comparison / selection / selected-set publication**  
+   Use this when: you need to compare alternatives honestly, keep a disciplined shortlist live, or publish a selected set without hiding the comparison logic.  
+   Typical stabilizing result: declared characteristics, a comparison frame, candidate-pool policy, selected-set publication, or a lawful local decision home.  
+   First inspect: `A.19:0`, `A.17-A.19`, `A.19.CN`, `G.0`, `C.18`, `C.19`, and `G.5`; consider `C.11` only for local choice and `C.24` only for call-planning/checkpoint-return burden.
 
 5. **Generator / state-of-the-art / portfolio kit**  
-   Use this when: your first deliverable is a reusable search / harvest / portfolio scaffold, not a one-off recommendation.  
-   You will leave with: a reusable kit that names scope, schools of thought, variants, and shortlist-ready outputs.  
-   Start with: `A.0`, then `G.0`, then `G.1`, then `G.2` and `G.5`. When creative search or explore/exploit policy is already central, add `B.5.2.1` and `C.17-C.19` early.
+   Use this when: your first deliverable is a reusable search, harvest, generator, or portfolio scaffold, not a one-off recommendation.  
+   Typical stabilizing result: a reusable kit that names scope, schools of thought, variants, and shortlist-ready outputs.  
+   First inspect: `A.0`, `G.0`, `G.1`, `G.2`, and `G.5`. Consider `B.5.2.1` and `C.17-C.19` when creative search or explore/exploit policy is already central.
 
 6. **Same-entity rewrite / explanation / comparative reading**  
    Use this when: the main job is to restate, explain, re-render, repair, or compare something already written or published without quietly changing what it is about.  
-   You will leave with: a rewrite, explanation note, repair note, or bounded comparison note that keeps the object of talk stable.  
-   Start with: `A.6.3.CR` for same-entity retextualization, `A.6.3.RT` for representation-scheme transition, `E.17.EFP` for explanation-facing rendering, `E.17.ID.CR` for bounded comparative reading, and `E.17.AUD.LHR / E.17.AUD.OOTD` for local repair and authored-unit stability.
+   Typical stabilizing result: a rewrite, explanation note, repair note, or bounded comparison note that keeps the object of talk stable.  
+   First inspect: `A.6.3.CR`, `A.6.3.RT`, `E.17.EFP`, `E.17.ID.CR`, `E.17.AUD.LHR`, and `E.17.AUD.OOTD`.
 
-The older `A.0 -> A.1-A.3 -> B.3 -> F.17 -> E.9` chain is not the universal default anymore. Use `B.3` when assurance / trust / evidence transport is already part of the present burden, and use `E.9 (DRR)` when normative change or durable canon rationale must actually be published.
+The older abduction reasoning loop (`A.0 -> A.1-A.3 -> B.3 -> F.17 -> E.9`) is here but not the universal
+default anymore. Use `B.3` when assurance / trust / evidence transport is
+already part of the present burden, and use `E.9 (DRR)` when normative change
+or durable canon rationale must actually be published.
 
 FPF is not:
+
 - a shrink-wrapped project methodology;
 - a quick-answer cheat sheet;
 - a demand to read the whole specification linearly before doing useful work.
+  
+It is amplifier for collaborative engineering thinking for AI-agents.
 
 ## What stays outside this front door
 
-- fuller route explanations live in `Preface` and `Part J`, not in the opening screen;
-- longer step-by-step walkthroughs live in `I.2`, not in this README;
-- advanced internal maps, AI-assistant prompt recipes, and extended examples appear later in this README or in "monolith" FPF-Spec.md in this repo; you do not need them before choosing your first route.
+- coarse orientation lives in `Preface`, not in this README;
+- compact comparison of nearby starting points lives in `J.4`;
+- longer worked entry readings live in `I.2`;
+- advanced internal maps, AI-assistant prompt recipes, and extended examples appear later in this README or in `FPF-Spec.md`.
 
 ## One-minute example
 
@@ -98,20 +118,23 @@ A vague project question:
 
 > "Should we buy, fine-tune, or build an agent stack for our platform?"
 
-Without FPF, this often becomes one overloaded discussion with mixed vocabularies, hidden trade-offs, and premature convergence on a single option.
+Without FPF, this often becomes one overloaded discussion with mixed
+vocabularies, hidden trade-offs, and premature convergence on a single option.
 
-With FPF, the work becomes a disciplined route:
+With FPF, the work can become one disciplined structure:
 
 `problem framing`
 -> `bounded contexts` (product / infrastructure / safety / evaluation)
 -> `decision criteria` (cost / latency / controllability / risk / time-to-value)
 -> `portfolio of alternatives` (buy / fine-tune / build / hybrid)
 -> `evidence and test gaps`
--> `starter DRR` (a short decision record with reasons, assumptions, and open issues)
--> `starter UTS` (a shared term sheet for risky or overloaded terms)
+-> `starter DRR`
+-> `starter UTS`
 -> `aligned outputs` for engineering / management / research / assurance
 
-Result: one underlying body of reasoning, cleaner hand-offs between specialists, and a decision that can be reviewed, revised, and published without semantic drift.
+The arrows are a compact explanatory sketch, not a required workflow.
+The point is one underlying body of reasoning that can be reviewed, revised,
+and published without semantic drift.
 
 ## Overview
 
@@ -119,31 +142,44 @@ The **First Principles Framework (FPF)** is a structured framework for thinking 
 
 This repository contains the **core specification**. Tooling belongs in tool-specific layers; worked examples, exercises, and guided learning paths belong in the pedagogical companion.
 
-Use the spec as a reference model and route map, not as a linear textbook.
+Use the spec as a reference model and entry map, not as a linear textbook.
 
 FPF is not a specific methodology such as Agile or Waterfall, and it is not a static encyclopedia. It is closer to an architecture for reasoning: a set of reusable patterns and working forms that help teams turn tacit thinking into shared, reviewable work.
 
-FPF is not mainly about making one model smarter. It is about making collective reasoning usable: clear local contexts, explicit hand-offs, reviewable decision records, and outputs that different audiences can trust.
+FPF is not mainly about making one model smarter. It is about making collective reasoning usable: clear local contexts, explicit responsibility boundaries, reviewable decision records, and outputs that different audiences can trust.
 
 ## What problem FPF solves
 
-FPF is most useful when strong local reasoning is no longer the main bottleneck. It is for situations where the hard part is coordinating specialised people and AI agents, keeping meaning stable across hand-offs, making trade-offs explicit, and presenting the same underlying work to engineers, managers, researchers, and auditors without semantic drift.
+FPF is most useful when raw insight is no longer enough by itself. The hard part
+may be coordination, but it may also be semantic precision, evidence shaping,
+comparison, claim publication, vocabulary stabilization, or keeping one body of
+reasoning coherent across time and readers.
 
-In plain language: FPF turns raw intelligence into work that is easier to align, review, evolve, and delegate.
+In plain language: FPF turns raw intelligence into work that is easier to
+align, review, evolve, publish, and delegate.
 
-It also helps teams create local zones of closure inside an open world, so a real decision can be made even when the outside remains uncertain.
+It also helps teams and solo practitioners create local zones of closure inside
+an open world, so a real decision can be made even when the outside remains
+uncertain.
 
-Illustrative example: a platform team is deciding whether to buy, fine-tune, or build an agent stack. FPF helps separate product, safety, infrastructure, and evaluation contexts; define decision criteria; keep several options live long enough to compare them honestly; make missing evidence explicit; and publish one view for engineers and another for management without changing the underlying reasoning.
+Illustrative example: a platform team is deciding whether to buy, fine-tune, or
+build an agent stack. FPF helps separate product, safety, infrastructure, and
+evaluation contexts; define decision criteria; keep several options live long
+enough to compare them honestly; make missing evidence explicit; and publish
+aligned views for engineering and management without changing the underlying
+reasoning.
 
 ## What you get after one pass
 
-A first practical pass through FPF should leave you with concrete artefacts, not just better intuitions:
-- a map of bounded contexts, hand-offs, and responsibility boundaries;
+A first practical pass through FPF should stabilize concrete artifacts, not just
+better intuitions:
+
+- a map of bounded contexts and responsibility boundaries;
 - explicit decision criteria and trade-off characteristics;
 - a small portfolio of alternatives instead of premature convergence;
 - a visible evidence / test gap list before commitment;
-- a starter DRR (a short decision record with reasons, assumptions, and open questions);
-- a starter UTS (a shared term sheet for unstable or overloaded domain language);
+- a starter DRR;
+- a starter UTS;
 - aligned outputs for engineering, management, research, and assurance / audit readers.
 
 ## Where FPF earns its keep
@@ -159,12 +195,12 @@ FPF tends to pay off when several of these are true:
 ### Three ways to use FPF
 
 1. **Human-only.** Use FPF as a reading, writing, and review discipline even with no AI in the loop. People can map contexts, separate systems / roles / method descriptions / methods / work, and produce shared term sheets and decision records directly.
-2. **Mixed team.** Use FPF as a coordination layer across specialised people, teams, copilots, and AI agents. This is the mode where local working frames, hand-offs, decision gates, and audience-specific outputs matter most.
+2. **Mixed team.** Use FPF as a coordination layer across specialised people, teams, copilots, and AI agents. This is the mode where local working frames, responsibility boundaries, decision gates, and audience-specific outputs matter most.
 3. **AI assistant.** Use FPF as an attached reference file or indexed reference for an assistant. In this mode, the spec is attached as a file rather than pasted into the prompt window; the dedicated section below shows the concrete loading pattern.
 
 ### Why FPF when AI-agents keep getting stronger?
 
-- **Because coordination, not raw generation, becomes the bottleneck.** Stronger LLMs reduce local reasoning scarcity, but they do not remove the need for selection, auditability, safe delegation, and shared understanding across people, agents, time, and viewpoints.
+- **Because local generation is not the whole problem.** Stronger LLMs reduce local reasoning scarcity, but they do not remove the need for selection, auditability, safe delegation, semantic stability, and shared understanding across people, agents, time, and viewpoints.
 - **Because local working frames still matter.** FPF keeps teams from pretending that product, safety, operations, and research all use one universal vocabulary.
 - **Because many real projects cannot just loop until tests pass.** In product, field engineering, strategy, marketing, safety, or open-ended research, the real-world oracle is delayed, noisy, expensive, or risky. FPF aims to catch anti-patterns before contact with the world.
 - **Because the same framework can serve both humans and AI.** AI agents can read the specification directly; humans can learn the same working model through didactic layers and the pedagogical companion.
@@ -175,14 +211,14 @@ FPF tends to pay off when several of these are true:
 Using the OS metaphor, FPF:
 
 - **Provides a common runtime for reasoning and iteration.**
-- **Treats local working frames as stable hand-off units.**
+- **Treats local working frames as stable responsibility-boundary units.**
 - **Separates systems, roles, method descriptions, methods, plans, and executed work.**
 - **Keeps claims tied to scope, carriers, and evidence.**
 - **Turns tacit thought into structured artefacts instead of leaving it implicit.**
 - **Lets one underlying body of work be published differently for engineering, management, research, and assurance.**
 - **Stays extensible through domain-specific packs instead of hard-coding one discipline's worldview.**
 
-For most readers, the practical point is simpler than the internal vocabulary: FPF gives mixed human/AI teams a shared way to specialise locally, hand work off cleanly, and keep different outputs about the same work coherent.
+For most readers, the practical point is simpler than the internal vocabulary: FPF gives mixed human/AI teams a shared way to specialise locally, move work across responsibility boundaries cleanly, and keep different outputs about the same work coherent.
 
 Loaded as a file into an AI assistant that can read files directly or through retrieval over an indexed copy, FPF can act as a disciplined reasoning scaffold for mixed human/AI work. It steers the model toward first-principles and state-of-the-art-oriented reasoning instead of generic marketing / management / pop-psychology boilerplate - but it will not think instead of you, and without good questions you can still get very confident, well-structured nonsense.
 
@@ -229,19 +265,19 @@ FPF is built on a small kernel of non-negotiable ideas. New readers do not need 
 
 ## How to approach this repository
 
-There are six practical newcomer routes above, plus a few orientation options around them:
+There are six practical newcomer entry families above, plus a few orientation options around them:
 
 1. **If you want the why:** start with **E.1-E.2** (Vision / Mission + Pillars).
-2. **If you want the first practical route:** choose the route block above whose opening sentence sounds most like your current burden, not the code sequence that happens to appear first.
-3. **If you already chose a route and want more detail:** move to the fuller route tables and route cards in **Preface** and **J.4**; longer walkthroughs belong in **I.2**.
+2. **If you want the first practical entry:** choose the entry block above whose opening sentence sounds most like your current burden, not the code sequence that happens to appear first.
+3. **If you already chose an entry and want more detail:** use **Preface** for coarse orientation, **J.4** for compact comparison of nearby starting points, and **I.2** for longer worked readings.
 4. **If you want to write or review patterns:** start with **E.8** and **E.19**.
-5. **If your real situation is still partly said:** use route `2` above in full detail - `C.2.2a`, `C.2.LS / C.2.4-C.2.7`, `A.16 / A.16.1 / A.16.2`, `B.4.1 / B.5.2.0`, then the relevant endpoint owner.
+5. **If your real situation is still partly said:** use the partly-said entry family above in full detail - `C.2.2a`, `C.2.LS / C.2.4-C.2.7`, `A.16 / A.16.1 / A.16.2`, `B.4.1 / B.5.2.0`, then the relevant endpoint pattern.
 6. **If you want a compact internal map:** use the simplified cluster map below.
 
 <details>
 <summary>Advanced: simplified internal map of the specification</summary>
 
-The specification is divided into clusters. The map below is intentionally simplified and focuses on the main semantic blocks. Think of it as source code for an evolvable reasoning architecture, not as an expert system and not as a tutorial; Parts **H-K** then provide glossary, annexes, indexes, and navigation aids. If you only need to choose your first route, you can skip this block.
+The specification is divided into clusters. The map below is intentionally simplified and focuses on the main semantic blocks. Think of it as source code for an evolvable reasoning architecture, not as an expert system and not as a tutorial; Parts **H-K** then provide glossary, annexes, indexes, and navigation aids. If you only need to choose your first entry, you can skip this block.
 
 ### Part A: Kernel Architecture Cluster
 The immutable ontological core.
@@ -304,10 +340,10 @@ If you are new to FPF, start with prompt `1` or `5` below. The later examples as
 > You have the FPF specification as a file.  
 > Help me structure [project / problem / programme].  
 > Use plain language for an engineer-manager.  
-> Propose: (1) bounded contexts / specialisations, (2) decision criteria, (3) key alternatives, (4) hand-offs, and (5) missing evidence or tests before commitment.  
+> Propose: (1) bounded contexts / specialisations, (2) decision criteria, (3) key alternatives, (4) responsibility boundaries, and (5) missing evidence or tests before commitment.  
 > Introduce internal FPF names only when they add precision.
 
-In practice the most productive usage is to treat FPF as a design kit and reference model: ask for bounded-context maps, decision criteria, option portfolios, structured reasoning artefacts, publication forms, and hand-off contracts for your domain, then iterate.
+In practice the most productive usage is to treat FPF as a design kit and reference model: ask for bounded-context maps, decision criteria, option portfolios, structured reasoning artefacts, publication forms, and responsibility-boundary contracts for your domain, then iterate.
 
 Below are example prompts; adapt them to your domain and language.
 
@@ -360,7 +396,7 @@ Follow-up:
 **Prompt:**
 > We have the FPF specification loaded as a file.  
 > We need to organise a mixed team of humans and AI agents for [project / programme].  
-> Propose a bounded-context map: contexts, local vocabularies, roles, bridges, hand-off artefacts, decision gates, and where human approval is required.  
+> Propose a bounded-context map: contexts, local vocabularies, roles, bridges, responsibility-boundary artefacts, decision gates, and where human approval is required.  
 > Keep the final answer practical for engineers / managers and avoid FPF jargon.
 
 Typical follow-ups:
