@@ -1,6 +1,6 @@
 # First Principles Framework (FPF) — Core Conceptual Specification
 by Anatoly Levenchuk and assortment of LLMs.
-April 2026
+May 2026
 
 Pattern and headers templates are explained in pattern E.8.
 
@@ -202,6 +202,7 @@ Pattern and headers templates are explained in pattern E.8.
 | C.26.2 | **Enacted Distributed State Evidence** | Stable | *Keywords:* distributed-state evidence, coordinated work, enacted state, weak state reading, evidence carrier, window, rival explanation, no group mind, report/export loss. *Queries:* "When does coordinated work evidence a state no participant report carries?", "How do I bound a distributed-state reading?", "When is a survey or dashboard thinner than the enacted state?" | **Builds on:** C.26, A.15, A.10, B.3, F.9, C.16. **Coordinates with:** C.26.1, C.26.3. |
 | C.26.3 | **Viability-Envelope Boundary Regulation** | Stable | *Keywords:* viability envelope, homeostasis, allostasis, boundary regulation, sensor/probe/actuator split, metric-induced distortion, service viability, quality bundle, failure mode. *Queries:* "When is viability more than one green metric?", "How do boundary probes or metrics change a viability envelope?", "When does a service split or support load need envelope regulation?" | **Builds on:** C.26, C.25, U.Dynamics, A.6, A.15, C.16, A.10, B.3, A.3, A.19, C.18, C.19. **Coordinates with:** C.26.1, C.26.2. |
 | C.27 | **Temporal Claim Adequacy: State Readings, Temporal Trends, and Intervention-Sensitive Temporal Change** | Stable | *Keywords:* temporal claim adequacy, temporal claim, state reading, rate reading, temporal trend, rate-change, intervention-sensitive temporal change, effort window, resistance/inertia, rhythm/cadence, throughput, recovery, braking, coasting, stabilization, dynamic benchmark. *Queries:* "When does a speed, rhythm, throughput, or recovery claim need temporal adequacy?", "How do I separate state, rate, and intervention-sensitive rate-change?", "When is faster improvement not enough for benchmark, quality, viability, or QL claims?" | **Builds on:** C.16, A.3.3, B.1.4, B.1.6. **Coordinates with:** C.18.1, C.19, C.22.1, C.24, C.25, C.26, C.26.3, G.9. |
+| C.28 | **CausalUse-CAL: Causal-Use Questions, Causality-Ladder Rungs, Identification and Realizability** | Stable | *Keywords:* causal-use question, causality ladder, association, intervention, counterfactual, Pearl Causal Hierarchy, Structural Causal Model, causal diagram, causal estimand, identification, counterfactual sampling realizability, causal evidence support basis, target trial, causal fairness, off-policy causal evaluation, causal-RL evaluation. *Queries:* "Can I say this caused that?", "Is this intervention claim supported?", "What evidence supports a counterfactual claim?", "When does a fairness metric need causal support?", "Is simulation enough for a counterfactual claim?", "Which pattern handles causal benchmark parity?", "When should causal language be downgraded to association, measurement, temporal, QL, or local prose?" | **Builds on:** A.10, B.3, C.11, C.19, C.24, C.26, C.27, D.5, G.5, G.9. **Coordinates with:** A.2.4, A.3.2, A.6, A.15, C.16, G.11. |
 
 
 
@@ -340,7 +341,7 @@ Pattern and headers templates are explained in pattern E.8.
 | J.1 | **Concept‑to‑Pattern Index** | stub | Quick jump from idea (“boundary”) to pattern (§, id). |
 | J.2 | **Pattern‑to‑Example Index** | stub | Table listing every archetypal grounding vignette. |
 | J.3 | **Principle‑Trace Index** | Stub | Maps each Pillar / C‑rule / P‑rule to concrete clauses. |
-| J.4 | **First Practical Entry Neighborhood Index** | Stable | Compact six-row entry-neighborhood index matching the public entry families without route/owner/output columns. |
+| J.4 | **First Practical Entry Neighborhood Index** | Stable | Compact entry-neighborhood index matching the public entry families without route/owner/output columns. |
 
 **Part K - Lexical Debt**
 
@@ -3034,6 +3035,26 @@ The **normative properties** of the role (e.g., `claimRef`, `claimScope`, `polar
 
 
 ### A.2.4:5 - Role family and specialisations
+#### A.2.4:5.3 - Causal evidence-role specialisations
+
+For causal-use support, `U.EvidenceRole` may receive these context-local specialisations as evidence-role terms:
+
+```text
+InterventionEvidenceRole
+RealizedCounterfactualSampleEvidenceRole
+IdentifiedCounterfactualEstimateEvidenceRole
+SimulationOnlyCounterfactualOutputRole
+```
+
+These are evidence-role specialisations, not new evidence-source authorities. `identifiedCounterfactualEstimateSupportBasis` and `realizedCounterfactualSampleSupportBasis` are both counterfactual support bases but are not the same support basis. `SimulationOnlyCounterfactualOutputRole` may support `simulationOnlyCounterfactualOutputBasis` and bounded model-supported use under `C.28`; it never becomes `interventionalActionSupportBasis` or `realizedCounterfactualSampleSupportBasis` by vocabulary, validation, or role relabeling alone.
+
+What changes in practice: an episteme holding `SimulationOnlyCounterfactualOutputRole` cannot be relabelled as `RealizedCounterfactualSampleEvidenceRole` just because the simulation mentions a counterfactual; the role assignment must preserve whether the support basis is observation, intervention, realized counterfactual sample, identified counterfactual estimate, or simulation-only output.
+
+The corresponding `CausalEvidenceSupportBasis` values are governed by `C.28`: `observationalAssociationSupportBasis`, `interventionalActionSupportBasis`, `realizedCounterfactualSampleSupportBasis`, `identifiedCounterfactualEstimateSupportBasis`, and `simulationOnlyCounterfactualOutputBasis`. `A.2.4` only classifies evidence roles held by epistemes; it does not mint a second causal support-basis value set.
+
+What this does not authorize: `A.2.4` does not decide the causal-use question, estimand, identification, or counterfactual sampling realizability; it preserves evidence-role/source authority so `C.28` and `B.3` can judge the causal-use claim without vocabulary laundering.
+
+
 
 `U.EvidenceRole` is a **role kind** refined by **specialisation** (no mereology of roles). The recommended, substrate‑neutral specialisations are:
 
@@ -3290,7 +3311,7 @@ These operators extend E.6.1 citation graph capabilities for evidence analysis i
 A.2 `U.Role`, A.2.1 `U.RoleAssignment` (role as mask, binding as assignment), A.10 Evidence Graph Referring (EPV-DAG), B.3 Trust & Assurance Calculus.
 
 **Coordinates with:**
-A.3.2 `U.MethodDescription` (protocols, proof obligations), E.6.1 Epistemic Roles via `U.RoleAssignment` (didactic gateway).
+A.3.2 `U.MethodDescription` (protocols, proof obligations), E.6.1 Epistemic Roles via `U.RoleAssignment` (didactic gateway), `C.28` when an evidence role is used to support causal-use claims and must stay distinct as observational, interventional, realized counterfactual sample, identified counterfactual estimate, or simulation-only counterfactual output.
 
 **Informs:**
 KD-CAL (knowledge dynamics, assurance cases), Norm-CAL (policy claims with evidence), planned `U.PromiseFulfillmentEvaluation` (services judged from work and reported as epistemes with evidence bindings).
@@ -3368,6 +3389,7 @@ EvidenceRoleAssigning:
 10. **No role-of-role**: Is this role bound directly to an episteme without chaining behavioural roles?
 
 ### A.2.4:End
+
 
 ## A.2.5 - U.RoleStateGraph: The Named State Space of a Role
 
@@ -6108,6 +6130,12 @@ Not a schema—these are **content prompts** for reviewers:
 
 > **Didactic guardrail:** A MethodDescription **does not** embed a schedule, assignees, or BoM. Calendars → `U.WorkPlan`; people/units → `U.RoleAssignment`; product structure → PBS/SBS.
 
+#### A.3.2:4.3a - Causal-use sampling and realized-counterfactual work boundary
+
+A `U.MethodDescription` may specify how to perform intervention assignment, counterfactual randomization, target-trial emulation, realized-counterfactual sampling, simulation, or causal-evidence collection. That specification is still a recipe for action: it declares role requirements, preconditions, postconditions/effects, parameters, failure semantics, and acceptance criteria for the work.
+
+It does not by itself make a causal-use claim admissible. If the resulting work is used to claim effect, intervention success, causal fairness, policy optimality, counterfactual comparison, causal method superiority, or support for a causal decision, route the causal-use question, causality-ladder rung, estimand, support basis, support verdict, supported use, and unsupported use to `C.28`.
+
 #### A.3.2:4.4 - Epistemic roles for MethodDescriptions (via `U.RoleAssignment`)
 
 Being an Episteme, a MethodDescription may itself play epistemic roles via `U.RoleAssignment` in a context (classification, not action), e.g.:
@@ -6212,6 +6240,9 @@ If a MethodDescription permits non‑determinism (e.g., search/optimization), th
 **CC‑A3.2‑14 (Bridging across contexts).**
 If two contexts use different MethodDescriptions for “the same‑named way,” an explicit **Bridge (`U.Alignment`)** **SHOULD** be provided to map terms/assumptions. Do **not** assume cross‑context identity by name alone.
 
+**CC-A3.2-15 (Causal-use work boundary).**
+A MethodDescription **MAY** describe intervention assignment, target-trial emulation, realized-counterfactual sampling, simulation, or causal-evidence collection as method/work/work-plan structure. It **SHALL NOT** be treated as causal-use support, causal-use admissibility, or causal-use verdict by itself. When that work is used causally, the causal-use question, rung, estimand, support basis, support verdict, supported use, and unsupported use **SHALL** be carried by `C.28`.
+
 
 ### A.3.2:9 - MethodDescription mereology (epistemic composition; not method composition)
 
@@ -6302,7 +6333,7 @@ Two specs are observationally equivalent for stakeholders **if**, under declared
 ### A.3.2:15 - Relations
 
 * **Builds on:** A.3.1 `U.Method` (the semantic way it describes); A.1.1 `U.BoundedContext`.
-* **Coordinates with:** A.2 `U.Role`, A.2.1 `U.RoleAssignment` (who enacts it); A.2.2 `U.Capability` (ability thresholds); A.15 Role–Method–Work (linking `isExecutionOf` to runs).
+* **Coordinates with:** A.2 `U.Role`, A.2.1 `U.RoleAssignment` (who enacts it); A.2.2 `U.Capability` (ability thresholds); A.15 Role–Method–Work (linking `isExecutionOf` to runs); `C.28` when intervention, target-trial, counterfactual-sampling, simulation, or causal-evidence work is used to support a causal-use claim.
 * **Informs:** `U.WorkPlan` (plans reference MethodDescriptions); `U.Dynamics` (models that specs may assume); Epistemic Role patterns (status of specs RoleStateGraph + State Assertion).
 * **Lexical guards:** E.10.y **L‑PROC** (do not call MethodDescription “process” when you mean Work/WorkPlan); E.10.x **L‑FUNC** (avoid “function/functionality” confusion).
 
@@ -6314,8 +6345,9 @@ Two specs are observationally equivalent for stakeholders **if**, under declared
 * **Declare parameters & acceptance.** Bind values at Work; state how success is judged.
 * **Same method, different specs.** BPMN/code/solver can be equivalent **if** pre/post/bounds match.
 * **Bridge, do not blur.** Cross‑team/domain differences go through **`U.Alignment`**, not wishful thinking.
-  
+
 ### A.3.2:End
+
 
 ## A.3.3 - `U.Dynamics`
 
@@ -6779,13 +6811,15 @@ This section is intentionally lightweight: it provides architectural intent and 
 >
 **Canonical companion.** The square itself (quadrant definitions, form constraints, and cross‑quadrant dependency discipline) is specified normatively in **A.6.B — Boundary Norm Square**. This overview only (i) maps quadrants onto the Signature Stack, and (ii) explains how MVPK faces project the canonical routed claim set. If anything in this overview conflicts with A.6.B, **A.6.B is authoritative**.
 
-**Start here when.** The dominant burden is API, protocol, contract, compliance, SLO/SLA, connector, or interface language that is mixing runtime behaviour, governance, and evidence into one undifferentiated boundary story.
+**Start here when.** The dominant question is API-, protocol-, contract-, compliance-, SLO/SLA-, connector-, or interface-facing language that is mixing runtime behaviour, governance, and evidence into one undifferentiated boundary account.
 
 **First output.** One Claim Register or equivalent routed atomic claim set with stable `L-* / A-* / D-* / E-*` identifiers, stack placement, and face citations by ID rather than paraphrase.
 
-**Typical next owners.** `A.6.B` for the quadrant law, `A.6.C` for contract unpacking, `A.6.P`, `A.6.Q`, or `A.6.A` for later lexical repair, and `E.17` faces for audience-specific publication of the same routed claim set.
+**Typical next owners.** `A.6.B` for the quadrant law, `A.6.C` for contract unpacking, `A.6.P`, `A.6.Q`, or `A.6.A` for lexical repair, and `E.17` faces for audience-specific publication of the same routed claim set.
 
-**Common wrong escalations / reroutes.** If the real burden is still cue preservation or route-bearing early articulation, reroute to `A.16` / `A.16.1`; if you are already repairing qualified relation, quality-term, or action-invitation language, continue into `A.6.P`, `A.6.Q`, or `A.6.A`; if agent duties are being mixed into one contract sentence, split them through `A.6.B` rather than minting one more contract-soup paragraph.
+**Common wrong escalations / reroutes.** If the real question is still cue preservation or early route-bearing articulation, reroute to `A.16` / `A.16.1`; if you are already repairing qualified relation, quality-term, or action-invitation language, continue into `A.6.P`, `A.6.Q`, or `A.6.A`; if agent duties are being mixed into one contract sentence, split them through `A.6.B` rather than minting one more contract-soup paragraph.
+
+**Causal/deontic split.** A mixed boundary sentence such as "deploy because it would reduce harm" is not owned by one hidden pattern. `C.28` carries the causal-use question, rung, estimand, support basis, support verdict, and supported/unsupported causal use. `A.6.B` routes deontic duties, boundary admissibility gates, and work-effects as atomic `L/A/D/E` claims. `A.6.C` unpacks contract, promise, commitment, utterance, and boundary-publication language when the sentence is agreement-like or release-facing. A causal support record does not by itself create a duty, commitment, promise, release gate, or boundary admissibility predicate.
 
 **Conventions:** The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **MAY**, and **SHALL** are to be interpreted as in RFC 2119/8174. Lower‑case “must/may/should” in explanatory prose is descriptive, not normative.
 
@@ -6823,8 +6857,8 @@ This cluster overview makes one disciplined move:
 
 When boundaries are described without a routing discipline, four confusions dominate:
 
-1. **Laws vs admissibility.** Authors encode runtime gate predicates as “laws”, or write invariants using RFC‑style deontic verbs, blurring “what is true/defined” with “what application is admissible”. FPF explicitly separates these: operational guard predicates belong to mechanisms (A.6.1), not signatures (A.6.0).
-   *Common mistake #0 — Applicability ≠ Admissibility (informative):* Signature `Applicability` scopes intended use/bounded context; it is not a runtime entry gate. Runtime entry checks and authorization predicates belong in `U.Mechanism.AdmissibilityConditions` as `A-*`. If an agent is obligated to satisfy/enforce such a gate, express that as a `D-*` duty that references the `A-*` claim ID (per A.6.B), not by rewriting the gate as “X MUST …”.
+1. **Laws vs admissibility.** Authors encode runtime gate predicates as “laws”, or write invariants using RFC‑style deontic verbs, blurring “what is true/defined” with “what is allowed to be applied”. FPF explicitly separates these: operational guard predicates belong to mechanisms (A.6.1), not signatures (A.6.0).
+   *Common mistake #0 — Applicability ≠ Admissibility (informative):* Signature `Applicability` scopes intended use/bounded context; it is not a runtime entry gate. Runtime entry checks and permission predicates belong in `U.Mechanism.AdmissibilityConditions` as `A-*`. If an agent is obligated to satisfy/enforce such a gate, express that as a `D-*` duty that references the `A-*` claim ID (per A.6.B), not by rewriting the gate as “X MUST …”.
 
 2. **Admissibility vs deontics.** “MUST/SHOULD/MAY” is used both for agent obligations and for world‑state admissibility predicates. E.8 already demands keeping deontics distinct from admissibility/definitions and recommends predicate‑style constraints for admissibility rather than RFC keywords.
 
@@ -6839,7 +6873,7 @@ These confusions destroy evolvability: you cannot swap implementations behind a 
 | Force                                        | Tension                                                                                                                                                            |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Modularity vs expressiveness**             | A stable boundary must be abstract, but users want operational detail “in the same doc”.                                                                           |
-| **Truth vs governance**                      | Definitions/invariants (“is”, “iff”, “∀”) vs authorizations/obligations (“MUST/SHOULD/MAY”).                                                                       |
+| **Truth vs governance**                      | Definitions/invariants (“is”, “iff”, “∀”) vs permissions/obligations (“MUST/SHOULD/MAY”).                                                                          |
 | **Design‑time clarity vs run‑time evidence** | What can be checked statically vs what requires executing work and observing traces.                                                                               |
 | **View vs viewpoint discipline**             | Views are projections; viewpoints are accountable stances. Dropping viewpoint loses architecture accountability (ISO‑style discipline is already encoded in MVPK). |
 | **Local meaning vs cross‑context reuse**     | Boundaries should be local to a bounded context; reuse must be explicit (Bridges/CL), not hidden.                                                                  |
@@ -6857,7 +6891,7 @@ This pattern uses **stack** in the same pragmatic sense as other FPF stacks (e.g
 
 This is consistent with existing “stack discipline” uses in FPF (e.g., import layering over holonic strata).
 
-The **Signature Stack** (as used in this cluster) is the ordered family of **canonical claim layers** for a boundary package. Each layer is a stable canonical home for one quadrant of statements (L/A/D/E), with a named home in the boundary’s artefacts/sections:
+The **Signature Stack** (as used in this cluster) is the ordered family of **canonical claim layers** for a boundary package. Each layer is a stable “landing zone” for one quadrant of statements (L/A/D/E), with a canonical boundary artefact/section that carries those statements:
 
 1. **Signature layer (L: laws/definitions).** `U.Signature` provides the stable declarative boundary: Vocabulary + Laws + Applicability, without runtime gate predicates.
 
@@ -6865,7 +6899,7 @@ The **Signature Stack** (as used in this cluster) is the ordered family of **can
 
    *Audit vs AssuranceLane (avoid duplication):* the Mechanism’s **Audit/Observability** block defines the required semantics of an observability/evidence interface (carrier classes and required fields, correlation keys, exposure interface). **Retention/access/enforcement are D‑claims** (agent duties) that reference the same carrier classes by ID. An MVPK **AssuranceLane** is a projection for auditors that explains how to read/check the evidence interface. This is a special case of CC‑A.6.6: the lane references the Mechanism section and the relevant claim IDs rather than restating semantics.
 
-3. **Norms & commitments layer (D: duties/commitments).** Deontic statements are anchored to accountable agents/roles (authors, implementers, operators, providers, assessors). Canonical placement is a Norms/Commitments section in the boundary package (typically rendered inside `TechCard`), and those statements reference `L-*`/`A-*`/`E-*` by ID rather than duplicating predicates.
+3. **Norms & commitments layer (D: duties/commitments).** Deontic statements are anchored to accountable agents/roles (authors, implementers, operators, providers, reviewers). Canonical placement is a Norms/Commitments section in the boundary package (typically rendered inside `TechCard`), and those statements reference `L-*`/`A-*`/`E-*` by ID rather than duplicating predicates.
 
 4. **Evidence bindings layer (E: effects/evidence).** `E-*` claims bind observed behaviour to **carrier classes** and measurement conditions. Canonical placement is an Evidence/Carriers section in the boundary package (typically rendered in `AssuranceLane`), and adjudication happens against carriers produced in work.
 
@@ -6909,7 +6943,7 @@ AssuranceLane:
       references: [A-AC-1, D-RET-1, Mechanism.AuditObservability]
 ```
 
-Default canonical homes (quadrant → stack layer / section):
+Default landing zones (quadrant → stack layer / section):
 
 * **L →** Signature.Laws (and, where appropriate, mechanism‑local semantic laws; never runtime gates)
 * **A →** Mechanism.AdmissibilityConditions
@@ -6917,7 +6951,7 @@ Default canonical homes (quadrant → stack layer / section):
 * **E →** Evidence/Carriers (claims adjudicated against work via carriers; the publication face for these is typically `AssuranceLane`)
 
 **Integration stitches (informative; this cluster is a routing hub, not a standalone philosophy):**
-* **A.6.1 ↔ A‑quadrant:** `U.Mechanism.AdmissibilityConditions` is the canonical home for `A-*` gate/admissibility claims.
+* **A.6.1 ↔ A‑quadrant:** `U.Mechanism.AdmissibilityConditions` is the canonical claim layer for `A-*` gate/admissibility claims.
 * **A.10 / B.3 ↔ E‑quadrant:** `E-*` claims should be anchored to evidence carriers + provenance (A.10); without an explicit evidence anchor they are treated as `AssuranceLevel:L0 (Unsubstantiated)` in the Trust & Assurance calculus (B.3).
 * **A.2.3 / F.12 ↔ D/E separation:** a `U.PromiseContent` promise is not evidence; promise acceptance is linked to work evidence via F.12, and role obligations to maintain admissibility are expressed as `D-*` duties referencing `A-*` and/or `E-*` by ID.
 
@@ -6932,12 +6966,12 @@ Default canonical homes (quadrant → stack layer / section):
 
 A “four‑part list” is not strong enough, because real sentences reuse the same surface words (“must”, “guarantees”, “valid”) across different logical roles. A **2×2 matrix** is stronger because it arises from crossing **two independent distinctions**:
 
-* **Modality family:** truth‑conditional vs governance (authorizations/obligations/commitments).
+* **Modality family:** truth‑conditional vs governance (permissions/obligations/commitments).
 * **Adjudication substrate:** in‑description vs in‑work (whether satisfaction is decided from the description alone or requires observing executed work/carriers).
 
-Operational summary (quadrant → canonical home in the stack):
+Operational summary (quadrant → canonical claim layer in the stack):
 * **L** (Laws & Definitions) → `Signature.Laws` (truth‑conditional semantics, in‑description)
-* **A** (Admissibility & Gates) → `Mechanism.AdmissibilityConditions` (runtime entry predicates / authorization checks)
+* **A** (Admissibility & Gates) → `Mechanism.AdmissibilityConditions` (runtime entry predicates / permission checks)
 * **D** (Deontics & Commitments) → Norms/Commitments (agent/role duties and commitments; may be audited via `E-*`)
 * **E** (Work‑Effects & Evidence) → Evidence/Carriers (work‑adjudicated effects tied to carriers and measurement conditions)
 
@@ -6983,7 +7017,7 @@ A disciplined stack therefore requires:
 
 * Every published face is a **Description** (A.7) that is *about* an Object and is carried by some Carrier; do not conflate these layers.
 * Each face must declare the viewpoint that justifies its projection (ISO/42010 discipline operationalised by MVPK).
-* Per **E.17** (“no new semantics”), a face **MUST NOT** introduce new semantic commitments beyond the boundary’s **canonical routed claim set** (the authoritative `L-* / A-* / D-* / E-*` statements at their canonical locations). A face **MAY** add informative explanation, examples, and cross‑references, provided they are clearly marked as informative. Any **normative** sentence on a face **MUST** cite the routed claim ID(s) it depends on (or be moved into the canonical claim set); paraphrase remains valid only as explicitly informative text.
+* Per **E.17** (“no new semantics”), a face **MUST NOT** introduce new semantic commitments beyond the boundary’s **canonical routed claim set** (the authoritative `L-* / A-* / D-* / E-*` statements at their canonical locations). A face **MAY** add informative explanation, examples, and cross‑references, provided they are clearly marked as informative. Any **normative** sentence on a face **MUST** cite the routed claim ID(s) it depends on (or be moved into the canonical claim set); paraphrase is allowed only as explicitly informative text.
 * Per **E.17 / L‑SURF** (face‑kind closure), a publication package that claims MVPK alignment **MUST NOT** mint additional MVPK face kinds (e.g., “EvidenceCard”, “NormsCard”) as if they were first‑class kinds; if you need local headings, keep them as sections within the canonical face kinds.
 
 #### A.6:4.4 - “Contract” unpacking: avoid assigning agency to epistemes
@@ -6992,7 +7026,7 @@ When practitioners say “the API contract”, they usually compress multiple di
 
 * **Promise content (promise content; `U.PromiseContent`, A.2.3):** what is promised to be made available to eligible consumers — **a promise, not execution** (`U.Work`).
 * **Utterance package (published descriptions + instituting act):** what is said/published and versioned (signature/mechanism + MVPK faces), plus the `U.SpeechAct <: U.Work` that published/approved it when provenance matters (A.2.9).
-* **Commitment (deontic binding; `U.Commitment`, A.2.8):** what an accountable role/agent is obligated, authorized, or constrained not to do (often: to satisfy a promise content).
+* **Commitment (deontic binding; `U.Commitment`, A.2.8):** what an accountable role/agent is obligated/permitted/prohibited to do (often: to satisfy a promise content).
 * **Work + Evidence (adjudication substrate; `U.Work` + carriers):** what actually happens and what carriers/traces can adjudicate whether commitments and operational guarantees were met.
 
 In A.6 terms:
@@ -7089,9 +7123,9 @@ A boundary description is evolvable iff its claims are separated across the sign
 
 * **Signature layer:** defines operations like `Evaluate(model, dataset) → Report` and truth‑conditional definitions of metrics (AUROC, calibration error) as Laws.
 
-* **Mechanism layer:** admissibility gate encodes when evaluation is admissible: dataset version must match declared usage terms; measurement environment must meet constraints; seeds pinned.
+* **Mechanism layer:** admissibility gate encodes when evaluation is permitted: dataset version must match declared license; measurement environment must meet constraints; seeds pinned.
 
-* **Deontics/commitments:** assessors MUST use dataset vX.Y; authors SHALL publish MVPK faces and cite the measurement environment; an organisation commits to an assessment SLA (explicitly an agent commitment).
+* **Deontics/commitments:** reviewers MUST use dataset vX.Y; authors SHALL publish MVPK faces and cite the measurement environment; an organisation commits to a review SLA (explicitly an agent commitment).
 
 * **Effects/evidence:** the produced report file, logs of evaluation runs, cryptographic hashes, and trace IDs are carriers. A.7 discipline prevents calling the report “the evaluation” (object) and prevents treating the file as the model.
 
@@ -7109,7 +7143,7 @@ This episteme is a boundary because it mediates between theory (“metric defini
 Lenses tested: **Gov**, **Arch**, **Onto/Epist**, **Prag**, **Did**. Scope: **Universal** for boundary descriptions in A.6.\*.
 
 * **Arch bias:** Strongly biases toward separation of concerns and explicit layering; mitigated by allowing multiple faces (views) so audiences are not forced into the same detail level.
-* **Onto/Epist bias:** Treats signatures/mechanisms as epistemes that must not be conflated with work; mitigated by explicit evidence surfaces and carriers.
+* **Onto/Epist bias:** Treats signatures/mechanisms as epistemes that must not be conflated with work; mitigated by explicit evidence carriers and evidence records.
 * **Gov bias:** Prefers auditable responsibility (viewpoint accountability and commitment unpacking); mitigated by keeping the stack conceptual and tool‑agnostic.
 
 ### A.6:7 - Conformance Checklist
@@ -7122,6 +7156,7 @@ Lenses tested: **Gov**, **Arch**, **Onto/Epist**, **Prag**, **Did**. Scope: **Un
 | **CC‑A.6.6 (Viewpoint accountability).** | Every published MVPK face (`U.View`) **SHALL** specify `viewRef` and `viewpointRef`. Faces **SHALL** be projections of the boundary’s canonical routed claim set (A.6.B); normative content on faces **MUST** be expressed as citations to routed claim IDs (not re‑stated prose), and faces **MUST NOT** introduce new semantic commitments beyond the underlying signature/mechanism (per **E.17** “no new semantics”). | Preserves viewpoint discipline and prevents view‑forking.    |
 | **CC‑A.6.6a (MVPK face‑kind discipline).**  | A publication that claims MVPK alignment **MUST** conform to **E.17 / L‑SURF** face‑kind closure (i.e., use only `{PlainView, TechCard, InteropCard, AssuranceLane}` and **MUST NOT** mint additional face kinds). Local “cards” may exist only as headings/sections inside those face kinds. | Aligns with MVPK/L‑SURF; prevents new‑face drift.            |
 | **CC‑A.6.7 (Contract unpacking).**       | When using “contract/guarantee/promise” language, a conforming text **SHOULD** apply the reusable discipline in **A.6.C** to disambiguate whether it refers to a promise content as promise content (`U.PromiseContent`, not execution), an utterance package (published descriptions / speech acts), a deontic commitment (`U.Commitment`), and/or work‑effects/evidence, and then route each atomic statement via **A.6.B** (L/A/D/E) with explicit claim‑ID references (no paraphrase drift). (**F.18** is a lexical anchor only.) | Stops agency attribution errors; clarifies responsibility.          |
+| **CC‑A.6.8 (Causal/deontic split).**     | A boundary description that mixes causal support with duty, promise, commitment, release, or admissibility language SHALL split the sentence into atomic claims: causal-use support to `C.28`, deontic and boundary-gate claims to `A.6.B`, and contract/promise/utterance unpacking to `A.6.C`. A `CausalUseSupportVerdict` does not by itself create a duty, commitment, promise, release gate, or boundary admissibility predicate. | Prevents causal evidence from being recast as boundary authority or deontic obligation. |
 
 
 ### A.6:8 - Common Anti‑Patterns and How to Avoid Them
@@ -7132,7 +7167,7 @@ Lenses tested: **Gov**, **Arch**, **Onto/Epist**, **Prag**, **Did**. Scope: **Un
 | **RFC‑keywords in invariants** | “MUST” appears inside `Definition:` blocks                      | Confuses deontics with mathematical admissibility; undermines auditability       | Rewrite as declarative predicate; reference predicate IDs from CC when needed.               |
 | **Paraphrase drift**           | Same constraint restated in multiple faces with new wording      | Creates hidden divergence; breaks routing discipline and evidence accountability | Use `…-*` IDs + Claim Register; faces reference IDs rather than restating text.              |
 | **Interface‑as‑promiser**      | “The interface promises…” without identifying an agent          | Ontological category error; contracts are agent commitments                      | Apply **F.18:16.1** unpacking: who commits, via which published utterance, to what promise content.           |
-| **Evidence‑free guarantees**   | “Guaranteed latency” without measurement/evidence story         | Effects exist only in work; without carriers it’s non‑testable                   | Bind to carriers (metrics/traces) and specify the evidence surface (what gets logged).       |
+| **Evidence‑free guarantees**   | “Guaranteed latency” without measurement/evidence account       | Effects exist only in work; without carriers it’s non‑testable                   | Bind to carriers (metrics/traces) and specify the evidence carriers and logged records.       |
 | **View without viewpoint**     | A “view” is published but no viewpoint accountability is stated | Readers cannot interpret omissions; multi‑view discipline collapses              | Require `viewpointRef` with every face; treat view as projection under viewpoint.            |
 | **System‑as‑agent deontics**   | “The system/service SHALL …” used where no accountable role is named | Blurs behavior semantics with enforcement; hides responsibility                   | Rewrite as (`E-*`) behavior/evidence semantics + (`D-*`) duty on implementers/operators.     |
 | **One‑doc monoculture**        | Same document mixes laws, gates, duties, and evidence           | Evolvability collapses; updates become all‑or‑nothing                            | Use the stack: separate Signature/Mechanism/Norms/Evidence faces; route by matrix.           |
@@ -7143,7 +7178,7 @@ Lenses tested: **Gov**, **Arch**, **Onto/Epist**, **Prag**, **Did**. Scope: **Un
 | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
 | **Evolvable boundaries.** Implementations can change while signatures remain stable.                               | More upfront structure; mitigated by MVPK faces that present only relevant slices per audience. |
 | **Reduced category mistakes.** Object/description/carrier confusion becomes detectable.                            | Requires discipline in writing; mitigated by the “Where statements go” routing examples.        |
-| **Auditability and reproducibility.** Effect claims are tied to evidence carriers; commitments are tied to agents. | Requires evidence surfaces to be designed; mitigated by making `AssuranceLane` (evidence bindings) a standard face.    |
+| **Auditability and reproducibility.** Effect claims are tied to evidence carriers; commitments are tied to agents. | Requires evidence carriers and evidence-record formats to be designed; mitigated by making `AssuranceLane` (evidence bindings) a standard face.    |
 | **Clearer cross‑disciplinary communication.** Legal/compliance deontics no longer compete with math invariants.    | Teams must align on viewpoint responsibilities; mitigated by explicit viewpointRef in MVPK.     |
 
 ### A.6:10 - Rationale
@@ -7157,13 +7192,13 @@ A boundary is simultaneously:
 
 If these are mixed, evolution becomes impossible to reason about: every change becomes “semantic”, and every claim becomes unfalsifiable.
 
-The stack creates a default **direction of dependence**: higher layers constrain lower layers, not vice versa. The matrix creates a default **routing** that is not reliant on word choice alone and therefore survives natural-language variation (“must”, “guarantee”, “valid”, “admissible”).
+The stack creates a default **direction of dependence**: higher layers constrain lower layers, not vice versa. The matrix creates a default **routing** that is not reliant on word choice alone and therefore survives natural‑language variation (“must”, “guarantee”, “valid”, “allowed”).
 
 ### A.6:11 - SoTA‑Echoing (post‑2015 practice alignment)
 
 > **Informative.** Alignment notes; not normative requirements.
 
-* **Adopt — algebraic effects & handlers / effect systems.** Modern effect systems separate the *signature of operations* from handler semantics (e.g., Koka’s effect typing; mainstream effect handlers in OCaml 5 era). A.6 aligns by keeping the contract surface in `U.Signature` and placing execution semantics in `U.Mechanism`/Realizations, preserving substitution and evolvability.
+* **Adopt — algebraic effects & handlers / effect systems.** Modern effect systems separate the *signature of operations* from handler semantics (e.g., Koka’s effect typing; mainstream effect handlers in OCaml 5 era). A.6 aligns by keeping boundary-signature content in `U.Signature` and placing execution semantics in `U.Mechanism`/Realizations, preserving substitution and evolvability.
 
 * **Adopt — session/behavioural types for protocol boundaries.** Post‑2015 practice in behavioural typing treats boundaries as typed interaction protocols with progress/safety properties. A.6’s routing matrix makes “protocol laws” (Quadrant L) explicit and separates entry gates (Quadrant A) from agent duties (Quadrant D) and runtime evidence (Quadrant E), reducing ambiguity.
 
@@ -7173,9 +7208,9 @@ The stack creates a default **direction of dependence**: higher layers constrain
 
 * **Adapt — DDD bounded contexts / microservice contracts.** Modern architecture practice keeps meaning local and makes crossings explicit. A.6’s stack and routing discipline provide a precise placement scheme for what is “inside the context contract” vs “at the entry gate” vs “governance duties” vs “observability evidence”.
 
-* **Adapt — observability as evidence discipline.** Post‑2015 observability practice treats traces/logs/metrics as first‑class evidence surfaces. A.6 places such claims in Quadrant E and ties them to carriers (A.7), preventing “guarantees without telemetry”.
+* **Adapt — observability as evidence discipline.** Post‑2015 observability practice treats traces/logs/metrics as first‑class evidence carriers. A.6 places such claims in Quadrant E and ties them to carriers (A.7), preventing “guarantees without telemetry”.
 
-* **Adapt — Markov blankets / active inference as probabilistic boundary views.** Markov‑blanket thinking can help pick observables and diagnose “boundary leaks”, but it does not replace deontics, invariants, or admissibility gates; therefore it is a complementary *view* under a viewpoint, not the primary contract object.
+* **Adapt — Markov blankets / active inference as probabilistic boundary views.** Markov‑blanket thinking can help pick observables and diagnose “boundary leaks”, but it does not replace deontics, invariants, or admissibility gates; therefore it is a complementary *view* under a viewpoint, not the primary boundary-description object.
 
 ### A.6:12 - Relations
 
@@ -7186,6 +7221,7 @@ The stack creates a default **direction of dependence**: higher layers constrain
 * **Operationalises view/viewpoint accountability:** Uses MVPK / `U.MultiViewDescribing` (E.17.0) so each face is a projection under a viewpoint, not a viewpoint‑free snapshot.
 * **Unpacks “contract” talk:** Reuses F.18’s promise/utterance/commitment separation to keep agency and responsibility explicit.
 * **Connects to signature engineering patterns:** A.6.5 (slot discipline) and A.6.6 (anchor/base discipline) can be read as “constructor/enabling” operations that help *build* well‑formed signatures by disciplined unpacking and grounding (they belong in the same stack discipline because they govern boundary construction).
+* **Coordinates with `C.28 CausalUse-CAL`:** When boundary prose uses causal support to justify deployment, release, duty, commitment, or admissibility, A.6 splits the boundary sentence while `C.28` remains the semantic owner for causal-use question, rung, estimand, support basis, support verdict, and supported/unsupported causal use.
 
 ### A.6:12a - Quantum-like boundary-route note
 
@@ -7198,7 +7234,7 @@ Action path:
 3. Route the ordinary boundary content through A.6/A.6.B/F.9/A.15/C.16/C.25 as applicable.
 4. If the boundary text uses a coarsened representation to claim preserved action, intervention, manipulation, explanation, or cross-level structure, state the causal-abstraction or approximate-causal-abstraction mapping before retaining QL wording.
 5. Ask whether the boundary act is being used as a passive read or unjustified lossless-transfer reading while actually changing the represented state, export validity, or viability decision.
-6. If yes, route only that remaining burden through `C.26.1`; keep the ordinary boundary pattern active.
+6. If yes, route only that remaining residual question through `C.26.1`; keep the ordinary boundary pattern active.
 7. If no, keep the text in the ordinary boundary/bridge/work/measurement/quality pattern and remove QL wording.
 
 Minimum boundary routing before a quantum-like boundary reading:
@@ -7212,7 +7248,7 @@ Minimum boundary routing before a quantum-like boundary reading:
 | Claimed state reading | What represented state is claimed before and after the act, and whether the act is treated as passive read, action, export, or probe |
 | Evidence / carrier | Which carrier, trace, metric, report, observation, or work result supports the reading |
 | Export or loss | What is copied, transformed, no longer comparable, or not faithfully exportable |
-| Ordinary pattern tried | Which A.6 / F.9 / A.15 / C.16 / C.25 route already carries the baseline burden |
+| Ordinary pattern tried | Which A.6 / F.9 / A.15 / C.16 / C.25 route already carries the baseline question |
 
 Useful outputs:
 
@@ -7222,6 +7258,8 @@ Useful outputs:
 - a relation repair through `A.6.P` / `F.18` when coupling words become reusable relation candidates.
 
 ### A.6:End
+
+
 ## A.6.RSIG - Recognition Signatures for Descriptions
 
 > **Type:** Architectural pattern
@@ -18021,7 +18059,7 @@ The business effect is predictable: confidence badges cannot be defended, cross�
 
 | Force                           | Tension                                                                                                                                           |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Universality vs. burden**     | One Standard must fit systems and epistemes ↔ Authors should not drown in paperwork.                                                              |
+| **Universality vs. authoring cost** | One Standard must fit systems and epistemes ↔ Authors should not drown in paperwork.                                                           |
 | **Externality vs. reflexivity** | Evidence must be produced by an external TransformerRole (A.12) ↔ Some systems adapt themselves (need reflexive modelling without self‑evidence). |
 | **Atemporal vs. temporal**      | Many claims are state‑like ↔ Many others are histories; evidence must respect order and coverage (Γ\_time).                                       |
 | **Rigor vs. flow**              | Formal proofs and controlled tests raise confidence ↔ Engineering cadence needs lightweight, incremental anchors.                                 |
@@ -18029,6 +18067,47 @@ The business effect is predictable: confidence badges cannot be defended, cross�
 
 
 ### A.10:4 - Solution — The Evidence Graph Referring Standard
+#### A.10:4.7 - Causal evidence support basis in evidence paths
+
+Evidence graph paths that support causal-use claims must carry the `C.28`-governed `CausalEvidenceSupportBasis` without redefining causal estimands or causal support authority.
+
+The `C.28` values that `A.10` may carry in an evidence path are:
+
+```text
+observationalAssociationSupportBasis
+interventionalActionSupportBasis
+realizedCounterfactualSampleSupportBasis
+identifiedCounterfactualEstimateSupportBasis
+simulationOnlyCounterfactualOutputBasis
+```
+
+`A.10` consumes this value set from `C.28`; it does not add `causalAssumptionOnlySupport` or `noCausalEvidenceSupport` as evidence-basis values. Assumption-only and no-support postures are represented by causal assumptions, support verdict, supported use, unsupported use, or abstain in `C.28`/`B.3`, not by a second evidence-basis vocabulary.
+
+No unsupported causality-ladder climb:
+
+```text
+observational-association evidence -> interventional-action claim requires CausalIdentificationProfile.
+interventional-action evidence -> counterfactual-comparison claim requires CausalIdentificationProfile for
+  identifiedCounterfactualEstimateSupportBasis, CounterfactualSamplingRealizabilityProfile for
+  realizedCounterfactualSampleSupportBasis, or bounded-use treatment.
+Simulation-only counterfactual output may support bounded model-supported use when model assumptions, validation, supported use, and unsupported use are declared. It does not become interventional evidence or realized counterfactual sample evidence by vocabulary, validation, or evidence-role relabeling alone.
+
+Evidence-path micro-examples:
+
+| `CausalEvidenceSupportBasis` | EPV-style path cue |
+| --- | --- |
+| `observationalAssociationSupportBasis` | observed cohort table -> `PathSlice` to measurement work -> association-use support statement; unsupported use = intervention-effect wording. |
+| `interventionalActionSupportBasis` | randomized or governed action assignment record -> work trace -> declared intervention-effect support inside assignment, follow-up, and outcome window. |
+| `realizedCounterfactualSampleSupportBasis` | counterfactual-rung sampling work plan -> run trace -> evidence carrier -> samples from declared target counterfactual distribution under physical/ethical/operational constraints. |
+| `identifiedCounterfactualEstimateSupportBasis` | causal assumptions, graph/calculus proof, available-data regime set, and bound refs -> `CausalIdentificationProfile` -> estimated or bounded counterfactual use with supported/unsupported use. |
+| `simulationOnlyCounterfactualOutputBasis` | simulator output -> counterfactual model assumptions -> simulation validation ref -> bounded model-supported use; validation remains validation and does not convert the path into direct sample evidence or intervention-effect evidence. |
+```
+
+What changes in practice: an evidence path can show that a carrier supports a causal-use claim, but it must also show the causal evidence support basis and the relevant `C.28` support references when the claim climbs from observation to intervention or from intervention to counterfactual comparison.
+
+What this does not authorize: `A.10` does not identify causal effects, create an estimand, certify target-trial emulation, or decide counterfactual sampling realizability; it stores and makes recoverable the evidence graph path and causal support-basis refs needed by `C.28` and `B.3`.
+
+
 
 The Standard is a small set of primitives applied uniformly, with **manager‑first clarity** and **formal hooks** for proof obligations.
 
@@ -18093,6 +18172,7 @@ The system that produces or interprets evidence is **external** to the holon und
 | **CC‑A10.10 (Γ\_sys Anchors)**          | Physical claims aggregated by `Γ_sys` MUST reference measurement models (quantity, unit, uncertainty), boundary conditions, and calibration carriers.                                                                                   | Ensures physical plausibility and comparability.           |
 | **CC‑A10.11 (Γ\_method Anchors)**       | For order‑sensitive composition, design‑time MUST include a **Method Instantiation Card (MIC)** (Precedes/Choice/Join, guards, exceptions); run‑time traces MUST record `happenedBefore` and reference the MethodDescription they instantiate. | Preserves order semantics and reproducibility.             |
 | **CC‑A10.12 (Γ\_work Anchors)**         | Resource spending/yield claims MUST be evidenced by instrumented carriers (meters, logs) and their MethodDescriptions; resource **rosters** MUST NOT be conflated with SCR/RSCR.                                                               | Distinguishes cost accounting from knowledge carriers.     |
+| **CC-A10.13 (Causal support-basis path)** | If an evidence path supports a causal-use claim, it **MUST** carry `CausalEvidenceSupportBasis` from `C.28` and any relevant `CausalIdentificationProfile`, `CounterfactualSamplingRealizabilityProfile`, or `CausalUseEvidenceDesignRecord` refs; A.10 **MUST NOT** identify causal effects or mint a second support-basis value set. | Keeps evidence graph support recoverable without moving causal authority out of `C.28`. |
 
 **Manager’s audit (non‑normative, quick):** For any claim, ask **What carriers? Which system? Which method? When?** If any answer is missing, A.10 is not satisfied.
 
@@ -18123,6 +18203,7 @@ The system that produces or interprets evidence is **external** to the holon und
 * **Builds on:** A.1 Holonic Foundation; A.4 Temporal Duality; **A.12 Transformer Externalization**; **A.14 Advanced Mereology**; **A.15 Role–Method–Work Alignment**.
 * **Constrains / ssed by:** B.1 (all Γ‑flavours: `Γ_sys`, `Γ_epist`, `Γ_method`, `Γ\_time`, `Γ_work`); B.1.1 (Dependency Graph & Proofs).
 * **Enables:** **B.3 Trust Calculus** (R/CL inputs, auditability); B.4 Canonical Evolution Loop (clean design/run bridges).
+* **Coordinates with:** `C.28` when an evidence path is used as causal-use support; A.10 carries the evidence/provenance path, while `C.28` governs causal-use question, support basis, identification, realizability, and supported/unsupported use.
 
 ### A.10:10 - Migration (practical and brief)
 
@@ -18153,7 +18234,7 @@ Action path:
 3. State the evidence-producing role and method: who or what produced the carrier, by which method, probe, measurement, or work act.
 4. State the time window and decay/reopen condition.
 5. State what the carrier does not show, including the strongest rival explanation still live.
-6. Choose the next pattern: stay in A.10 for carrier anchoring, route to `B.3` for assurance strength, route to `C.16` for measurement legality, route to `F.9` for bridge/export loss, or route to a `C.26.*` pattern for the remaining probe/state/envelope burden.
+6. Choose the next pattern: stay in A.10 for carrier anchoring, route to `B.3` for assurance strength, route to `C.16` for measurement legality, route to `F.9` for bridge/export loss, or route to a `C.26.*` pattern for the remaining probe/state/envelope question.
 
 For probe-coupled, distributed-state, bridge-loss, measurement-frame, or viability-envelope readings, include at least:
 
@@ -18177,6 +18258,8 @@ Useful outputs:
 Do not let the label `quantum-like` carry evidence weight by itself. The evidence graph carries the claim; the math lens only explains what representational mistake the evidence is being used to avoid.
 
 ### A.10:End
+
+
 ## A.11 - Ontological Parsimony (C‑5)
 
 *“Add only what you cannot subtract.”*
@@ -18850,24 +18933,34 @@ Each edited heading should carry the badge **“► decided‑by: A.14 Advanced 
 > **Status:** Stable
 > **Normativity:** Normative unless marked informative
 
-**At a glance.** This pattern is the entry-bearing alignment pattern for engineer-managers when the real confusion is not "what component is this" but `who is responsible`, `how the work is supposed to happen`, `when the plan lives`, and `what actually happened`.
+**At a glance.** This pattern is the entry-bearing alignment surface for engineer-managers when the real confusion is not "what component is this" but `who is responsible`, `how the work is supposed to happen`, `when the plan lives`, and `what actually happened`.
 
 **Use this when.** Use this pattern when the real job is to separate role, method, plan, capability, and actual work before a team treats one cue, one schedule, or one document as if it already counted as execution or authority.
+
+
+
 **Start here when.** The dominant ambiguity is role vs method vs schedule vs actual run, and the team keeps arguing about a "process" without separating recipe, plan, capability, and executed work.
 
-**First output.** One explicit Role / Method / MethodDescription / WorkPlan / Work separation, plus one traceable chain from `U.RoleAssignment` through the governing method description to the actual or intended work record.
+**First output.** One explicit Role / Method / MethodDescription / WorkPlan / Work separation, plus one traceable chain from `U.RoleAssignment` through the governing method description to the actual or intended work surface.
+
 **Governed object in plain terms.** One alignment frame linking `U.Role`, `U.Method`, `U.MethodDescription`, `U.WorkPlan`, and `U.Work` through `U.RoleAssignment`; not a single work occurrence, not a checklist, and not a mere cue note.
 **Governing move in plain terms.** Keep design-time role/method/plan distinct from run-time work while making the chain between them inspectable enough for enactment, audit, and reroute.
 **What goes wrong if missed.** Teams collapse role, recipe, plan, capability, and actual run into one fuzzy "process" story, then mistake documentation for execution, capability for evidence, or a weaker briefing for executable authority.
 **What this buys.** One inspectable enactment frame that lets a team ask who held what role, which method governed, what plan existed, and what work actually occurred before taking action, blame, or approval as if those layers were the same.
 **Not this pattern when.** Not this pattern when the honest need is only one dated work occurrence (`A.15.1`), only planning or schedule baseline (`A.15.2`), or only a cue note that has not yet become an enactment-alignment question (`A.16` / `A.16.1`).
 
-**Typical next patterns.** `A.15.1` for dated execution, `A.15.2` for schedule/baseline planning, `A.15.3` for slot-filling plan items, `B.5.1` for the simple lifecycle reading, `F.11` when method/work vocabulary itself must be aligned across contexts, and `F.17` when the result should land on a human-facing work sheet.
 
-**Common wrong escalations / reroutes.** If the first honest artefact is still only a cue, reroute to `A.16` / `A.16.1`; if the problem is boundary language or contract soup, reroute to `A.6`; if you only need one executed occurrence rather than the alignment frame, continue straight to `A.15.1`.
+
+**Typical next owners.** `A.15.1` for dated execution, `A.15.2` for schedule/baseline planning, `A.15.3` for slot-filling plan items, `B.5.1` for the simple lifecycle reading, `F.11` when method/work vocabulary itself must be aligned across contexts, and `F.17` when the result should land on a human-facing work sheet.
+
+**Causal-use work boundary.** Realized counterfactual-rung sampling, counterfactual randomization, intervention assignment, target-trial emulation work, and causal evidence collection remain `U.MethodDescription`, `U.WorkPlan`, and `U.Work` structures here. `A.15` can say who performs which sampling or intervention work under which method and role; it does not make the resulting causal use admissible. `C.28` owns the causal-use question, causality-ladder rung, causal estimand, support basis, counterfactual sampling realizability, and supported/unsupported causal use.
+
+**Common wrong escalations / reroutes.** If the first honest artefact is still only a cue, reroute to `A.16` / `A.16.1`; if the live question is boundary language or contract soup, reroute to `A.6`; if you only need one executed occurrence rather than the alignment frame, continue straight to `A.15.1`.
 
 **Boundary to weakened renderings.** A lighter briefing, summary, redacted note, or coarsened rendering may help orient work or cue attention, but it does not become a sufficient action cue, implementation checklist, work plan, work occurrence, approval, gate, or execution authority by convenience alone. If a weaker rendering needs return to a stronger source before work can lawfully proceed, keep that boundary explicit here and use `A.6.3.CSC Controlled Semantic Coarsening` for the weaker-source relation rather than treating the weakened rendering as executable.
 **Recognition vs assurance note.** Read **At a glance**, **Start here when**, **First output**, the reroutes, and the weakened-rendering boundary above as the ordinary recognition block. Read the entity distinctions, canonical relations, checklist, and relations below as assurance blocks that tighten that same alignment-frame claim; they do not widen the pattern into one single work occurrence, one cue note, or one undifferentiated "process" object.
+
+
 
 ### A.15:1 - Problem frame
 
@@ -18904,7 +18997,7 @@ Without this formal framework, models suffer from a cascade of category errors:
 | **Accountability vs. Complexity** | The need for a complete, end-to-end audit trail for every action vs. the desire to keep models simple and avoid excessive documentation. |
 
 ### A.15:4 - Solution
-The solution is a stratified alignment that cleanly separates the `design-time` and `run-time` for contextual **enactment**. The linking relation between these worlds is the **`U.RoleAssignment`**.
+The solution is a stratified alignment that cleanly separates the `design-time` and `run-time` for contextual **enactment**. The bridge between these worlds is the **`U.RoleAssignment`**.
 
 #### A.15:4.1 - The Core Entities: A Strict Distinction
 
@@ -18991,9 +19084,9 @@ This chain provides complete traceability: a specific instance of `U.Work` can b
 
 #### A.15:4.3 - Bounded specialization scouting and `CheckpointReturn`
 
-When a human-guided agentic work system faces a new task family or candidate solution corridor, the governed work may temporarily separate utility ownership, exploratory scouting, bounded specialist probing, and commit authority into distinct enactment roles. The payoff is faster lawful specialization of the next move, not disappearance of the human decision point.
+When one human-plus-AI pair faces a new task family or candidate solution corridor, the governed work system may temporarily compose four distinct local roles inside the same dyad: a human-side `UtilityOwnerRole`, an `AIScoutRole`, an `AISpecialistProbeRole`, and a human-side `CommitAuthorityRole`. The payoff of the dyad is faster admissible specialization of the next move, not disappearance of the human decision surface.
 
-For this bounded scouting case, the work system should declare one utility target first, enumerate heterogeneous candidate approaches that may satisfy that target, spend a bounded scout or probe budget before any committed route is chosen, and return one `CheckpointReturn` that compares the tested approaches rather than silently treating one successful probe as a committed rollout. `A.15` owns this enactment-role split only; it does not re-own the checkpoint-record semantics of `C.24` or the budget/guard enforcement of `E.16`. This scouting subsection is not a controlled semantic coarsening case unless a returned briefing or summary is itself being treated as weaker-source authority.
+For this bounded dyadic work question, the pair should declare one utility target first, enumerate heterogeneous candidate approaches that may satisfy that target, spend a bounded scout or probe budget before any committed route is chosen, and return one `CheckpointReturn` that compares the tested approaches rather than silently treating one successful probe as a committed rollout. `A.15` owns this dyadic move and local role split only; it does not re-own the checkpoint-record semantics of `C.24` or the budget/guard enforcement of `E.16`.
 
 Every `CheckpointReturn` should carry:
 - the declared utility target and current `TaskFamily`
@@ -19030,12 +19123,11 @@ This briefing may orient the team and cue attention, but it is not the governing
 
 ### A.15:6 - Bias-Annotation
 
-
 Lenses tested: **Gov**, **Arch**, **Onto/Epist**, **Prag**, **Did**. Scope: **Universal** for contextual enactment across engineering, operational, and knowledge-work settings.
 
 Bias risks and mitigations:
 
-* **Governance bias (Gov):** teams may over-treat role or approval records as enough evidence that work happened.
+* **Governance bias (Gov):** teams may over-treat role or approval surfaces as enough evidence that work happened.
   *Mitigation:* keep `U.RoleAssignment`, `U.MethodDescription`, `U.WorkPlan`, and `U.Work` distinct, and let only `U.Work` carry actuals and resource use.
 * **Architectural bias (Arch):** modelers may pull roles or capabilities into structural part hierarchies because those diagrams are already present.
   *Mitigation:* preserve role and capability as contextual-functional entities, not parts.
@@ -19064,7 +19156,7 @@ To ensure the integrity of action modeling, all FPF-compliant models must adhere
 | **CC-A15-9 (Realisation)** | A valid `U.Work` realizes a `U.MethodDescription` under a `U.RoleAssignment`. Spontaneous physical evolution without a `MethodDescription` is modeled as `U.Dynamics`, not as `U.Work`. | Prevents background dynamics from being miscast as governed work. |
 | **CC-A15-10 (GateSplit)** | A SpeechAct that changes a Role's state (e.g., "Approve", "Authorize") MUST be modeled as a distinct `U.Work` step (`kind=Communicative`). It may open the Green-Gate for a subsequent operational step, but it SHALL NOT be conflated with that step. | Preserves authority-state changes as distinct communicative acts. |
 | **CC-A15-11 (KindFit)** | The `U.Role` named in the `performedBy` assignment SHALL be appropriate for the `U.Work` kind (e.g., `ApproverRole` for communicative approvals; `DeployerRole` for operational deployments). | Prevents kind-mismatched role attribution. |
-| **CC-A15-12 (Weakened Rendering Non-Authority)** | A lighter briefing, summary, redacted note, or coarsened rendering **SHALL NOT** be treated as sufficient action cue, implementation checklist, work plan, work occurrence, approval, gate, execution authority, or executable work authority by convenience alone. If lawful work still depends on stronger method or evidence-bearing material, that stronger source **MUST** be reopened or explicitly linked before work proceeds. | Prevents orientation notes or disclosure renderings from silently becoming implementation cues, action checklists, approvals, gates, or authority substitutes. |
+| **CC-A15-12 (Causal-use Work Boundary)** | Intervention assignment, counterfactual randomization, target-trial emulation, causal evidence collection, and realized counterfactual-rung sampling MAY be modeled here only as `U.Method`, `U.MethodDescription`, `U.WorkPlan`, `U.Work`, and role-assigned execution structure. Any claim that the resulting causal use is admissible SHALL cite `C.28` for causal-use question, causality-ladder rung, causal estimand, support basis, support verdict, and supported/unsupported use. | Prevents method/work structure from being mistaken for causal-use support. |
 
 ### A.15:8 - Common Anti-Patterns and How to Avoid Them
 
@@ -19097,8 +19189,23 @@ By creating this clean, stratified alignment for enactment, FPF provides a stabl
 
 ### A.15:11 - SoTA-Echoing
 
-**SoTA note.** This section does not mint an independent work-management layer. It stays truthful only when the Solution, Conformance Checklist, briefing non-authority slice, and Relations still keep role, method, plan, approval, and executed work distinct.
+**Claim 1.** Best-known current workflow, digital-thread, and service-operations practice keeps recipe, plan, and execution separate.
 
+**Practice / source / alignment / adoption.** Contemporary process modeling, service operations, and auditability practice after 2015 separates procedure, schedule, and executed occurrence because otherwise paper compliance becomes indistinguishable from completed work. In the manufacturing and peer-review slices above, this means a procedure or calendar never counts as the weld or the review itself. This pattern **adopts** that separation, **adapts** it through `U.Method`, `U.MethodDescription`, `U.WorkPlan`, and `U.Work`, and **rejects** the shortcut where one undifferentiated "process" object carries all three loads.
+
+**Claim 2.** Best-known current accountability practice keeps actor-in-context explicit rather than attributing work to a role label or a document.
+
+**Practice / source / alignment / adoption.** Contemporary governance, service delivery, and incident practice distinguishes accountable assignee, governing procedure, and actual run record because post-hoc review depends on knowing who acted, under what role, and under which method. In the slices above, that is why the robot or reviewer acts under `U.RoleAssignment` rather than the role or guideline acting on its own. This pattern **adopts** explicit actor-in-context attribution through `U.RoleAssignment`, **adapts** it to bounded-context semantics, and **rejects** anonymous work logs and role-as-part modeling.
+
+**Claim 3.** Best-known current approval and execution practice treats communicative gate acts and operational acts as distinct kinds of work.
+
+**Practice / source / alignment / adoption.** Contemporary release, compliance, and safety-critical practice separates approval, authorization, and review acts from the operational steps they permit because authority change and world change are not the same event. In the examples above, that means an approval is not the same work as a deployment or a weld. This pattern **adopts** that split, **adapts** it through communicative versus operational `U.Work` kinds, and **rejects** the collapse of approval into the thing being approved.
+
+**Local stance.** The load-bearing SoTA claim for this pattern is practical and narrow: contextual enactment remains reviewable only when role, method, plan, and work stay distinct enough that audits can tell whether the problem was in the assignment, the recipe, the schedule, the capability, or the run itself.
+
+**Claim 4.** Best-known current agentic work practice treats fast bounded specialization as a checkpointed scout/probe discipline rather than as a naked winner claim.
+
+**Practice / source / alignment / adoption.** Contemporary agentic tool-use, adaptive workflow, and human-in-the-loop governance practice separates bounded exploration from committed rollout because a successful probe is not yet an admissible route choice. In the working moment above, that is why the pair returns one `CheckpointReturn` with candidate approaches, evidence, burned and residual budget, and a commit trigger rather than only a winner label. This pattern **adopts** checkpointed scout/probe discipline, **adapts** it through the dyad-local roles and `CheckpointReturn`, and **rejects** the shortcut where an early probe silently becomes a committed rollout.
 | Claim need | SoTA practice (post-2015) | Primary source (post-2015) | Alignment with `A.15` | Adoption status |
 | --- | --- | --- | --- | --- |
 | Recipe, plan, case, decision, and executed occurrence must stay separable. | Case-management, decision-modeling, and service-change practice distinguish discretionary case work, decision logic, planned change support, and the realized service/product change. | OMG CMMN 1.1 (2016); OMG DMN 1.5 (2024); ITIL 4 Practitioner: Change Enablement (2023). | The manufacturing, peer-review, and rollout slices keep `U.MethodDescription`, `U.WorkPlan`, approval work, and `U.Work` separate so a calendar or procedure never counts as the weld, review, deployment, or actual run. | **Adopt/Adapt.** Adopt the separation of case, decision, plan, and occurrence; adapt it to FPF's `U.Method`, `U.MethodDescription`, `U.WorkPlan`, and `U.Work`; reject an undifferentiated "process" object. |
@@ -19106,8 +19213,7 @@ By creating this clean, stratified alignment for enactment, FPF provides a stabl
 | Approval and execution are distinct practical acts. | Change-enablement and decision-modeling practice separates risk assessment, authorization, scheduling, decision logic, and the work that realizes change. | ITIL 4 Practitioner: Change Enablement (2023); OMG DMN 1.5 (2024). | In the release and gate examples, an approval or authorization changes authorization state; it is not the same work as deployment, welding, or other operational occurrence. | **Adopt.** Adopt the communicative/operational split and reject collapse of approval into the thing approved. |
 | Fast bounded exploration must not become committed rollout by convenience. | Contemporary service and modeling practice supports adaptive work while preserving explicit authorization, traceability, and reviewable transition from option exploration to committed change. | ITIL 4 Practitioner: Change Enablement (2023); ISO/IEC/IEEE 42010:2022; OMG SysML v2.0 Language Specification (2025). | The scout/probe moment returns evidence, budget posture, and a commit trigger rather than only a winner label. The practical safeguard is that successful exploration still needs explicit commit authority before it becomes work enactment. | **Adapt/Reject.** Adapt adaptive-change and traceability practice to FPF role/method/work splits; reject the shortcut where an early probe silently becomes a committed rollout. |
 
-The nearest recovery anchors are the manufacturing, peer-review, and rollout briefing slices above, plus `CC-A15-7`, `CC-A15-10`, and `CC-A15-12`. If a SoTA row cannot be recovered through those local checks, do not let the source citation stand in for live `A.15` law.
-### A.15:12 - Relations
+The nearest recovery anchors are the manufacturing, peer-review, and rollout briefing slices above, plus `CC-A15-7`, `CC-A15-10`, and `CC-A15-12`. If a SoTA row cannot be recovered through those local checks, do not let the source citation stand in for live `A.15` law.### A.15:12 - Relations
 
 *   **Directly Implements:** `A.7 Strict Distinction`.
 *   **Builds Upon:** `A.2 (U.Role)`, `A.2.1 (U.RoleAssignment)`, `A.4 (Temporal Duality)`, `A.12 (External Transformer)`.
@@ -19117,8 +19223,9 @@ The nearest recovery anchors are the manufacturing, peer-review, and rollout bri
     *   `B.1.6 Gamma_work`: The aggregation operator for `U.Work`.
     *   `B.4 Canonical Evolution Loop`: The entire loop is a sequence of `U.Work` instances that modify `MethodDescription`s.
     *   `A.15.2 U.WorkPlan`: plan-run split, baselines and variance against `U.Work`.
+    *   `C.28 CausalUse-CAL`: causal-use meaning and support for intervention, counterfactual sampling, target-trial emulation, and causal evidence work; A.15 keeps the role/method/work chain.
 *   **Constrains:** Any FPF pattern that models actions or processes must use this framework to be conformant. It serves as the canonical alignment for **contextual enactment** in the FPF ecosystem.
-*   **Coordinates with:** `L-PROC / L-FUNC / L-SCHED` (E-cluster) for lexical disambiguation of _process / workflow / schedule_; `A.6.3.CSC Controlled Semantic Coarsening` when a briefing or summary is primarily a weaker-source rendering rather than an enactment authority-bearing publication.
+*   **Coordinates with:** `L-PROC / L-FUNC / L-SCHED` (E-cluster) for lexical disambiguation of _process / workflow / schedule_.
 
 ### A.15:12a - Coordinated-work evidence and quantum-like route note
 
@@ -19152,6 +19259,8 @@ Useful outputs:
 - no distributed-state claim when carriers, rivals, or time window cannot be named.
 
 ### A.15:End
+
+
 ## A.15.1 - U.Work
 
 
@@ -29456,7 +29565,7 @@ This tuple gives readers an at‑a‑glance view (didactic primacy) while preser
 **Validation modes (declaration, normative).**
 Each published Working‑Model assertion **SHALL** declare **`validationMode ∈ {postulate, inferential, axiomatic}`** (E.14).
 — *postulate* → pragmatic working claim; **Empirical Validation** is **required** for audit.
-— *inferential* → reasoned consequence; **Logical** assurance carries the burden.
+— *inferential* → reasoned consequence; **Logical** assurance carries the reasoning requirement.
 — *axiomatic* → constructive identity; **structural** edges MUST provide a Γₘ narrative and a **`tv:groundedBy`** pointer (C.13, B.3.5).
 
 **Design vs run (no chimeras).** Assurance tuples for **design‑time** and **run‑time** SHALL be reported **separately** and **not composed into a single score**; see the *Scope drift* hazard in §2 and the obligations in B.3.3.
@@ -29551,9 +29660,37 @@ B.3 remains neutral about *how* improvement happens, but for didactic clarity:
 Each of these corresponds to recognizable **Transformer roles** and KD‑CAL moves (design‑time); their **run‑time** counterparts are covered by Γ\_time (phase evidence) and Γ\_work (cost of obtaining assurance).
 
 ### B.3:4.8 - Prohibition (normative) — F–G–R is not a CharacteristicSpace
+
 Do not treat `⟨F,G,R⟩` as a `U.CharacteristicSpace` and do not define geometric **trajectories** over it. Use **ESG** for episteme state and the **assurance‑trace** hooks for trends in assurance tuples.
 
+### B.3:4.9 - Assurance consequence for unsupported causality-ladder climb
+
+`B.3` consumes `CausalUseSupportVerdict` from `C.28` when an assurance claim depends on causal-use support:
+
+```text
+CausalUseSupportVerdict = supported | bounded | unsupported | abstain
+```
+
+`CausalAssuranceTupleTrigger` is narrower than local causal-use repair. Local `C.28` downgrade, reroute, or abstain does not require a new `B.3` assurance tuple by itself. Create or update a `B.3` tuple only when the causal-use claim is assurance-bearing, publication-bearing, release-bearing, or reused as an input to assurance, trust, certification, risk acceptance, or downstream selection. Exploratory causal wording, local authoring repair, or a `C.28` cheap stop remains outside `B.3` until it changes assurance or publication posture.
+
+Unsupported causality-ladder climb lowers, blocks, or abstains from `R` for the affected causal-use claim. If `CounterfactualSamplingRealizabilityProfile.verdict = nonrealizable`, `B.3` lowers or blocks `R` for claims that require direct counterfactual-rung evidence. If `CounterfactualSamplingRealizabilityProfile.verdict = unknown`, direct-realization claims are unsupported, but identified, bounded, or simulation-only supported use may still be admissible when `C.28` declares the supported use and unsupported use.
+
+Verdict consequences:
+
+| `CausalUseSupportVerdict` | Assurance consequence | Admissible assurance wording |
+| --- | --- | --- |
+| `supported` | The causal-use claim contributes to `R` only inside the named `CausalUseSupportStatement`, scope `G`, evidence support basis, and cited profile refs. | "Supported only for the declared causal use under the cited support basis, profile refs, and scope." |
+| `bounded` | `R` is bounded to the declared admissible-use limit; assurance prose must name the bound, the `CausalUseSupportStatement`, and the `CausalUseUnsupportedStatement`, and must not imply unqualified causal support outside them. | "Bounded causal support for the declared regime, population, policy, model, or window; unsupported outside that bound." |
+| `unsupported` | The causal-use claim cannot raise `R`; it becomes `CausalUseUnsupportedStatement`, is downgraded, removed, or blocks the assurance claim when the causal use is necessary. | "Causal use unsupported for this assurance claim; use association/metric/simulation-only wording or block the causal assurance claim." |
+| `abstain` | No causal-use conclusion contributes to `R`; the assurance tuple either proceeds only on named non-causal grounds or abstains from the affected causal claim. | "No causal-use conclusion is used; assurance proceeds only on named non-causal grounds or abstains from this causal claim." |
+
+What changes in practice: assurance prose cannot say "high confidence that the policy caused improvement" when the evidence path only supports association or simulation-only counterfactual output; the unsupported causal step must degrade, abstain, or block the causal-use claim.
+
+What this does not authorize: `B.3` does not determine the causality-ladder rung, estimand, causal identification, evidence design, or realizability profile; it applies assurance consequences to the support verdict supplied by `C.28` and the evidence path supplied by `A.10`.
+
 ### B.3:5 Proof obligations (attach these when producing an Assurance tuple)
+
+
 
 These obligations refine the generic Proof Kit from **B.1.1 §6** for **assurance** outputs. Each Γ‑flavour that emits an *Assurance(H, C | K, S)* tuple MUST attach the applicable obligations below.
 
@@ -29686,6 +29823,8 @@ These obligations refine the generic Proof Kit from **B.1.1 §6** for **assuranc
 | **CC‑B3.6** | An **Assurance SCR** **SHALL** be produced, listing node/edge values, Evidence Graph Ref, and any OrderSpec/TimeWindow identifiers, **and SHALL also display**:  (i) the **describedEntity binding** `describe(Object→GroundingHolon)` for the claim and the declared **CHR:ReferencePlane ∈ {world|concept|episteme}** (cf. C.2.3); (ii) a **TA/VA/LA breakdown** of anchored evidence **kept separable** per **CC–KD‑08**, with **decay/valid‑until** indicators on empirical bindings (A.10), and the **Epistemic‑Debt** tally as computed in **§ B.3.4**. | Provide auditability (A.10).                 |
 | **CC‑B3.7** | **Agency‑CHR** values (A.13) **SHALL NOT** override WLNK or `Φ(CL)` penalties; if agency grade change alters capabilities, model it as a **Meta‑Holon Transition**.           | Preserve safety; keep agency separate.       |                                   |
 | **CC‑B3.8** | Design‑time and run‑time assurance **SHALL NOT** be mixed in one tuple; compare them side‑by‑side if needed.                                                                  | Avoid design/run mixing.                     |                                   |
+| **CC-B3.9** | If an assurance claim depends on causal-use support, it **SHALL** consume `CausalUseSupportVerdict`, `CausalEvidenceSupportBasis`, and relevant profile refs from `C.28`/`A.10`; unsupported causality-ladder climb **SHALL** degrade, block, or abstain rather than raising `R`. | Prevents assurance prose from certifying unsupported causal claims. | |
+| **CC-B3.10** | A local `C.28` downgrade, reroute, or abstain **SHALL NOT** be treated as a new assurance tuple trigger unless the claim is assurance-bearing, publication-bearing, release-bearing, or reused as an assurance input. | Keeps cheap causal triage from becoming assurance ceremony. | |
 
 ### B.3:8 - Anti‑patterns and repairs
 
@@ -29730,6 +29869,7 @@ This arrangement preserves **A.11 Parsimony** (few characteristics), aligns with
 
 * **Builds on:** B.1 (Universal Γ), B.1.1 (Proof Kit), B.1.2 (Γ_sys & BIC), B.1.3 (Γ_epist & SCR), B.1.4 (Γ_ctx/Γ_time), A.12 (Transformer), A.14 (Mereology), A.15 (Strict Distinction), **C.13 (Compose‑CAL)**.
 * * **Coordinates with:** **E.14 (Human‑Centric Working‑Model)** for publication‑surface discipline and **B.3.5 (CT2R‑LOG)** for Working‑Model relation aliasing and grounding (`tv:*`, `validationMode`).
+* **Coordinates with:** `C.28` for causal-use support verdicts, causality-ladder support, identification/realizability profile refs, and supported/unsupported causal use; `A.10` for the evidence graph path carrying causal support-basis refs.
 * **Used by:** KD‑CAL action patterns (to plan improvements), B.4 (Evolution loops that raise F/G/R or CL over time).
 * **Triggers:** B.2 (Meta‑Holon Transition (MHT): Recognizing Emergence and Re‑identifying Wholes) when genuine new capabilities emerge that change the applicable cutsets or envelopes.
 
@@ -29739,7 +29879,7 @@ This arrangement preserves **A.11 Parsimony** (few characteristics), aligns with
 
 ### B.3:11a - Assurance posture for quantum-like claims
 
-Quantum-like wording does not raise assurance burden by default. A local `C.26` modeling note can remain lightweight when it only prevents a representational mistake and does not support action, close audit, certify readiness, or claim empirical superiority.
+Quantum-like wording does not raise the claim-strength requirement by default. A local `C.26` modeling note can remain lightweight when it only prevents a representational mistake and does not support action, close audit, certify readiness, or claim empirical superiority.
 
 Action path:
 
@@ -29765,6 +29905,8 @@ Useful outputs:
 - a rejected or weakened claim when evidence does not support the intended use.
 
 ### B.3:End
+
+
 ## B.3.3 — Assurance Subtypes & Levels
 
 ### B.3.3:1 - **Problem Frame**
@@ -37045,13 +37187,13 @@ To admit a **capability** for a specific **Work** step at **JobSlice**, the guar
 
 ### C.11:1 - Problem frame
 
-**Use this when.** Use this pattern when one `DecisionSubject` already has an `OptionSet` in hand and the real burden is to choose among those already-available options under uncertainty, preference, causal or subjunctive dependence, and bounded probing or computation.
+**Use this when.** Use this pattern when one `DecisionSubject` already has an `OptionSet` in hand and the real question is how to choose among those already-available options under uncertainty, preference, causal or subjunctive dependence, and bounded probing or computation.
 
 **Start here when.** Start here when a person, team, organization, or other decision-capable system must decide whether to choose now or spend more effort on probing, information gathering, or computation before choosing.
 
-**First output.** The first useful output is one explicit `DecisionSubject`, one explicit `OptionSet`, one explicit comparison basis, one explicit `ChoiceRule`, and one explicit `ChoiceResult` saying whether the best next move is choose now, reject the current set, probe more, or reroute to a neighboring burden.
+**First output.** The first useful output is one explicit `DecisionSubject`, one explicit `OptionSet`, one explicit comparison basis, one explicit `ChoiceRule`, and one explicit `ChoiceResult` saying whether the best next move is choose now, reject the current set, probe more, or reroute to a neighboring question.
 
-If that first output still cannot be written honestly, the current comparison state is not late-stage choice doctrine yet. The burden is still unfinished local choice work or one neighboring burden in disguise.
+If that first output still cannot be written honestly, the current comparison state is not late-stage choice doctrine yet. The case is still unfinished local choice work or one neighboring question in disguise.
 
 **Immediate failure signs.**
 
@@ -37066,31 +37208,30 @@ If that first output still cannot be written honestly, the current comparison st
 - What options are already on the table now?
 - What current basis is being used to compare them?
 - What exact next probe could still change the choice, if any?
-- Is this still local choice, or has the burden already moved to search, pool policy, publication, or enactment?
+- Is this still local choice, or has the question already moved to search, pool policy, publication, or enactment?
 
-**Typical reroutes.** `C.18` when the real burden is still inventing or reframing options; `C.19` when the working question is how broadly to explore or exploit the candidate pool; `C.24` when one option is already chosen and the work has become sequencing or enactment; `A.13 / C.9` when the hard question is agenthood rather than choice; `A.18 / A.19` when the mathematical support burden itself becomes primary.
+**Typical reroutes.** `C.18` when the real question is still inventing or reframing options; `C.19` when the working question is how broadly to explore or exploit the candidate pool; `C.24` when one option is already chosen and the work has become sequencing or enactment; `A.13 / C.9` when the hard question is agenthood rather than choice; `A.18 / A.19` when the mathematical support question itself becomes primary.
 
-**Common wrong escalations / reroutes.** Do not use `C.11` to hide search work inside "decision", to hide candidate-pool policy inside one local choice, or to hide execution planning inside one rationality story. Do not treat selected-set publication or shortlist semantics as if they were the same burden as deciding.
+**Common wrong escalations / reroutes.** Do not use `C.11` to hide search work inside "decision", to hide candidate-pool policy inside one local choice, or to hide execution planning inside one generic rationality account. Do not treat selected-set publication or shortlist semantics as if they were the same question as deciding.
 
 **What goes wrong if this pattern is missed.** Search, selection policy, planning, and choice doctrine collapse into one blurred notion of rationality. Teams either choose too early because pool policy was never stated, keep probing without one exact reason the next probe is still worth its cost, or leave only one vague claim that "a decision was made" without one explicit decision record naming the current result.
 
-**What this pattern buys.** This pattern gives one stable place to compare classical, causal, success-first or subjunctive, bounded-resource, active-inference-adjacent, and quantum-like decision lines without silently reassigning search, selection, or planning doctrine to the wrong burden. In practice it buys one explicit answer to four questions: choose now, reject the current set, probe again, or reroute.
+**What this pattern buys.** This pattern gives one stable place to compare classical, causal, success-first or subjunctive, bounded-resource, active-inference-adjacent, and quantum-like decision lines without silently reassigning search, selection, or planning doctrine to the wrong question. In practice it buys one explicit answer to four questions: choose now, reject the current set, probe again, or reroute.
 
-**Not this pattern when.** Do not start here when the burden is still generating candidate options, governing exploration or exploitation over a candidate pool, publishing shortlisted-set semantics, or sequencing execution under an operational plan.
+**Not this pattern when.** Do not start here when the current question is still generating candidate options, governing exploration or exploitation over a candidate pool, publishing shortlisted-set semantics, or sequencing execution under an operational plan.
 
-Decision work often fails not because no options exist, but because the choice among existing options is never typed as its own burden. `C.11` starts from one narrower and more useful center: one decision subject choosing among already-available options, including whether more probing is worth the cost before the choice is fixed.
+Decision work often fails not because no options exist, but because the choice among existing options is never typed as its own question. `C.11` starts from one narrower and more useful center: one decision subject choosing among already-available options, including whether more probing is worth the cost before the choice is fixed.
 
 ### C.11:2 - Problem
 
-Many systems have options on the table but still lack one explicit doctrine for what makes one option rational to choose. They mix together at least four different burdens.
+Many systems have options on the table but still lack one explicit doctrine for what makes one option rational to choose. They mix together at least four different questions.
 
-One burden is still generating candidate options, variants, or open-ended search directions. Another burden is governing how broadly a candidate pool should be explored or exploited before narrowing. A third burden is planning, sequencing, replanning, or enacting the move once a choice has already been made. The fourth burden, and the one governed here, is choosing among already-available options under uncertainty, dependence, and bounded deliberation.
+One question is still generating candidate options, variants, or open-ended search directions. Another question is governing how broadly a candidate pool should be explored or exploited before narrowing. A third question is planning, sequencing, replanning, or enacting the move once a choice has already been made. The fourth question, and the one governed here, is choosing among already-available options under uncertainty, dependence, and bounded deliberation.
 
 A second distortion appears when decision theory is reduced to one thin slogan about expected utility. Real choosers face evidential and causal distinctions, subjunctive or success-first cases, probe costs, information value, computation value, and situations where the chooser is not just one isolated individual.
 
-Without one explicit home for choice calculus, search, candidate-pool policy, and planning rush into the same burden, while the actual doctrine of choosing among live options disappears behind generic talk about rationality.
+Without one explicit place for choice calculus, search, candidate-pool policy, and planning rush into the same question, while the actual doctrine of choosing among live options disappears behind generic talk about rationality.
 
-### C.11:3 - Forces
 
 | Force | Tension |
 | --- | --- |
@@ -37101,12 +37242,43 @@ Without one explicit home for choice calculus, search, candidate-pool policy, an
 | Minimal mathematical floor versus premature heavy formalism | The pattern needs a stable object stack for disciplined reasoning and inspection, but it should not pretend that one full quantum-like or geometry-heavy package is already settled. |
 
 ### C.11:4 - Solution
+#### C.11:4.1a - Causal-use hook for choice records
+
+When the admissible choice among an existing `OptionSet` depends on an effect claim, intervention claim, counterfactual comparison, causal policy claim, or off-policy causal evaluation, the `ChoiceResult` keeps the decision-theory question local and cites `C.28` for the causal-use question and support basis.
+
+
+Optional `ChoiceResult.causalUseSpec?`:
+
+```text
+ChoiceResult.causalUseSpec? {
+  causalUseQuestionRef?: U.CausalUseQuestion
+  targetCausalityLadderRung: CausalityLadderRung
+  causalUseClaimKind: CausalUseClaimKind
+  causalActionPolicyClass?: CausalActionPolicyClass
+  causalEvidenceSupportBasis?: CausalEvidenceSupportBasis
+  causalIdentificationProfileRef?
+  counterfactualSamplingRealizabilityProfileRef?
+  causalUseEvidenceDesignRef?
+  causalUseSupportRecordRef?: CausalUseSupportRecordRef
+  causalUseSupportVerdict?: CausalUseSupportVerdict
+  supportedUse: CausalUseSupportStatement
+  unsupportedUse: CausalUseUnsupportedStatement
+}
+```
+
+The causal-use tail may be omitted only when the choice result does not reach `CausalUseActivation`: it is not decision-bearing on the causal claim, not publication-bearing, not assurance-bearing, and not reused as support for deployment, fairness, benchmark, or downstream selection. If causal wording changes the admissible choice result, the tail is present or the causal wording is downgraded.
+
+What changes in practice: a decision record that says "choose this because it improves outcome", "choose this because it would have prevented harm", or "choose this policy because replay shows it is better" must state whether the claim is observational association, interventional action/effect, or counterfactual comparison before the `ChoiceResult` is treated as supported.
+
+What this does not authorize: `C.11` does not identify causal effects, certify target-trial emulation, validate off-policy causal evaluation, or decide counterfactual sampling realizability; it emits one `ChoiceResult` and redirects the causal-use question to `C.28`.
+
+
 
 #### C.11:4.1 - Governed object and move
 
 `C.11` governs theory-side choice among already-available options. Its governed move is deciding what should be chosen from the current `OptionSet`, including whether further probing, information gathering, or computation is rational before the choice is fixed.
 
-The governed burden begins only after an option set already exists. It does not govern open-ended generation of options, and it does not govern the execution order of a plan after a choice has already been made.
+The governed question begins only after an option set already exists. It does not govern open-ended generation of options, and it does not govern the execution order of a plan after a choice has already been made.
 
 #### C.11:4.2 - Decision discipline over a live option set
 
@@ -37123,7 +37295,7 @@ A conforming `C.11` pass does not stop at naming schools of decision theory. It 
 3. **Make the comparison basis explicit.**
    State one `PreferenceOrder` or one `EvaluativeMeasure`, plus one `BeliefState` and one `OutcomeModel`.
    The comparison is not usable if some options are being judged under one belief state and other options under one later, unmarked update.
-   If two options are only comparable after one further probe or one stronger model revision, say that the current comparison is unfinished and route the burden through step 5 rather than pretending that one silent basis shift already solved it.
+   If two options are only comparable after one further probe or one stronger model revision, say that the current comparison is unfinished and route the question through step 5 rather than pretending that one silent basis shift already solved it.
 
 4. **Choose the dependence layer that actually governs the case.**
    Start from the evidential baseline when the choice is being compared through likely outcomes under the current `BeliefState`.
@@ -37134,15 +37306,15 @@ A conforming `C.11` pass does not stop at naming schools of decision theory. It 
 5. **Run the probe-worthiness test before commitment.**
    State one `ProbeActionSet`, one `ProbeBudget`, and one `CostToProbe`.
    Use `ValueOfInformation` for additional observation or measurement, and `ValueOfComputation` for additional reasoning, simulation, or search over the already-available options.
-   This rule is intentionally local or myopic: it judges the best next feasible probe over the current `OptionSet` and current comparison basis, not one full sequential or non-myopic experimental program. Richer `OED` lines may strengthen this doctrine, but the local `C.11` closure law already has to decide whether the next feasible probe can still change the current choice.
+   This rule is intentionally local or myopic: it judges the best next feasible probe over the current `OptionSet` and current comparison basis, not one full sequential or non-myopic experimental program. Richer `OED` lines may strengthen this doctrine, but the local `C.11` closure rule already has to decide whether the next feasible probe can still change the current choice.
    If no feasible further probe fits the remaining `ProbeBudget`, or if the best available probe no longer justifies its `CostToProbe`, close under the current comparison basis.
    If a feasible probe is still worth its cost, and that probe could still change which option survives or whether the current `OptionSet` should be rejected, run it, update the `BeliefState` and `OutcomeModel`, and return to step 3.
-   If one choice posture is already fixed and the remaining probe would change only route description, call ordering, enactment budget, or checkpointing of that chosen move, stop treating the probe as local choice doctrine and reroute to `C.24`.
+   If one choice posture is already fixed and the remaining probe would change only execution-path description, call-plan ordering, enactment budget, or checkpointing of that chosen move, stop treating the probe as local choice doctrine and reroute to `C.24`.
 
-6. **Apply one `ChoiceRule` and emit one `ChoiceResult` plus the next burden.**
+6. **Apply one `ChoiceRule` and emit one `ChoiceResult` plus the next question.**
    End with one explicit result: `choose now`, `reject current set`, `probe again`, or `reroute because this is no longer local choice`.
    If the result is `choose now`, name the winning option or the retained tie-set plus the exact reason no remaining feasible probe is worth its cost.
-   If the result is `reject current set`, name the exact reason no current option survives under the present basis and, when more work follows, the neighboring burden that now takes over.
+   If the result is `reject current set`, name the exact reason no current option survives under the present basis and, when more work follows, the neighboring question that now takes over.
    If the result is `probe again`, name the next probe and the exact comparison defect it is supposed to repair.
    A `C.11` pass is done only when it names the lawful next move and the reason that move is lawful.
 
@@ -37180,10 +37352,10 @@ The following are not lawful in this `C.11` body:
 
 - silently totalizing one genuinely partial preference relation just to force `choose now`;
 - silently switching from one criterion mix or one belief state to another across options;
-- pretending that unresolved cross-level or collective conflict is already one settled local ranking when the aggregation burden has not actually been discharged;
+- pretending that unresolved cross-level or collective conflict is already one settled local ranking when the aggregation question has not actually been discharged;
 - using one polished record shape as a substitute for one stated comparison doctrine.
 
-This is why `C.11` is more than one note-taking protocol. The body already supports local incompleteness, partial order, explicit trade-off measures, and widened chooser surfaces, but it requires those semantic facts to change the lawful result rather than remain hidden beneath one elegant summary line.
+This is why `C.11` is more than one note-taking protocol. The body already supports local incompleteness, partial order, explicit trade-off measures, and wider chooser-bearing cases, but it requires those semantic facts to change the lawful result rather than remain hidden beneath one elegant summary line.
 
 #### C.11:4.2.2 - Probe-worthiness rule
 
@@ -37191,15 +37363,15 @@ Another probe is worth doing only when all three conditions hold together:
 
 - the probe fits inside the remaining `ProbeBudget`;
 - the expected gain from the probe, through `ValueOfInformation` or `ValueOfComputation`, is large enough to justify its `CostToProbe`;
-- the probe can actually change the local choice posture by changing the ranking, breaking or creating a tie, showing that no current option survives, repairing one missing comparison, or showing that the burden should reroute.
+- the probe can actually change the local choice posture by changing the ranking, breaking or creating a tie, showing that no current option survives, repairing one missing comparison, or showing that the question should reroute.
 
-This is the current local or myopic probe-worthiness law for `C.11`: judge the best next feasible probe over the current `OptionSet`, not one whole non-myopic experiment design over longer horizons. Later sequential or non-myopic `OED` may strengthen this doctrine, but they do not move the local-choice burden out of `C.11`.
+This is the current local or myopic probe-worthiness rule for `C.11`: judge the best next feasible probe over the current `OptionSet`, not one whole non-myopic experiment design over longer horizons. Later sequential or non-myopic `OED` may strengthen this doctrine, but they do not move the local-choice question out of `C.11`.
 
-Do not keep probing merely because uncertainty remains. Uncertainty is ordinary. What matters is whether one feasible next probe can still change what should be chosen, or whether the current `OptionSet` should be rejected, from the current local choice burden.
+Do not keep probing merely because uncertainty remains. Uncertainty is ordinary. What matters is whether one feasible next probe can still change what should be chosen, or whether the current `OptionSet` should be rejected, from the current local choice question.
 
 If the best available next probe cannot change which option survives, cannot change whether the current set should be rejected, or cannot justify its cost, the correct result is not one vague statement that the case is hard. The correct result is one explicit `ChoiceResult` under the current basis and current `ChoiceRule`.
 
-If the next probe would no longer change which option survives but would only change how one already-chosen move gets enacted, budgeted, or checkpointed, the burden has already crossed to `C.24`.
+If the next probe would no longer change which option survives but would only change how one already-chosen move gets enacted, budgeted, or checkpointed, the question has already crossed to `C.24`.
 
 #### C.11:4.2.3 - `ChoiceRule` versus `ChoiceResult`
 
@@ -37229,7 +37401,7 @@ For `reject current set`, the emitted `ChoiceResult` should show:
 
 - that no member of the current `OptionSet` survives under the present comparison basis;
 - the exact shared defect, threshold failure, or dominated-outcome reason that defeats the current set;
-- the next neighboring burden only when more work now follows, such as new option generation or one explicit escalation path.
+- the next neighboring question only when more work now follows, such as new option generation or one explicit escalation path.
 
 For `probe again`, the emitted `ChoiceResult` should show:
 
@@ -37239,7 +37411,7 @@ For `probe again`, the emitted `ChoiceResult` should show:
 
 For `reroute`, the emitted `ChoiceResult` should show:
 
-- the neighboring owner that now governs the burden;
+- the neighboring pattern authority that now governs the question;
 - the exact reason this is no longer local choice among already-available options.
 
 #### C.11:4.2.4 - Closure rule over the current `OptionSet`
@@ -37263,13 +37435,13 @@ The comparison should close as `probe again` only when all of the following are 
 - one exact next probe is named;
 - that probe fits the remaining `ProbeBudget`;
 - that probe is expected to repair one named comparison defect;
-- that repaired defect could still change which option survives, whether the current set should be rejected, or whether the burden should reroute.
+- that repaired defect could still change which option survives, whether the current set should be rejected, or whether the question should reroute.
 
 The comparison should close as `reroute` when the record has already learned that the governed move changed:
 
 - to `C.18` when the option set itself is still under invention or reframing;
-- to `C.19` when the burden is now how broadly to keep exploring or exploiting one candidate pool;
-- to `C.24` when one choice posture already exists and the next task is now sequencing, enactment, or route-level probe work;
+- to `C.19` when the question is now how broadly to keep exploring or exploiting one candidate pool;
+- to `C.24` when one choice posture already exists and the next task is now sequencing, enactment, or execution-path probe work;
 - to `G.5` when the next task is now selected-set surfacing or publication.
 
 If none of those closure conditions can yet be satisfied, the record is still unfinished. It is not rescued by richer terminology alone.
@@ -37289,7 +37461,7 @@ ComparisonBasis(
   optional intervention/counterfactual/subjunctive layer
 )
 ChoiceRule(
-  closure law over the current basis and probe posture
+  closure rule over the current basis and probe posture
 )
 ProbePosture(
   probeActionSet,
@@ -37311,12 +37483,12 @@ If the record does not state the current chooser, current options, current compa
 
 Use branch language only when it changes the actual comparison being performed.
 
-#### C.11:4.2.6 - Resource-aware choice is one lens over declared source surfaces
+#### C.11:4.2.6 - Resource-aware choice is one lens over declared source families
 
-- Start from one declared source surface or one declared source-surface composition such as `Front`, `Archive`, or `Front+Archive`.
-- Apply one declared decision lens over that source surface rather than inventing one hidden universal winner rule.
+- Start from one declared source family or one declared source-family composition such as `Front`, `Archive`, or `Front+Archive`.
+- Apply one declared decision lens over that source family rather than inventing one hidden universal winner rule.
 - `CostToProbe`, `ValueOfInformation`, and `ValueOfComputation` belong to that lens-side choice doctrine.
-- They may justify another probe, one changed local comparison outcome, or one stop decision, but they do not rename the current `DominanceSet` and do not publish one shortlist-family artifact.
+- They may justify another probe, one changed local comparison outcome, or one stop decision, but they do not rename the current `DominanceSet` and do not publish one shortlist-family result.
 - If one candidate remains worth probing because its expected information value still exceeds its expected cost, say that explicitly as one lens-side choice judgement.
 - If one archive point remains worth probing because it may change the frontier later, keep that as one resource-aware choice claim, not as evidence that the point is already on the current front.
 - The kernel floor here is:
@@ -37326,7 +37498,7 @@ Use branch language only when it changes the actual comparison being performed.
 
 ##### C.11:4.3.1 - Classical evidential baseline
 
-Stay with the classical evidential baseline when the burden is to compare already-available options through preferences, utilities or desirabilities, beliefs, and likely outcomes under uncertainty.
+Stay with the classical evidential baseline when the question is to compare already-available options through preferences, utilities or desirabilities, beliefs, and likely outcomes under uncertainty.
 
 In this baseline, the options are being compared as evidence about what consequences are likely if they are chosen. This is the ordinary default when intervention structure, predictor-coupling, or context-sensitive non-commutativity are not yet doing real work in the case.
 
@@ -37348,7 +37520,7 @@ Typical practical cash-outs are:
 
 - `choose now` because, under the declared intervention structure, one option now causally dominates or remains the survivor and no remaining feasible probe can reverse that causal ranking;
 - `probe again` because one intervention-relevant uncertainty still blocks a lawful causal comparison and one named next probe could still change which option causally survives;
-- `reroute` because the intervention story has already moved from local choice into enactment planning, protocol design, or one neighboring burden.
+- `reroute` because the intervention-use question has already moved from local choice into enactment planning, protocol design, or one neighboring question.
 
 This repair has not yet landed if the comparison still treats options only as evidence after invoking causal language, or if an `InterventionModel` is named without stating what defect of the lighter evidential comparison it repairs.
 
@@ -37362,7 +37534,7 @@ Typical practical cash-outs are:
 
 - `choose now` because, under the declared counterfactual or subjunctive structure, one option survives once the predictor-coupled comparison is made explicit;
 - `probe again` because one further model clarification, predictor assumption check, or decision-procedure comparison could still reverse the current survivor relation;
-- `reroute` because the governed move is no longer settling local choice doctrine but has become one wider characterization, negotiation, or enactment burden that only borrowed predictor-coupling language.
+- `reroute` because the governed move is no longer settling local choice doctrine but has become one wider characterization, negotiation, or enactment question that only borrowed predictor-coupling language.
 
 If that coupled structure is not live, do not activate this branch. If a predictor-coupled or success-first repair is named but the linked structure that changes the comparison is still unspecified, the branch is not yet load-bearing in the current decision.
 
@@ -37378,9 +37550,9 @@ Typical practical cash-outs are:
 
 - `probe again` because one further embodied observation, coupled update, or explicit role-expectation clarification can still change the state estimate enough to reverse the current survivor relation;
 - `choose now` because delay itself now worsens the state being managed, closes the window in which the preferred option remains feasible, or leaves no lawful time for one more socially mediated check;
-- `reroute` because the burden has already become enactment sequencing or agent-characterization work rather than local choice.
+- `reroute` because the question has already become enactment sequencing or agent-characterization work rather than local choice.
 
-`C.11` keeps the choice burden visible there, but `A.13 / C.9` still own the narrower question of what kind of agent or agential system is in play, and `C.24` still owns later sequencing and enactment once a choice posture has already been fixed.
+`C.11` keeps the choice question visible there, but `A.13 / C.9` still own the narrower question of what kind of agent or agential system is in play, and `C.24` still owns later sequencing and enactment once a choice posture has already been fixed.
 
 Do not invoke this line only because one agent is acting in the world. Invoke it when embodied coupling, online updating, or explicit social-expectation pressure actually changes what the chooser should do now from the current `OptionSet`.
 
@@ -37404,21 +37576,21 @@ Do not invoke this line merely because a case feels psychologically subtle. Invo
 
 If none of those repaired limitations is live, stay with the classical evidential baseline rather than switching branches without one live repaired limitation.
 
-The family map is therefore one disciplined set of refinements over the same choice burden, not one excuse to rename every neighboring burden as decision theory.
-#### C.11:4.4 - Reroute as soon as the burden stops being local choice
+The family map is therefore one disciplined set of refinements over the same choice question, not one excuse to rename every neighboring question as decision theory.
+#### C.11:4.4 - Reroute as soon as the question stops being local choice
 
 Use `C.11` while the question remains: from this current `OptionSet`, what should the `DecisionSubject` choose, and is another probe worth its cost before commitment?
 
-Reroute immediately when the burden changes:
+Reroute immediately when the question changes:
 
 - If the hard question is still what options should exist at all, or whether the current option set needs to be expanded or reframed, leave this pattern and work in `C.18` first.
 - If the options already exist but the question is how broadly to keep exploring or exploiting the candidate pool, leave this pattern and work in `C.19`, where the next useful output is one explicit pool-policy result rather than one local `ChoiceResult`.
 - If one option is already chosen and the question is how to sequence, budget, or enact that choice, leave this pattern and work in `C.24`, where the next useful output is one enactment-facing call plan or `CheckpointReturn`.
-- If the burden has shifted from deciding to surfacing, publishing, or naming the selected set, leave this pattern and work in `G.5`, where the next useful output is one published shortlist, ranked shortlist, narrowed handoff plan, or explicit abstain surface rather than one more local choice result.
+- If the question has shifted from deciding to surfacing, publishing, or naming the selected set, leave this pattern and work in `G.5`, where the next useful output is one published shortlist, ranked shortlist, narrowed handoff plan, or explicit abstain outcome rather than one more local choice result.
 
-`ProbeBudget` stays here while it means the epistemic or deliberative budget for one more probe before choice and while that probe can still change which option survives or whether the current set should be rejected. When the same word now means execution budget, call budget, enactment budget, or route-level scouting after one choice posture already exists, the burden has moved to `C.24`.
+`ProbeBudget` stays here while it means the epistemic or deliberative budget for one more probe before choice and while that probe can still change which option survives or whether the current set should be rejected. When the same word now means execution budget, call budget, enactment budget, or execution-path scouting after one choice posture already exists, the question has moved to `C.24`.
 
-`ValueOfInformation` and `ValueOfComputation` also stay theory-side here as comparative criteria while the question is still local choice among the current options. If one more probe could still change which option survives or whether the current set should be rejected, stay in `C.11`. If the choice posture is already fixed and those criteria now govern only route sequencing, call ordering, or enactment of the chosen move, the burden has crossed to `C.24`. `C.19` and `C.24` may consume the criteria, but they do not become the doctrine owners of them.
+`ValueOfInformation` and `ValueOfComputation` also stay theory-side here as comparative criteria while the question is still local choice among the current options. If one more probe could still change which option survives or whether the current set should be rejected, stay in `C.11`. If the choice posture is already fixed and those criteria now govern only execution-path sequencing, call-plan ordering, or enactment of the chosen move, the question has crossed to `C.24`. `C.19` and `C.24` may consume the criteria, but they do not become the doctrine authorities for them.
 
 Outside this pattern remain candidate generation, pool-wide exploration policy, selected-set publication semantics, and execution planning.
 
@@ -37439,7 +37611,7 @@ The following objects should be explicit in every usable `C.11` decision record:
 
 - `DecisionSubject` and `DecisionSubjectGranularity`;
 - `OptionSet`;
-- one evaluative surface through `PreferenceOrder` or `EvaluativeMeasure`;
+- one evaluative basis through `PreferenceOrder` or `EvaluativeMeasure`;
 - `BeliefState`;
 - `OutcomeModel`;
 - `ChoiceRule`;
@@ -37451,12 +37623,12 @@ The following objects activate when the case needs them:
 - `CounterfactualModel` plus `SubjunctiveDependenceRelation` for success-first or predictor-coupled repair;
 - `ProbeActionSet`, `ProbeBudget`, `CostToProbe`, `ValueOfInformation`, and `ValueOfComputation` when one more probe or one more computation pass is still live.
 
-What matters is not that every decision record mechanically mentions every token. What matters is that the current comparison does not smuggle one active burden without naming the object that carries it.
+What matters is not that every decision record mechanically mentions every token. What matters is that the current comparison does not smuggle one active question without naming the object that carries it.
 
 Immediate lexical commitments:
 
 - the default chooser term is `DecisionSubject`, not `Agent`;
-- `DecisionSubjectGranularity` names the chooser-bearing level when the burden is about whether the chooser is one person, team, organization, or another collectivity-bearing system rather than one generic scalar or coordinate;
+- `DecisionSubjectGranularity` names the chooser-bearing level when the question is about whether the chooser is one person, team, organization, or another collectivity-bearing system rather than one generic scalar or coordinate;
 - relation-heavy wording remains answerable to `A.6.P` together with `A.6.5`.
 
 Local plain glosses for the high-pressure inventory:
@@ -37491,14 +37663,14 @@ This floor is enough to keep choice doctrine inspectable and stable. It does not
 
 `DecisionSubject` and `DecisionSubjectGranularity` are the local answer to human-only and individual-only narrowing. They keep the chooser explicit at person, team, organization, or other collectivity-bearing level so the doctrine does not silently collapse back into one generic individual agent.
 
-This minimal choice doctrine does not yet settle all of the heavier doctrine that can sit behind that wider chooser surface. In particular, this body does not yet fully settle:
+This minimal choice doctrine does not yet settle all of the heavier doctrine that can sit behind that wider chooser-bearing scope. In particular, this body does not yet fully settle:
 
-- collective aggregation law over conflicting preferences or criteria;
+- collective aggregation doctrine over conflicting preferences or criteria;
 - cross-level conflict between person-, team-, organization-, or broader system-level objectives;
 - one full `ROE` or social-expectation structure for socially scaffolded choice;
-- one full multilevel or geometry-heavy formal package for those cross-level burdens.
+- one full multilevel or geometry-heavy formal package for those cross-level questions.
 
-Those absences are not hidden exceptions. They are explicit scope boundaries of this `C.11` body. If one of those heavier burdens is already load-bearing in the live case, the decision record should say that the local `C.11` floor is being used only as the current typed floor and should keep the unresolved aggregation, `ROE`, or multilevel support burden visible by value.
+Those absences are not hidden exceptions. They are explicit scope boundaries of this `C.11` body. If one of those heavier questions is already live in the case, the decision record should say that the local `C.11` floor is being used only as the current typed floor and should keep the unresolved aggregation, `ROE`, or multilevel support question visible by value.
 
 #### C.11:4.6 - Minimal decision tuple and finish condition
 
@@ -37521,15 +37693,15 @@ A `C.11` pass is finished enough for practical use when all three conditions hol
 
 - the current comparison basis is explicit enough to state why one option now outranks or survives the others;
 - the reason to stop probing, or the reason to probe again, is explicit rather than assumed;
-- the next burden is explicit: `choose now`, `reject current set`, `probe again`, or `reroute`.
+- the next question is explicit: `choose now`, `reject current set`, `probe again`, or `reroute`.
 
 If the case remains tied or underdetermined under the current basis, say that directly and keep the tie-set explicit. A lawful `ChoiceResult` may still be `probe again` or `reroute`, but it must not pretend that one winner already exists when the current basis has not earned that conclusion.
 
-If those conditions are still missing, the pattern has not yet answered the choice burden even if the terminology already sounds sophisticated.
+If those conditions are still missing, the pattern has not yet answered the choice question even if the terminology already sounds sophisticated.
 
 #### C.11:5.1 - System grounding
 
-**Tell.** A research team already has three experiment plans on the table. The option set exists. The real burden is to decide which plan to run and whether one more measurement is worth the delay.
+**Tell.** A research team already has three experiment plans on the table. The option set exists. The real question is to decide which plan to run and whether one more measurement is worth the delay.
 
 **Show.** The `DecisionSubject` is the team, the `DecisionSubjectGranularity` is team-level, the `OptionSet` is the three current plans, the team's `PreferenceOrder` puts risk reduction ahead of schedule convenience, and the current `OutcomeModel` still carries calibration uncertainty. The extra calibration run belongs in the `ProbeActionSet`, its one-day delay is part of the `ProbeBudget`, and the practical question is whether its `ValueOfInformation` exceeds its `CostToProbe` strongly enough to change the emitted `ChoiceResult` under the current `ChoiceRule`.
 
@@ -37543,13 +37715,13 @@ If those conditions are still missing, the pattern has not yet answered the choi
 
 **Tell.** A model-selection comparison takes three already-articulated explanations and asks whether one more observation or one more comparison pass is rational before preferring one explanation over the others.
 
-**Show.** `C.11` governs the decision doctrine over the current explanation set: one `BeliefState`, one `OutcomeModel`, one explicit `PreferenceOrder` or `EvaluativeMeasure`, and, when the case needs it, one `InterventionModel`, `CounterfactualModel`, or `SubjunctiveDependenceRelation` rather than one thinner evidential story. When another model comparison pass is on the table, `ValueOfComputation` belongs here as part of the current choice doctrine rather than as one later planning afterthought.
+**Show.** `C.11` governs the decision doctrine over the current explanation set: one `BeliefState`, one `OutcomeModel`, one explicit `PreferenceOrder` or `EvaluativeMeasure`, and, when the case needs it, one `InterventionModel`, `CounterfactualModel`, or `SubjunctiveDependenceRelation` rather than one thinner evidential comparison. When another model comparison pass is on the table, `ValueOfComputation` belongs here as part of the current choice doctrine rather than as one later planning afterthought.
 
 **Show.** If one more comparison pass cannot realistically change which explanation survives, the decision record should not end with "more analysis may help." It should end with one `ChoiceResult` that prefers the current explanation now. If one more pass could still reverse the ordering and is cheap enough to justify, the decision record should say exactly which pass is worth doing and what ambiguity it is expected to resolve.
 
-**Show.** A lawful closing line here is therefore something like: "`ChoiceResult = choose model 2 now because the surviving uncertainty no longer changes the ordering under the current evidence`" or "`ChoiceResult = run one additional comparison pass on models 1 and 2 because the current outcome model still cannot distinguish their failure costs`." Anything vaguer leaves the decision burden unfinished.
+**Show.** A lawful closing line here is therefore something like: "`ChoiceResult = choose model 2 now because the surviving uncertainty no longer changes the ordering under the current evidence`" or "`ChoiceResult = run one additional comparison pass on models 1 and 2 because the current outcome model still cannot distinguish their failure costs`." Anything vaguer leaves the decision question unfinished.
 
-**Show.** This pattern does not yet govern open-ended hypothesis generation and does not yet govern operational rollout. Those burdens stay outside this pattern even when the decision later feeds them.
+**Show.** This pattern does not yet govern open-ended hypothesis generation and does not yet govern operational rollout. Those questions stay outside this pattern even when the decision later feeds them.
 
 #### C.11:5.3 - Collective and contextual grounding
 
@@ -37573,9 +37745,9 @@ If those conditions are still missing, the pattern has not yet answered the choi
 
 This pattern is intentionally biased toward `Prag` and `Onto/Epist` discipline.
 
-It prefers one clear governed object, one explicit neighboring-burden split, and one minimal mathematical floor over one looser but more rhetorically flexible notion of rationality.
+It prefers one clear governed object, one explicit neighboring-question split, and one minimal mathematical floor over one looser but more rhetorically flexible notion of rationality.
 
-That bias can feel too strict in cases where the chooser, option set, or dependence structure is still genuinely moving. The mitigation is not to weaken the pattern back into one general rationality story. The mitigation is to keep the unfinished state explicit: hold one tie-set, hold one `probe again` result, or reroute to the neighboring owner that now truly governs the burden.
+That bias can feel too strict in cases where the chooser, option set, or dependence structure is still genuinely moving. The mitigation is not to weaken the pattern back into one general rationality account. The mitigation is to keep the unfinished state explicit: hold one tie-set, hold one `probe again` result, or reroute to the neighboring pattern authority that now truly governs the question.
 
 The family map also remains plural: causal, success-first, active-inference, and quantum-like repairs stay visible without being overpromoted into one default doctrine.
 
@@ -37584,19 +37756,20 @@ The family map also remains plural: causal, success-first, active-inference, and
 | ID | Requirement | Purpose |
 | --- | --- | --- |
 | `CC-C11.1` | The pattern **SHALL** state that `C.11` governs choice among already-available options rather than candidate generation. | Keeps `C.18` outside and prevents search takeover. |
-| `CC-C11.2` | The pattern **SHALL** keep `DecisionSubject` as the default chooser surface, and **SHALL NOT** use `Agent` as the generic chooser term unless one explicit agency claim is routed through `A.13 / C.9`. | Prevents unwanted narrowing of the chooser. |
+| `CC-C11.2` | The pattern **SHALL** keep `DecisionSubject` as the default chooser term, and **SHALL NOT** use `Agent` as the generic chooser term unless one explicit agency claim is routed through `A.13 / C.9`. | Prevents unwanted narrowing of the chooser. |
 | `CC-C11.3` | The pattern **SHALL** state the `C.11 / C.18 / C.19 / C.24 / G.5` split explicitly in the body. | Prevents collapse of choice doctrine, candidate generation, candidate-pool policy, planning, and selected-set publication. |
-| `CC-C11.4` | `Solution` **SHALL** state one inspectable decision procedure from `DecisionSubject` and `OptionSet` through comparison basis, dependence layer, probe-worthiness test, one explicit `ChoiceRule`, and one emitted `ChoiceResult`. | Keeps `C.11` as one operational answer to the choice burden rather than one survey of schools. |
+| `CC-C11.4` | `Solution` **SHALL** state one inspectable decision procedure from `DecisionSubject` and `OptionSet` through comparison basis, dependence layer, probe-worthiness test, one explicit `ChoiceRule`, and one emitted `ChoiceResult`. | Keeps `C.11` as one operational answer to the choice question rather than one survey of schools. |
 | `CC-C11.5` | The pattern **SHALL** name one minimal decision inventory including `DecisionSubject`, `DecisionSubjectGranularity`, `OptionSet`, `PreferenceOrder`, `EvaluativeMeasure`, `BeliefState`, `OutcomeModel`, `ChoiceRule`, `ChoiceResult`, `ProbeActionSet`, `ProbeBudget`, `CostToProbe`, `ValueOfInformation`, and `ValueOfComputation`. | Keeps the calculus objectual rather than slogan-like. |
 | `CC-C11.6` | High-pressure inventory terms used in the pattern text **SHALL** receive local plain glosses or equivalent operational clarification inside the body. | Prevents the core terminology from remaining implicit or displaced into outside basis carriers. |
 | `CC-C11.7` | Relation-heavy terms such as `PreferenceOrder`, `CounterfactualModel`, and `SubjunctiveDependenceRelation` **SHALL** remain answerable to `A.6.P` together with `A.6.5`. | Keeps dependence language inspectable and deconflicted. |
 | `CC-C11.8` | Active-inference and quantum-like lines **SHALL** be introduced through the limitations they repair, not as prestige branch names. | Preserves practical meaning and avoids branch-name citation without operational load. |
 | `CC-C11.9` | The pattern **SHALL** expose one minimal mathematical floor without overclaiming one full quantum-like or geometry-heavy formal package. | Keeps the pattern usable now while leaving heavier support work typed and explicit. |
-| `CC-C11.10` | `ProbeBudget` **SHALL** stay in `C.11` while it means the budget for further probing before choice, and `ValueOfInformation` / `ValueOfComputation` **SHALL** stay theory-side comparative criteria even when `C.19` or `C.24` later consume their outputs. | Preserves the bounded-resource bridge without letting neighboring owners steal the doctrine. |
-| `CC-C11.11` | Shortlist or selected-set publication semantics **SHALL NOT** be treated as part of `C.11`; if the burden shifts to surfacing or publishing the selected set, the text **SHALL** reroute to `G.5`. | Preserves selector-facing publication placement and keeps publication semantics out of local choice doctrine. |
+| `CC-C11.10` | `ProbeBudget` **SHALL** stay in `C.11` while it means the budget for further probing before choice, and `ValueOfInformation` / `ValueOfComputation` **SHALL** stay theory-side comparative criteria even when `C.19` or `C.24` later consume their outputs. | Preserves the bounded-resource bridge without letting neighboring patterns steal the doctrine. |
+| `CC-C11.11` | Shortlist or selected-set publication semantics **SHALL NOT** be treated as part of `C.11`; if the question shifts to surfacing or publishing the selected set, the text **SHALL** reroute to `G.5`. | Preserves selector-facing publication placement and keeps publication semantics out of local choice doctrine. |
 | `CC-C11.12` | When one heavier dependence layer or neighboring family line is activated, the text **SHALL** state what limitation of the simpler comparison it repairs and what changes in the actual comparison once that line is in play. | Prevents branch-name citation from replacing use-time doctrine. |
 | `CC-C11.13` | The text **SHALL** make the closure rule explicit enough to justify why the lawful result is `choose now`, `reject current set`, `probe again`, or `reroute` rather than some softer holding-pattern output, and **SHALL** treat vaguer endings as unfinished rather than as lawful results. | Prevents the decision record from ending in one sophisticated but operationally empty posture. |
-| `CC-C11.14` | The decision record **SHALL** make one minimal decision-record shape explicit: chooser, option set, comparison basis, one explicit `ChoiceRule`, probe posture, and one emitted `ChoiceResult`; `choose now`, `reject current set`, `probe again`, and `reroute` outputs **SHALL** each state their mandatory fields explicitly enough to determine the next move without reopening surrounding rationale. | Keeps the pattern usable as one working decision artifact rather than one doctrinal memo. |
+| `CC-C11.14` | The decision record **SHALL** make one minimal decision-record shape explicit: chooser, option set, comparison basis, one explicit `ChoiceRule`, probe posture, and one emitted `ChoiceResult`; `choose now`, `reject current set`, `probe again`, and `reroute` outputs **SHALL** each state their mandatory fields explicitly enough to determine the next move without reopening surrounding rationale. | Keeps the pattern usable as one working decision record rather than one doctrinal memo. |
+| `CC-C11.15` | If a `ChoiceResult` is supported by a causal effect, counterfactual comparison, causal policy, or off-policy causal evaluation claim, it **SHALL** carry `ChoiceResult.causalUseSpec?` with `targetCausalityLadderRung`, `causalUseClaimKind: CausalUseClaimKind`, supported/unsupported use, and the relevant `C.28` support refs. | Prevents decision-theory vocabulary from certifying causal-use support. |
 
 ### C.11:8 - Common Anti-Patterns and How to Avoid Them
 
@@ -37604,15 +37777,15 @@ One quick usability test helps here: if the closing line does not state one lawf
 
 | Anti-pattern | Symptom | Why it fails | How to avoid / repair |
 | --- | --- | --- | --- |
-| Search takeover | The text starts treating option generation as if it were already part of decision doctrine. | `C.11` loses its governed object and silently absorbs `C.18`. | The option set is stated as already existing, and search burdens are rerouted to `C.18`. |
+| Search takeover | The text starts treating option generation as if it were already part of decision doctrine. | `C.11` loses its governed object and silently absorbs `C.18`. | The option set is stated as already existing, and search questions are rerouted to `C.18`. |
 | Policy collapse | Exploration or exploitation governance over a candidate pool is written as if it were the same thing as choosing among current options. | Choice doctrine and candidate-pool policy become indistinguishable. | `C.19` remains explicit as the neighboring pattern for selection policy and exploration governance. |
-| Planning collapse | Sequencing, replanning, and enactment budgeting are written as if they were already part of the choice calculus. | Planning-side burden moves out of `C.24` by accident. | Execution order and operational budgeting remain in `C.24`, even when `C.11` says more probing is rational. |
-| Inventory without decision rule | The current comparison names many objects and schools but never shows how to move from a live option set through one `ChoiceRule` to one `ChoiceResult`. | The pattern becomes one cleaned-up survey rather than one decision discipline. | State one explicit procedure: chooser, option set, comparison basis, dependence layer, probe-worthiness test, one explicit doctrine, and one emitted result. |
+| Planning collapse | Sequencing, replanning, and enactment budgeting are written as if they were already part of the choice calculus. | Planning-side question moves out of `C.24` by accident. | Execution order and operational budgeting remain in `C.24`, even when `C.11` says more probing is rational. |
+| Inventory without decision rule | The current comparison names many objects and schools but never shows how to move from a live option set through one `ChoiceRule` to one `ChoiceResult`. | The pattern becomes one cleaned-up survey rather than one decision discipline. | State one explicit decision-record shape: chooser, option set, comparison basis, dependence layer, probe-worthiness test, one explicit doctrine, and one emitted result. |
 | Hidden basis shift | Different options are compared under different belief states, outcome models, or dependence layers without one explicit statement that the basis changed. | The comparison only looks precise; in fact the choice rule cannot be audited. | Keep one shared comparison basis until one named probe or model change updates it, and state explicitly when the dependence layer changes. |
 | No closure rule | The text sounds careful but never says what makes `choose now`, `reject current set`, `probe again`, or `reroute` lawful. | The record never closes into one explicit decision result. | State the closure conditions explicitly and show why the current case satisfies exactly one of them. |
-| Undefined high-pressure terms | Terms such as `PreferenceOrder`, `BeliefState`, or `OutcomeModel` appear without local operational clarification. | Core comparison objects stay implicit and the decision burden depends on outside theory or undocumented assumptions. | Give one local plain gloss or equivalent operational clarification for each high-pressure term used in the pattern text. |
+| Undefined high-pressure terms | Terms such as `PreferenceOrder`, `BeliefState`, or `OutcomeModel` appear without local operational clarification. | Core comparison objects stay implicit and the decision question depends on outside theory or undocumented assumptions. | Give one local plain gloss or equivalent operational clarification for each high-pressure term used in the pattern text. |
 | Bounded-resource bridge loss | `ProbeBudget`, `ValueOfInformation`, or `ValueOfComputation` are mentioned, but the text silently lets `C.19` or `C.24` own them. | The theory-side doctrine disappears into neighboring policy or planning prose. | Keep those objects theory-side in `C.11`; let neighboring patterns consume their outputs without minting the concepts. |
-| Publication collapse | The text starts treating shortlist or selected-set publication semantics as if they were the same thing as deciding. | Choice doctrine silently absorbs selector-facing publication burden and collides with the `G.5` placement. | Keep selected-set publication outside `C.11` and reroute to `G.5` when the burden becomes surfacing or publishing the selected set. |
+| Publication collapse | The text starts treating shortlist or selected-set publication semantics as if they were the same thing as deciding. | Choice doctrine silently absorbs selector-facing publication question and collides with the `G.5` placement. | Keep selected-set publication outside `C.11` and reroute to `G.5` when the question becomes surfacing or publishing the selected set. |
 | Agent-default narrowing | Every chooser is described as one `Agent` even when the subject is really one team, organization, or other collectivity-bearing system. | The governed chooser is narrowed before the doctrine even starts. | `DecisionSubject` remains the default, and `DecisionSubjectGranularity` types the chooser-bearing level. |
 | Prestige-branch citation | Active inference or quantum-like work is cited only as one fashionable name. | The text sounds current without stating what limitation is being repaired. | The repaired limitation is stated directly: embodied online updating for active inference, and context or order effects for quantum-like lines. |
 | Cost-free deliberation | The text speaks as if probing and computation are free. | Bounded-resource doctrine disappears behind one idealized choice moment. | `ProbeBudget`, `CostToProbe`, `ValueOfInformation`, and `ValueOfComputation` stay visible in the calculus. |
@@ -37621,19 +37794,19 @@ One quick usability test helps here: if the closing line does not state one lawf
 
 | Benefits | Trade-offs / Mitigations |
 | --- | --- |
-| Keeps decision doctrine distinct from search, candidate-pool policy, and planning. | The same working episode now needs an explicit burden split across choice, pool policy, and planning rather than one blurred rationality story. |
+| Keeps decision doctrine distinct from search, candidate-pool policy, and planning. | The same working episode now needs an explicit question split across choice, pool policy, and planning rather than one blurred rationality account. |
 | Makes evidential, causal, and subjunctive branches comparable in one place. | The pattern becomes more explicit about dependence language and therefore needs tighter lexical discipline. |
 | Keeps bounded-resource probing inside the doctrine rather than as one afterthought. | Fast-path use now carries a slightly richer inventory before the doctrine feels natural under pressure. |
 | Keeps active-inference and quantum-like repairs visible without letting them silently replace the whole core. | Those lines stay load-bearing only when they change the actual `ChoiceResult`, unfinished state, or reroute logic; heavier formal packages still remain outside this body. |
 | Makes the next move explicit through one `ChoiceResult` record instead of one general statement that the case is complex. | Each decision record has to show why `choose now`, `reject current set`, `probe again`, or `reroute` is lawful, which removes rhetorical room to sound informed without committing to one result. |
-| Makes downstream work cleaner because search, pool policy, publication, and enactment can receive one explicit output instead of one blurred upstream "decision happened" claim. | Reroutes now require one named next owner and one reusable part of the record instead of one vague upstream claim that deliberation happened somewhere. |
+| Makes downstream work cleaner because search, pool policy, publication, and enactment can receive one explicit output instead of one blurred upstream "decision happened" claim. | Reroutes now require one named next governing pattern and one reusable part of the record instead of one vague upstream claim that deliberation happened somewhere. |
 | Lets one comparison stay open honestly through one explicit tie-set or `probe again` result instead of forcing a fake winner. | Some outcomes will look less rhetorically decisive because the pattern refuses to hide unfinished comparison under elegant prose. |
 
 ### C.11:10 - Rationale
 
-A live option set and a live choice among that set are not the same burden as generating options, governing a candidate pool, or sequencing execution. Keeping that distinction explicit is what makes the doctrine usable rather than ceremonial.
+A live option set and a live choice among that set are not the same question as generating options, governing a candidate pool, or sequencing execution. Keeping that distinction explicit is what makes the doctrine usable rather than ceremonial.
 
-`DecisionSubject` is the better default surface because decision theory often applies to persons, teams, organizations, and other system-bearing collectivities. `Agent` remains useful, but only when an explicit agency claim is actually being made.
+`DecisionSubject` is the better default chooser term because decision theory often applies to persons, teams, organizations, and other system-bearing collectivities. `Agent` remains useful, but only when an explicit agency claim is actually being made.
 
 A minimal mathematical floor is necessary because choice doctrine without one stable object stack quickly turns into verbal drift. But a pattern also fails if it keeps only the object names and never shows how those objects discipline an actual choice. That is why `Solution` here is procedural: it must carry the path from `OptionSet` through one `ChoiceRule` to one `ChoiceResult`, including the stop-or-probe decision, rather than only one survey of neighboring theories.
 
@@ -37646,16 +37819,16 @@ At the same time, this pattern should not pretend that one full quantum-like or 
 | Claim | SoTA practice | Primary source | Alignment with `C.11` | Adoption status |
 | --- | --- | --- | --- | --- |
 | Decision theory still needs an explicit classical baseline over options, preferences, utility, and uncertainty. | Contemporary reference treatments still present decision theory through option sets, preferences, utilities, and uncertainty as the baseline language of rational choice. | [Decision Theory (Stanford Encyclopedia of Philosophy, Fall 2023)](https://plato.stanford.edu/archives/fall2023/entries/decision-theory/) | `C.11` adopts this as the baseline vocabulary for choice among already-available options. | **Adopt.** |
-| Evidential dependence is not enough in all cases. | Causal decision theory remains the standard repair when intervention structure matters. | [Causal Decision Theory (Stanford Encyclopedia of Philosophy, Winter 2024)](https://plato.stanford.edu/archives/win2024/entries/decision-causal/) | `C.11` keeps one explicit evidential-versus-causal split rather than one blended correlation story. | **Adopt.** |
+| Evidential dependence is not enough in all cases. | Causal decision theory remains the standard repair when intervention structure matters. | [Causal Decision Theory (Stanford Encyclopedia of Philosophy, Winter 2024)](https://plato.stanford.edu/archives/win2024/entries/decision-causal/) | `C.11` keeps one explicit evidential-versus-causal split rather than one blended correlation claim. | **Adopt.** |
 | The field no longer stops honestly at the older EDT/CDT split. | Functional or success-first work keeps subjunctive dependence live in Newcomb-like and related cases. | [Functional Decision Theory: A New Theory of Instrumental Rationality](https://arxiv.org/abs/1710.05060) | `C.11` keeps success-first or subjunctive repair visible without treating it as one settled default doctrine. | **Adapt.** |
-| The live EDT/CDT/FDT family map now has more technical comparison surfaces than one older philosophical split alone. | Recent mechanized or causal-graph taxonomies compare live decision-theory families through more explicit technical structures rather than only one slogan-level naming dispute. | [Mechanized-causal-graphs taxonomy of decision theories (2023)](https://arxiv.org/abs/2307.10987) | `C.11` therefore treats EDT, CDT, and success-first or FDT-like lines as technically live family options rather than one frozen classroom argument. | **Adapt.** |
-| Decision under bounds cannot leave probing and deliberation cost as one slogan. | Current metareasoning and optimal-experimental-design lines treat information acquisition, probing, and computation allocation as first-class theoretical burdens rather than free background steps. | [Metareasoning: Theoretical and Methodological Developments](https://pmc.ncbi.nlm.nih.gov/articles/PMC11765846/) | `C.11` therefore keeps `ProbeActionSet`, `ProbeBudget`, `CostToProbe`, `ValueOfInformation`, and `ValueOfComputation` inside the doctrine rather than hiding them in planning-only prose; the current closure law is intentionally local or myopic over the next feasible probe, with richer sequential or non-myopic `OED` left as later strengthening. | **Adapt.** |
+| The live EDT/CDT/FDT family map now has more technical comparison structures than one older philosophical split alone. | Recent mechanized or causal-graph taxonomies compare live decision-theory families through more explicit technical structures rather than only one slogan-level naming dispute. | [Mechanized-causal-graphs taxonomy of decision theories (2023)](https://arxiv.org/abs/2307.10987) | `C.11` therefore treats EDT, CDT, and success-first or FDT-like lines as technically live family options rather than one frozen classroom argument. | **Adapt.** |
+| Decision under bounds cannot leave probing and deliberation cost as one slogan. | Current metareasoning and optimal-experimental-design lines treat information acquisition, probing, and computation allocation as first-class theoretical questions rather than free background steps. | [Metareasoning: Theoretical and Methodological Developments](https://pmc.ncbi.nlm.nih.gov/articles/PMC11765846/) | `C.11` therefore keeps `ProbeActionSet`, `ProbeBudget`, `CostToProbe`, `ValueOfInformation`, and `ValueOfComputation` inside the doctrine rather than hiding them in planning-only prose; the current closure rule is intentionally local or myopic over the next feasible probe, with richer sequential or non-myopic `OED` left as later strengthening. | **Adapt.** |
 | Decision and update can be embodied, online, and socially coupled. | Active-inference work treats decision as tightly coupled to action, inference, and expectation regimes rather than one disembodied one-shot selection. | [Embodied decisions as active inference](https://pmc.ncbi.nlm.nih.gov/articles/PMC12201680/) | `C.11` carries this as one neighboring repair of the chooser picture, makes social-expectation pressure explicit enough for use-time reroute or probe logic, and states honestly that full `ROE` or social-expectation object modeling remains outside this local choice body. | **Adapt.** |
 | Some decision cases exhibit context effects, order effects, response-replicability tension, and incompatible-question structure. | Current quantum-like decision and cognition work treats those cases as one measurement-sensitive research program rather than one discarded curiosity or one automatic physics transfer. | [Measurement-theory decision/cognition anchor (2025)](https://arxiv.org/abs/2503.05859) | `C.11` carries this as one named neighboring branch where those repaired limitations are real, while leaving heavier branch-specific formalism outside this body. | **Adapt.** |
 | Incompatible question/context structures need a cleaner cue than "context matters." | [Contextuality-by-Default](https://www.sciencedirect.com/science/article/abs/pii/S0022249616300207) treats same-content-looking measurements in different contexts as distinct random variables unless a lawful joint treatment is supplied. | Use CbD as the clean formal cue when question/context structure changes variable identity, joint availability, or lawful comparison inside the current option set. | **Adopt/Adapt.** |
 
 | Some quantum-like lines also claim one practical representational gain from linear state dynamics over harder nonlinear underlying processes. | Quantum-like modeling in biology presents linear Hilbert-space dynamics as one simplifying and potentially faster information-processing lens over nonlinear classical biophysical dynamics, while treating this as representational modeling rather than proof that the modeled system is physically quantum. | [Quantum-like modeling in biology with open quantum systems and instruments](https://www.sciencedirect.com/science/article/pii/S0303264720301994) | `C.11` takes this only as one possible practical reason to keep the quantum-like branch available when measurement-sensitive effects are real; it does not treat quantum-like choice as one claim of physical quantumness. | **Adapt cautiously.** |
-| Broader contextual and multilevel lines pressure decision texts to keep one typed substrate rather than pure verbal drift. | Current multilevel-learning and evolution-as-inference work argues for one shared formal lens across levels even when the heavier final geometry is still unsettled. | [Multilevel selection as Bayesian inference, major transitions in individuality as structure learning](https://royalsocietypublishing.org/doi/10.1098/rsos.190202) | `C.11` therefore keeps one minimal typed floor and one widened chooser surface while stating by value that full aggregation law, cross-level conflict doctrine, and heavier multilevel mathematics remain outside this local choice body. | **Adapt.** |
+| Broader contextual and multilevel lines pressure decision texts to keep one typed substrate rather than pure verbal drift. | Current multilevel-learning and evolution-as-inference work argues for one shared formal lens across levels even when the heavier final geometry is still unsettled. | [Multilevel selection as Bayesian inference, major transitions in individuality as structure learning](https://royalsocietypublishing.org/doi/10.1098/rsos.190202) | `C.11` therefore keeps one minimal typed floor and one wider chooser-bearing scope while stating by value that full aggregation doctrine, cross-level conflict doctrine, and heavier multilevel mathematics remain outside this local choice body. | **Adapt.** |
 
 Practical reading of this alignment:
 
@@ -37678,13 +37851,13 @@ Worked-slice discipline from these rows:
 ### C.11:12 - Relations
 
 - **Builds on:** `A.6.P`, `A.6.5`, `A.13`, `C.9`, `A.18`, `A.19`
-- **Read next when this burden moves:** `C.18` for candidate generation and open-ended search, `C.19` for one explicit pool-policy result over exploration or exploitation governance, `C.24` for one enactment-facing call plan or `CheckpointReturn`, `G.5` for shortlist-family public head and emitted selected-set semantics
+- **Read next when this question moves:** `C.18` for candidate generation and open-ended search, `C.19` for one explicit pool-policy result over exploration or exploitation governance, `C.24` for one enactment-facing call plan or `CheckpointReturn`, `G.5` for shortlist-family public selected-set label and emitted selected-set semantics, `C.28` when the choice result depends on causal-use support
 - **Keeps outside:** candidate generation, pool-wide exploration or exploitation policy, selected-set publication semantics, and execution sequencing
-- **Aligns with:** classical evidential decision theory, causal decision theory, success-first or subjunctive repair, bounded-resource metareasoning and probe-cost doctrine, active-inference-adjacent decision work, quantum-like contextual repair where context or order effects are real, and multilevel mathematical-lens pressure at the minimal-floor level only
+- **Aligns with:** classical evidential decision theory, causal decision theory, success-first or subjunctive repair, bounded-resource metareasoning and probe-cost doctrine, `C.28` causal-use question/rung/support vocabulary, active-inference-adjacent decision work, quantum-like contextual repair where context or order effects are real, and multilevel mathematical-lens pressure at the minimal-floor level only
 
-### C.11:12a - Quantum-like choice-route note
+### C.11:12a - Quantum-like choice-boundary note
 
-Use C.11 first when the burden is local choice, belief, preference, comparison, question order, option-menu framing, or an incompatible-question effect inside one decision situation. Quantum-like wording is retained only when it adds a concrete residual order/probe/frame/comparison reading that ordinary decision or probability language would hide.
+Use C.11 first when the question is local choice, belief, preference, comparison, question order, option-menu framing, or an incompatible-question effect inside one decision situation. Quantum-like wording is retained only when it adds a concrete residual order/probe/frame/comparison reading that ordinary decision or probability language would hide.
 
 Action path:
 
@@ -37693,17 +37866,17 @@ Action path:
 3. If the issue is question order, incompatible questions, response-replicability tension, non-shared comparison frames, or CbD-style variable identity / joint-availability trouble inside the current option set, keep the QL repair inside C.11.
 4. If the current option set itself is suspect, incomplete, generated by the wrong frame, or still needs expansion/reframing/search, leave C.11 and route to `C.18`, `C.19`, `A.19`, or `B.5.2` as appropriate.
 5. If the issue changes boundary state, bridge/export faithfulness, coordinated-work evidence, measurement legality, or viability envelope, route out.
-6. Emit one `ChoiceResult` and one next burden; do not leave the QL branch as a theory label.
+6. Emit one `ChoiceResult` and one next question; do not leave the QL branch as a theory label.
 
-When the burden leaves local choice, route it out instead of stretching C.11:
+When the question leaves local choice, route it out instead of stretching C.11:
 
-| Burden that appears in the decision case | First pattern |
+| Question that appears in the decision case | First pattern |
 | --- | --- |
-| Boundary interaction, API read, workshop, dashboard, or message changes the represented state | `C.26.1` only for the remaining state/probe burden, with `A.6`, `A.6.B`, and `A.6.P` still active |
+| Boundary interaction, API read, workshop, dashboard, or message changes the represented state | `C.26.1` only for the remaining state/probe question, with `A.6`, `A.6.B`, and `A.6.P` still active |
 | Cross-context export, translation, or same-label comparison loses state or comparability | `F.9` |
 | Coordinated work evidences a state no report faithfully carries | `A.15` plus evidence patterns, with `C.26.2` only for the remaining weak distributed-state reading |
 | Measurement, metric, survey, or score frame changes the represented state | `C.16` plus evidence patterns |
-| Viability envelope, adaptation cost, or boundary-maintenance decision is load-bearing | `C.25` first, with `C.26.3` only for the remaining probe/export/frame/coarsening viability burden |
+| Viability envelope, adaptation cost, or boundary-maintenance decision is load-bearing | `C.25` first, with `C.26.3` only for the remaining probe/export/frame/coarsening viability question |
 | Current option set is suspect, incomplete, frame-generated, or still being expanded/reframed/searched | `C.18`, `C.19`, `A.19`, or `B.5.2` before returning to C.11 |
 
 Useful outputs:
@@ -37713,9 +37886,11 @@ Useful outputs:
 - `reroute` because the live problem is no longer local choice;
 - no QL wording when ordinary uncertainty, preference conflict, or option-generation work is enough.
 
-C.11 may cite `C.26` as the common quantum-like modeling lens only for residual burden after the local-choice route acts. It is not the whole-cluster pattern for boundary, bridge/export, distributed-evidence, viability, or state-representation coarsening claims.
+C.11 may cite `C.26` as the common quantum-like modeling lens only for the residual question after the local-choice split is applied. It is not the whole-cluster pattern for boundary, bridge/export, distributed-evidence, viability, or state-representation coarsening claims.
 
 ### C.11:End
+
+
 ## C.13 — Constructional Mereology (Compose‑CAL)
 
 ### C.13:1 - Intent
@@ -37751,9 +37926,9 @@ Declared lists of part‑of sub‑relations **scale poorly** and **lack identity
 
 **Compose‑CAL SHALL provide Γₘ with three and only three constructors:**
 1. **`Γₘ.sum(parts:Set[U.Entity])`** — returns a whole *W* such that each *p* in *parts* stands in **KernelPartOf(p, W)**.
-2. **`Γₘ.set(elems:Set[U.Entity])`** — returns a **collection** *C*; each *e* in *elems* stands in a calculus‑internal **mero:KernelPartOf(e, C)** under **member‑as‑part** semantics (publication alias: typically **`ut:MemberOf`**). **Counts/order** (e.g., parallel/serial factors) are **not carried here**; they live in method/time families adjacent to structure.  *Note:* although `mero:KernelPartOf` is transitive in the calculus, the **published** `MemberOf` alias remains **non‑transitive** by design (see A.14 guards). 
+2. **`Γₘ.set(elems:Set[U.Entity])`** — returns a **collection** *C*; each *e* in *elems* stands in a calculus‑internal **mero:KernelPartOf(e, C)** under **member‑as‑part** semantics (publication alias: typically **`ut:MemberOf`**). **Counts/order** (e.g., parallel/serial factors) are **not carried here**; they live in method/time families adjacent to structure.  *Note:* although `mero:KernelPartOf` is transitive in the calculus, the **published** `MemberOf` alias remains **non‑transitive** by design (see A.14 guards).
 3. **`Γₘ.slice(entity:U.Entity, facet:U.Facet)`** — returns an **aspect** *S* such that **mero:KernelPartOf(S, entity)** and *S* carries the declared **facet**. Temporal facets are excluded here.
-   
+
 **Note.** The calculus names an internal backbone **`mero:KernelPartOf`**; the Kernel’s public `ut:PartOf`/**A.14** catalogue remain unchanged. Publish only via Working‑Model aliases (CT2R‑LOG).
 
 The calculus emits a **trace** for every construction; Structural aliases **MUST** be *grounded by* exactly one such trace.
@@ -37779,14 +37954,14 @@ Use Compose-CAL whenever a claim concerns **structural containment** of entities
 * **Γₘ** — the mereological construction operator of this calculus.
 * **trace** — a minimal, inspectable witness that a constructor was applied to given inputs to yield a whole (or aspect).
 * **structural part‑of** — the structural relation induced by Γₘ; user‑facing aliases (e.g., *ComponentOf*, *MemberOf*) are separate patterns that **must** point back to traces.
-  
- **Alias readiness.** Typical CT2R mappings:  
-* **ComponentOf** ⇢ `sum` narrative;  
-* **MemberOf** ⇢ `set` narrative;  
-* **AspectOf** ⇢ `slice` narrative;  
-* **PortionOf** ⇢ `slice(entity, facet="material/spatial‑region")` **plus** metrical semantics (A.14);  
+
+ **Alias readiness.** Typical CT2R mappings:
+* **ComponentOf** ⇢ `sum` narrative;
+* **MemberOf** ⇢ `set` narrative;
+* **AspectOf** ⇢ `slice` narrative;
+* **PortionOf** ⇢ `slice(entity, facet="material/spatial‑region")` **plus** metrical semantics (A.14);
 * **ConstituentOf** (logical/content) ⇢ `sum` narrative over conceptual parts. *(Material mixtures are **not** `ConstituentOf`; use `PortionOf` or `ComponentOf` per A.14.)*
- 
+
 ### C.13:5 - Archetypal Grounding *(System / Episteme duo)*
 
 > **Tell–Show–Show.** Compose‑CAL is a thinking‑level calculus for building structural wholes from parts. We *show* it twice—first on a **System** (structural) and then on an **Episteme** case (where constructive grounding is *not* the primary mode).
@@ -37798,7 +37973,7 @@ Use Compose-CAL whenever a claim concerns **structural containment** of entities
 **Constructive grounding (Γ\_m).**
 Narrate a *sum* of parts: “Skid = sum{Pump, Motor, Baseframe, Manifold}.” This uses **`Γ_m.sum`** to obtain a whole whose parts stand in **KernelPartOf**; the resulting Working‑Model relation engineers publish is **`ut:ComponentOf`** on each edge from part to whole. The mapping “*sum → ComponentOf*” reflects the intended aliasing between constructive traces and human‑facing mereology.
 
-**Facets and collections.** 
+**Facets and collections.**
 Need the **inspection surface**? Narrate **`Γₘ.slice(Skid, "spatial")`** and publish **`ut:AspectOf`**. Need a group of **Transfer interactions**? Narrate **`Γₘ.set{…}`** and publish **`ut:MemberOf`**—this is a **collection-as-whole**, not a sub‑assembly; no component identity is implied without a separate **`Γₘ.sum`** narrative.
 
 **Plane separation.**
@@ -37808,7 +37983,7 @@ Assembly **order** and **time** are *not* encoded here: parallel lines and sched
 
 **Story.** A **Mass‑Flow Representation** is used to stand for a measured flow in a plant dataset.
 
-**Grounding choice.** 
+**Grounding choice.**
 Here the Working‑Model relation (e.g., **RepresentationOf**) is **epistemic**. Authors typically justify it by *inferential* or *postulate* stances (argument or calibration cues), not by a mereological construction; constructive traces remain optional. This preserves the firewall between structure and knowledge claims while keeping a clear path to stronger assurance if the team later reframes part of the representation structurally (e.g., sets of interactions as a **`Γ_m.set`** for a flow bundle).
 
 #### C.13:5.3 - Scope justification
@@ -37893,7 +38068,7 @@ Correctness‑by‑sequence and temporal coverage are orthogonal to **parthood**
 **Builds on**
 
 * **A.14 Advanced Mereology.** Uses its structural catalogue (Component/Portion/Aspect vs Member) as the *target* of constructive narratives; never collapses Member into Part.
-* **E.5 Guard‑Rails (Notational Independence).** Meanings are given in prose; diagrams are illustrative only.  
+* **E.5 Guard‑Rails (Notational Independence).** Meanings are given in prose; diagrams are illustrative only.
 * **E.5 Guard‑Rails (Unidirectional Dependency).** Compose‑CAL depends **downward** only; it never imports alias layers or higher planes.
 * **E.8 Authoring Conventions.** Conforms to the canonical pattern template (Grounding section for architectural patterns; CC placement).
 
@@ -37934,6 +38109,8 @@ Correctness‑by‑sequence and temporal coverage are orthogonal to **parthood**
 Use this when a value, score, rating, metric label, QL probe output, dashboard reading, or comparison is being treated as meaningful without a visible characteristic, scale, unit, polarity, comparability basis, or evidence pointer. The action is to rebuild the measurement claim as a typed reading: name the subject, bind one characteristic to one scale, state the coordinate or level, declare unit and polarity when they matter, attach the evidence stub, and keep stronger comparison or scoring claims routed to their owning pattern.
 
 Useful output: a measurement claim that a reader can interpret and compare only within its declared measurement basis, without turning a convenient number into a free-floating fact.
+
+Metric legality does not make causal use admissible. If a measured value, score, dashboard reading, or metric disparity reaches `CausalUseActivation` by being used to claim effect, intervention success, causal fairness, policy optimality, counterfactual comparison, or causal method superiority, keep the measurement repair in `C.16` and route the causal-use question, rung, estimand, support basis, support verdict, supported use, and unsupported use to `C.28`.
 
 **Outcomes.**
 (1) A uniform way for FPF patterns to *declare* what is measured and *read* what has been measured; (2) explicit **Characteristic anchoring** and **Scale typing** per CSLC; (3) principled **comparability** and **polarity** (declared at the template level); (4) **traceability** via conceptual evidence stubs; (5) seamless alignment with cross‑domain quantity notions (ISO 80000, ISO/IEC 25024, QUDT, SOSA/SSN, Verspoor) through Unification rows (Part F).
@@ -37977,13 +38154,13 @@ Across FPF patterns, people say “score”, “metric”, “rating”, “prop
 1. **`U.DHCMethod`** — a *measurement template* (a Definition) that binds **one `U.Characteristic`** to **one Scale form**, with declared **polarity** and (optionally) a **citation point** to the semantic owner of any non‑trivial equivalence/comparability claim that is relied upon elsewhere (e.g., a Bridge or a declared transformation owner). **References** to this template use `U.DHCMethodRef`. It is an *intensional specification*, not a record layout.
 2. **`U.Measure`** — an *assertion* that a **subject** occupies a **Coordinate** (or **Level**, if discrete) on that Scale; the measure **references** its template and carries a **conceptual pointer to evidence** (`U.EvidenceStub`).
 3. **`U.Unit`** — the *unit kind* associated with the Scale where applicable (physical quantities, normalized “points”, “stars”, “%”); unit coherence is part of comparability conditions.
-4. **`U.EvidenceStub`** — a *conceptual locator* of grounds for the asserted value (type, identifier, brief summary, optional integrity notion); sufficiency criteria are **conceptual** (see §9, later).
+4. **`U.EvidenceStub`** — a *conceptual locator* of grounds for the asserted value (type, identifier, brief summary, optional integrity notion); sufficiency criteria are **conceptual** (see §9 below).
 
-**S2 — Comparability stance (boundary‑aware).** C.16 states only the **direct** comparability condition for measurement claims: *same template* (hence, same Characteristic + Scale + Unit semantics by reference to A.17/A.18). Any comparability claim that relies on transformations (normalization, scoring, aggregation, cross‑context transport, bridge losses, legality gating) MUST cite its single semantic owner (CN/CG surfaces and/or the relevant mechanism cards). C.16 does not define those transformations or their laws. (Details: §7–§8 in later parts.)
+**S2 — Comparability stance (boundary‑aware).** C.16 states only the **direct** comparability condition for measurement claims: *same template* (hence, same Characteristic + Scale + Unit semantics by reference to A.17/A.18). Any comparability claim that relies on transformations (normalization, scoring, aggregation, cross‑context transport, bridge losses, legality gating) MUST cite its single semantic owner (CN/CG surfaces and/or the relevant mechanism cards). C.16 does not define those transformations or their laws. (Details: §7–§8 below.)
 
-**S3 — Evidence stance.** A measure that, by its template, **requires** evidence, is **inadmissible** without a meaningful `U.EvidenceStub`. C.16 defines **what it means conceptually** for evidence to “connect” the subject, the Characteristic, and its symbolic description; mechanisms are out of scope. (Details: §9 in later parts.)
+**S3 — Evidence stance.** A measure that, by its template, **requires** evidence, is **inadmissible** without a meaningful `U.EvidenceStub`. C.16 defines **what it means conceptually** for evidence to “connect” the subject, the Characteristic, and its symbolic description; mechanisms are out of scope. (Details: §9 below.)
 
-**S4 — RSG framing (open‑endedness).** Readiness, calibration, and revision of metric notions are expressed as **RSG node moves with checklists** (e.g., “characteristic anchored”, “Scale typed”, “Unit coherent”, “ScoringMethod declared”), allowing **re‑entry** when distinctions change; there is no terminal “lifecycle”. (Details: §10, later.)
+**S4 — RSG framing (open‑endedness).** Readiness, calibration, and revision of metric notions are expressed as **RSG node moves with checklists** (e.g., “characteristic anchored”, “Scale typed”, “Unit coherent”, “ScoringMethod declared”), allowing **re‑entry** when distinctions change; there is no terminal “lifecycle”. (Details: §10 below.)
 
 
 #### C.16:5.1 - Lexical Discipline & Registers (Normative)
@@ -37996,7 +38173,7 @@ Across FPF patterns, people say “score”, “metric”, “rating”, “prop
 **L5 — Plain‑register shorthand.** In **Plain** register *metric* MAY be used as shorthand for “template + readings”, but on first use it MUST be mapped to **`U.DHCMethod` (template)** and **`U.Measure` (reading)**, and to the Tech canon terms that matter for meaning.
 **L6 — No CHR‑mechanism terminology ownership.** Tokens and laws owned by characterization mechanisms (e.g., normalization method tokens, invariant‑value notions, indicatorization policy terms) MUST be introduced only by their owner patterns. C.16 may mention them only as **cited** external terms, never as locally defined canon.
 
-#### C.16:5.2 - Relations (pointers; details later)
+#### C.16:5.2 - Relations (pointers; details below)
 
 **To A.17 / A.18.** C.16 *uses* A.17’s canonical **Characteristic** and A.18’s **CSLC sufficiency**; it neither re‑states nor weakens them.
 **To Part F.** C.16 is the **exporting pattern** behind measurement rows in UTS/Bridges (e.g., **result‑value** ↔ SOSA `Result`, ISO `QuantityValue`).
@@ -38158,7 +38335,7 @@ G‑5 (Target polarity). If polarity is targeted, comparisons use distance‑fro
 
 #### C.16:7.1 - What an Evidence Stub is (and is not)
 
-**Definition.** `U.EvidenceStub` is a **conceptual pointer** that ties a **measure** to the **grounds** sufficient for independent checking (observations, arguments, lawful transformations). It is not the run log, not the carrier, and not the intensional characteristic itself. This keeps **intension–description–specification** distinct per E.10.D2 and the Clarity Lattice.
+**Definition.** `U.EvidenceStub` is a **conceptual pointer** that ties a **measure** to the **grounds** sufficient for independent checking (observations, arguments, admissible transformations). It is not the run log, not the carrier, and not the intensional characteristic itself. This keeps **intension–description–specification** distinct per E.10.D2 and the Clarity Lattice.
 
 **Rule Σ‑1.** Whether evidence is **required** is a **property of the metric template**; if required, each `U.Measure` **SHALL** include an `U.EvidenceStub`.
 **Rule Σ‑2.** Evidence composition is **commutative, associative, idempotent** at the concept level (sets/multisets of grounds); combining grounds can never *reduce* what is knowable about the measure’s warrant.
@@ -38192,6 +38369,7 @@ MM‑CHR **supplies recognisers** used in **State Checklists**. A checklist crit
 **CC‑MCHR‑6 - RSG alignment.** If a measure gates a **state** in an RSG, the checklist criteria **respect scale semantics** and the **intensional vs description** split. No lifecycle phrasing; use RSG open‑ended moves.
 **CC‑MCHR‑7 - Dynamics awareness.** Where discussions involve change, the **CharacteristicSpace** is **named** (characteristics, units, topology) and separated from the **transition law**.
 **CC‑MCHR‑8 - Lexical guard‑rails.** Tech identifiers and headings use **Characteristic/Scale/Level/Value/Score/Unit/ScoringMethod**; aliases (axis/dimension/points/stars) appear **only** in explanatory Plain register with a first‑mention mapping to the Tech canon.
+**CC‑MCHR‑9 - Causal-use metric boundary.** A measurement, metric disparity, score, dashboard reading, or benchmark value that reaches `CausalUseActivation` SHALL keep measurement construction, scale legality, comparability, and evidence-stub repair in `C.16`, and SHALL route causal-use question, causality-ladder rung, causal estimand, support basis, support verdict, supported use, and unsupported use to `C.28`.
 
 ### C.16:10 - Invariants & Anti‑Patterns *(Normative unless marked “Informative”)*
 
@@ -38281,10 +38459,12 @@ Reading: model M on cohort C shows **3.2 pp**; evidence points conceptually to t
 
 **C.27 temporal-claim relation.**
 
-- C.27 may flag: a rate/rate-change reading whose supported use depends on lawful measurement construction, evidence, sampling window, or finite-difference method.
-- This pattern keeps: measurement construction, comparability, units, sampling windows, evidence, and lawful metric use.
-- Unsupported use: a rate-change label is not a measurement template, and temporal words such as velocity, acceleration, throughput, cadence, or recovery speed are not lawful measures by themselves.
+- C.27 may flag: a rate/rate-change reading whose supported use depends on admissible measurement construction, evidence, sampling window, or finite-difference method.
+- This pattern keeps: measurement construction, comparability, units, sampling windows, evidence, and admissible metric use.
+- Unsupported use: a rate-change label is not a measurement template, and temporal words such as velocity, acceleration, throughput, cadence, or recovery speed are not admissible measures by themselves.
 - Exit: when load-bearing, the claim cites `baseCharacteristicRef`, the relevant measure reference, sampling window, construction method such as `DHCMethodRef`, and `C16RouteRef`; C.27 keeps only the temporal-claim adequacy question.
+
+**C.28 causal-use relation.** C.16 is the semantic owner for measurement templates, readings, score meanings, scale legality, direct comparability, and evidence-stub adequacy. C.28 is the semantic owner when the same reading is used to claim effect, intervention success, causal fairness, policy optimality, counterfactual comparison, off-policy causal evaluation, causal-RL evaluation, or causal method superiority. A C.16-admissible measure is therefore not by itself a C.28-supported causal use.
 
 **Kernel.** MM‑CHR *imports* the canonical Characteristic vocabulary and the CSLC discipline fixed by A.17 and A.18; it does not redefine them. CharacteristicSpace reasoning (for change) lives in the patterns that consume MM‑CHR readings.
 
@@ -38294,13 +38474,13 @@ Reading: model M on cohort C shows **3.2 pp**; evidence points conceptually to t
 
 ### C.16:12a - Measurement/probe note for quantum-like readings
 
-Use C.16 first when the live question concerns a measure, metric, score, survey, dashboard, sensor, coordinate, scale, or characteristic. A metric is not quantum-like because it is noisy, probabilistic, discrete, gamed, or difficult to interpret. Metric gaming is not QL; a metric-caused state update may be QL only when the publication, probe, order, frame, or export changes what the result can lawfully support.
+Use C.16 first when the live question concerns a measure, metric, score, survey, dashboard, sensor, coordinate, scale, or characteristic. A metric is not quantum-like because it is noisy, probabilistic, discrete, gamed, or difficult to interpret. Metric gaming is not QL; a metric-caused state update may be QL only when the publication, probe, order, frame, or export changes what the result can admissibly support.
 
 Action path:
 
 1. Name the Characteristic, Scale, Coordinate/Value, Unit when relevant, and EvidenceStub.
 2. Separate the observable, probe method, measurement scheme, output/result, state update, and evidence carrier.
-3. Ask whether the measurement/probe frame changes the represented state, whether probe order changes the lawful reading, whether frames cannot share one sample space, or whether exporting the measured state loses the structure needed for intended use.
+3. Ask whether the measurement/probe frame changes the represented state, whether probe order changes the admissible reading, whether frames cannot share one sample space, or whether exporting the measured state loses the structure needed for intended use.
 4. If no, stay in C.16 and ordinary evidence/assurance routes.
 5. If yes, add a C.26 reading only for that remaining passive-read/shared-frame/lossless-export mistake.
 6. State the local stop condition: which stronger decision, audit, release, comparison, or work use the measurement does not support.
@@ -38325,6 +38505,8 @@ Useful outputs:
 - no QL wording when noise, uncertainty, discreteness, or metric gaming is the whole issue.
 
 ### C.16:End
+
+
 ## C.17 - Characterising Generative Novelty & Value (Creativity‑CHR)
 
 **Status.** Mechanism specification (**CHR**) — normative where stated.
@@ -39343,6 +39525,35 @@ Ad‑hoc exploration mixes ordinal and interval folds, silently scalarises poset
 • Lens expressiveness vs. audit — scalarised choices must not be called 'the frontier' and MUST record lens ids.
 
 ### C.19:4 - Solution
+#### C.19:4.1a - Causal data and causal-policy exploration hook
+
+When an exploration/exploitation policy collects data to support a causal claim, changes intervention budget, learns a causal policy, evaluates a policy from behavior/logging-policy data, or treats a counterfactual strategy as a candidate line, the pool-policy result keeps `C.19` authority and cites `C.28` for causal-use support.
+
+Optional `PoolPolicyResult.causalUseSpec?`:
+
+```text
+PoolPolicyResult.causalUseSpec? {
+  causalUseQuestionRef?: U.CausalUseQuestion
+  targetCausalityLadderRung: CausalityLadderRung
+  causalUseClaimKind: CausalUseClaimKind
+  causalActionPolicyClass?: CausalActionPolicyClass
+  causalEvidenceSupportBasis?: CausalEvidenceSupportBasis
+  causalUseEvidenceDesignRef?
+  offPolicyCausalEvaluationProfileRef?
+  causalUseSupportRecordRef?: CausalUseSupportRecordRef
+  causalUseSupportVerdict?: CausalUseSupportVerdict
+  supportedUse: CausalUseSupportStatement
+  unsupportedUse: CausalUseUnsupportedStatement
+}
+```
+
+The causal-use support tail may be omitted only when the pool-policy result does not reach `CausalUseActivation`: it does not make, publish, rank, retire, deploy, or reuse a causal claim. If exploration or exploitation is justified by effect, counterfactual replay, causal policy support, or causal data collection, the support tail is present or the result is downgraded to a non-causal pool-policy reason.
+
+What changes in practice: a frontier policy that explores "to learn what works", exploits a causal policy, or graduates a line because counterfactual replay looks better must declare the causal-use question, `CausalUseClaimKind`, causality-ladder rung, causal evidence support basis, and supported/unsupported use before the pool-policy result can carry a causal claim.
+
+What this does not authorize: `C.19` does not become causal identification, causal fairness, off-policy causal evaluation, or counterfactual-realizability authority; it governs pool treatment and redirects causal-use support to `C.28`.
+
+
 Define EmitterPolicy (regime key, params, ε, K, insertion/dedup) and selection lenses with a fixed pipeline (Eligibility → Dominance → Tie‑breakers); bind provenance (policy id, lens id) and guard promotions of Surprise/Illumination to dominance to explicit policy declarations.
 
 **Decision-subject clarification.** Later choices are attributed to one declared `DecisionSubject` at explicit `DecisionSubjectGranularity`. **Contexts publish** measurement spaces and admissible policies as **semantic frames**; LOG profiles lenses and policies but does **not** enact choices.
@@ -39351,7 +39562,7 @@ Define EmitterPolicy (regime key, params, ε, K, insertion/dedup) and selection 
 **EmitterPolicy (named profile).** A context‑local, versioned policy with fields:
 `{ name, regimeKey ∈ {UCB, Thompson, BO‑EI, GP‑UCB, PES, InformationGain, …}, params, explore_share∈[0,1], temperature τ≥0, rebalance_period, wild_bet_quota≥0, backstop_confidence (assurance level), epsilon_dominance ε, cell_capacity K, **insertion_policy**, **dedup_threshold** }`.
 Policies are referenced as `U.EmitterPolicyRef` by NQD generator call (C.18) and are conceptual lenses, not staffing/budget instructions.
-Ordinary default tokens remain owned by `G.Core/G.5`; `C.19` explains their pool-policy consequences but does not become one rival default owner.
+Ordinary default tokens remain governed by `G.Core/G.5`; `C.19` explains their pool-policy consequences but does not become one rival default authority.
 
 **Decision-theory bridge.** `C.11` owns theory-side choice among already-available options and the meaning of `ProbeBudget`, `ValueOfInformation`, and `ValueOfComputation`. `C.19` may consume such outputs only as criteria for pool policy, graduation, keep-frontier, or sunset posture; it does not re-own local choice doctrine.
 
@@ -39557,12 +39768,13 @@ No global scalarisation of partial orders; ordinal scales excluded from arithmet
 - **C19-4** Promotion of Surprise/Illumination into dominance MUST be explicit in policy.
 - **C19-5** USM/RSG gate applies: policy actions SHALL operate within the Context's scope and enactable RSG states.
 - **C19-6** Each selection lens **MUST** implement and document the pipeline` Eligibility (ConstraintFit=pass) → Dominance (declared set) → Tie-breakers (declared)`. Any **promotion** of Surprise/Illumination into the dominance set **MUST** be named by lens/policy id and recorded in provenance.
-- **C19-7 (LEX-AUTH trigger).** Any change to `EmitterPolicy` defaults that affects domain-family quotas/samplers (HET-FIRST), or any change to `DescriptorMap` family coordinates, `DistanceDef`, or the `δ_family` threshold MUST be authored via **E.15 LEX-AUTH**. Any resulting **LAT** lives in the relevant LAT/evidence owner; the DRR need only carry the content decision itself plus any decisive evidence or validation consequence by value when that consequence materially shaped the choice (see **CC-DRR.6**). Record policy/card ids in SCR.
+- **C19-7 (LEX-AUTH trigger).** Any change to `EmitterPolicy` defaults that affects domain-family quotas/samplers (HET-FIRST), or any change to `DescriptorMap` family coordinates, `DistanceDef`, or the `δ_family` threshold MUST be authored via **E.15 LEX-AUTH**. Any resulting **LAT** lives in the relevant LAT/evidence authority; the DRR need only carry the content decision itself plus any decisive evidence or validation consequence by value when that consequence materially shaped the choice (see **CC-DRR.6**). Record policy/card ids in SCR.
 
 - **C19-8**  When the Heterogeneity-first lens is used, provenance MUST include: (i) the family-quota vector (including the default triad quota k), (ii) the subFamilyDef id (from F1-Card) if sub-family quotas apply, (iii) the sampler class, seed, and policy id.
 - **C19-9** When `C.19` returns one pool-policy result, that result **MUST** identify the still-live pool or family scope, the governing lens or policy id, and the next treatment (`widen`, `keep frontier`, `narrow to subset`, `sunset line`, or `reroute`).
 - **C19-10** If the live question is still local option choice, already one enactment-facing plan, or already one selector-facing publication result, `C.19` **MUST** reroute rather than restate `C.11`, `C.24`, or `G.5`.
 - **C19-11** If autotelic or capability-discovery evidence is used, the record **MUST** name the `GoalSpaceExpansionPolicyRef` when one governs widening and the `LearningProgressSignal`, `CompetenceModelRef`, or `GoalSpaceExpansionCue` that supports the pool treatment, and it **MUST** keep those signals outside default dominance unless an explicit promotion policy is recorded.
+- **C19-12** If exploration/exploitation collects data for a causal claim, changes intervention budget, learns a causal policy, evaluates a policy from behavior/logging data, or treats counterfactual replay as support, `PoolPolicyResult.causalUseSpec?` **MUST** carry `targetCausalityLadderRung`, `causalUseClaimKind: CausalUseClaimKind`, causal evidence support basis when known, supported/unsupported use, and relevant `C.28` support refs.
 
 ### C.19:8 - Common Anti-Patterns and How to Avoid Them
 
@@ -39594,9 +39806,10 @@ No global scalarisation of partial orders; ordinal scales excluded from arithmet
 - Unsupported use: faster narrowing is not automatically a positive result; it may collapse exploration health, diversity, archive coverage, or frontier discovery.
 - Exit: use C.19 for the pool-policy result; use C.27 only for the temporal-claim adequacy question when speed or change affects supported use.
 
-Builds on: `Decsn-CAL`, `B.3`. Coordinates with: `C.11` for local choice among already-available options, `C.18` for candidate generation and open-ended search, `C.24` for post-choice enactment planning, `G.5` for selector-facing publication, `C.17`, and `G.9`.
+Builds on: `Decsn-CAL`, `B.3`. Coordinates with: `C.11` for local choice among already-available options, `C.18` for candidate generation and open-ended search, `C.24` for post-choice enactment planning, `G.5` for selector-facing publication, `C.28` for causal-use question/rung/support vocabulary when pool policy is used causally, `C.17`, and `G.9`.
 
 ### C.19:End
+
 
 ## C.19.1 - Bitter‑Lesson Preference (BLP)
 
@@ -40696,6 +40909,39 @@ A successful probe does not by itself support a larger burn or a committed rollo
 * **ATC-7 (Notation/Vendor Independence).** Core pattern text **MUST NOT** encode vendor-specific tokens; bindings occur in Context via Bridges/Profiles. (Lexical guard-rails.)
 
 #### C.24:4.1a - Planning under budget must consume the same declared doctrine
+#### C.24:4.1b - Causal action-use spec for call plans
+
+When a tool-call plan selects observation, intervention, counterfactual-rung evidence collection, counterfactual policy conditioning, or off-policy causal evaluation work, the `CallPlan` carries an optional causal action-use spec and cites `C.28` for the causal-use authority.
+
+Optional `CallPlan.causalActionUseSpec?`:
+
+```text
+CallPlan.causalActionUseSpec? {
+  causalUseQuestionRef?: U.CausalUseQuestion
+  targetCausalityLadderRung: CausalityLadderRung
+  causalUseClaimKind: CausalUseClaimKind
+  naturalBehaviorPolicyRef?: NaturalBehaviorPolicyRef
+  evaluationPolicyRef?: EvaluationPolicyRef
+  causalEvidenceSupportBasis?: CausalEvidenceSupportBasis
+  causalInterventionSpecRef?
+  counterfactualConditioningRef?
+  counterfactualSamplingRealizabilityProfileRef?
+  causalUseEvidenceDesignRef?
+  offPolicyCausalEvaluationProfileRef?
+  causalUseSupportRecordRef?: CausalUseSupportRecordRef
+  causalUseSupportVerdict?: CausalUseSupportVerdict
+  supportedUse: CausalUseSupportStatement
+  unsupportedUse: CausalUseUnsupportedStatement
+}
+```
+
+The causal action-use tail may be omitted only when the call plan does not reach `CausalUseActivation`: it is not using the call sequence as causal support, not choosing between observation/intervention/counterfactual-policy regimes, and not publishing the result as causal evidence. If the plan says the call will prove, estimate, improve, prevent, or counterfactually establish an outcome, the support tail is present or the wording is downgraded.
+
+What changes in practice: a call plan that probes, intervenes, samples, simulates, or evaluates a policy for a causal purpose must state `CausalUseClaimKind` and the causal regime of the planned action before execution evidence is treated as support for a causal-use claim.
+
+What this does not authorize: `C.24` does not estimate effects, prove identification, certify fairness, or turn simulation output into realized counterfactual-rung evidence; it governs admissible call planning and redirects causal-use support to `C.28`.
+
+
 
 - Planning should reuse the declared source surface, decision lens, probe budget, and stopping posture rather than creating one planning-only choice semantics.
 - Budgeted sequencing may mix exploitation and exploration, but the declared source surface and the declared reason for the next probe must stay recoverable.
@@ -40837,6 +41083,9 @@ Lexical firewall and notation independence apply; no vendor tokens; mixed-scale 
 10. **CC-ATC-10 - Recoverable enactment closure.** When `C.24` returns one enactment-facing call plan or one `CheckpointReturn`, the `CallPlan` SHALL state current objective, route refs in order, planned budget envelope, stop or replan condition, and next move, while `CheckpointReturn` SHALL state burned/residual actual budget plus next action and commit trigger.
 11. **CC-ATC-11 - Neighboring-pattern reroutes.** If the live question is still fixed-option choice, pool policy over several live lines, or selector-facing publication, `C.24` SHALL reroute to `C.11`, `C.19`, or `G.5` rather than restating those patterns.
 12. **CC-ATC-12 - Role discipline.** User-facing prose and emitted artifacts SHALL speak about systems in agential roles or equivalent typed performers, not one generic `agent` head, when that generic head would blur the holder kind.
+13. **CC-ATC-13 - Causal action-use spec.** If one `CallPlan` selects observation, intervention, counterfactual-rung evidence collection, counterfactual policy conditioning, or off-policy causal evaluation for a causal purpose, it SHALL carry `CallPlan.causalActionUseSpec?` with `targetCausalityLadderRung`, `causalUseClaimKind: CausalUseClaimKind`, supported use, unsupported use, and a `C.28` causal-use support reference rather than letting call-planning vocabulary certify the causal claim.
+
+
 
 ### C.24:8 - Common Anti-Patterns and How to Avoid Them
 
@@ -40870,9 +41119,11 @@ Lexical firewall and notation independence apply; no vendor tokens; mixed-scale 
 
 - Exit: a speed-up claim names task outcome, evaluation harness, repair-success basis when claimed, cost/budget posture, validity window, stop/replan condition, and unsupported stronger benchmark use; C.24 remains the tool-use pattern.
 
-Builds on: `A.15` Role-Method-Work alignment (planning vs execution vs service), `B.3` Trust & Assurance (`F-G-R/CL`), `C.5 Resrc-CAL`, `C.18 NQD-CAL` (candidate generation and declared set surfaces), and `C.19 E/E-LOG` (policies). Constrains: any `U.PromiseContent` used as a tool MUST expose acceptance conditions and observation hooks sufficient for `B.3` reporting. Enables: human-facing Working-Model surfaces with policy and assurance disclosures while keeping design/run separated.
+Builds on: `A.15` Role-Method-Work alignment (planning vs execution vs service), `B.3` Trust & Assurance (`F-G-R/CL`), `C.5 Resrc-CAL`, `C.18 NQD-CAL` (candidate generation and declared set surfaces), and `C.19 E/E-LOG` (policies). Coordinates with `C.28` when a call plan is used to observe, intervene, collect counterfactual-rung evidence, condition a counterfactual policy, or evaluate a policy for causal-use support. Constrains: any `U.PromiseContent` used as a tool MUST expose acceptance conditions and observation hooks sufficient for `B.3` reporting. Enables: human-facing Working-Model surfaces with policy and assurance disclosures while keeping design/run separated.
 
 ### C.24:End
+
+
 ## C.25 - Q-Bundle: Authoring "-ilities" as Structured Quality Bundles
 
 > **Type:** Definitional (D)
@@ -41291,7 +41542,7 @@ Useful outputs:
 
 FPF already has local patterns for decisions, boundaries, bridges, work, measurement, search, and quality bundles. Some real architecture cases still break when those patterns are used as if every read, question, dashboard, workshop, bridge, or simplified representation were a passive view of a stable state.
 
-Use this pattern when the ordinary FPF pattern remains active but misses one extra representational issue: the act of probing, framing, exporting, comparing, or coarsening changes what can lawfully be inferred from the represented state. The useful move is small. Add a quantum-like mathematical lens only where it prevents a concrete representational mistake.
+Use this pattern when the ordinary FPF pattern remains active but misses one extra representational issue: the act of probing, framing, exporting, comparing, or coarsening changes what can lawfully be inferred from the represented state. The useful move is small. Add a quantum-like mathematical lens only where it tells the user how to avoid a concrete representational mistake.
 
 This pattern is not a physics claim. In FPF, `quantum-like` names a detached mathematical and representational lens, comparable in role to probability, calculus, optimization, or state-space modeling. It is cheap at QL-lite strength and expensive only when the claim becomes reusable law, assurance evidence, empirical superiority, formal reconstruction, or ontology.
 
@@ -41301,7 +41552,7 @@ Unifying principle: use QL to cheapen the first correct move, not to make the fi
 | --- | --- |
 | Primary reader | Architect, method author, steward, or manager deciding whether QL wording improves a concrete FPF representation. |
 | Governed object | A local use of quantum-like mathematical language in pattern prose or work guidance. |
-| Governed move | Admit, reroute, weaken, or escalate the QL wording by ordinary FPF pattern, QL cue, payoff, weakest output, and local stop. |
+| Governed move | Admit, select another applicable pattern body, weaken, or escalate the QL wording by ordinary FPF pattern, QL cue, payoff, weakest output, and local stop. |
 | Outside work | Physical quantum claims, general ontology, ordinary uncertainty/complexity, ordinary DDD locality, ordinary compression, and search/regime generation. |
 | What changes in practice | The writer stops asking "does quantum-like help here?" and asks "what representational mistake does this lens prevent here?" |
 
@@ -41371,14 +41622,14 @@ The result is not merely loose wording. The team may approve a release from a da
 | Force | Tension |
 | --- | --- |
 | Ordinary FPF patterns first | `C.11`, `A.6`, `F.9`, `A.15`, `C.25`, `C.16`, `A.10`, `B.3`, `C.18`, `C.19`, and `A.19` already do real work. QL wording must add only the remaining state/probe/export cue. |
-| Lightweight use vs stronger claims | A local diagnostic note should be cheap; reusable law, assurance, physical claims, or superiority claims need heavier evidence and pattern routing. |
+| Lightweight use vs stronger claims | A local diagnostic note should be cheap; reusable guidance, assurance, physical claims, or superiority claims need heavier evidence and explicit neighboring-pattern selection. |
 | Useful math vs misleading vocabulary | Quantum-like formalisms help with order, contextual probability, incompatible probes, instruments, and open information systems; popular quantum words easily overclaim. |
 | Representation cost vs representation loss | A cheaper state representation may be the right engineering move, but only if the source, shortcut, loss, supported use, and reopen condition stay visible. |
 | Recognition vs assurance | Working readers need fast entry; the assurance surface needs enough typed fields to prevent pattern-role theft, impossible-copy overread, and hidden ontology. |
 
 ### C.26:4 - Solution
 
-Start with the ordinary FPF pattern. Add this lens only when ordinary wording would falsely treat a probe, question, metric, dashboard, API read, workshop, bridge, comparison frame, or coarsened representation as passive, stable, jointly comparable, or faithfully exportable. The main entry question for the whole cluster is: "What representational mistake does this lens prevent here?"
+Start with the ordinary FPF pattern. Add this lens only when ordinary wording would falsely treat a probe, question, metric, dashboard, API read, workshop, bridge, comparison frame, or coarsened representation as passive, stable, jointly comparable, or faithfully exportable. The main entry question for the whole cluster is: "What should the user do with this lens so that the representational mistake does not arise here?"
 
 Action path:
 
@@ -41386,14 +41637,14 @@ Action path:
 2. Name the concrete representational mistake: passive read, shared comparison frame, false faithful-enough export claim for the intended use, exact-state shortcut, or unsupported coarsened representation.
 3. Test the positive QL cue and the negative activation list.
 4. Fill the QL-lite card if the cue survives.
-5. Emit one practical result: use ordinary pattern only, add QL-lite note, route to one C.26 child pattern, add evidence/assurance, or drop the QL wording.
+5. Emit one practical result: use ordinary pattern only, add QL-lite note, select one C.26 child pattern as the applicable pattern body, add evidence/assurance, or drop the QL wording.
 6. Escalate only when the claim becomes reusable, assurance-bearing, formal, empirical-superiority-bearing, or ontology-bearing.
 
-C.26 ordinary output: produce one of these, then stop or route:
+C.26 ordinary output: produce one of these, then stop or select the neighboring applicable pattern body:
 
-- no QL route because the ordinary FPF pattern carries the case;
+- no C.26 host selection because the ordinary FPF pattern carries the case;
 - QL-lite note at the weakest sufficient strength;
-- reroute to the ordinary pattern that carries the live question;
+- use the ordinary pattern that carries the live question;
 - escalation to evidence, assurance, or formal-model work when the claim strength demands it.
 
 Keep the entry cost proportional to the use. A QL situation does not begin with a full record.
@@ -41411,7 +41662,7 @@ Affordability by reader role:
 | Reader role | Use |
 | --- | --- |
 | Practitioner / architect | Three-to-five-field recognition note plus decision diff. |
-| Pattern author | Full card, examples, pattern routing, and local anti-cases. |
+| Pattern author | Full card, examples, neighboring-pattern selection, and local anti-cases. |
 | Checking reader | Route gate plus false-positive and false-negative tests. |
 | Assurance / audit reader | Full evidence record with `B.3`, `A.10`, and `C.16` integration. |
 | Research / formalization reader | M3/M4 formal model, rival models, and empirical or theoretical support. |
@@ -41424,13 +41675,13 @@ Checking discipline:
 | --- | --- |
 | "QL word appeared, escalate to assurance." | Ask what claim strength is actually made. |
 | "This sounds metaphorical, remove it." | Ask what representational mistake the wording prevents. |
-| "Use ordinary FPF only." | Name the ordinary route that carries the residual claim. |
+| "Use ordinary FPF only." | Name the ordinary FPF pattern that carries the residual claim. |
 | "No quantum-like unless mathematically formalized." | Allow QL-lite when it prevents local false reading and no formal claim is made. |
 | "Everything with feedback is QL." | Route ordinary feedback, control, and metric gaming to `C.16`, `C.25`, or `A.15` first. |
 
 Cluster maxim: quantum-like wording does not raise assurance load by default. Assurance load rises only when the claim itself is reused, contested, evidence-bearing, release-facing, high-impact, comparative, formal, or ontology-bearing.
 
-Host-note dependency rule: when an existing FPF pattern cites `C.26` or a `C.26.*` child, the host's ordinary pattern law remains primary. The citation means only: if a residual QL cue remains after the ordinary route, use this lens for that residue. It does not make every host case depend on the full C.26 record or on every child-pattern semantic.
+Host-note dependency rule: when an existing FPF pattern cites `C.26` or a `C.26.*` child, the host's ordinary action guidance and conformance text remain primary. The citation means only: if a residual QL cue remains after the ordinary FPF pattern has carried its part, use this lens for that residue. It does not make every host case depend on the full C.26 record or on every child-pattern semantic.
 
 QL route gate:
 
@@ -41488,7 +41739,7 @@ Use the `C.11` mini-output discipline across the cluster: finish with one next m
 
 Retire QL when the residual cue disappears. If `A.6`, `F.9`, `C.16`, `A.10`, `B.3`, `A.15`, `C.25`, `A.6.3.CSC`, `A.6.3.RT`, or another ordinary FPF pattern now carries the claim without a false passive read, false shared frame, false faithful export, unsupported distributed-state reading, or QL-specific coarsening residue, remove QL wording from the active working note or pattern prose.
 
-Use the lens only after the activation test survives both sides. QL remains active only when the ordinary route cannot lawfully treat the output as a passive read, a shared-frame comparison, a faithful-enough export, or a use-scope-preserving state representation. Bridge loss, feedback, coupling, openness, compression, and coarsening are not QL cues unless they change the lawful state/probe/frame/export reading for the current use. C.26 carries the full negative activation catalog; child and host patterns should repeat only the local non-trigger that is frequent enough to matter for that pattern.
+Use the lens only after the activation test survives both sides. QL remains active only when the ordinary FPF pattern cannot lawfully treat the output as a passive read, a shared-frame comparison, a faithful-enough export, or a use-scope-preserving state representation. Bridge loss, feedback, coupling, openness, compression, and coarsening are not QL cues unless they change the lawful state/probe/frame/export reading for the current use. C.26 carries the full negative activation catalog; child and host patterns should repeat only the local non-trigger that is frequent enough to matter for that pattern.
 
 Canonical cue grammar:
 
@@ -41520,9 +41771,26 @@ Invariant `QL-NQ`: within FPF, `quantum-like` is a detached mathematical and rep
 
 `Quantum-like` does not assert physical quantum substrate, microscopic quantum process, qubits, quantum computation, physical entanglement, nonlocal causality, literal collapse, mystical observer effects, social substance, or collective mind. A physical-quantum claim is a different claim and needs separate physical or empirical support outside this pattern cluster.
 
-Child patterns inherit `QL-NQ`. They should not restate the global boundary as local law unless they are repairing a specific confused phrase.
+Child patterns inherit `QL-NQ`. They should not restate the global boundary as local guidance unless they are repairing a specific confused phrase.
 
 #### C.26:4.2 - Pattern selector
+##### C.26:4.2.1 - Causal-use exit before QL retention
+
+Before retaining `QL-lite`, `QL-NQ`, or a quantum-like framing for a live claim, check whether the actual question is intervention, counterfactual comparison, causal effect, causal fairness, causal policy, off-policy causal evaluation, or realizability of counterfactual-rung data. If so, redirect the claim/question to `C.28` before any quantum-like retention.
+
+
+```text
+CC-C26-CAUSAL-EXIT:
+If the live question is intervention, counterfactual comparison,
+causal effect, causal fairness, causal policy, or realizability of counterfactual-rung data,
+redirect the claim/question to C.28 before retaining QL-lite or QL-NQ.
+```
+
+What changes in practice: "the model is quantum-like" cannot be used to skip causality-ladder rung declaration, causal identification, causal evidence support basis, or counterfactual sampling realizability.
+
+What this does not authorize: `C.26` does not become a causal-use pattern and does not treat counterfactual material as a quantum-like subcase; it keeps quantum-like modeling discipline and sends causal-use support to `C.28`.
+
+
 
 Use this as a diagnostic ladder before retaining QL wording. DDD, microservice domain analysis, and ordinary boundary/bridge patterns stay first for bounded contexts, service cuts, integration points, and exported meaning; QL is retained only when a workshop, probe, export, or frame changes what can lawfully be inferred.
 
@@ -41552,10 +41820,10 @@ C.26 does not choose among options, generate missing alternatives, or settle `C.
 
 | Claim strength | Use | Required basis |
 | --- | --- | --- |
-| Ordinary route | QL is not needed. | Use the ordinary FPF pattern plainly. |
+| Ordinary FPF pattern | QL is not needed. | Use the ordinary FPF pattern plainly. |
 | QL-lite note | Local diagnosis, model note, or worked recognition. | Fill the five-field card. |
 | Reusable pattern prose | A pattern, example, or neighboring note will repeat the move. | Add typed state/probe/export fields, source support, and local anti-cases. |
-| Decision or assurance use | The claim affects boundary, release, audit, evidence, or work decision. | Add rival explanations, evidence posture, loss notes, and pattern routing. |
+| Decision or assurance use | The claim affects boundary, release, audit, evidence, or work decision. | Add rival explanations, evidence posture, loss notes, and explicit neighboring-pattern selection. |
 | Ontology or physical claim | A physical substrate, new ontology, or empirical superiority is asserted. | This pattern does not support the claim; use a separate physical or empirical support outside this pattern cluster. |
 For stronger QL claims, compare rival model families before retaining QL as load-bearing. Failure of a simple Bayesian or passive-read model is not yet evidence for QL necessity; it is evidence for trying richer classical, causal, performative, instrument, active-sensing, or representation-abstraction rivals before QL carries the claim:
 
@@ -41564,7 +41832,7 @@ For stronger QL claims, compare rival model families before retaining QL as load
 | --- | --- | --- |
 | Classical Bayesian, nonparametric Bayesian, or ordinary probabilistic update | `C.11`, measurement/evidence patterns, and model-expansion routes | incompatible sample spaces, contextual probability, order-sensitive query structure, or failure of ordinary total-probability composition remains active. |
 | Causal intervention or ordinary world-state change model | `A.15`, boundary patterns, and evidence patterns | the intervention is also being used as a read, export, comparison, or optimization of the state it changes. |
-| Performative prediction, strategic response, or dashboard-induced behavior | `C.16`, `A.10`, `B.3`, `C.26.1`, and viability/work patterns | instrument-like state update, incompatible probes, or non-faithful state export remains after the ordinary behavior story is written. |
+| Performative prediction, strategic response, or dashboard-induced behavior | `C.16`, `A.10`, `B.3`, `C.26.1`, and viability/work patterns | instrument-like state update, incompatible probes, or non-faithful state export remains after the ordinary behavior account is written. |
 | POMDP, active sensing, active inference, or experimental design | `A.3`, `C.16`, `U.Dynamics`, and action-cost routes | the formal claim also involves incompatible probe frames, contextual probability, or state-representation loss. |
 | State abstraction, representation learning, surrogate modeling, sketching, or ordinary compression | `A.6.3.CSC`, `A.6.3.RT`, `A.19`, `F.9`, and ordinary representation patterns | the shortcut depends on contextual, instrument-like, open-information-system update/probe/export-lawfulness, or incompatible-probe structure rather than ordinary abstraction engineering. |
 | Causal abstraction or approximate causal abstraction | Use first when the shortcut claims to preserve intervention, explanation, manipulation, or cross-level structure. | contextual probability, incompatible probes, instrument-like update, open-information-system update law/probe-frame/export-lawfulness, or lossy state export remains after the causal-abstraction mapping between lower-level and higher-level states and interventions is stated. |
@@ -41582,7 +41850,7 @@ Math reveal ladder:
 
 Most C.26 use should stay at M0 or M1.
 
-Evidence posture is escalation by consequence, not an admission gate. `QLP-0` / `QLP-1` is the ordinary entry level for quick QL-lite use; `QLP-2` / `QLP-3` appears only when the claim is reused, contested, decision-bearing, assurance-facing, high-impact, or turned into pattern law.
+Evidence posture is escalation by consequence, not an admission gate. `QLP-0` / `QLP-1` is the ordinary entry level for quick QL-lite use; `QLP-2` / `QLP-3` appears only when the claim is reused, contested, decision-bearing, assurance-facing, high-impact, or made part of reusable pattern action guidance or conformance text.
 
 Evidence posture scales by use:
 
@@ -41590,22 +41858,22 @@ Evidence posture scales by use:
 | --- | --- | --- |
 | `QLP-0` recognition | Example, teaching case, or local recognition prompt. | Claim, example, ordinary FPF pattern, QL cue, and local stop. |
 | `QLP-1` local working use | Local architecture discussion, triage, or provisional design reasoning. | `QLP-0` content plus evidence carrier, time window, uncertainty/confidence posture, and stop/reroute condition. |
-| `QLP-2` decision-bearing use | Boundary decision, bridge/export use, viability move, work claim, or representation shortcut changes what the team should do. | `QLP-1` content plus rival explanations, export/loss note when live, weakest supported output, pattern route, and supported/unsupported use. |
-| `QLP-3` assurance / reusable-law use | The claim is used for assurance, audit, durable pattern law, reusable relation/name/measure, or high-stakes decision support. | `QLP-2` content plus `A.10` / `B.3` assurance posture, `C.16` template if measured, documented bridge/loss path, source-support role, and explicit local stop / inherited-boundary note. |
+| `QLP-2` decision-bearing use | Boundary decision, bridge/export use, viability move, work claim, or representation shortcut changes what the team should do. | `QLP-1` content plus rival explanations, export/loss note when live, weakest supported output, selected applicable pattern body, and supported/unsupported use. |
+| `QLP-3` assurance / reusable guidance use | The claim is used for assurance, audit, durable pattern action guidance or conformance text, reusable relation/name/measure, or high-stakes decision support. | `QLP-2` content plus `A.10` / `B.3` assurance posture, `C.16` template if measured, documented bridge/loss path, source-support role, and explicit local stop / inherited-boundary note. |
 
 #### C.26:4.4 - Recognition case matrix
 
-| Case | First route | QL cue to test | Local stop |
+| Case | First applicable pattern body | QL cue to test | Local stop |
 | --- | --- | --- | --- |
 | Domain workshop changes the split | `A.1.1`, `F.9`, `C.26.1` | The workshop is both evidence and intervention; question order or facilitation frame changes split recommendation, team alignment, and local meaning. | Do not replace DDD with QL; keep bounded-context law and bridge fields active. |
 | Same label across bounded contexts | `F.9`, `A.6.P` | API extraction or team alignment changes operational state, or export loses the relation that matters. | Same label is not same entity; ordinary bridge may be enough. |
-| Organization acts from a latent decision | `A.15`, `A.10`, `B.3`, `C.26.2` | Coordinated role-work, artifacts, commitments, traces, and routines evidence a weak state no participant faithfully reports. | Do not infer a group mind or timeless culture. |
+| Organization acts from a latent decision | `A.15`, `A.10`, `B.3`, `C.26.2` | Coordinated role-work, records, commitments, traces, and routines evidence a weak state no participant faithfully reports. | Do not infer a group mind or timeless culture. |
 | Survey, dashboard, policy, or API read of culture | `C.16`, `A.10`, `F.9`, `C.26.1`, `C.26.2` | The probe may change the state it evidences, and the export may lose load-bearing structure. | Treat the output as carrier/probe, not as the state itself. |
 | Service boundary under load | `C.25`, `A.6`, `A.15`, `C.26.3` | Viability depends on changing caching, throttling, routing, staffing, protocol, bridge, or context split. | Do not reduce viability to one green metric. |
 | Moving body or sensor to see the missing face | active/embodied inference routes, `C.26:4.5` state-representation coarsening card | The system spends energy, time, risk, attention, or coordination to obtain a discriminating observation. | Do not call ordinary sensing or active inference quantum-like without a QL cue. |
 | Glass memory / hysteresis | `C.26.1`, `C.26.3`, `U.Dynamics` | Prior state constrains current response; state history or retained trace changes lawful reading. | Do not force dynamics variables unless load-bearing. |
 | Cell-like service situation | service, boundary, work, viability patterns first | Cell-like criteria may clarify boundary, controlled exchange, protected invariants, lifecycle, repair, and resource analogue. | Retain analogy only when it changes a decision beyond ordinary service-facet language. |
-| Suspect option menu | `B.5.2`, `C.18`, `C.19`, `A.19` | Current options may be artifacts of the current measurement frame. | QL only marks suspicion; search patterns generate alternatives. |
+| Suspect option menu | `B.5.2`, `C.18`, `C.19`, `A.19` | Current options may be products of the current measurement frame. | QL only marks suspicion; search patterns generate alternatives. |
 
 #### C.26:4.5 - State-representation coarsening card
 
@@ -41684,7 +41952,7 @@ If the shortcut carries a transition-speed, stabilization, or control claim, add
 
 Tell: A reliability dashboard says "Ready" after a new readiness metric is published. Before publication, teams treated incidents as local triage. After publication, they change priorities to satisfy the metric, while unmeasured recovery work gets delayed.
 
-Show, System side: the delivery system, teams, dashboard, incident workflow, and release decision form one operational situation. The dashboard is not only a window; it is part of the work ecology because it changes attention, escalation, and behavior.
+Show, System side: the delivery system, teams, dashboard, incident-handling cycle, and release decision form one operational situation. The dashboard is not only a window; it is part of the work ecology because it changes attention, escalation, and behavior.
 
 Show, Episteme side: the QL-lite card says the ordinary FPF patterns are `C.16`, `A.10`, `B.3`, and `C.25`. The QL cue is an instrument-like metric publication that changes readiness behavior. The weakest output is "treat the dashboard as probe-coupled evidence, not release proof." The local stop is release approval without fuller evidence.
 
@@ -41707,19 +41975,23 @@ The pattern may under-admit some mathematically valid QL models when the author 
 | CC-C26.3 | The text states a practical representational payoff. |
 | CC-C26.4 | The text states the weakest supported output. |
 | CC-C26.5 | The text states a local stop or reroute. |
-| CC-C26.6 | The text inherits `QL-NQ` and does not repeat global physical-quantum exclusions as local law. |
+| CC-C26.6 | The text inherits `QL-NQ` and does not repeat global physical-quantum exclusions as local guidance. |
 | CC-C26.7 | If a representation shortcut is used, the coarsening card names source, shortcut, loss, supported use, unsupported use, and reopen trigger. |
 | CC-C26.8 | A speed, compression, linearity, or tractability claim declaration names baseline representation and cost, changed representation, mechanism, claimed gain, loss/error budget, ordinary alternatives, evidence/formal source, and reopen trigger. |
 | CC-C26.9 | If the claim becomes reusable, assurance-bearing, measurement-like, relation-minting, high-stakes, or superiority-claiming, the text escalates beyond QL-lite. |
 | CC-C26.10 | The text does not mint `U.Probe`, generic `U.State`, `U.DistributedState`, `U.Lens`, a new boundary kind, or a social-substance kind. |
 | CC-C26.11 | A cold reader can tell what changes in practice in the first minute. |
+| CC-C26-CAUSAL-EXIT | If the live question is intervention, counterfactual comparison, causal effect, causal fairness, causal policy, off-policy causal evaluation, or realizability of counterfactual-rung data, the text redirects the claim/question to `C.28` before retaining QL-lite or QL-NQ. |
+
+
+
 
 ### C.26:8 - Common Anti-Patterns and How to Avoid Them
 
 | Anti-pattern | Symptom | Repair |
 | --- | --- | --- |
 | Quantum-like as prestige word | The case is only complex, uncertain, nonlinear, discrete, or hard to measure. | Use ordinary FPF patterns. Admit QL only with a declared cue and payoff. |
-| Precautionary suppression | QL wording is rejected because it is unusual, while no ordinary FPF pattern has carried the residual false passive read, false export, false comparison frame, unsupported distributed-state reading, or single-metric viability mistake. | Name the ordinary FPF route that carries the residual claim. If no such route can be named, allow QL-lite at recognition or local-working strength. |
+| Precautionary suppression | QL wording is rejected because it is unusual, while no ordinary FPF pattern has carried the residual false passive read, false export, false comparison frame, unsupported distributed-state reading, or single-metric viability mistake. | Name the ordinary FPF pattern that carries the residual claim. If no such pattern can be named, allow QL-lite at recognition or local-working strength. |
 | Physical overread | The text sounds as if organizations, services, or teams are physically quantum systems. | Cite inherited `QL-NQ`; rewrite the claim as mathematical or representational. |
 | Passive dashboard | A metric or score is used as a neutral fact after its publication or operational use changed behavior. | Route through measurement/evidence patterns and, if needed, `C.26.1`. |
 | Faithful-copy export | A survey, report, API response, or context map is treated as the live state itself. | Use bridge/export loss, `C.26.2`, or ordinary publication patterns. |
@@ -41770,15 +42042,15 @@ QL can also generate better design options:
 | Summary is overused as source. | Add supported-use label and return-to-source trigger. |
 | Viability scalar hides damage. | Build envelope variables and actuators; add a failure-mode sensor. |
 
-#### C.26:8.2 - AI and LLM workflow route examples
+#### C.26:8.2 - AI and LLM work-cycle route examples
 
-LLM-mediated workflows often create the same representational mistakes C.26 repairs: false passive read, false faithful summary, false shared comparison frame, and shortcut without loss/use declaration. This does not make LLMs quantum-like.
+LLM-mediated work cycles often create the same representational mistakes C.26 repairs: false passive read, false faithful summary, false shared comparison frame, and shortcut without loss/use declaration. This does not make LLMs quantum-like.
 
 | AI case | Route |
 | --- | --- |
 | LLM summary of an architecture record | `A.6.3.CSC`, `A.6.3.RT`, and `A.10` first; C.26 coarsening only if a state-representation shortcut is being overused. |
 | Prompted model evaluation changes model or prompt behavior | `C.16` / `B.3` first; `C.26.1` only if the eval output is treated as a passive model-state read. |
-| Agent workflow "discovers" requirements | `A.15` / `A.10` / `A.6` first; `C.26.1` only if the interaction created the requirement framing. |
+| Agent work cycle "discovers" requirements | `A.15` / `A.10` / `A.6` first; `C.26.1` only if the interaction created the requirement framing. |
 | Synthetic personas "represent market state" | `A.10` / `B.3` first; `C.26.2` only if a weak state-reading claim is carefully bounded with unsupported use visible. |
 
 ### C.26:9 - Consequences
@@ -41795,7 +42067,7 @@ Cluster success criteria:
 | Better release/evidence discipline | `B.3` / `A.10` are invoked only when claim strength requires them. |
 | Less metaphorical leakage | Fewer `field`, `collapse`, `entanglement`, and `group mind` phrases appear in normative text. |
 | Faster local notes | Practitioners can write QL-lite notes without full audit cards. |
-| More retirements | QL wording is removed when ordinary FPF routes carry the claim route. |
+| More retirements | QL wording is removed when ordinary FPF patterns carry the claim. |
 
 The best outcome may be fewer but better QL mentions.
 
@@ -41818,7 +42090,7 @@ Evidence is not prestige. Literature supports the modeling move; local evidence 
 | Pattern claim | Practice / source | Pattern implication |
 | --- | --- | --- |
 | Mathematical objects can be transferred as modeling lenses without claiming the target domain is made of the source-domain stuff. | Wigner on mathematical usefulness, Jaynes on probability as logic of science, and Khrennikov on quantum formalism outside physics. | Treat QL as a math-lens transfer card: explain the useful structure first, then state the inherited boundary. |
-| Quantum-like is a mathematical / representational modeling lens, not a physical claim about the modeled system. | Basieva, Khrennikov, and Ozawa on quantum-like modeling in biology with open-system and instrument language. | Keep `QL-NQ` as non-entailment, not as the main story; use detached mathematical modeling where state/probe/export cue is real. |
+| Quantum-like is a mathematical / representational modeling lens, not a physical claim about the modeled system. | Basieva, Khrennikov, and Ozawa on quantum-like modeling in biology with open-system and instrument language. | Keep `QL-NQ` as non-entailment, not as the main claim; use detached mathematical modeling where state/probe/export cue is real. |
 | Linear quantum-like representation can make selected information-state processing more tractable if the representation and loss profile are declared. | Basieva-Khrennikov-Ozawa linearity / speed-up / stability arguments and finite-dimensional matrix-calculus discussions. | Support the state-representation coarsening card discipline; block blanket "quantum-like is faster" claims unless baseline cost, shortcut, loss, and reopen trigger are named. |
 | Quantum probability is useful where inference is contextual, previous judgments change state, or possibilities interfere, but QL is not automatically the only formal route. | Quantum cognition work, quantum-instrument work, and process-theory cautions about classical instrument alternatives. | Use QL-lite as useful high-level modeling, not as proof of non-classical necessity. |
 | DDD, microservice, active-inference, and measurement practice already supply ordinary FPF patterns. | DDD/microservice domain analysis, active-inference measurement-as-action work, performative prediction, metric-induced behavior. | Keep ordinary FPF patterns first; add QL only for the remaining state/probe/export/frame/coarsening pressure. |
@@ -41837,11 +42109,19 @@ This section is intentionally short. It carries operational anchors for using th
 
 | Viability and active sensing often mix reading and acting, but ordinary control and measurement patterns remain primary. | [Free-energy / quantum-cognition link](https://www.frontiersin.org/articles/10.3389/fnbot.2022.910161/full), [physiological regulation and FEP](https://www.sciencedirect.com/science/article/pii/S0149763423004281), [active inference behavior](https://www.sciencedirect.com/science/article/pii/S0301051123002612), and [smart-building active inference](https://arxiv.org/abs/2503.18161). | For viability cases, name sensors/probes/actuators and envelope variables first; retain QL only for remaining probe/frame/export/coarsening cue. |
 | Boundaries and contexts are already disciplined by ordinary architecture and DDD practice. | [Computational boundary of a self](https://philpapers.org/rec/LEVTCB-3), [Markov blankets of life](https://philarchive.org/rec/KIRTMB), [Azure domain analysis](https://learn.microsoft.com/en-us/azure/architecture/microservices/model/domain-analysis), and [DDD 2025 SLR](https://www.sciencedirect.com/science/article/pii/S0164121225002055). | Route boundary/interface, bounded-context, bridge, and microservice questions through ordinary FPF patterns first; add QL only where the interaction changes the state/export being read. |
-| Low-bit, tokenized, compressed, geometric, or neural representations may be useful shortcuts without being QL activation. | [1-bit LLMs](https://arxiv.org/abs/2402.17764), [implicit continuity in language models](https://arxiv.org/abs/2504.03933), [emergent quantumness in neural networks](https://arxiv.org/abs/2012.05082), and [covariant gradient descent](https://arxiv.org/abs/2504.05279). | Keep implementation substrate, geometry, compression, and representation shortcuts on ordinary routes unless a declared QL cue changes the supported use. |
+| Low-bit, tokenized, compressed, geometric, or neural representations may be useful shortcuts without being QL activation. | [1-bit LLMs](https://arxiv.org/abs/2402.17764), [implicit continuity in language models](https://arxiv.org/abs/2504.03933), [emergent quantumness in neural networks](https://arxiv.org/abs/2012.05082), and [covariant gradient descent](https://arxiv.org/abs/2504.05279). | Keep implementation substrate, geometry, compression, and representation shortcuts in ordinary FPF patterns unless a declared QL cue changes the supported use. |
 | Unknown alternatives and regime movement are search/generation problems, not QL claim authority. | [Open-endedness](https://arxiv.org/abs/2406.04268) and [quality-diversity through AI feedback](https://openreview.net/forum?id=owokKCrGYr). | Use QL only to mark a suspect frame; route generation of alternatives to search/regime patterns. |
 
 
 ### C.26:12 - Relations
+
+**C.28 causal-use relation.**
+
+- C.28 governs causal-use question, causality-ladder rung, causal estimand, identification, counterfactual sampling realizability, causal evidence support basis, causal-use verdict, causal fairness, causal policy, and causal method parity.
+- This pattern keeps residual quantum-like probe/frame/order/export/coarsening discipline after ordinary causal-use explanation has been tried.
+- Unsupported use: intervention, causal effect, causal fairness, causal policy, counterfactual comparison, causal method parity, or counterfactual-rung-data realizability do not activate quantum-like modeling by themselves.
+- Exit: when the live question is causal, cite `C.28` before retaining QL-lite or QL-NQ.
+
 
 **C.27 temporal-claim relation.**
 
@@ -41858,6 +42138,8 @@ This section is intentionally short. It carries operational anchors for using th
 - Name posture: `Quantum-Like Modeling Lens` is a pattern label for a modeling lens and modeling discipline, not `U.Lens`, not `QuantumLikeArchitecture`, not `Quantum Substrate`, not `Quantum Ontology`, and not a universal architecture doctrine.
 
 ### C.26:End
+
+
 ## C.26.1 - Probe-Coupled Boundary Interaction
 
 > Type: Architectural pattern
@@ -42878,6 +43160,16 @@ For local diagnosis or planning, C.27 usually ends with one `Dyn2TemporalClaimAd
 **Local refresh boundary.** A local card carries only a reopen, downgrade, or pattern-reference condition. G.11, B.3.4, and assurance refresh discipline become relevant only when the temporal claim is public, Part G-facing, assurance-facing, or otherwise durable beyond local planning/diagnosis.
 
 ### C.27:1 - Problem frame
+#### C.27:1.1 - Causal-use boundary
+
+`C.27` can say that a temporal claim is dynamic, intervention-sensitive, rate-sensitive, inertia-sensitive, braking-sensitive, coasting-sensitive, or rhythm-sensitive. When the temporal claim already depends on causal-use question, `causalInterventionSpecRef`, comparator/counterfactual, estimand, assignment or intervention window, causal follow-up window, outcome measure, `causalAssumptionSetRef`, `rivalCauseSetRef`, identification strategy, realizability posture, `CausalUseEvidenceDesignRecord`, supported causal use, or unsupported causal use, cite `C.28` as the governing causal-use source.
+
+
+What changes in practice: a sentence such as "this effort changes adoption speed" may remain a `Dyn2` temporal claim, but "this intervention causes adoption speed to improve" must also declare its causality-ladder rung and causal-use support in `C.28`.
+
+What this does not authorize: `C.27` does not estimate causal effects, certify counterfactual comparisons, or judge counterfactual sampling realizability; it keeps temporal claim adequacy, rate-change, effort, inertia, rhythm, braking, coasting, and intervention-sensitive temporal wording.
+
+
 
 FPF already has established constructs and patterns for time, work, resources, measurement,
 CharacteristicSpace, dynamics laws, planning, publication, and quantum-like
@@ -42918,7 +43210,7 @@ The intended use is to stop a small set of expensive mistakes:
 - a local rate-change is projected across scale without aggregation basis or evidence;
 - rhythm or cadence is used as a vibe label with no bearer, anchor, window,
   proxy/evidence, or supported use;
-- a planning note becomes a causal/evaluation claim, benchmark result, service promise, or
+- a planning note becomes a `C.28`-governed causal-use claim, benchmark result, service promise, or
   assurance claim;
 - quantum-like modeling is treated as relevant merely because the text contains discreteness,
   types, probes, tokens, or state-space wording.
@@ -43009,7 +43301,7 @@ C.27 does not govern:
   or freedom-of-action governance, which `E.16` carries;
 - lifecycle/evolution loops or language-state movement, which `A.4`, `B.4`,
   `A.16`, and `B.4.1` carry;
-- causal/evaluation claim, which causal/evaluation/evidence patterns carry;
+- `C.28`-governed causal-use claim, which `C.28` carries, or evaluation/evidence claim, which the relevant evaluation/evidence patterns carry;
 - metric proxy/value substitution, which `E.13` carries;
 - service promises, agreement text, SLA-like statements, release gates, public
   commitments, and service-acceptance bindings, which `A.2.3`, `A.2.8`,
@@ -43107,9 +43399,10 @@ Do not make C.27 the governing pattern when:
   the envelope claim, with C.27 only naming the temporal move if
   braking, throttling, cadence change, recovery timing, or stabilization changes
   supported use;
-- the live question is causal attribution: causal, evaluation, and evidence
-  patterns carry causal/evaluation claim; C.27 may mark the temporal claim's causal
-  use as unsupported until that pattern relation is satisfied;
+- the live question is causal attribution: `C.28` carries causal-use claim,
+  and evaluation/evidence patterns carry non-causal evaluation/evidence claims;
+  C.27 may mark the temporal claim's causal use as unsupported until that `C.28`
+  relation is satisfied;
 - the live question is a benchmark, budget, promise, service boundary, SLA-like
   statement, public commitment, assurance, or release gate: the relevant
   benchmark, boundary, promise, service, assurance, or planning pattern carries
@@ -43123,7 +43416,7 @@ Overlap example: "Adding review capacity for two sprints will double backlog
 reduction rate and justify a budget increase" is not solved by C.27 alone. C.27
 types the Dyn2 temporal-claim question; the planning pattern carries planned effort,
 `C.16` carries the rate/rate-change measure, the budget/planning pattern carries
-approval, and causal/evaluation patterns carry any causal/evaluation claim. The short
+approval, and `C.28` carries any causal-use claim. The short
 temporal-claim note is a `Dyn2TemporalClaimAdequacyCard`: it prevents those
 patterns from missing the hidden rate-change question, but it does not replace
 them.
@@ -43131,7 +43424,7 @@ them.
 C.27 does not introduce:
 
 - literal Newtonian or physical ontology for organizations, practices, services,
-  dances, learning, or workflows;
+  dances, learning, or work cycles;
 - physical quantum ontology or quantum-like superiority;
 - mandatory ODE/PDE/calculus formalism for all temporal claims;
 - new Kernel types for force, mass, acceleration, rhythm, or practice;
@@ -43250,7 +43543,7 @@ basis:
 
 basisPosture?:
   assumption | observedTrace | measured | modelled | diagnostic |
-  planning | benchmark-referenced | causal/evaluation-referenced |
+  planning | benchmark-referenced | causal-use-referenced |
   promise/assurance-referenced | unknown
 
 supportedUse:
@@ -43372,14 +43665,14 @@ Dyn2TemporalClaimProfile {
 
   activeBlocks:
     c16RateMeasurementRouteRef? // if rate/rate-change measurement evidence is load-bearing
-    dyn2EffortWorkBlock? // if effort, resource, work, intervention actor, or authority story is load-bearing
+    dyn2EffortWorkBlock? // if effort, resource, work, intervention actor, or authority basis is load-bearing
     dyn2ResistanceInertiaBlock? // if resistance, delay, residue, reversibility, or cost is load-bearing
     dyn2RhythmClaimBlock? // if rhythm/cadence changes supported use
     dyn2CoastingClaimBlock? // if boundary-crossing use depends on continued movement or stability after effort changes or stops
     dyn2CausalUseRoute? // if rate-change or intervention is used as a causal-use basis
     dyn2BenchmarkParityBlock? // if comparison/benchmark depends on rate, rate-change, rhythm, recovery, or intervention effect
     dyn2MetricTargetEffectBlock? // if metric publication/target use changes temporal behavior or supported use
-    dyn2ObjectCentricTraceBlock? // if workflow/process evidence depends on object-centric or multi-bearer traces
+    dyn2ObjectCentricTraceBlock? // if work-cycle or service-process evidence depends on object-centric or multi-bearer traces
     dyn2ScaleVariableClaimBlock? // if changing a resource or scale variable is claimed to change rate, learning, recovery, or throughput
     dyn2TaskFamilyAdaptationRoute? // if learning/adaptation-rate claim depends on a declared task-family specialization signature
     dyn2ControlPolicyRoute? // if control, feedback, policy update, adaptive regime, or MPC/RL-style evaluation basis is load-bearing
@@ -43458,7 +43751,7 @@ authority/capability posture. It does not turn work evidence into a dynamics law
 
 ```text
 dyn2EffortWorkBlock? {
-  interventionRef?
+  causalInterventionSpecRef?
   plannedEffortRef?        // WorkPlan / MethodDescription / resource envelope
   actualEffortTraceRef?    // U.Work / Gamma_work evidence
   effortWindowRef?
@@ -43511,19 +43804,21 @@ dyn2ControlPolicyRoute? {
 }
 ```
 
-C.27 causal-use relation: `dyn2CausalUseRoute?` is present only when the authored temporal claim uses a rate-change, intervention, effort, workshop, policy, or practice change as a causal-use basis. Core rule: C.27 can say a claim is Dyn2 and intervention-sensitive; C.27 cannot turn that basis into a causal/evaluation claim with estimand and identification/evaluation relation.
+C.27 causal-use relation: `dyn2CausalUseRoute?` is present only when the authored temporal claim uses a rate-change, intervention, effort, workshop, policy, or practice change as a causal-use basis. Core rule: C.27 can say a claim is Dyn2 and intervention-sensitive; C.27 cannot turn that basis into a `C.28`-governed causal-use claim. The fields below are `C.28` refs consumed by C.27, not C.27-owned causal aliases.
 
 ```text
 dyn2CausalUseRoute? {
-  interventionRef
+  causalInterventionSpecRef
   comparatorOrCounterfactualRef
   timeZeroOrAssignmentWindow
   followUpWindowRef
   outcomeMeasureRef
-  estimand?
-  assumptions?
-  rivalCauses?
-  identificationOrEvaluationDesignRef?
+  estimandRef?
+  causalAssumptionSetRef?
+  rivalCauseSetRef?
+  causalIdentificationProfileRef?
+  causalUseEvidenceDesignRef?
+  offPolicyCausalEvaluationProfileRef?
   supportedCausalUse
   unsupportedCausalUse
 }
@@ -43564,7 +43859,7 @@ dyn2MetricTargetEffectBlock? {
 ```
 
 C.27 object-centric trace block: `dyn2ObjectCentricTraceBlock?` is present only
-when a workflow/process rate claim depends on several object bearers, event
+when a work-cycle/process rate claim depends on several object bearers, event
 traces, interactions, or aggregation basis rather than one scalar speed label.
 C.27 records why scalar throughput is insufficient; object-centric process
 mining or local process evidence carries the detailed log discipline.
@@ -43709,11 +44004,11 @@ Plain example language.
 | window | The time interval over which the claim is made, effort is applied, rate is sampled, rhythm is observed, or validity is asserted. | Use a time/window reference appropriate to the pattern; do not collapse all windows into `U.Dynamics.timeBase`. |
 | resistance, delay, momentum, or cost | The reason rate-change is not free or immediate: constraint, lag, habit, queue pressure, coordination cost, technical debt, operational-support load, friction, or domain-local resistance proxy. | Domain-local proxy, not literal mass; evidence or assumption should be named when the authored temporal claim is used beyond the local working context. |
 | evidence or assumption | The basis that makes the `Dyn2TemporalClaimAdequacyCard` more than a slogan: observed trace, measurement, work evidence, model assumption, planning assumption, or diagnostic judgement. | Cites C.16, work/evidence, causal, benchmark, or assurance patterns when stronger use is claimed. |
-| basisPosture? | Optional compact basis kind: assumption, observed trace, measured, modelled, diagnostic, planning, benchmark-referenced, causal/evaluation-referenced, promise/assurance-referenced, or unknown. | Bridges a local card to `dynClaimPosture` if the claim later becomes boundary-crossing; it does not strengthen the claim by itself. |
+| basisPosture? | Optional compact basis kind: assumption, observed trace, measured, modelled, diagnostic, planning, benchmark-referenced, causal-use-referenced, promise/assurance-referenced, or unknown. | Bridges a local card to `dynClaimPosture` if the claim later becomes boundary-crossing; it does not strengthen the claim by itself. |
 | supported decision or use | The practical use that this `Dyn2TemporalClaimAdequacyCard` can carry: orientation, plan choice, budget, benchmark, gate, replan, publication, or local diagnosis. | Must stay no stronger than evidence and `dynClaimPosture`. |
-| unsupported stronger use | A nearby use that this `Dyn2TemporalClaimAdequacyCard` cannot carry, such as causal/evaluation claim, release approval, public promise, cross-context transfer, benchmark superiority, or service guarantee. | Prevents laundering a light `Dyn2TemporalClaimAdequacyCard` into a stronger C.27 temporal-claim record. |
+| unsupported stronger use | A nearby use that this `Dyn2TemporalClaimAdequacyCard` cannot carry, such as `C.28`-governed causal-use claim, release approval, public promise, cross-context transfer, benchmark superiority, or service guarantee. | Prevents laundering a light `Dyn2TemporalClaimAdequacyCard` into a stronger C.27 temporal-claim record. |
 | reopen, downgrade, or pattern-reference condition | A condition that requires revisiting the `Dyn2TemporalClaimAdequacyCard`, downgrading to Dyn0/Dyn1, escalating to a profile/formal pattern, or citing another pattern. | This is an evolvability trigger, not a status note. |
-| rhythmBearerRef | The entity, practice, workflow, service, learner, body part, system component, or other existing FPF object whose rhythm is described. | Must resolve to an existing FPF object or explicitly remain Plain example language; C.27 does not mint a new rhythm kind. |
+| rhythmBearerRef | The entity, practice, work cycle, service, learner, body part, system component, or other existing FPF object whose rhythm is described. | Must resolve to an existing FPF object or explicitly remain Plain example language; C.27 does not mint a new rhythm kind. |
 | rhythmAnchor | The temporal reference for a rhythm claim: beat, cadence, cycle, sprint, epoch, release train, attention window, or domain-local anchor. | It is an anchor for interpretation, not `U.Rhythm`. |
 | rhythmWindowRef | The time window across which rhythm is asserted or measured. | Separate from claim, sampling, effort, and validity windows when they differ. |
 | instrumentProxyOrEvidenceRef | The measurement or observation proxy used for rhythm, such as tapping task, cadence log, work trace, event sequence, survey, sensor, or domain evidence reference. | Routes to C.16/evidence discipline when load-bearing. |
@@ -43722,7 +44017,7 @@ Plain example language.
 
 Claim posture discipline: in `Dyn2TemporalClaimProfile`, `dynClaimPosture` is a
 pattern-relation declaration, not a maturity scale. A `diagnosticReading` does not mature
-into a `causalClaim` by adding fields; causal/evaluation patterns carry causal
+into a `causalClaim` by adding fields; `C.28` carries causal-use
 claim posture. A `planningModel` does not become `promiseBoundaryUse` by
 publication; promise, boundary, commitment, service, or assurance patterns carry
 promise-like posture. Changing posture may change the governing relation, pattern,
@@ -43748,7 +44043,7 @@ relation change.
 | publishedOrTargetedMeasureRef | The measure being used as reading, dashboard signal, target, gate, incentive, budget input, or public comparison. | C.16 carries measurement legality and comparability; target/proxy use belongs outside C.27 when load-bearing. |
 | targetOrIncentiveUse | How the metric is used as a target, incentive, optimization proxy, management signal, or behavior-shaping prompt. | E.13, assurance, or governance patterns carry proxy/utility distortion. |
 | dashboardGatePromiseOrBudgetUse | Whether the metric appears in a dashboard, gate, promise, budget, review, or public comparison. | Names boundary/assurance pattern relations when those uses are live. |
-| behaviorChangeRisk | How publication, target pressure, incentive, or gate use may change behavior. | C.27 records temporal intervention risk; causal/evaluation claim still needs causal/evaluation relation. |
+| behaviorChangeRisk | How publication, target pressure, incentive, or gate use may change behavior. | C.27 records temporal intervention risk; causal-use claim still needs `C.28` causal-use relation. |
 | temporalWorkChangeVsMeasurementChangeNote | Split between real work/process rate change, measurement/probe effect, gaming/selection effect, and causal effect if claimed. | Prevents metric improvement from being read as system improvement. |
 | C16RouteRef | Route/reference for lawful measurement construction, comparability, and evidence. | C.27 cites it; C.27 does not define metric legality. |
 | E13ProxyAuditRef | Route/reference for proxy-metric distortion, pragmatic utility, or value/proxy divergence. | Keeps metric-as-target work out of C.27 when the dynamic temporal claim is not live. |
@@ -43804,18 +44099,20 @@ relation change.
 | legalOrEthicalEnvelopeRef | Legal, ethical, or compliance boundary. | Legal/ethics/assurance pattern. |
 | qualityEnvelopeRef | Quality boundary affected by acceleration, braking, or rate-change. | Quality pattern such as C.25 where applicable. |
 | uncertaintyPosture | Declared uncertainty around model, measurement, evidence basis, stability, or transfer. | May force downgrade or stronger evidence relation. |
-| dyn2CausalUsePosture | Declared causal-use posture and its details for a Dyn2 temporal claim. | C.27 does not supply causal/evaluation claim by itself; use `dyn2CausalUseRoute?` only when causal use is live. |
-| interventionRef | The intervention, effort, workshop, policy, regime, practice change, or other action being treated as causal. | C.27 may name it; causal/evaluation patterns carry the estimand, assumptions, identification/evaluation design, and supported causal-use judgement. |
+| dyn2CausalUsePosture | Declared causal-use posture and its details for a Dyn2 temporal claim. | C.27 does not supply a `C.28`-governed causal-use claim by itself; use `dyn2CausalUseRoute?` only when causal use is live. |
+| causalInterventionSpecRef | The intervention, effort, workshop, policy, regime, practice change, or other action being treated as causal. | C.27 may name it; `C.28` carries the causal intervention spec, estimand, assumptions, identification/realizability/evidence design, and supported causal-use judgement. |
 | comparatorOrCounterfactualRef | Comparator, contrast case, counterfactual, control group, prior regime, or declared absence of one. | Required when causal reading is live; otherwise the claim remains planning/diagnostic. |
-| timeZeroOrAssignmentWindow | The start, assignment, exposure, or intervention window for the causal reading. | Keeps before/after slope stories from hiding timing ambiguity. |
+| timeZeroOrAssignmentWindow | The start, assignment, exposure, or intervention window for the causal reading. | Keeps before/after slope claims from hiding timing ambiguity. |
 | followUpWindowRef | The outcome observation window after intervention/exposure. | Separate from claim, sampling, effort, rhythm, and validity windows when they differ. |
 | outcomeMeasureRef | The measured outcome whose change is being causally read. | Routes to C.16/evidence discipline when load-bearing. |
-| estimand | The causal/evaluation quantity being estimated when causal-use basis is claimed. | Causal/evaluation pattern. |
-| assumptions | Assumptions under which the causal/model/evaluation claim holds. | Not hidden inside C.27 shorthand. |
-| rivalCauses | Alternative causes that could explain observed rate-change. | Required when causal reading is live. |
-| identificationOrEvaluationDesignRef | Identification strategy, experiment, quasi-experiment, evaluation design, or evidence-design reference. | Routes to causal/evaluation discipline; absent design limits supported causal use. |
-| supportedCausalUse | The causal conclusion or decision use carried by the causal/evaluation relation. | Must be no stronger than design, assumptions, outcome evidence, and uncertainty. |
-| unsupportedCausalUse | Causal conclusion, action, or assurance claim not carried by the causal/evaluation relation. | Prevents C.27 temporal adequacy from laundering into causal/evaluation claim. |
+| estimandRef | The `U.CausalEstimand` being estimated when causal-use basis is claimed. | Owned by `C.28`; C.27 only cites it when a temporal claim is used causally. |
+| causalAssumptionSetRef | Assumptions under which the causal/model/evaluation claim holds. | Routes to `C.28`; not hidden inside C.27 shorthand. |
+| rivalCauseSetRef | Alternative causes that could explain observed rate-change. | Routes to `C.28`; required when causal reading is live. |
+| causalIdentificationProfileRef | Identification strategy, graph/calculus route, data-regime route, or bound used for the causal claim. | Routes to `C.28`; absent identification limits supported causal use. |
+| causalUseEvidenceDesignRef | Experiment, quasi-experiment, target-trial emulation, counterfactual sampling, simulation validation, or other causal evidence-design reference. | Routes to `C.28`; absent design limits supported causal use. |
+| offPolicyCausalEvaluationProfileRef | Off-policy/sequential/adaptive policy evaluation route when rate-change or policy-improvement wording depends on logged behavior or replay. | Routes to `C.28`; C.27 does not own off-policy causal evaluation. |
+| supportedCausalUse | The causal conclusion or decision use carried by the `C.28` causal-use relation. | Must be no stronger than design, assumptions, outcome evidence, and uncertainty. |
+| unsupportedCausalUse | Causal conclusion, action, or assurance claim not carried by the `C.28` causal-use relation. | Prevents C.27 temporal adequacy from laundering into causal-use claim. |
 | comparedClaimRefs | Claims, methods, variants, practices, agents, or regimes being compared by dynamic outcome. | `G.9` carries parity; C.27 names the dynamic claim question of the comparison. |
 | dynOrderCompared | Whether the comparison is Dyn1 rate/trend comparison or Dyn2 intervention-sensitive rate-change comparison. | Prevents rate comparison from being laundered into intervention superiority. |
 | baselineWindowRef | Baseline or starting window used by the comparison. | Must not be mixed silently across compared claims. |
@@ -43831,7 +44128,7 @@ relation change.
 | effortEvidenceRefs | Evidence for planned or actual effort. | Planning/work relation. |
 | resistanceEvidenceRefs | Evidence for resistance/inertia proxy. | Domain evidence relation. |
 | rhythmEvidenceRefs | Evidence for rhythm/cadence/coupling. | Rhythm proxy/evidence relation. |
-| causalEvidenceRefs | Evidence for causal attribution. | Causal/evaluation relation. |
+| causalEvidenceRefs | Evidence for causal attribution. | `C.28` causal-use relation. |
 | dyn2CrossScaleTransferBlock | Declared relation when a Dyn2 temporal claim moves across levels, bearers, or aggregation. | Unsupported unless aggregation basis, bearer continuity, and mix-shift risk are addressed. |
 | sourceBearerRef | Bearer where evidence or claim originates. | Existing object reference. |
 | targetBearerRef | Target bearer for boundary-crossing use. | Existing object reference. |
@@ -43870,12 +44167,12 @@ intervention relation that changes supported use, no entry here applies.
 | C.27 effort/work block | `dyn2EffortWorkBlock?` separates planned effort, method description, resource envelope, actual `U.Work` / `Gamma_work` trace, effort window, intervention actor/role assignment, and authority/capability posture; A.15 and work patterns carry role/method/work alignment. |
 | C.27 resistance/inertia block | `dyn2ResistanceInertiaBlock?` names resistance proxy family, resistance proxy basis posture, evidence, and unsupported stronger use; `resistanceProxyBasisPosture = unknown` may carry local diagnostic use but blocks durable acceleration, causal, benchmark, promise-like, or assurance use. |
 | C.27 rhythm claim block | `dyn2RhythmClaimBlock?` names bearer, anchor, window, proxy/evidence, and supported use; coupling, phase, synchronization, or entrainment-like details appear only when the supported use depends on a relation between bearers. |
-| C.27 causal-use relation | `dyn2CausalUseRoute?` is present only when a rate-change/intervention story is used as a causal-use basis; it requires contrast/counterfactual, timing, outcome, assumptions, rival causes, supported causal use, unsupported causal use, and causal/evaluation relation. |
+| C.27 causal-use relation | `dyn2CausalUseRoute?` is present only when a rate-change/intervention claim is used as a causal-use basis; it requires `causalInterventionSpecRef`, contrast/counterfactual, timing, outcome, assumptions, rival causes, supported causal use, unsupported causal use, and `C.28` causal-use relation. |
 | C.27 dynamic benchmark requirement | `dyn2BenchmarkParityBlock?` declares the rate/rate-change/rhythm/recovery/intervention-effect requirement of a comparison; it is a benchmark input declaration, not a benchmark harness. `G.9` carries baseline, freshness, comparator, bridge, parity plan, and parity report discipline. |
 | C.27 metric-as-target block | `dyn2MetricTargetEffectBlock?` splits metric-as-measure, metric-as-target/incentive, metric publication as temporal intervention, and residual probe/frame/export cue; C.16 carries measurement, E.13/assurance carries proxy distortion, and C.26 applies only after ordinary FPF pattern relations leave residual QL cue. |
 | C.27 cross-scale transfer field | `dyn2CrossScaleTransferBlock?` keeps local and aggregate dynamic readings separate; cross-scale use needs source/target bearer, aggregation basis, bearer continuity, mix-shift risk, and explicit `dynamicTransferPosture`. |
 | Object-centric dynamic trace | Workflow/process rate claims need bearer, object/event trace, interaction, and convergence/divergence discipline rather than one generic process-speed label. |
-| Method composition or emergent workflow | If the live claim is about how method parts compose, how an adaptive workflow becomes a capability, or how repeated practice changes shape, C.27 handles only the temporal adequacy of the rate, rhythm, recovery, stabilization, or rate-change claim. `B.1.5` carries order-sensitive method composition and work enactment; `B.2.4` carries meta-functional transition and capability-emergence questions. |
+| Method composition or emergent work cycle | If the live claim is about how method parts compose, how an adaptive work cycle becomes a capability, or how repeated practice changes shape, C.27 handles only the temporal adequacy of the rate, rhythm, recovery, stabilization, or rate-change claim. `B.1.5` carries order-sensitive method composition and work enactment; `B.2.4` carries meta-functional transition and capability-emergence questions. |
 | Lifecycle/evolution or language-state movement | If the live claim is that a system, episteme, method, cue, branch, or language-state relation evolved, reopened, stabilized, operationalized, retired, or moved through a lifecycle, C.27 handles only the temporal adequacy of any speed/rhythm/recovery/stabilization claim. `A.4` / `B.4` carry temporal duality and canonical evolution loops; `A.16` / `B.4.1` carry language-state move and cue-stabilization discipline. |
 | C.27 scale-variable claim block | `dyn2ScaleVariableClaimBlock?` is present only when changing review capacity, tool calls, tokens, sprints, data, model capacity, parallelism, freedom of action, or another declared scale variable is used as the basis for a rate-change, learning, recovery, throughput, or stabilization claim; C.18.1 carries scale variables, scale windows, scale probes, and elasticity posture. |
 | Autonomy-budget or freedom-of-action claim | If freedom of action, action tokens, decision tokens, guard cadence, depletion, pause/resume, or autonomy-gated work is used as the basis for a rate-change or stabilization claim, C.27 states the temporal claim only. `E.16` carries autonomy budgets, guard checks, ledger evidence, depletion behavior, and override speech acts. |
@@ -44049,7 +44346,7 @@ only project-velocity prose.
 | Domain | Example | Why C.27 cares |
 | --- | --- | --- |
 | Software operations | Incident recovery became faster after a playbook. | Promise, viability, and service-boundary risk can hide inside a recovery-speed claim. |
-| Team workflow | Backlog reduction under added reviewers. | Effort, window, resistance, and hidden work must be named. |
+| Team work cycle | Backlog reduction under added reviewers. | Effort, window, resistance, and hidden work must be named. |
 | AI agent | More tool calls speed debugging. | Tool-call count is effort/input evidence, not reasoning-quality evidence. |
 | Benchmark | Method A improves faster than Method B. | Dynamic comparison needs G.9 parity, not only C.27 prose. |
 | Metric target | Velocity target improves velocity. | Metric-as-measure, target pressure, work change, proxy distortion, and residual probe cue stay distinct. |
@@ -44067,7 +44364,7 @@ only project-velocity prose.
 | Snapshot | "Backlog is 120 items today." | Dyn0; no C.27 record unless use changes. |
 | Trend | "Backlog fell by 20 items/week." | Dyn1 with C.16 measurement basis if load-bearing. |
 | Intervention | "Adding review capacity for two sprints will double backlog reduction rate." | `Dyn2TemporalClaimAdequacyCard`; full `Dyn2TemporalClaimProfile` usually overkill unless the authored temporal claim is used beyond local pilot or plan use. |
-| Benchmark / publication | "Method A improves faster than Method B and should be published as superior." | `Dyn2TemporalClaimProfile` or pattern reference is justified: G.9 benchmark parity, C.16 measurement, possible causal/evaluation relation, and C.27 dynamic-claim relation declaration. |
+| Benchmark / publication | "Method A improves faster than Method B and should be published as superior." | `Dyn2TemporalClaimProfile` or pattern reference is justified: G.9 benchmark parity, C.16 measurement, possible `C.28` causal-use relation, and C.27 dynamic-claim relation declaration. |
 | Dynamic anti-leaderboard | "Both methods reached the same final score, so they are equivalent." | Not enough if adaptation window, effort parity, hidden rework, validity window, or recovery profile differs; G.9 carries parity and C.27 names the temporal parity question. |
 | Agentic tool-use | "More tool calls will speed debugging." | C.24 plus `Dyn2TemporalClaimAdequacyCard`; tool-call count is effort/input evidence, not task-success, evidence-quality, repair-success, or cost evidence, so the claim names task outcome, evaluation harness, stop/replan condition, validity window, and unsupported stronger benchmark use. |
 | Scale trap | "Doubling reviewers, data, or model capacity will double improvement rate." | C.18.1 carries scale variable, scale window, probes, and elasticity posture; C.27 is live only if the scale claim is used as a rate-change basis, and linear temporal improvement remains unsupported without evidence. |
@@ -44075,7 +44372,7 @@ only project-velocity prose.
 
 | Rhythm / practice | "Daily drills stabilize training rhythm." | `Dyn2TemporalClaimAdequacyCard` with rhythm bearer, anchor, window, basis/proxy, and supported use; coupling only if the claim depends on synchronization between bearers. |
 | False positive | "This chapter accelerates reader orientation." | Usually ordinary prose; no C.27 record unless used as a claim about method effectiveness. |
-| Causal trap | "Velocity rose after the workshop, so the workshop caused it." | C.27 marks the temporal-claim question only; causal/evidence relation is required before causal use. |
+| Causal trap | "Velocity rose after the workshop, so the workshop caused it." | C.27 marks the temporal-claim question only; `C.28` causal-use relation and evidence relation are required before causal use. |
 | Cross-scale trap | "Team throughput accelerated, so every service improved." | `dyn2CrossScaleTransferBlock?` is unsupported without source/target bearer, aggregation basis, bearer continuity, mix-shift risk, and `dynamicTransferPosture`. |
 | Braking | "Slow rollout protects support capacity." | `Dyn2TemporalClaimAdequacyCard` or `Dyn2TemporalClaimProfile` depending on supported decision; the move may be a correct protection of viability, not a failure to accelerate. |
 
@@ -44090,7 +44387,7 @@ Additional dynamic near-misses:
 | Metric target | "Velocity improved after becoming the quarterly target." | `dyn2MetricTargetEffectBlock?` only if target publication changes temporal behavior/supported-use; C.16 carries measurement, E.13/proxy audit carries utility distortion, and C.26 applies only for residual probe/frame/export cue. |
 | Scale-variable fantasy | "More data, model capacity, reviewers, tokens, or parallelism will improve twice as fast." | C.18.1 carries scale variables, scale windows, scale probes, and elasticity posture; C.27 only names the temporal claim when the scale variable is used as the basis for rate-change, learning, recovery, throughput, or stabilization. |
 | Off-policy transfer | "The old rollout policy improved recovery, so the new rollout policy will too." | `dyn2ControlPolicyRoute?` must name `behaviorPolicyRef`, `proposedPolicyRef`, `offPolicyRisk`, and evaluation/control relation; one observed slope under policy A does not carry policy B. |
-| Object-centric process trace | "The process sped up" while orders, invoices, shipments, and support tickets move through different paths. | `dyn2ObjectCentricTraceBlock?` recovers object types, event trace, interactions, aggregation basis, and unsupported whole-workflow truth; one scalar throughput line is not enough. |
+| Object-centric process trace | "The process sped up" while orders, invoices, shipments, and support tickets move through different paths. | `dyn2ObjectCentricTraceBlock?` recovers object types, event trace, interactions, aggregation basis, and unsupported whole work-cycle truth; one scalar throughput line is not enough. |
 | Harmful acceleration / viability | "Faster rollout improved release velocity while support load and recovery time degraded." | C.27 names acceleration/braking/throttling/recovery timing and unsupported stronger use; C.26.3, C.25, assurance, safety, legal, ethics, or wellbeing patterns carry the envelope or harm claim. |
 
 These slices show what C.27 changes in use. They are action examples, not extra forms to fill.
@@ -44111,7 +44408,7 @@ Minimum useful note:
 - resistance proxy: review queue coordination cost and domain ramp-up;
 - evidence posture: planning assumption plus prior work trace if available;
 - supported use: staffing discussion and local plan choice;
-- unsupported use: causal/evaluation claim with estimand and identification relation, long-term capacity model, benchmark superiority;
+- unsupported use: `C.28`-governed causal-use claim with estimand and identification relation, long-term capacity model, benchmark superiority;
 - reopen trigger: queue mix shift, triage saturation, quality loss, or no
   measured reduction after the first sprint.
 ```
@@ -44161,7 +44458,7 @@ ordinary explanatory prose.
 
 Minimum useful questions:
 - rhythm of what bearer: learner, team, body movement, practice session,
-  release workflow, or other existing FPF object?
+  release cycle, or other existing FPF object?
 - anchored to what beat, cycle, release train, attention window, task cycle, or
   domain-local interval?
 - what effort or rate-change pattern occurs in which intervals?
@@ -44185,7 +44482,7 @@ C.27 reading:
 Dyn2 when this carries a method-change, staffing-decision, or benchmark use.
 
 Minimum useful note:
-- rhythm bearer: team release workflow, not the repository file or dashboard;
+- rhythm bearer: team release cycle, not the repository file or dashboard;
 - rhythm anchor: release cycle and review window;
 - intervention regime: scheduled shift of review earlier in the cycle;
 - instrument proxy: event log, review queue cadence, rework trace, or survey
@@ -44200,7 +44497,7 @@ Minimum useful note:
 The important correction is that rhythm has a bearer and proxy. It is not a
 decorative label for good mood or smoothness.
 
-Agentic tool-use / AI workflow:
+Agentic tool-use / AI work cycle:
 
 ```text
 Claim:
@@ -44295,7 +44592,7 @@ agility are different dynamic readings unless aggregation basis and bearer
 continuity are declared.
 
 Minimum useful note:
-- source bearer: team workflow and its measured throughput;
+- source bearer: team work cycle and its measured throughput;
 - target bearer: organization, portfolio, service family, or ecosystem;
 - aggregation basis: how local rate-change maps upward;
 - bearer continuity: whether the same work, service, value stream, or population
@@ -44329,7 +44626,9 @@ Minimum useful note:
 - target/incentive use: quarterly target, gate, dashboard, budget signal, or
   public comparison;
 - possible behavior change: smaller tickets, hidden work, quality reduction,
-  deferred rework, selection of easier tasks;
+  postponed rework, selection of easier tasks;
+
+
 - process-vs-measurement split: measurement/probe effect, real work change,
   gaming/selection effect, causal effect if claimed;
 - E.13/proxy relation: proxy/utility distortion if velocity diverges from the
@@ -44381,8 +44680,8 @@ misread as a general theory of change.
 
 ### C.27:7 - Conformance Checklist
 
-Use this checklist to inspect a C.27 record or C.27-facing paragraph. It does not ask each
-ordinary C.27 use to fill a separate conformance form.
+Use these requirements to judge whether a C.27 record or C.27-facing paragraph
+is strong enough for the use it is making. Ordinary local use can stay small.
 
 | Requirement | C.27 content |
 | --- | --- |
@@ -44391,7 +44690,7 @@ ordinary C.27 use to fill a separate conformance form.
 | Weakest output | The output is the weakest that changes use: no C.27 record, Dyn0 reading, Dyn1 reading, `Dyn2TemporalClaimAdequacyCard`, `Dyn2TemporalClaimProfile`, or formal-model relation. |
 | Card minimum | A `Dyn2TemporalClaimAdequacyCard` names target, move, intervention, window, resistance/cost, basis, supported use, unsupported stronger use, and reopen/pattern-reference condition. |
 | Boundary-crossing profile | `Dyn2TemporalClaimProfile` appears only when the authored temporal claim is used beyond the local working context into benchmark, publication, assurance, promise-like, gate, reusable method, cross-context, cross-scale, or formal/control use. |
-| Governing-pattern relation | C.27 does not carry measurement, transition law, Work actuals, planning, causal/evaluation claim, benchmark parity, promise/boundary, assurance, or QL residue. |
+| Governing-pattern relation | C.27 does not carry measurement, transition law, Work actuals, planning, `C.28`-governed causal-use claim, benchmark parity, promise/boundary, assurance, or QL residue. |
 | Stronger-use block | If supported use relies on measurement, causal attribution, benchmark parity, control/policy, cross-scale transfer, debt/hysteresis, promise, high-stakes temporal move, or QL residue, the corresponding governing-pattern relation or present profile block is named. |
 | Profile-block closure | Every present block is defined by C.27, pattern-reference-only, or absent from `activeBlocks`; a block name is not a new governed object. |
 | Pattern-relation economy | Add a C.27 relation note to another pattern only when that pattern has a concrete boundary reason to inspect temporal-claim adequacy; otherwise a C.27 card or profile cites the FPF pattern that carries the stronger question instead of creating a thin duplicate temporal record. |
@@ -44415,7 +44714,7 @@ inspection faults, not a required tool.
 | `C27-PROFILE-WITHOUT-BOUNDARY-USE` | A profile is used for a local note. | Downgrade to a local card. |
 | `C27-PATTERN-RELATION-THEFT` | C.27 carries measurement, dynamics-law, work, benchmark, promise, or QL content. | Keep that content with the pattern that carries the stronger question. |
 | `C27-DYNORDER-AS-KIND` | Teams, systems, services, or methods become Dyn2 objects. | Repair to an authored-claim reading. |
-| `C27-CAUSAL-LAUNDERING` | Rate changed after effort, therefore effort caused it. | Add causal/evaluation relation or mark causal use unsupported. |
+| `C27-CAUSAL-LAUNDERING` | Rate changed after effort, therefore effort caused it. | Add `C.28` causal-use relation or mark causal use unsupported. |
 | `C27-METRIC-TARGET-CONFLATION` | Metric improved, therefore the system improved. | Split measure, target pressure, work change, proxy distortion, and residual probe cue. |
 | `C27-PROMISE-LAUNDERING` | Planning temporal claim becomes SLA, service guarantee, or commitment. | Keep promise/boundary/service content with the patterns that carry it. |
 
@@ -44425,7 +44724,7 @@ inspection faults, not a required tool.
 | --- | --- |
 | Profile inflation | Every temporal phrase gets a profile; keep profile use for boundary-crossing claim use. |
 | Pattern-relation theft | C.27 carries measurement, work, promise, benchmark, or QL; return the stronger question to the pattern that carries it. |
-| Card laundering | A local card is cited as causal/evaluation claim, benchmark result, release approval, or service promise; mark that use unsupported. |
+| Card laundering | A local card is cited as `C.28`-governed causal-use claim, benchmark result, release approval, or service promise; mark that use unsupported. |
 | DynOrder reification | A team or system becomes "Dyn2"; keep DynOrder as a reading of authored temporal claims. |
 | Relation-note inflation | Every nearby pattern gets a C.27 note just in case; add a note only when the pattern must inspect temporal-claim adequacy directly. |
 
@@ -44440,7 +44739,7 @@ extended bank and should not become a first-screen checklist.
 | Rate -> intervention laundering | "We measured throughput, therefore we know how to accelerate it." | Ask whether the claim is Dyn0 state, Dyn1 rate, or Dyn2 rate-change under effort/resistance/window; add only the weakest honest C.27 record. |
 | Effort-free acceleration | "Velocity will double" with no effort, input, intervention actor/role, resistance proxy, window, evidence, or supported use. | Add a `Dyn2TemporalClaimAdequacyCard` or downgrade to Dyn1 measurement. |
 | Past slope as control model | A historical trend is treated as a future intervention law. | Separate observed Dyn1 trend from Dyn2 intervention claim and formal-model relation. |
-| C.27 as causal/evaluation claim | Rate changed after effort, therefore effort caused it. | Mark planning/diagnostic posture or include `dyn2CausalUseRoute?` with contrast/counterfactual, timing, outcome, assumptions, rival causes, supported/unsupported causal use, and causal/evaluation pattern relation. |
+| C.27 as `C.28`-governed causal-use claim | Rate changed after effort, therefore effort caused it. | Mark planning/diagnostic posture or include `dyn2CausalUseRoute?` with `causalInterventionSpecRef`, contrast/counterfactual, timing, outcome, assumptions, rival causes, supported/unsupported causal use, and `C.28` causal-use relation. |
 | Rhythm as decoration | Rhythm names vibe/cadence with no bearer, anchor, window, proxy, evidence, or supported use. | Name bearer, anchor, window, instrument/evidence proxy, and supported use; add coupling/phase/entrainment only when the claim depends on a cross-bearer relation. |
 | Metric-accelerated theater | The measured rate improves after becoming a target while hidden work worsens. | Separate real work-rate change, measurement/probe effect, gaming risk, and temporal intervention effect. |
 | Aggregate acceleration laundering | Local speed or aggregate speed is laundered across levels. | Separate local bearer, aggregate bearer, mix shift, aggregation basis, and `dynamicTransferPosture`. |
@@ -44474,7 +44773,7 @@ that trap.
 | Noisy acceleration worship | Small variation is overread as meaningful rate-change. | Widen sampling, add uncertainty, downgrade, or collect stronger evidence. |
 | Tool-call acceleration theater | More calls or more context are treated as faster reasoning. | Name the target rate-change and stop/replan trigger. |
 | Harmful acceleration | Work is accelerated while safety, ethics, legality, operational-support load, or human wellbeing becomes worse. | Use pattern-reference-only `dyn2HighStakesTemporalMoveRoute?` to name the high-stakes temporal move/window/unsupported use and cite the assurance, ethics, legal, safety, quality, or wellbeing pattern that carries the stronger question. |
-| Coasting story without basis | Continued motion after effort stops is treated as free evidence of success. | Name coasting basis: habit, automation, stored work, learned capability, social norm, commitment momentum, physical inertia, queue pressure, or unknown. |
+| Coasting claim without basis | Continued motion after effort stops is treated as free evidence of success. | Name coasting basis: habit, automation, stored work, learned capability, social norm, commitment momentum, physical inertia, queue pressure, or unknown. |
 | Reversibility fantasy | Effort is removed and the system is assumed to return cleanly. | Include `dyn2DebtHysteresisBlock?` only when supported use depends on residue/reversibility; record `unknown` if needed and bound supported use, with brake/recovery relation when load-bearing. |
 
 
@@ -44482,7 +44781,7 @@ that trap.
 
 C.27 should make FPF better at planning and reviewing dynamic
 claims while keeping ordinary state and rate claims cheap. Its main cost is one
-more C-pattern and several pattern-preserving notes in existing FPF patterns. The mitigation is the
+more C-pattern and several neighbour notes in existing FPF patterns. The mitigation is the
 central affordability rule: C.27 must be easier not to use than to misuse.
 
 
@@ -44561,7 +44860,7 @@ following shape:
   assumptions, and identification/evaluation relation rather than C.27 shorthand;
 - performative and Goodhart cases separate metric-as-measure,
   metric-as-target, and metric-as-intervention;
-- workflow/process claims name bearer, object/event trace, interaction, and
+- work-cycle/process claims name bearer, object/event trace, interaction, and
   convergence/divergence rather than one generic process-speed label;
 - dynamic benchmarks use C.27 to type the temporal-claim question while G.9 carries
   parity;
@@ -44575,7 +44874,7 @@ following shape:
 One-line SoTA formulation for C.27: it makes
 intervention-sensitive temporal claims explicit - policy, effort, window,
 resistance, feedback, evidence, bearer, and supported use - while refusing to
-treat every speed/rhythm phrase as control theory, causal/evaluation claim, benchmark
+treat every speed/rhythm phrase as control theory, `C.28`-governed causal-use claim, benchmark
 superiority, or quantum-like modeling.
 
 ### C.27:11 - SoTA-Echoing
@@ -44592,9 +44891,9 @@ Source binding used by this section:
 | `D2-SRC-1` - the source article on state, first-derivative dynamics, second-derivative dynamics, effort intervals, and rhythm practice. | Sets the working question: are we only reading speed/rhythm, or claiming that effort over time changes speed/rhythm? | Adopt the question shift and dance/practice usability examples; adapt physical vocabulary into authored temporal-claim adequacy; reject new Kernel `force`, `mass`, `acceleration`, or `rhythm` kinds. |
 | `D2-SRC-2` - learning-based MPC and engineering MPC practice. | Disciplines control-style temporal claims with horizon, constraints, uncertainty, feedback update, and stability only when control language is live. | Adapt into optional `dyn2ControlPolicyRoute?`; reject making every Dyn2 card a control model. |
 | `D2-SRC-3` - safe RL, off-policy evaluation, conservative/offline RL, and dynamic treatment-regime practice. | Disciplines policy/regime transfer, policy-overlap, unsafe exploration, behavior policy, evaluation policy, and repeated intervention timing. | Adapt into `dyn2ControlPolicyRoute?` when a policy/regime claim is live; reject policy-transfer evidence basis from one observed slope alone. |
-| `D2-SRC-4` - causal inference for intervention effects. | Separates planning/diagnostic Dyn2 claims from causal effect claims. | Adopt causal question, comparator/counterfactual, estimand, timing, outcome, assumptions, rival causes, and evidence-design discipline for `dyn2CausalUseRoute?`; reject causal/evaluation claim completion inside C.27 itself. |
+| `D2-SRC-4` - causal inference for intervention effects. | Separates planning/diagnostic Dyn2 claims from causal effect claims. | Adopt causal question, comparator/counterfactual, estimand, timing, outcome, assumptions, rival causes, and evidence-design discipline for `dyn2CausalUseRoute?`; reject `C.28` causal-use claim completion inside C.27 itself. |
 | `D2-SRC-5` - performative prediction and Goodhart variants. | Shows that metric publication, target use, incentives, or gates may change behavior rather than merely report it. | Adapt into `dyn2MetricTargetEffectBlock?`; C.16 carries measurement, E.13/assurance carries proxy distortion, and C.26 carries residual probe/frame/export cues; reject a generic Goodhart catch-all. |
-| `D2-SRC-6` - object-centric process mining and object-centric event logs. | Shows why scalar throughput often hides multiple object bearers, event traces, interactions, and aggregation risks. | Adapt into `dyn2ObjectCentricTraceBlock?` and object-centric trace requirements; reject one scalar rate as whole workflow truth when multi-object interaction is live. |
+| `D2-SRC-6` - object-centric process mining and object-centric event logs. | Shows why scalar throughput often hides multiple object bearers, event traces, interactions, and aggregation risks. | Adapt into `dyn2ObjectCentricTraceBlock?` and object-centric trace requirements; reject one scalar rate as whole work-cycle truth when multi-object interaction is live. |
 | `D2-SRC-7` - active inference / active sensing practice. | Reminds C.27 that measurement can be action, while ordinary FPF pattern relations remain primary. | Adapt as a local relation test for measurement, state-space, planning, evidence, control, causal, or process-log basis; reject automatic QL relevance from planned measurement or typed states. |
 | `D2-SRC-8` - rhythm, beat synchronization, groove, entrainment, and compliant-system timing work. | Disciplines rhythm claims with bearer, anchor, window, proxy/evidence, and supported use; coupling/phase/entrainment appear only for stronger cross-bearer claims. | Adapt into rhythm fields on `Dyn2TemporalClaimAdequacyCard`; reject a standalone `U.Rhythm` kind or decorative rhythm vocabulary. |
 
@@ -44604,7 +44903,7 @@ SoTA lesson -> FPF obligation map:
 | --- | --- | --- |
 | MPC/control practice separates horizon, constraints, uncertainty, and feedback update. | Name control horizon/update only when the temporal claim is control-style. | `A.3.3 U.Dynamics`, C.16, C.19/C.24, evidence/assurance patterns. |
 | OPE/safe RL separates behavior policy, evaluation policy, policy overlap, and unsafe-exploration risk. | Do not transfer evidence from policy A to policy B without behavior/evaluation policy and `offPolicyRisk`. | `dyn2ControlPolicyRoute?` plus evaluation/control relations. |
-| Causal inference separates intervention timing, comparator/counterfactual, estimand, follow-up, assumptions, and rival causes. | Keep planning/diagnostic Dyn2 distinct from causal/evaluation claim. | Causal/evaluation/evidence patterns. |
+| Causal inference separates intervention timing, comparator/counterfactual, estimand, follow-up, assumptions, and rival causes. | Keep planning/diagnostic Dyn2 distinct from `C.28`-governed causal-use claim. | `C.28` and evidence patterns. |
 | Performative prediction and Goodhart variants show that published targets can change behavior. | Split metric-as-measure, target/incentive use, temporal intervention, and proxy distortion. | C.16, E.13/assurance, C.26 only for residual probe/frame cue. |
 | Object-centric process mining shows scalar throughput can hide multi-object interaction. | Recover object types, event trace, interaction note, and aggregation basis when process speed is load-bearing. | Local process evidence/OCPM discipline plus C.27 object-centric trace block. |
 | Rhythm research treats rhythm as bearer/anchor/window/proxy/coupling-if-live. | Keep cadence/rhythm claims tied to bearer, anchor, evidence, supported use, and optional coupling only when cross-bearer relation matters. | C.27 rhythm card plus C.16/evidence when measured. |
@@ -44642,18 +44941,18 @@ and pattern reference to C.19, C.24, `U.Dynamics`, or the evaluation pattern. Th
 adaptive rollouts, agentic tool-use, clinical-like treatment regimes, and
 repeated operational interventions.
 
-Causal inference. C.27 is not a causal/evaluation claim pattern. Effort plus observed rate-change may
+Causal inference. C.27 is not a `C.28` causal-use claim pattern. Effort plus observed rate-change may
 carry a planning or diagnostic reading, but a causal attribution needs a separate
-causal/evaluation relation. When `dyn2CausalUseRoute?` is present, it should name the causal question,
+`C.28` causal-use relation. When `dyn2CausalUseRoute?` is present, it should name the causal question,
 intervention reference, comparator or counterfactual, estimand, time-zero or
 assignment window, follow-up window, outcome measure, assumptions, rival causes,
 identification strategy or evidence design when available, supported causal use,
 and unsupported causal use.
 
 Core rule: C.27 can say a claim is Dyn2 and intervention-sensitive. C.27 cannot
-turn that basis into a causal/evaluation claim with estimand and identification/evaluation relation. Dyn2 can describe an intervention-sensitive
+turn that basis into a `C.28`-governed causal-use claim with estimand, identification, realizability, evidence design, and supported-use judgment. Dyn2 can describe an intervention-sensitive
 temporal-claim question; it does not estimate causal effect unless `dyn2CausalUseRoute?`
-is active and causal/evaluation discipline carries the causal question.
+is active and `C.28` causal-use discipline carries the causal question.
 
 Performative prediction, Goodhart, and metric-induced behavior. When a metric
 becomes a target, dashboard, incentive, gate, or public comparison, it may
@@ -44715,7 +45014,7 @@ the existing FPF pattern that carries them:
 | task-family learning/adaptation speed or time-to-usable specialization | `C.22.1` task-family adaptation signature |
 | viability-envelope temporal regulation | `C.26.3` viability-envelope boundary regulation |
 | reproducible dynamic benchmark or faster-improvement comparison | `G.9` |
-| causal/evaluation claim or effect estimate | causal/evaluation/evidence patterns |
+| causal-use claim or effect estimate | `C.28` and evidence patterns |
 | promise, SLA/SLO, gate, public commitment, release claim | promise, boundary, service, and assurance patterns |
 | residual probe/frame/export/coarsening/order-effect cue | `C.26` |
 
@@ -44726,9 +45025,9 @@ The following lines connect common failures to C.27 action, not to a literature 
 | Past slope is treated as a future control law. | Control/policy claims need horizon, update rule, constraints, and evidence/model relation. | If local, make a `Dyn2TemporalClaimAdequacyCard`; if reusable/control-bearing, include `dyn2ControlPolicyRoute?` and cite `U.Dynamics`, C.16, and assurance patterns as the carriers of the stronger question. |
 | Data from one policy/regime is used to justify another. | OPE/RL practice asks behavior policy, evaluation policy, policy-overlap, uncertainty, and unsafe-exploration risk. | Keep ordinary `Dyn2TemporalClaimAdequacyCard` cheap; include `dyn2ControlPolicyRoute?` only when policy transfer is load-bearing. |
 | One effort impulse is treated as the whole dynamic regime. | Dynamic-treatment/regime practice treats some interventions as sequences of decision rules. | Record policy/regime only in active block; do not make every Dyn2 a policy model. |
-| Rate changed after effort, so effort caused it. | Causal inference needs contrast/counterfactual, estimand, timing, outcome, assumptions, rival causes, and design. | Mark planning/diagnostic posture or include `dyn2CausalUseRoute?`; causal/evaluation discipline carries the causal/evaluation claim. |
+| Rate changed after effort, so effort caused it. | Causal inference needs contrast/counterfactual, estimand, timing, outcome, assumptions, rival causes, and design. | Mark planning/diagnostic posture or include `dyn2CausalUseRoute?`; `C.28` causal-use discipline carries the causal-use claim. |
 | Metric improves after publication, so process improved. | Performative/Goodhart cases split measurement, target/incentive/proxy distortion, temporal intervention, and residual probe/frame/export effects. | Include `dyn2MetricTargetEffectBlock?` only for temporal intervention/supported-use change; C.16 carries measurement, E.13/assurance carries proxy distortion, and C.26 carries residual probe/frame/export cue. |
-| Scalar throughput is read as whole workflow truth. | OCPM/process mining separates object bearers, event traces, interactions, and aggregation. | Include `dyn2ObjectCentricTraceBlock?` / `dyn2CrossScaleTransferBlock?` only when scalar rate is insufficient. |
+| Scalar throughput is read as whole work-cycle truth. | OCPM/process mining separates object bearers, event traces, interactions, and aggregation. | Include `dyn2ObjectCentricTraceBlock?` / `dyn2CrossScaleTransferBlock?` only when scalar rate is insufficient. |
 | Measurement-as-action triggers QL too early. | Active sensing may matter, but ordinary FPF pattern relations come first. | Keep C.27 ordinary; treat QL as C.26 content only after ordinary-pattern exits. |
 | Rhythm is decorative cadence/vibe. | Rhythm work needs bearer, anchor, window, basis/proxy, and supported use; coupling is stronger-use only. | Use `Dyn2TemporalClaimAdequacyCard`; include coupling/phase/entrainment only when the claim depends on cross-bearer relation. |
 
@@ -44753,7 +45052,7 @@ governs that concern and let C.27 state only the temporal-claim adequacy questio
 | `A.3.3 U.Dynamics` | Deciding that an authored temporal claim has become strong enough to need a reusable transition-law, simulation, prediction, formal model, or calibrated control relation. | State space, transition law, observation/model constraints, validity discipline, simulation, prediction, and calibrated control model semantics. |
 | `A.19` and `C.16` together | Showing that derivative-like wording needs base characteristic, scale/unit, time base or sampling window, construction method, evidence, and supported use. | Characteristic-space legality and measurement construction. C.27 does not create a parallel coordinate system. |
 | `B.1.4` and `B.1.6` | Preventing temporal slices, phase names, work logs, resource burn, or effort traces from being read as acceleration or transition laws. | Temporal-slice composition, phase composition, work/resource aggregation, and actual work evidence. |
-| `B.1.5` and `B.2.4` | Naming the temporal-claim adequacy question only when method composition, work enactment, adaptive workflow, or capability-emergence prose also claims faster/slower improvement, recovery, stabilization, braking, or rhythm change. | Order-sensitive method composition, work enactment, adaptive workflow, and meta-functional transition. C.27 does not become a method-composition or emergence pattern. |
+| `B.1.5` and `B.2.4` | Naming the temporal-claim adequacy question only when method composition, work enactment, adaptive work cycle, or capability-emergence prose also claims faster/slower improvement, recovery, stabilization, braking, or rhythm change. | Order-sensitive method composition, work enactment, adaptive work cycle, and meta-functional transition. C.27 does not become a method-composition or emergence pattern. |
 | `A.4` / `B.4` / `A.16` / `B.4.1` | Naming a temporal-claim adequacy question inside lifecycle, evolution-loop, cue-stabilization, reopen, operationalize, retire, or language-state movement prose. | Temporal duality, canonical evolution loops, language-state move legality, and observe-notice-stabilize relation discipline. C.27 does not become a lifecycle or language-state movement pattern. |
 | `C.24` | Tool-use plans whose tool-call sequence is claimed to change debugging speed, repair rate, learning rate, candidate discovery, evidence confirmation, bug localization, rollout stabilization, or uncertainty reduction. | Call planning, tool-use sequence, and work trace. More calls or more context are not dynamic improvement by themselves. |
 | `C.17` and `C.18` | Naming the temporal-claim adequacy question only when a creativity, novelty, open-ended search, archive-growth, illumination, or candidate-generation claim also claims faster/slower improvement, coverage, discovery, or convergence. | Creativity characteristics, novelty/value measurement, NQD generation/update/illumination/select-front calculus, archive semantics, and provenance pins. |
@@ -44770,41 +45069,43 @@ governs that concern and let C.27 state only the temporal-claim adequacy questio
 | `A.2.3` / `A.2.8` / `A.2.9` / `A.6.C` / `F.12` and assurance patterns | Promise-like or boundary-facing temporal claims: release speed, recovery guarantee, SLA/SLO-like cadence, public commitment, gate, service acceptance, or assurance use. | Promise content, commitments, instituting speech acts, contract unpacking, service acceptance binding, assurance posture, and release/gate evidence. |
 | `E.18 E.TGA` / `A.20` / `A.21` | Naming the C.27 temporal-claim adequacy question when a flow, gate, crossing, `PathSlice`, `LaunchGate`, or published decision uses that temporal claim. | The TGA carcass: `U.Transfer`, `OperationalGate(profile)`, GateCheck publication shape, `ConstraintValidity`, `GateFit`, `DecisionLog`, `PathSlice`/sentinel refresh, `Gamma_time` pins, `SquareLaw`, and crossing visibility. |
 | `C.21` / `G.10` / `G.11` / `G.12` | Naming the temporal claim when a discipline-health value, shipped pack, dashboard time-series, telemetry pin, RSCR trigger, refresh plan, refresh report, or dashboard slice is read as evidence for improvement, decay, recovery, stabilization, or rate-change. | Discipline-health slot meaning, SoTA pack shipping, DHC series/row/slice construction, telemetry-pin publication, refresh/decay orchestration, and RSCR trigger discipline. |
-| Causal/evaluation patterns | A rate-change, intervention, effort, workshop, policy, or practice change is used as a causal-use basis. | Causal question, contrast/counterfactual, estimand, timing, outcome, assumptions, rival causes, identification strategy, and evidence design. |
+| `C.28` | A rate-change, intervention, effort, workshop, policy, or practice change is used as a causal-use basis. | Causal-use question, causality-ladder rung, causal intervention spec, contrast/counterfactual, estimand, timing, outcome, assumptions, rival causes, identification strategy, realizability posture, evidence design, supported causal use, and unsupported causal use. |
 
 Use pattern references before expanding a C.27 record. When measurement,
-transition law, work evidence, planning, benchmark parity, causal/evaluation
+transition law, work evidence, planning, benchmark parity, `C.28` causal-use
 claim, promise content, assurance posture, quality, viability, or residual QL
 discipline carries the stronger question, the C.27 record cites that pattern and
 keeps only the temporal-claim adequacy question.
 
-For C.27 relations to stay pattern-preserving, check:
+When a temporal claim touches neighbouring work, keep these boundaries:
 
 
-1. Does any field imply a new Kernel kind?
-2. Does C.27 steal state-space, measurement, transition-law, work, planning,
-   benchmark, causal, promise, service, quality-bundle, publication, or QL
-   pattern relation from the FPF pattern that governs that question?
-3. Are described entity, temporal bearer, profile content, and profile carrier
-   kept distinct?
-4. Are words such as process, workflow, practice, service, method, system, and
-   rhythm resolved through existing FPF patterns where load-bearing?
-5. Are derivative-like readings C.16-compliant?
-6. Are full `Dyn2TemporalClaimProfile`s rare and justified rather than default?
-7. Does at least one golden case correctly exit or downgrade from Dyn2?
-8. Does the text make braking, pause, stabilization, redirection, and coasting
-   first-class rather than treating acceleration as the default good?
-9. Does the text avoid QL relevance unless ordinary pattern relations leave residual
-   probe/frame/export/coarsening cue?
-10. Does a causal, benchmark, promise-like, or assurance claim have a stronger
-    pattern relation than an ordinary `Dyn2TemporalClaimAdequacyCard`?
+1. Fields in a C.27 card do not imply new Kernel kinds.
+2. State space, measurement, transition law, work, planning, benchmark,
+   causality, promise, service, quality-bundle, publication, and QL questions
+   stay with the FPF pattern that governs each question.
+3. The described entity, temporal bearer, profile content, and profile carrier
+   remain distinct.
+4. If the text says process, work cycle, practice, service, method, system, or
+   rhythm, the real bearer is named through an existing FPF object rather than
+   treated as one generic moving thing.
+5. Derivative-like readings remain C.16-compliant.
+6. Full `Dyn2TemporalClaimProfile`s remain rare and justified rather than default.
+7. At least one golden case exits or downgrades from Dyn2 correctly.
+8. Braking, pause, stabilization, redirection, and coasting are first-class
+   temporal moves rather than failures to accelerate.
+9. QL relevance stays inactive unless ordinary pattern relations leave residual
+   probe/frame/export/coarsening cue.
+10. Causal, benchmark, promise-like, and assurance claims cite the stronger
+    pattern relation rather than relying on an ordinary `Dyn2TemporalClaimAdequacyCard`.
 
 At use time, the concrete relation is enough: name the temporal-claim adequacy
 question, name the pattern that carries the stronger question, state the
 unsupported stronger use, and choose the weaker C.27 output or the cited stronger
 pattern relation.
 
-This informative matrix states C.27 non-contradiction boundaries. Ordinary C.27 use does not fill it as a form.
+This informative matrix states the neighbouring-question boundaries. Ordinary
+C.27 use does not fill it as a separate form.
 
 
 | Existing FPF discipline / dynamic collision theme | C.27 relation | Collision risk | Boundary |
@@ -44856,7 +45157,7 @@ One-minute working script:
 > what effort, in what window, against what resistance or cost, on what basis,
 > for what supported use, and what stronger use is unsupported. Only boundary-crossing
 > claims need a `Dyn2TemporalClaimProfile`. Formal laws, measurements, work,
-> causal/evaluation claim, benchmarks, promises, assurance, viability envelopes,
+> `C.28` causal-use claim, benchmarks, promises, assurance, viability envelopes,
 > scale-variable claims, adaptation signatures, and QL residues stay with the
 > existing FPF patterns that govern those concerns.
 
@@ -44891,28 +45192,899 @@ inertia, braking, coasting, and redirection claims. It does not make FPF carry
 mathematical theater, physics ontology, false QL relevance, or a hidden
 compliance backpack.
 ### C.27:End
-# **Part D – Multi-scale Ethics & Conflict‑Optimisation**
 
-| §       | ID & Title                           |  Concise reminder — “what belongs here”                                         |
-| ------- | ------------------------------------ |  ------------------------------------------------------------------------------ |
-| **D.1** | **Axiological Neutrality Principle** |  No built‑in value hierarchy; ethics expressed as explicit preference lattices. |
-| **D.2** | **Multi‑Scale Ethics Framework**     |  Four nested arenas: *Self → Team → Ecosystem → Planet*; scoping rules.         |
-| D.2.1   | Local‑Agent Ethics                   |  Duties & permissions for a single `U.System` or `U.Agent`.                     |
-| D.2.2   | Group‑Ethics Standards               |  Collective norms, veto mechanisms, subsidiarity rule.                          |
-| D.2.3   | Ecosystem Stewardship                |  Inter‑FPF externalities; tragedy‑of‑commons mitigations.               |
-| D.2.4   | Planetary‑Scale Precaution           |  Catastrophic‑risk anchors; long‑termism discount curves.                       |
-| **D.3** | **Holonic Conflict Topology**        |  Typology of clashes: resource, goal, epistemic, temporal.                      |
-| D.3.1   | Conflict Detection Logic (LOG‑use)   |  Formal predicates (`conflictsWith`, `mitigatedBy`) and satisfiability checks.  |
-| D.3.2   | Conflict Routing Protocol            |  From local negotiation → external mediation → DRR appeal.                      |
-| **D.4** | **Trust‑Aware Mediation Calculus**   |  Resolution algorithm blends value‑weights with B.3 trust scores.               |
-| D.4.1   | Fair‑Share Negotiation Operator      |  Nash‑like but bias‑corrected; imports `Resrc‑CAL` cost functions.              |
-| D.4.2   | Assurance‑Driven Override            |  When safety evidence overrides utility maximisation.                           |
+
+## C.28 - CausalUse-CAL: Causal-Use Questions, Causality-Ladder Rungs, Identification and Realizability
+
+> **Type:** Calculus (C)
+> **Status:** Stable
+> **Normativity:** Normative unless explicitly marked informative
+
+**Plain-name.** Causal-use calculus.
+
+**Intent.** Govern live causal questions and decision-bearing causal use: improvement, intervention effect, causal fairness, counterfactual comparison, causal policy optimality, realized counterfactual-rung evidence, identified counterfactual estimate, or simulation-only counterfactual output.
+
+**Governed object.** A causal-use question or claim together with the support basis and follow-on records needed to use it lawfully: causality-ladder rung, estimand or contrast, evidence support basis, identification posture, counterfactual sampling realizability posture, supported use, unsupported use, and next move.
+
+**Not a physical ontology.** `C.28` governs how FPF authors, reviewers, and operators use causal models, evidence, and counterfactual reasoning in records, policy claims, fairness claims, method comparisons, and work plans. It does not define physical causality in general and does not replace local domain science.
+
+
+### C.28:0 - Use This When
+
+Use `C.28` when a claim is being used causally:
+
+- "method A improves result";
+- "users who received intervention X had better outcomes";
+- "this practice is fair";
+- "the agent chose optimally";
+- "the model simulates what would have happened";
+- "the system can collect counterfactual data";
+- "this benchmark shows a causal method is better";
+- "this policy should be deployed because it would have changed the outcome".
+
+Use `C.28` especially when the claim must distinguish:
+
+- observed association;
+- intervention or action effect;
+- counterfactual comparison;
+- direct counterfactual-rung data collection;
+- identified counterfactual estimate;
+- simulation-only counterfactual output;
+- causal policy class;
+- causal fairness use;
+- causality-ladder parity in method comparison.
+
+**Not this pattern when.** If no causal use is claimed, keep the work in the neighboring pattern: `C.16` for measurement, `C.27` for temporal trend or rate-change adequacy, `B.3` for assurance posture, `A.10` for evidence graph reference, `G.9` for ordinary parity, `C.11` for local choice, `C.19` for pool policy, `C.24` for call planning, or `C.26` for a surviving quantum-like modeling cue after ordinary causal explanations have been tried.
+
+**Activation boundary.** `C.28` activates at `CausalUseActivation`: causal wording changes what the claim makes admissible for publication, choice, deployment, assurance, audit, benchmark, or support treatment. The trigger is admissible downstream use, not the presence of a causal-looking word. If the wording is only exploratory prose and no stronger use is made, rewrite to association, trend, measurement, or simulation-only wording and stop.
+
+Exploratory causal-looking prose is not a `CausalUseActivation` by itself. A note may say that a relation is plausible, worth probing, or suggested by traces and still remain in `C.16`, `C.27`, `A.10`, `C.11`, `C.19`, `C.24`, `G.5`, or `G.9` until the text makes a stronger causal use admissible. The moment the text makes publication, choice, deployment, assurance, audit, benchmark, or support treatment depend on causal support, `C.28` owns the causal-use boundary.
+
+#### C.28:0.1 - What Goes Wrong If Missed
+
+A weak causal phrase gets promoted into a strong causal use.
+
+Correlation becomes intervention effect. Interventional proxy becomes counterfactual fairness. A simulation becomes realized counterfactual-rung evidence. A benchmark compares methods across different causality-ladder rungs and still publishes one scalar superiority claim. An agentic policy is called optimal without saying whether it is a natural behavior policy, an interventional policy, or a counterfactual policy.
+
+The practical error is laundering: the reader sees causal language but cannot recover what rung, estimand, evidence basis, and supported use are actually admissible.
+
+#### C.28:0.2 - What This Buys
+
+`C.28` gives FPF one cheap first stop for causal use.
+
+The first useful result is not a heavy record. It is one small causal-use triage that says whether causal use is present, which causality-ladder rung is being used, what comparator or counterfactual is in play, what evidence posture supports it, and what the next move is.
+
+Durable cards and profiles appear only when the claim needs them. The pattern buys stronger causal discipline without turning every causal word into a paperwork exercise.
+
+#### C.28:0.3 - First-Minute Questions
+
+`C.28` in 60 seconds is the operational entry into `CausalUseTriageRecord`:
+
+1. Detect whether the claim reaches `CausalUseActivation`: it changes what publication, choice, deployment, assurance, audit, benchmark, or support treatment is admissible.
+2. Stop with `nextMove.cheapStop` if the claim only reports association, trend, description, measurement, or simulation-only output.
+3. If causal use is live, fill `targetCausalityLadderRung`, `comparatorOrCounterfactualRef`, and `evidencePosture`.
+4. Fill `supportedUse: CausalUseSupportStatement` and `unsupportedUse: CausalUseUnsupportedStatement` as one action pair.
+5. Fill `nextMove: CausalUseNextMove`: choose `cheapStop` or escalate only when the claim is decision-bearing, publication-bearing, assurance-bearing, fairness-bearing, benchmark-bearing, or reusable.
+
+#### C.28:0.4 - First Output
+
+The first output is a `CausalUseTriageRecord`:
+
+```text
+CausalUseTriageRecord:
+  causalUse: yes | no | unclear
+  targetCausalityLadderRung?: CausalityLadderRung
+  comparatorOrCounterfactualRef?
+  evidencePosture: CausalEvidencePostureTriageValue
+  supportedUse?: CausalUseSupportStatement
+  unsupportedUse?: CausalUseUnsupportedStatement
+  nextMove: CausalUseNextMove
+```
+
+```text
+CausalUseNextMove:
+  cheapStop:
+    stopNoCausalUse |
+    publishAssociationOnly |
+    rewriteAsTrendOrAssociation |
+    keepSimulationOnlyModelUse |
+    downgradeCausalWording |
+    abstainFromCausalUse |
+    rerouteToNeighborPattern
+  escalateOnlyIfLoadBearing:
+    openLocalCausalUseQuestionCard |
+    openDurableCausalUseQuestionCard |
+    buildCausalIdentificationProfile |
+    buildCounterfactualSamplingRealizabilityProfile |
+    planCausalUseEvidenceDesign |
+    openCausalFairnessUseAuditCard |
+    openCausalMethodRungParityRecord
+```
+
+```text
+CausalEvidencePostureTriageValue =
+  observationalAssociationSupportBasis |
+  interventionalActionSupportBasis |
+  realizedCounterfactualSampleSupportBasis |
+  identifiedCounterfactualEstimateSupportBasis |
+  simulationOnlyCounterfactualOutputBasis |
+  missing
+```
+
+`cheapStop` values are terminal or downgrade actions. They close the local causal-use question for now by saying what weaker use remains admissible, which neighbor owns the remaining non-causal question, or that causal use is declined. `escalateOnlyIfLoadBearing` values are record-opening actions. They are admissible only when the supported/unsupported-use boundary cannot safely carry the reader's next action by itself.
+
+
+If this first output cannot be written honestly, the causal-use claim is not ready.
+
+`CausalUseSupportStatement` is one concrete causal-use action the current support makes admissible, such as publish association-only wording, use a bounded interventional estimate for a named decision, deploy only under a named policy constraint, run a fairness audit under a named causal estimand, or compare methods only inside one declared causality-ladder rung. It is not a confidence label, graph name, method name, or generic "evidence exists" phrase.
+
+`CausalUseUnsupportedStatement` is the matching concrete causal-use action the current support does not make admissible, such as intervention-effect wording, realized counterfactual sample wording, causal fairness certification, causal policy optimality, cross-rung benchmark superiority, or release/deployment use. The supported and unsupported statements travel as a pair so the reader can act without inferring the boundary from prose tone.
+
+The triage record may be the final causal-use carrier. Triage lines are enough when they block the overclaim and tell the reader what weaker use remains admissible. Do not open a local card merely because the word "cause", "effect", or "counterfactual" appears.
+
+The triage `evidencePosture` field is the first-pass alias for `CausalEvidenceSupportBasis | missing`. If a claim escalates beyond triage, the value must dock to `CausalEvidenceSupportBasis`; `missing` becomes `unsupportedUse`, `CausalUseSupportVerdict = unsupported`, or `abstain`.
+
+### C.28:1 - Problem Frame
+
+FPF already has strong neighboring patterns for measurement, evidence, assurance, temporal claims, decisions, exploration, call planning, fairness, method dispatch, parity, and quantum-like modeling. None of those neighbors should become the general authority for causal use.
+
+`C.28` exists because causal use cuts across those neighbors. The same sentence can be:
+
+- a measurement description handled by `C.16`;
+- a temporal trend handled by `C.27`;
+- an assurance claim handled by `B.3`;
+- an evidence graph reference handled by `A.10`;
+- a decision record handled by `C.11`;
+- a pool-policy record handled by `C.19`;
+- a call-planning record handled by `C.24`;
+- a fairness audit handled by `D.5`;
+- a parity report handled by `G.9`;
+- a quantum-like residual handled by `C.26`;
+- or a causal-use claim governed here.
+
+The first pattern task is therefore not to classify wording for its own sake. It is to recover the live causal question, the target causality-ladder rung, the support basis currently available, and the cheapest truthful next move. Sometimes that move is to downgrade the claim to association, temporal change, metric-only fairness, or simulation-only use. Sometimes it is to open identification, realizability, evidence-design, fairness, policy-evaluation, or benchmark-parity work. `C.28` exists to keep those moves distinct and to stop teams from acting as if a stronger causal basis had already been earned.
+
+
+### C.28:2 - Problem
+
+Causal language is easy to overclaim because ordinary prose hides the difference between association, action, counterfactual comparison, realized counterfactual sample, identified estimate, and simulation.
+
+Three collapses are especially dangerous:
+
+1. **Rung collapse.** Observational association, interventional action/effect, and counterfactual comparison are treated as one causal strength.
+2. **Support collapse.** Observed data, experimental data, direct counterfactual-rung samples, identified estimates, and simulations are treated as one evidence basis.
+3. **Use collapse.** A result that supports one use, such as association reporting, is reused for another use, such as causal fairness, policy optimality, or method superiority.
+
+`C.28` prevents those collapses by making rung, support, and use explicit before stronger claims are admitted.
+
+### C.28:3 - Forces
+
+| Force | Tension |
+| --- | --- |
+| Causal safety vs cognitive affordability | FPF must block causal laundering without forcing every causal word into a full causal dossier. |
+| Rung clarity vs ordinary language | Ordinary language says "improves", "causes", "fair", or "would have"; FPF must recover whether that means association, intervention, or counterfactual comparison. |
+| Identification vs realizability | A counterfactual estimand may be identifiable from other data but not directly sampleable, or directly sampleable under action constraints but not generally available. |
+| Graph/formalism precision vs reader usability | SCM, DAG, ADMG, SWIG, SCM twin network, AMWN, and counterfactual graphical model names matter, but they must not bury the first practical move. |
+| Domain plurality vs one FPF pattern | SCM/PCH, potential outcomes, target-trial emulation, causal ML, transportability, causal representation learning, causal RL, and causal fairness must all remain recognizable without making `C.28` a one-school vocabulary. |
+| Neighbor fit vs authority creep | Neighbor patterns need causal-use hooks, but they must not redefine causal-use question, rung, estimand, identification, or realizability. |
+
+### C.28:4 - Solution
+
+Use a three-level causal-use escalation:
+
+1. Start with `CausalUseTriageRecord`.
+2. Escalate to `LocalCausalUseQuestionCard` or `DurableCausalUseQuestionCard` only when the claimed use needs a reusable causal-use record.
+3. Add profiles or specialized records only when the claim triggers that exact need: identification, realizability, evidence design, fairness, policy evaluation, transportability, estimation validity, causal-variable representation, or parity.
+
+
+The default move is cheap. The heavy move is triggered.
+
+| Record or profile kind | Ordinary size | Trigger |
+| --- | --- | --- |
+| `CausalUseTriageRecord` | one short record; usually `5-8` lines covering activation, rung, comparator/counterfactual, evidence posture, supported/unsupported use pair, and next move | any live causal wording or suspected causal laundering |
+| `LocalCausalUseQuestionCard` | one small card; usually one causal-use question, one rung, optional comparator/estimand, one support basis, one supported/unsupported use pair, and one next move | the team needs a reusable local record but not a publication/release/fairness/benchmark/assurance object |
+| `DurableCausalUseQuestionCard` | one durable card with causal-use kind, estimand, timing/outcome when needed, assumptions, rival causes, support basis, supported/unsupported use pair, next move, and reopen/exit condition | the claim is decision-bearing, publication-bearing, fairness-bearing, benchmark-bearing, assurance-bearing, or reusable |
+| heavy profile or specialized record | only the fields needed for the named triggered question or work item; absent fields remain absent rather than becoming implied dossier requirements | identification, realizability, target-trial emulation, parameter estimation, transportability, off-policy evaluation, causal representation, evidence design, fairness audit, or causal parity is materially needed |
+
+
+#### C.28:4.0 - Semantic Authority and Consumer Carry-Through Boundary
+
+`C.28` is the semantic authority for causal-use objects and causal-use support roles. Neighbor patterns keep their local authority and consume only the causal-use pieces they need: measurement, evidence path, assurance, fairness, decision, exploration, call-planning, dispatch, parity, and refresh records do not become causal-use owners by carrying `C.28` fields.
+
+| Object or decision | `C.28` owns | Neighbor may carry | Neighbor must not do |
+| --- | --- | --- | --- |
+| Causal-use kind and rung | `CausalUseClaimKind`, `CausalityLadderRung`, causal-use question, comparator/counterfactual, estimand, supported use, unsupported use | `causalUseSpec?`, `causalActionUseSpec?`, method dispatch spec, parity record, fairness audit card | Infer causal-use kind from local vocabulary alone or publish a stronger rung without C.28 support |
+| Causal evidence support basis | `CausalEvidenceSupportBasis` and its five values | Evidence path refs in `A.10`, evidence-role specializations in `A.2.4`, consumer fields in `B.3`, `C.19`, `D.5`, `G.5`, and `G.9` | Mint another support-basis value set, add assumption-only/no-support values, or let simulation-only output become realized evidence by name |
+| Identification and realizability | `CausalIdentificationProfile`, `CounterfactualSamplingRealizabilityProfile`, their verdicts, and supported/unsupported use | Evidence, assurance, decision, exploration, call-planning, fairness, dispatch, and parity refs to those profiles | Treat identification as direct sampling, or treat direct-sampling infeasibility as absence of all possible causal support |
+| Graph and calculus naming | `CausalGraphRepresentationKind`, `GraphSeparationCriterionKind`, `CausalInferenceCalculusKind`, `StructuralCausalModel`, `CausalDiagramRef` | Named graph/calculus refs when the neighbor records the causal-use support basis and cited formalism | Use generic graph prose where a graph formalism or calculus is load-bearing |
+| Assurance consequence | `CausalUseSupportVerdict` as causal-use action grammar | `B.3` degrade/block/abstain consequences for `F-G-R/CL` assurance | Let assurance prose certify causal identification, realizability, or fairness |
+| Fairness, policy, and parity specialization | Causal-use question/rung/estimand/support basis/support verdict for fairness, policy, and causal method comparison | `D.5` ethical/fairness audit card, `C.11` choice result, `C.19` pool policy, `C.24` call plan, `G.5` method dispatch spec, `G.9` parity report with local refs to consumed `C.28` support | Collapse metric disparity, policy replay, method dispatch, or benchmark score into a causal-use verdict |
+
+A neighbor may quote the `C.28` values it consumes for by-value readability. Quoting the values is not ownership. A neighbor owns only its local record and must cite `C.28` when the causal-use question or causal-support basis is live.
+
+
+Compact crosswalk:
+
+| Field or decision slot | Question answered | Typical values | Do not confuse with |
+| --- | --- | --- | --- |
+| `CausalityLadderRung` | What kind of causal question or use is being claimed? | observation, intervention/action, counterfactual comparison | the evidence source or the method family |
+| `CausalEvidenceSupportBasis` | What support posture is being used for that causal use? | observational association, interventional action, realized counterfactual sample, identified counterfactual estimate, simulation-only output | the rung itself, a raw evidence-role name, or a no-support verdict |
+| `supportedUse` / `unsupportedUse` | What may the reader do next, and what must they not do? | `CausalUseSupportStatement`, `CausalUseUnsupportedStatement` | a confidence score, a graph name, a method name, or a local pattern owner |
+
+Rung-support-use examples:
+
+| Rung | Support basis | Supported use | Unsupported use |
+| --- | --- | --- | --- |
+| `observationalAssociationRung` | `observationalAssociationSupportBasis` | association report, descriptive risk comparison, probe selection | intervention-effect claim, causal fairness certification, policy optimality |
+| `interventionalActionRung` | `interventionalActionSupportBasis` | declared action-effect use inside assignment, follow-up, and outcome limits | counterfactual sample claim, cross-population policy claim without transportability |
+| `counterfactualComparisonRung` | `identifiedCounterfactualEstimateSupportBasis` | identified or bounded counterfactual estimate under assumptions and profile refs | realized sample wording or assumption-free counterfactual certainty |
+| `counterfactualComparisonRung` | `simulationOnlyCounterfactualOutputBasis` | bounded model-supported simulation use | realized counterfactual sample evidence, intervention-effect evidence |
+
+#### C.28:4.1 - Causality-Ladder Rung
+
+`CausalityLadderRung` is a controlled value set:
+
+```text
+CausalityLadderRung =
+  observationalAssociationRung |
+  interventionalActionRung |
+  counterfactualComparisonRung
+```
+
+- `observationalAssociationRung` means passive observation, natural behavior, association, or seeing-only posture.
+- `interventionalActionRung` means `do(x)`, intervention, action setting, experiment, policy change, or action-effect posture.
+- `counterfactualComparisonRung` means counter-to-fact comparison, unit-history-conditioned comparison, potential-outcome contrast, or imagining posture.
+
+A stronger rung is not supported by weaker data unless a `CausalIdentificationProfile`, `CounterfactualSamplingRealizabilityProfile`, or bounded-use statement says exactly what is supported and what is not.
+
+#### C.28:4.1a - Causal-Use Claim Kind
+
+`CausalUseClaimKind` is the controlled value set for the local causal-use claim being made:
+
+```text
+CausalUseClaimKind =
+  causalEffectClaim |
+  counterfactualComparisonClaim |
+  causalFairnessClaim |
+  causalPolicyClaim |
+  causalBenchmarkParityClaim |
+  causalEvidenceSupportClaim |
+  causalAssuranceSupportClaim
+```
+
+- `causalEffectClaim` means a result is used as an effect, improvement, harm, or intervention/outcome claim.
+- `counterfactualComparisonClaim` means a counter-to-fact, potential-outcome, or unit-history-conditioned comparison is being used.
+- `causalFairnessClaim` means fairness is claimed through a causal path, intervention, counterfactual, or causal estimand rather than only a metric.
+- `causalPolicyClaim` means a policy, action rule, exploration rule, or agentic strategy is claimed as causally preferable.
+- `causalBenchmarkParityClaim` means causal methods are compared for parity, superiority, or benchmark consumption.
+- `causalEvidenceSupportClaim` means an evidence path is being used as causal-use support.
+- `causalAssuranceSupportClaim` means an assurance tuple or support verdict is being used for a causal-use claim.
+
+Simulation-only causal use stays inside the existing claim-kind set. `simulationOnlyCounterfactualOutputBasis` is a support/use posture, not a new `CausalUseClaimKind`. Use the relevant claim kind, usually `counterfactualComparisonClaim`, `causalPolicyClaim`, `causalBenchmarkParityClaim`, or `causalEvidenceSupportClaim`, and set `CausalEvidenceSupportBasis = simulationOnlyCounterfactualOutputBasis` with bounded model-supported use and unsupported use. Bounded model-supported simulation use does not become realized counterfactual sample evidence or intervention-effect evidence. Do not mint a separate simulation-only claim kind merely to avoid naming the support posture.
+
+Encoding rule: choose the causal-use claim kind by the question being answered, then choose `simulationOnlyCounterfactualOutputBasis` as the support basis and write `CausalUseSupportStatement` / `CausalUseUnsupportedStatement` for the bounded simulation use.
+
+#### C.28:4.2 - Causal-Use Cards
+
+Use a local card when the claim needs a small working record:
+
+```text
+LocalCausalUseQuestionCard:
+  causalUseQuestionRef: U.CausalUseQuestion
+  targetCausalityLadderRung: CausalityLadderRung
+  causalUseClaimKind?: CausalUseClaimKind
+  comparatorOrCounterfactualRef?
+  estimandRef?
+  causalEvidenceSupportBasis: CausalEvidenceSupportBasis
+  supportedUse: CausalUseSupportStatement
+  unsupportedUse: CausalUseUnsupportedStatement
+  nextMove: CausalUseNextMove
+```
+
+Use a durable card when the claim is decision-bearing, publication-bearing, fairness-bearing, benchmark-bearing, assurance-bearing, or reusable:
+
+```text
+DurableCausalUseQuestionCard:
+  causalUseQuestionRef: U.CausalUseQuestion
+  targetCausalityLadderRung: CausalityLadderRung
+  causalUseClaimKind: CausalUseClaimKind
+  causalInterventionSpecRef?
+  comparatorOrCounterfactualRef?
+  estimandRef: U.CausalEstimand
+  potentialOutcomeContrastRef?
+  targetTrialProtocolRef?
+  assignmentOrInterventionWindowRef?
+  causalFollowUpWindowRef?
+  outcomeMeasureRef?
+  causalAssumptionSetRef
+  rivalCauseSetRef?
+  causalEvidenceSupportBasis: CausalEvidenceSupportBasis
+  causalIdentificationProfileRef?
+  counterfactualSamplingRealizabilityProfileRef?
+  causalParameterEstimationProfileRef?
+  causalTransportabilityProfileRef?
+  causalVariableRepresentationRef?
+  falsificationOrNegativeControlRef?
+  sensitivityAnalysisRef?
+  rivalCauseStressTestRef?
+  supportedUse: CausalUseSupportStatement
+  unsupportedUse: CausalUseUnsupportedStatement
+  nextMove: CausalUseNextMove
+  reopenOrExitCondition
+```
+
+The durable card is not the default. It is the record used when a weak causal note would be unsafe.
+
+#### C.28:4.3 - Causal Evidence Support Basis
+
+`CausalEvidenceSupportBasis` is a controlled value set:
+
+```text
+CausalEvidenceSupportBasis =
+  observationalAssociationSupportBasis |
+  interventionalActionSupportBasis |
+  realizedCounterfactualSampleSupportBasis |
+  identifiedCounterfactualEstimateSupportBasis |
+  simulationOnlyCounterfactualOutputBasis
+```
+
+This is the `C.28`-governed value set for causal evidence support basis. `causalAssumptionOnlySupport` and `noCausalEvidenceSupport` are not values of `CausalEvidenceSupportBasis`: assumption-only posture belongs in `causalAssumptionSetRef` plus supported/unsupported use; no-support posture belongs in `CausalUseSupportVerdict`, `unsupportedUse`, or `abstain`.
+
+Simulation-only output never becomes realized counterfactual-rung evidence by name alone. It may support model-based use only when assumptions, validation, and supported/unsupported use are declared.
+
+`realizedCounterfactualSampleSupportBasis` does not mean observing two incompatible outcomes for the same unit in one realized world. It means physically obtaining samples from the declared target counterfactual distribution under the profile's constraints.
+
+`CausalEvidenceSupportBasis` names a support posture. It is distinct from an evidence source, an `A.2.4` evidence role, and an `A.10` evidence path. Some support bases are direct empirical postures, such as observational or interventional support. Other support bases are inferential postures, such as identified counterfactual estimate support. Do not read this value set as only a raw evidence-source kind.
+
+`realizedCounterfactualSampleSupportBasis` does not mean observing two incompatible outcomes for the same unit in one realized world. It means physically obtaining samples from the declared target counterfactual distribution under the profile's physical, ethical, operational, unit-history, and graph constraints.
+
+#### C.28:4.4 - Identification Profile
+
+`CausalIdentificationProfile` answers whether a causal or counterfactual estimand can be expressed from available data plus assumptions, graph representation, and inferential calculus.
+
+```text
+CausalIdentificationProfile:
+  causalUseQuestionRef: U.CausalUseQuestion
+  estimandRef: U.CausalEstimand
+  targetCausalityLadderRung: CausalityLadderRung
+  sourceCausalEvidenceSupportBasis?: CausalEvidenceSupportBasis
+  structuralCausalModelRef?: StructuralCausalModelRef
+  causalDiagramRef?: CausalDiagramRef
+  causalGraphRepresentationKind?: CausalGraphRepresentationKind
+  graphSeparationCriterionKind?: GraphSeparationCriterionKind
+  causalInferenceCalculusKind?: CausalInferenceCalculusKind
+  causalAssumptionSetRef
+  availableDataRegimeSetRef: AvailableCausalDataRegimeSetRef
+  realizedCounterfactualDataRefs?: RealizedCounterfactualDataRefSet
+  counterfactualDataIdentificationMethodRef?: CounterfactualDataIdentificationMethodRef
+  counterfactualDataBoundRef?: CounterfactualDataBoundRef
+  causalBoundOrPartialIdentificationRef?
+  falsificationOrNegativeControlRef?
+  sensitivityAnalysisRef?
+  rivalCauseStressTestRef?
+  verdict: identified | nonidentified | bounded | unknown
+  supportedUse
+  unsupportedUse
+```
+
+Identification is inferential support. It is not direct physical sampling.
+
+Realized counterfactual data may change an identification route, tighten a bound, or change which assumptions are still needed. When it does, the profile names the data refs, identification method, and bound ref that changed the result. It does not erase the distinction between identification and direct sampling; the profile must still state what is identified, bounded, unknown, or not identified.
+
+#### C.28:4.5 - Counterfactual Sampling Realizability Profile
+
+`CounterfactualSamplingRealizabilityProfile` answers whether samples from a counterfactual-comparison target distribution can be physically obtained through admissible actions under physical, ethical, operational, unit-history, and graph constraints.
+
+```text
+CounterfactualSamplingRealizabilityProfile:
+  causalUseQuestionRef: U.CausalUseQuestion
+  targetCounterfactualDistributionRef
+  targetCausalityLadderRung: counterfactualComparisonRung
+  structuralCausalModelRef?: StructuralCausalModelRef
+  causalDiagramRef?: CausalDiagramRef
+  causalGraphRepresentationKind?: CausalGraphRepresentationKind
+  graphSeparationCriterionKind?: GraphSeparationCriterionKind
+  causalInferenceCalculusKind?: CausalInferenceCalculusKind
+  graphChildInterventionConstraintRef?
+  sameUnitConflictCheck
+  ancestorRegimeConflictCheck
+  physicalConstraintSetRef
+  ethicalConstraintSetRef
+  operationalConstraintSetRef
+  unitHistoryAvailabilityRef?
+  counterfactualSamplingActionSetRef
+  counterfactualRandomizationCapabilityRef?
+  counterfactualSamplingWorkPlanRef?
+  verdict: realizable | nonrealizable | bounded | unknown
+  supportedUse
+  unsupportedUse
+```
+
+Realizability is operational. It asks what work can be done, by which system, with which action primitives, under which constraints.
+
+#### C.28:4.6 - Applied Causal-Inference Profiles
+
+Target-trial and potential-outcomes claims use `TargetTrialProtocolRecord` and `U.PotentialOutcomeContrast` when the causal-use claim is an applied intervention-effect claim.
+
+```text
+TargetTrialProtocolRecord:
+  causalUseQuestionRef: U.CausalUseQuestion
+  targetPopulationRef?
+  eligibilityCriteriaRef?
+  treatmentStrategySetRef
+  treatmentAssignmentProcedureRef?
+  timeZeroAlignmentRef?
+  causalFollowUpWindowRef
+  outcomeMeasureRef
+  potentialOutcomeContrastRef?
+  estimandRef: U.CausalEstimand
+  causalAnalysisPlanRef?
+```
+
+Target-trial emulation from observational data adds a mapping/reporting record. `TargetTrialEmulationMappingRecord` owns the fit between the protocol and the observed data; `TargetTrialProtocolRecord` alone does not state emulation adequacy.
+
+```text
+TargetTrialEmulationMappingRecord:
+  targetTrialProtocolRef: TargetTrialProtocolRecord
+  observationalDataSourceRef: ObservationalDataSourceRef
+  eligibilityMappingRef: TargetTrialEligibilityMappingRef
+  treatmentStrategyMappingRef: TargetTrialTreatmentStrategyMappingRef
+  assignmentOrTimeZeroMappingRef: TargetTrialAssignmentOrTimeZeroMappingRef
+  followUpMappingRef: TargetTrialFollowUpMappingRef
+  outcomeMappingRef: TargetTrialOutcomeMappingRef
+  emulationGapRef?: TargetTrialEmulationGapRef
+  residualConfoundingAssessmentRef?: ResidualConfoundingAssessmentRef
+  sensitivityOrAdditionalAnalysisRef?: TargetTrialSensitivityOrAdditionalAnalysisRef
+  supportedEmulationUse: CausalUseSupportStatement
+  unsupportedEmulationUse: CausalUseUnsupportedStatement
+```
+
+Numerical causal estimates use `CausalParameterEstimationProfile` when estimation validity is live:
+
+```text
+CausalParameterEstimationProfile:
+  estimandRef: U.CausalEstimand
+  causalIdentificationProfileRef?
+  estimatorRef
+  nuisanceModelSetRef?
+  orthogonalScoreRef?
+  crossFittingPlanRef?
+  positivityOrOverlapCheckRef?
+  sensitivityAnalysisRef?
+  uncertaintyIntervalRef?
+  supportedEstimateUse
+  unsupportedEstimateUse
+```
+
+Transported support uses `CausalTransportabilityProfile`:
+
+```text
+CausalTransportabilityProfile:
+  causalUseQuestionRef: U.CausalUseQuestion
+  sourcePopulationRef
+  targetPopulationRef
+  sourceContextRef?
+  targetContextRef?
+  selectionDiagramRef?
+  domainShiftAssumptionSetRef?
+  transportFormulaOrBridgeRef?
+  supportedTransportUse
+  unsupportedTransportUse
+```
+
+Off-policy causal evaluation uses `OffPolicyCausalEvaluationProfile` when a policy is evaluated from data generated by another behavior or logging policy:
+
+```text
+OffPolicyCausalEvaluationProfile:
+  evaluationPolicyRef
+  behaviorPolicyRef
+  causalUseQuestionRef: U.CausalUseQuestion
+  sequentialHorizonRef?: SequentialPolicyHorizonRef
+  adaptivePolicyClassRef?: AdaptivePolicyClassRef
+  unitHistoryConditioningRef?: UnitHistoryConditioningRef
+  confoundingAssumptionSetRef?
+  supportOrOverlapCheckRef?
+  policyTransportabilityRef?: CausalPolicyTransportabilityRef
+  offPolicyEstimatorRef?
+  uncertaintyIntervalRef?
+  supportedPolicyUse
+  unsupportedPolicyUse
+```
+
+Causal representation learning uses `CausalVariableRepresentationRecord` when high-level causal variables are learned, selected, abstracted, or represented from lower-level observations rather than given by the domain:
+
+```text
+CausalVariableRepresentationRecord:
+  causalUseQuestionRef?: U.CausalUseQuestion
+  structuralCausalModelRef?: StructuralCausalModelRef
+  causalVariableSetRef
+  representationSourceRef
+  abstractionOrSelectionMethodRef?
+  interventionValidityRef?: CausalRepresentationInterventionValidityRef
+  mechanismInvarianceRef?: CausalRepresentationMechanismInvarianceRef
+  abstractionFidelityRef?: CausalRepresentationAbstractionFidelityRef
+  counterfactualQueryPreservationRef?: CausalRepresentationCounterfactualQueryPreservationRef
+  representationShiftRef?: CausalRepresentationShiftOrOODRef
+  validationRef?
+  supportedCausalVariableUse
+  unsupportedCausalVariableUse
+```
+
+#### C.28:4.7 - Causal Graph Representation Names
+
+Use names that causal inference specialists can recognize:
+
+```text
+CausalGraphRepresentationKind =
+  causalDirectedAcyclicGraphRepresentation |
+  acyclicDirectedMixedGraphRepresentation |
+  singleWorldInterventionGraphRepresentation |
+  structuralCausalModelTwinNetworkRepresentation |
+  ancestralMultiWorldNetworkRepresentation |
+  counterfactualGraphicalModelRepresentation
+```
+
+When graph separation or graphical calculus is part of the causal-use support, use controlled values rather than open prose:
+
+```text
+GraphSeparationCriterionKind =
+  dSeparationCriterion |
+  mSeparationCriterion |
+  singleWorldInterventionGraphSeparationCriterion |
+  ancestralMultiWorldNetworkSeparationCriterion |
+  counterfactualGraphSeparationCriterion
+
+CausalInferenceCalculusKind =
+  doCalculus |
+  ctfCalculus |
+  potentialOutcomeCalculus |
+  gFormulaCalculus
+```
+
+`CausalGraphRepresentationKind`, `GraphSeparationCriterionKind`, and `CausalInferenceCalculusKind` are formal-support classification values, not minted model objects. They classify the formal support form being used for causal support. Concrete `...Ref` fields point to actual models, diagrams, proof objects, assumptions, or epistemes and must be present when that formal support form is load-bearing. For example, `StructuralCausalModelRef` cites a concrete SCM object, while `structuralCausalModelTwinNetworkRepresentation` classifies a representation form.
+
+`StructuralCausalModel` is the causal model kind with endogenous variables, exogenous variables, structural assignments, and intervention semantics. `structuralCausalModelTwinNetworkRepresentation` means the SCM twin-network representation used in counterfactual reasoning with shared exogenous variables. It is not a deep-learning twin network.
+
+Acronyms such as SCM, DAG, ADMG, SWIG, and AMWN may appear as source/plain labels and bridge notes. FPF Tech values expand the source name when expansion reduces alias risk.
+
+#### C.28:4.8 - Causal Use Evidence Design
+
+Use `CausalUseEvidenceDesignRecord` when the causal-use claim needs evidence planning, evidence graph support, experiment or quasi-experiment design, counterfactual randomization, mixed-design accountability, or simulation validation.
+
+```text
+CausalUseEvidenceDesignRecord:
+  causalUseQuestionRef: U.CausalUseQuestion
+  targetCausalityLadderRung: CausalityLadderRung
+  estimandRef?
+  causalInterventionSpecRef?
+  targetTrialProtocolRef?
+  potentialOutcomeContrastRef?
+  causalIdentificationProfileRef?
+  causalParameterEstimationProfileRef?
+  counterfactualSamplingRealizabilityProfileRef?
+  causalTransportabilityProfileRef?
+  causalVariableRepresentationRef?
+  causalEvidenceSupportBasis: CausalEvidenceSupportBasis
+  causalEvidenceWorkRefs?
+  causalEvidenceRoleRefs?
+  causalEvidenceMethodRef?
+  causalEvidenceWorkPlanRef?
+  structuralCausalModelRef?
+  causalDiagramRef?
+  causalGraphRepresentationKind?: CausalGraphRepresentationKind
+  graphSeparationCriterionKind?: GraphSeparationCriterionKind
+  causalInferenceCalculusKind?: CausalInferenceCalculusKind
+  counterfactualGraphicalModelClassRef?
+  causalAssumptionSetRef
+  counterfactualModelAssumptionSetRef?
+  simulationValidationRef?
+  falsificationOrNegativeControlRef?
+  sensitivityAnalysisRef?
+  rivalCauseStressTestRef?
+  decisionThresholdAffected?: yes | no | unclear
+  causalEvidenceDecisionImpactRef?: CausalEvidenceDecisionImpactRef
+  evidenceValueOrProbeWorthinessRef?: EvidenceValueOrProbeWorthinessRef
+  causalEvidenceCostRiskRef?: CausalEvidenceCostRiskRef
+  supportedUse
+  unsupportedUse
+```
+
+This record does not replace `A.10` or `B.3`. It gives them causal-use structure.
+
+Stronger causal evidence is worth planning only when it can change a choice, deployment decision, fairness posture, assurance consequence, or benchmark conclusion enough to justify its cost, risk, and delay. If stronger support would not change the next action, keep the weaker supported use explicit and stop.
+
+#### C.28:4.9 - Verdicts
+
+`CausalUseSupportVerdict` is the action grammar:
+
+- `supported` means proceed only under the named supported use.
+- `bounded` means proceed only inside the named limit and record `causalBoundedUseReason`.
+- `unsupported` means downgrade the claim or remove causal use.
+- `abstain` means no causal-use conclusion and records `causalAbstainReason`.
+
+No verdict is allowed to silently strengthen the claim beyond its evidence support basis.
+
+#### C.28:4.10 - Causal Action Policy Class
+
+Use `CausalActionPolicyClass` when a decision, exploration policy, call plan, or agentic strategy depends on causal rung:
+
+```text
+CausalActionPolicyClass =
+  naturalBehaviorPolicy |
+  interventionalPolicy |
+  counterfactualPolicy
+```
+
+- `naturalBehaviorPolicy` follows observed or natural behavior.
+- `interventionalPolicy` chooses an action or `do(x)`.
+- `counterfactualPolicy` acts conditioned on natural action, unit history, or counterfactual response.
+
+This distinction matters for `C.11`, `C.19`, and `C.24`; it does not make those patterns the authority for causal evidence, identification, or realizability.
+
+`CausalActionPolicyClass` is a classification value for policy-use posture: natural behavior, interventional action, counterfactual policy, mixed policy, or unknown policy. It is not the policy object, not `U.Policy`, not `C.19` pool policy, and not the executable policy used by an agent.
+
+#### C.28:4.10a - Local `U.*` Docking
+
+`U.CausalUseQuestion` names the question whose answer would make a causal use admissible: association use, intervention-effect use, counterfactual-comparison use, causal fairness use, causal policy use, causal evidence support use, causal assurance use, or causal parity use. It governs the question-to-use relation, not the evidence path, estimator, policy object, graph object, or local neighbor pattern.
+
+`U.CausalEstimand` names the target quantity, contrast, distribution, or functional answer shape for a `U.CausalUseQuestion`. It binds the question to what would have to be estimated, identified, sampled, bounded, or emulated. It is not the estimator, not the observed metric, not the graph, not the policy object, and not the support verdict.
+
+The card/profile family docks to those heads this way: triage decides whether a `U.CausalUseQuestion` is live; local and durable cards stabilize the question, `U.CausalEstimand`, and supported/unsupported use boundary; profiles and specialized records state what support basis, formal support form, operational work, assumptions, and admissible use the question-estimand pair can carry.
+
+Local name cards:
+
+| Name | Kind | Plain sense | Must not mean |
+| --- | --- | --- | --- |
+| `U.CausalUseQuestion` | question object for causal-use admissibility | the question-to-use object stabilized by triage/local/durable cards before a claim is used causally | a whole research project, evidence path, graph, estimator, policy object, or neighboring-pattern reroute |
+| `U.CausalEstimand` | target causal quantity, contrast, distribution, or functional | the answer-shape object linked to a `U.CausalUseQuestion` before estimation, identification, sampling, bounding, or emulation is judged | estimator, metric reading, support verdict, policy object, or causal graph |
+
+Lexical tripwires:
+
+| Phrase | Use instead when load-bearing |
+| --- | --- |
+| "causal evidence" | name `CausalEvidenceSupportBasis`, `A.10` evidence path refs, `CausalUseSupportRecordRef`, and `CausalUseSupportStatement` / `CausalUseUnsupportedStatement` |
+| "counterfactual data" | distinguish realized counterfactual data refs, `realizedCounterfactualSampleSupportBasis`, `identifiedCounterfactualEstimateSupportBasis`, and `simulationOnlyCounterfactualOutputBasis` |
+| "policy optimality" | name `causalPolicyClaim`, `CausalActionPolicyClass`, `OffPolicyCausalEvaluationProfile`, `CausalUseSupportStatement`, and unsupported unqualified optimality |
+| "fairness evidence" | distinguish metric/evaluation fairness from `causalFairnessClaim` with rung, estimand, support basis, support record/verdict, and supported/unsupported fairness use |
+| "method improves" | name whether the claim is association, intervention effect, counterfactual comparison, or parity result, then name rung, support basis, and supported/unsupported use |
+| "what would have happened" | name counterfactual comparison support, realized counterfactual sample support, identified estimate support, or simulation-only bounded model use |
+
+#### C.28:4.11 - Neighbor Routing Table
+
+| If the live issue is... | Use... | `C.28` role |
+| --- | --- | --- |
+| measured value, score, scale, indicator, or metric definition | `C.16` | Only active when the measure is used causally. |
+| temporal trend, rate, acceleration, inertia, or rhythm wording | `C.27` | Active when temporal wording is used as causal effect or intervention evidence. |
+| evidence graph reference or provenance | `A.10` | Carries evidence/provenance path and C.28 support-basis refs, not causal-use support authority. |
+| assurance level, degrade, abstain, or trust posture | `B.3` | Consumes C.28 support verdicts and applies assurance consequences. |
+| local decision among options | `C.11` | Provides causal action-policy hooks when value/regret/optimality depends on causal rung. |
+| exploration/exploitation over live pools | `C.19` | Provides causal data-collection or causal policy-learning hooks when live. |
+| tool/call/enactment plan | `C.24` | Provides optional causal action use spec when the call selects observation, intervention, counterfactual-rung evidence collection, or counterfactual policy conditioning. |
+| bias and fairness audit | `D.5` | Provides causal fairness rung and supported fairness use. |
+| method dispatch or selector-facing registry | `G.5` | Provides causal method/policy class declarations when causal methods are compared. |
+| benchmark or method parity | `G.9` | Provides causal method rung parity. |
+| quantum-like modeling cue | `C.26` | Receives only the residual QL cue after causal-use explanation has been tried. |
+
+#### C.28:4.12 - Non-Goals
+
+`C.28` does not:
+
+- define physical causation or decide what causation is in the modeled world;
+- choose one causal school, such as SCM/PCH, potential outcomes, target-trial emulation, transportability, causal ML, causal RL, or causal fairness, for all FPF use;
+- certify a DAG, SCM, SWIG, AMWN, or other graph as true or sufficient causal support by naming it;
+- replace local domain science, domain intervention definitions, outcome definitions, or substantive rival-cause knowledge;
+- replace `C.16` measurement and metrics characterization, including metric construction, calibration, and non-causal score interpretation;
+- replace `A.10` evidence graph referring, provenance paths, evidence-role carriers, or evidence graph path discipline;
+- replace `B.3` trust and assurance calculus, assurance tuples, `F-G-R/CL` consequences, or assurance publication posture;
+- replace `D.5` bias audit and ethical assurance, causal-fairness audit responsibility, or human/group-impact review;
+- replace `G.9` parity benchmark harness, causal-rung parity screen, or benchmark report structure;
+- replace `C.11` choice, `C.19` exploration/exploitation policy, or `C.24` call-planning patterns; it only supplies causal-use support boundaries consumed by those patterns.
+
+#### C.28:4.13 - Cheap Downgrade Library
+
+Use a downgrade sentence when a weaker admissible use is enough:
+
+Each sentence below is an admissible `cheapStop` wording. It closes the causal-use question for the named weak case unless the author keeps a stronger publish, choose, deploy, assure, audit, benchmark, or support-treatment use alive.
+
+
+| Case | Admissible downgrade wording |
+| --- | --- |
+| association-only case | "Observed association only; supported use = association report; unsupported use = intervention-effect claim." |
+| temporal-change-only case | "Temporal change or trend is recorded; supported use = temporal/rate description; unsupported use = causal-effect claim until a causal-use support basis is named." |
+| simulation-only case | "Simulation-only counterfactual output; supported use = bounded model-supported exploration or explanation; unsupported use = realized counterfactual sample evidence or intervention-effect claim." |
+| metric-only fairness case | "Metric disparity or metric improvement is recorded; supported use = metric-level fairness or disparity report; unsupported use = causal fairness claim without a causal rung, estimand, support basis, and supported fairness use." |
+| logged-policy bounded case | "Logged-policy evidence supports only the declared behavior/evaluation regime; supported use = bounded off-policy evaluation under named overlap/transportability limits; unsupported use = unqualified optimal-policy claim." |
+| cross-rung benchmark case | "Methods answer different causal rungs or support bases; supported use = publish bridge/loss, degraded parity, or abstain; unsupported use = one scalar causal winner." |
+
+#### C.28:4.14 - CausalUseBureaucracySniffTest
+
+`CausalUseBureaucracySniffTest` keeps a causal-use carrier only when it changes the admissible next action or blocks a concrete overclaim. Keep the causal-use record only when at least one answer is "yes":
+
+| Question | If no |
+| --- | --- |
+| Did the record change the next action? | Remove fields until only the action-changing line remains. |
+| Did it block a concrete causal overclaim by naming the stronger use as unsupported? | Use association, trend, simulation-only, or metric-only wording and stop. |
+| Did it support one concrete decision, evidence-work, fairness, assurance, benchmark-parity, or deployment move by changing `supportedUse` or `unsupportedUse`? | Keep the neighboring pattern and do not open a durable causal-use object. |
+| Was there a cheaper `nextMove.cheapStop` that preserved the same admissible use boundary? | Use the cheaper stop. |
+| Is the problem only the word "causal" or "counterfactual", rather than an admissible causal use? | Repair wording locally or reroute to the neighboring language/authoring pattern. |
+
+#### C.28:4.15 - Authored-Unit Repair Relation
+
+When the problem is only local authored wording pressure, local head repair, relational precision restoration, explanation faithfulness, or conservative retextualization may come first. `C.28` opens at `CausalUseActivation`, when the wording makes publication, choice, deployment, assurance, audit, fairness, policy, or benchmark use depend on causal support.
+
+#### C.28:4.16 - Causal-Laundering Golden Cases
+
+| Case | Expected `C.28` output |
+| --- | --- |
+| Association laundering: "users who received X improved, so X works." | rung = `observationalAssociationRung`; support basis = `observationalAssociationSupportBasis`; supported use = association report; unsupported use = intervention-effect claim. |
+| Intervention overclaim: "we changed X once, so the policy will work everywhere." | rung = `interventionalActionRung`; support basis = `interventionalActionSupportBasis` inside assignment, context, follow-up, and transportability limits; unsupported use = cross-population or unbounded policy claim. |
+| Simulation laundering: "the simulator shows what would have happened." | claim kind = relevant existing `CausalUseClaimKind`; support basis = `simulationOnlyCounterfactualOutputBasis`; supported use = bounded model-supported use; unsupported use = realized counterfactual sample or intervention-effect evidence. |
+| Metric-only fairness laundering: "fairness improved because the metric improved." | supported use = metric-level fairness/disparity report; unsupported use = causal fairness claim unless `causalFairnessClaim`, rung, estimand, support basis, and supported fairness use are declared. |
+| Policy replay overclaim: "logged replay says this policy is optimal." | claim kind = `causalPolicyClaim`; support basis = off-policy causal evaluation with behavior/evaluation policy refs and overlap/support checks; supported use = bounded policy evaluation; unsupported use = unqualified optimality. |
+| Cross-rung benchmark: "method A beats method B as a causal method." | claim kind = `causalBenchmarkParityClaim`; use `G.9` `CausalRungParityScreen`; supported use = within-rung parity or declared bridge/loss; unsupported use = one scalar causal winner when rungs/support bases differ. |
+| Temporal-cause wording: "after launch, recovery got faster, so launch caused resilience." | supported use = `C.27` temporal/rate adequacy; unsupported use = causal-effect claim until `C.28` names intervention timing, outcome window, assumptions, rival causes, and support basis. |
+| QL escape: "ordinary probability is hard here, so the effect is quantum-like." | supported use = causal-use triage and ordinary-neighbor explanation first; unsupported use = bypassing `C.28` with quantum-like vocabulary; `C.26` is retained only for residual quantum-like probe/frame/order/export/coarsening issue. |
+
+| Target-trial name-drop: "we emulate a trial, so the effect is identified." | supported use = target-trial claim only with protocol plus emulation mapping, data source, assignment/time-zero, follow-up/outcome mapping, residual confounding, and sensitivity/additional analysis; unsupported use = identification claim by target-trial label alone. |
+| Realized-counterfactual-data claim: "we observed both outcomes for the same unit." | supported use = samples from the declared target counterfactual distribution under the realizability profile's constraints; unsupported use = same-world incompatible-outcome wording for one unit. |
+
+### C.28:5 - Archetypal Grounding
+
+**Tell.** A causal-use claim is a promise about what a reader may do with a result. The claim is safe only when the rung, contrast, support basis, and allowed use are named.
+
+**Show (System).** A product team observes that users who received an intervention had better outcomes. `C.28` first records an observational association unless the team can name an intervention/action design, target trial protocol, identification profile, or evidence design that supports intervention-effect use. If the team only has observational association, the next move is to publish association or build evidence, not to claim causal improvement.
+
+**Show (Episteme).** A fairness report says one model is fair because a metric improved after a policy change. `C.28` asks whether the fairness claim is associative, interventional, or counterfactual. If it is interventional-action-rung only, it cannot be published as counterfactual fairness without identification or realizability support.
+
+**Show (Policy).** A team wants to deploy a causal policy learned from logged behavior data. `C.28` records `causalPolicyClaim`, `interventionalActionRung` or `counterfactualComparisonRung` as appropriate, `CausalActionPolicyClass`, `OffPolicyCausalEvaluationProfile`, support/overlap checks, uncertainty, supported policy use, and unsupported policy use. If the behavior policy cannot support the target policy, the admissible output is bounded use or abstain rather than "the policy is optimal".
+
+**Show (Causal RL).** An online learner uses behavior-policy logs and counterfactual data-fusion to choose a treatment, ranking, or action policy. `C.28` records the natural behavior policy, evaluation policy, `CausalActionPolicyClass`, target rung, confounding/support assumptions, `OffPolicyCausalEvaluationProfile`, uncertainty, supported policy use, and unsupported policy use. The learner may publish bounded causal policy support only for the declared regime; it must not turn replay reward, exploration success, or counterfactual strategy output into an unqualified optimal-action claim.
+
+**Show (Evidence Work).** A lab can physically run a counterfactual-rung sampling procedure by assigning compatible action regimes to matched units under ethical and operational constraints. `C.28` separates `CounterfactualSamplingRealizabilityProfile` from `CausalIdentificationProfile`: the realized sampling work becomes `U.Work` with evidence carriers and guards, while identification remains the inferential route from assumptions, graph, calculus, and available data.
+
+**Show (Simulation-Only).** A simulator produces "what would have happened" traces for a rollout decision. `C.28` can allow useful model-supported use without calling the traces realized counterfactual-rung evidence: the record uses `simulationOnlyCounterfactualOutputBasis`, names `counterfactualModelAssumptionSetRef`, `simulationValidationRef`, supported simulation use, and unsupported use. The output may support rehearsal, sensitivity exploration, or model-based explanation inside declared limits; it does not support direct counterfactual sample wording or intervention-effect publication by vocabulary alone.
+
+**Show (Benchmark).** A benchmark compares one observational predictor, one intervention optimizer, and one counterfactual strategy. `C.28` does not ban the comparison, but it requires `CausalMethodRungParityRecord` through `G.9`: if rung, `estimandRef`, intervention/action basis, support basis, consumed `C.28` support record/verdict, transportability, follow-up window, and estimation-validity basis are not comparable, the benchmark publishes bridge/loss, degraded use, or abstain instead of one superiority claim.
+
+### C.28:6 - Bias-Annotation
+
+`C.28` is mainly a causal-discipline and anti-overclaim pattern for decision-bearing causal use. One part of that work is catching language laundering, but the larger job is to keep causal reasoning, evidence design, realizability, policy evaluation, fairness use, and benchmark parity from silently borrowing stronger support than they actually have.
+
+Common biases:
+
+- **Causal prestige bias.** A result sounds more important when phrased causally, so weak evidence gets overused.
+- **Simulation laundering.** A simulated counterfactual is treated as observed or realized counterfactual-rung evidence.
+- **Metric proxy bias.** A fairness or performance proxy is treated as a causal result without rung and estimand.
+- **Benchmark scalarization bias.** A method comparison collapses different causal rungs, estimands, or transport assumptions into one score.
+- **Graph sufficiency bias.** A named graph is treated as enough without assumptions, data regime, calculus, and supported use.
+
+The repair is not to ban causal language. The repair is to recover the live causal question, choose the weakest honest supported use, and then either downgrade, bound, design stronger evidence, open identification or realizability work, or abstain.
+
+
+### C.28:7 - Conformance Checklist
+
+| Check | Requirement |
+| --- | --- |
+| `CC-C28-0` Triage-only use | For triage-only use, causality-ladder rung is named or causal use is declined, supported/unsupported use is named, and a stronger causal-use claim is not implied. |
+| `CC-C28-1` Causality-ladder rung declaration | Every causal-use claim declares its target causality-ladder rung: observational association question, interventional action/effect question, or counterfactual comparison question. |
+| `CC-C28-2` Durable causal estimand discipline | Every durable interventional/counterfactual-rung causal-use claim names causal-use question, comparator or counterfactual, estimand, assignment or intervention window, follow-up window, outcome measure, assumptions, rival causes, and supported/unsupported use. |
+| `CC-C28-3` No unsupported causality-ladder climb | A claim at interventional-action or counterfactual-comparison rung is not supported only by weaker causality-ladder data unless `CausalIdentificationProfile`, `CounterfactualSamplingRealizabilityProfile`, or bounded-use treatment is cited. |
+| `CC-C28-4` Realizability is not identification | `CausalIdentificationProfile` and `CounterfactualSamplingRealizabilityProfile` remain distinct. One supports inference from other data; the other supports direct sampling through feasible physical actions. |
+| `CC-C28-5` Counterfactual data collection is work | Any realized counterfactual-rung-data procedure is represented as `U.Work` enacted by `U.System` under `RoleAssignment`, with `MethodDescription`, `WorkPlan`, evidence carriers, and physical/ethical/operational guards. |
+| `CC-C28-6` Verdicts are action grammar | `supported`, `bounded`, `unsupported`, and `abstain` each change what the reader may do next. |
+| `CC-C28-7` No durable-card default | Escalate from triage to local card to durable card and profiles only when the claimed use triggers the stronger object. |
+| `CC-C28-8` Heavy causal-use object payoff | Every selected heavy field or check changes a reader action, blocks a specific overclaim, or supports a concrete evidence/assurance/fairness/parity decision. |
+| `CC-C28-9` Semantic-authority split | `C.28` owns causal-use value sets, identification/realizability profiles, graph/calculus naming, and support verdicts; neighbors may consume or quote them but must not define competing causal-use value sets. |
+| `CC-C28-10` Simulation-only bounded use | Simulation-only output may support bounded model-supported use, but it never becomes interventional evidence or realized counterfactual sample evidence by vocabulary, validation, or role relabeling alone. |
+| `CC-C28-11` Decision-economics of evidence | A stronger causal evidence plan names the decision threshold, evidence value or probe-worthiness, and cost/risk posture when escalation is not already mandatory by safety, release, or assurance constraints. |
+
+### C.28:8 - Common Anti-Patterns and How to Avoid Them
+
+| Anti-pattern | Symptom | Repair |
+| --- | --- | --- |
+| Fill-all-cards default | Every mention of "cause", "effect", or "counterfactual" triggers a durable dossier. | Start with `CausalUseTriageRecord`; escalate only when the claimed use requires it. |
+| Causal certification theater | Every field is filled, but no reader action, evidence design, downgrade, or unsupported use changes. | Remove or weaken fields until each one changes a decision or blocks an overclaim. |
+| Association as intervention | "Users who received intervention X did better" is published as effect of X without action/assignment support. | Publish association or build identification/evidence design. |
+| Interventional proxy as counterfactual fairness | A policy-change metric is called counterfactual fairness. | Declare interventional-action rung unless counterfactual estimand plus identification or realizability is present. |
+| Simulation as realized counterfactual sample | Model output is described as realized counterfactual-rung support without direct sampling or validation. | Use `simulationOnlyCounterfactualOutputBasis` and name supported/unsupported model use. |
+| Graph-only causality | A DAG or SCM diagram is treated as sufficient support. | Add assumptions, data regime, graph representation kind, calculus, and supported use. |
+| Cross-rung benchmark | Methods are compared as peers while one answers association, another intervention, and another counterfactual comparison. | Use `CausalMethodRungParityRecord` and degrade or abstain when parity is absent. |
+| QL escape | Causal confusion is rebranded as quantum-like because ordinary probability feels hard. | Use `C.26` only after causal-use explanation and ordinary FPF neighbors have done their work. |
+
+### C.28:9 - Consequences
+
+`C.28` makes causal use slower only when the claim is strong enough to deserve it. Cheap causal triage remains cheap.
+
+Positive consequences:
+
+- Causal claims become inspectable by rung, support basis, and supported use.
+- Counterfactual sampling realizability becomes operational rather than merely philosophical.
+- Identification and realizability no longer collapse.
+- Fairness, policy, and benchmark claims stop borrowing stronger causal force than their evidence supports.
+- Neighbor patterns receive narrow causal hooks without becoming general causal authorities.
+
+Costs:
+
+- Authors must learn a small causal vocabulary.
+- Some attractive claims will be downgraded to association, bounded use, simulation-only, or abstain.
+- Higher-rung claims need more evidence, assumptions, or work-plan detail.
+
+The cost is intended. It is cheaper than publishing an unsupported causal use.
+
+### C.28:10 - Rationale
+
+FPF needs this pattern because causal language changes what a reader may do.
+
+Temporal language can say that something changed. Measurement language can say that a score is higher. Assurance language can say that evidence is stronger or weaker. None of those alone says that an action caused a result, that a counterfactual comparison is supported, or that a causal policy should be deployed.
+
+`C.28` therefore uses a semantic-authority split:
+
+- `C.28` owns causal-use question, rung, estimand, identification, realizability, causal evidence support basis, and causal-use verdict.
+- Neighbor patterns keep their own authority and cite `C.28` only when causal use is live.
+- `C.26` receives a causal exit: intervention, causal effect, causal fairness, causal policy, and counterfactual-rung-data realizability are ordinary causal-use questions before they are quantum-like modeling questions.
+
+
+The pattern is not Pearl-only. SCM/PCH provides the rung discipline, but potential outcomes, target-trial emulation, causal ML estimation, transportability, causal representation learning, causal RL, and causal fairness all change the fields that FPF must preserve.
+
+### C.28:11 - SoTA-Echoing
+
+| SoTA claim | Practice implication | Source anchors | FPF adoption |
+| --- | --- | --- | --- |
+| Causal reasoning separates seeing, doing, and imagining. | A claim must declare `CausalityLadderRung` before support is judged. | Pearl/SCM/PCH: [On Pearl's Hierarchy and the Foundations of Causal Inference](https://causalai.net/r60.pdf). | Adopted as `observationalAssociationRung`, `interventionalActionRung`, `counterfactualComparisonRung`. |
+| Lower-rung data generally underdetermines higher-rung questions. | No unsupported causality-ladder climb. | Pearl causal hierarchy and identification tradition: [On Pearl's Hierarchy and the Foundations of Causal Inference](https://causalai.net/r60.pdf). | Adopted as `CC-C28-3`. |
+| Counterfactual sampling realizability is operational and partial. | Some counterfactual-rung distributions can be directly sampled; some cannot; some are bounded. | Raghavan and Bareinboim: [Counterfactual Sampling Realizability](https://openreview.net/forum?id=uuriavczkL), [technical report](https://causalai.net/r113.pdf). | Adopted as `CounterfactualSamplingRealizabilityProfile`. |
+| Counterfactual randomization is action/work over an SCM. | Realized counterfactual-rung data collection needs `U.Work`, action primitives, graph constraints, and guards. | Forney, Bareinboim, Pearl: [Counterfactual Randomization](https://causalai.net/r39.pdf). | Adopted as `CC-C28-5` and evidence-design fields. |
+| Counterfactual data can change what is identifiable or bounded. | Identification profiles must make realized counterfactual data, identification methods, and bound changes explicit rather than treating all data regimes as one scalar source. | Raghavan and Bareinboim: [Counterfactual Sampling Realizability](https://openreview.net/forum?id=uuriavczkL); Forney, Bareinboim, Pearl: [Counterfactual Randomization](https://causalai.net/r39.pdf). | Adopted as `availableDataRegimeSetRef`, `realizedCounterfactualDataRefs`, `counterfactualDataIdentificationMethodRef`, and `counterfactualDataBoundRef`. |
+| Counterfactual graphical models require named graph forms and calculus. | Graph form, separation criterion, and calculus must be visible for counterfactual support. | Yang and Bareinboim: [A Hierarchy of Graphical Models for Counterfactual Inferences](https://causalai.net/r130.pdf); Correa and Bareinboim: [Counterfactual Graphical Models](https://proceedings.mlr.press/v267/correa25a.html). | Adopted as `CausalGraphRepresentationKind`, `GraphSeparationCriterionKind`, and `CausalInferenceCalculusKind`; `doCalculus` and `ctfCalculus` are controlled calculus values, not free-form hooks. |
+| Potential outcomes and target-trial emulation operationalize intervention-effect claims. | Applied intervention claims need target population, eligibility, treatment strategies, assignment/time-zero, follow-up, outcome, contrast, estimand, and analysis plan. | Rubin: [Estimating Causal Effects of Treatments](https://www.ets.org/research/policy_research_reports/publications/article/1974/hrbx.html); Hernan/Wang/Leaf: [Target Trial Emulation](https://jamanetwork.com/journals/jama/fullarticle/2799678). | Adopted as `U.PotentialOutcomeContrast` and `TargetTrialProtocolRecord`. |
+| Target-trial emulation from observational data needs mapping and reporting, not only protocol naming. | Eligibility, strategies, assignment/time-zero, follow-up, outcomes, residual confounding, and sensitivity/additional analyses must be mapped from observational data to the target trial. | Hernan/Wang/Leaf: [Target Trial Emulation](https://jamanetwork.com/journals/jama/fullarticle/2799678). | Adopted as `TargetTrialEmulationMappingRecord`. |
+| Causal ML estimation is not the same as identification or prediction. | Estimator, nuisance models, orthogonal score, cross-fitting, overlap/positivity, sensitivity, and uncertainty must be visible when estimation validity is claimed. | Chernozhukov et al.: [Double/debiased machine learning for treatment and structural parameters](https://academic.oup.com/ectj/article/21/1/C1/5056401). | Adopted as `CausalParameterEstimationProfile`. |
+| Causal support may not transport across populations or domains without assumptions. | Source and target populations/contexts, selection diagrams, domain-shift assumptions, and transport formula/bridge must be named. | Pearl and Bareinboim: [Transportability of Causal and Statistical Relations](https://cir.nii.ac.jp/crid/1360298345422626304). | Adopted as `CausalTransportabilityProfile`. |
+| AI causal work often cannot assume causal variables are already given. | Learned or selected causal variables need a representation record. | Scholkopf et al.: [Toward Causal Representation Learning](https://is.mpg.de/en/publications/scholkopfetal21). | Adopted as `CausalVariableRepresentationRecord`. |
+| Causal representation support depends on intervention validity, invariance, abstraction fidelity, query preservation, and shift handling. | A learned representation must not silently become a causal variable for every query or domain. | Scholkopf et al.: [Toward Causal Representation Learning](https://is.mpg.de/en/publications/scholkopfetal21). | Adopted as causal representation validation hooks in `CausalVariableRepresentationRecord`. |
+| Sequential causal games and causal RL make counterfactuality policy-relevant. | Natural behavior, interventional, and counterfactual policies, sequential horizons, adaptive policies, unit-history conditioning, and transportability must be distinguished. | Maiti and Bareinboim: [Sequential Causal Games](https://causalai.net/r145.pdf); Bareinboim/Forney/Pearl: [Bandits with Unobserved Confounders](https://papers.nips.cc/paper/5692-bandits-with-unobserved-confounders-a-causal-approach); Forney/Pearl/Bareinboim: [Counterfactual Data-Fusion for Online Reinforcement Learners](https://proceedings.mlr.press/v70/forney17a.html). | Adopted as `CausalActionPolicyClass` and `OffPolicyCausalEvaluationProfile` hooks. |
+| Causal fairness is not only metric choice. | Fairness claims must declare causal rung, path/estimand where live, and supported fairness use. | Plecko and Bareinboim: [Fairness-Accuracy Trade-Offs: A Causal Perspective](https://causalai.net/r107.pdf). | Adopted through `D.5` relation and `CausalFairnessUseAuditCard`. |
+
+### C.28:12 - Relations
+
+
+
+- `C.16` governs measurement and metrics. `C.28` activates only when a measurement is used causally.
+- `C.27` governs temporal claim adequacy. `C.28` activates when temporal change is used as causal effect, intervention evidence, or counterfactual comparison.
+- `A.10` governs evidence graph referring. `C.28` supplies causal evidence support basis and causal-use support refs for evidence paths.
+- `A.2.4` governs evidence roles. `C.28` requires the evidence-role distinctions that keep `simulationOnlyCounterfactualOutputBasis`, `identifiedCounterfactualEstimateSupportBasis`, interventional evidence, and `realizedCounterfactualSampleSupportBasis` from being confused.
+- `A.6` / `A.6.B` / `A.6.C` govern boundary, deontic, promise, commitment, utterance, contract-language, and routed claim language. `C.28` supplies only causal-use support when mixed boundary sentences claim causal effect or counterfactual support.
+- `A.15` governs role, method, plan, and work alignment. `C.28` supplies the causal-use semantics for intervention assignment, target-trial emulation, counterfactual sampling work, and causal evidence collection.
+- `B.3` governs trust and assurance. `C.28` supplies the causal-use verdict that `B.3` can degrade, bound, or abstain over.
+- `C.11` governs decision theory. `C.28` supplies causal-use question and causal action-policy class when value, utility, regret, or optimality depends on causal rung.
+- `C.19` governs explore/exploit pool policy. `C.28` supplies causal rung and policy/regime fields when exploration collects causal data or learns causal policy.
+- `C.24` governs agentic tool use and call planning. `C.28` supplies `causalActionUseSpec` when calls select observation, intervention, counterfactual-rung evidence collection, or counterfactual policy conditioning.
+- `D.5` governs bias audit and ethical assurance. `C.28` supplies causal fairness rung, estimand, support, and supported fairness use.
+- `G.5` governs method dispatch and MethodFamily registry. `C.28` supplies causal method or policy class declarations when method dispatch compares causal methods.
+- `G.9` governs parity and benchmarks. `C.28` supplies causal method rung parity.
+- `G.11` governs refresh orchestration. `C.28` supplies causal-use support records whose realizability, identification, fairness, representation, off-policy, target-trial, and simulation-validation shifts can trigger refresh.
+- `C.26` governs quantum-like modeling. `C.28` is a required causal exit before QL retention when the live question is intervention, causal effect, causal fairness, causal policy, counterfactual comparison, or counterfactual-rung-data realizability.
+
+
+### C.28:13 - Footer Marker
+
+### C.28:End
+
 
 ## D.5 - Bias-Audit & Ethical Assurance
 
+**Use this when.** Use this pattern when a holon, model, metric, decision system, policy, or authored FPF claim may create unfair, biased, or ethically unsafe effects for people or groups. If the fairness claim is causal — for example "this intervention is fair", "this policy would have prevented harm", "this model is counterfactually fair", or "this practice causally reduces disparity" — keep the ethical audit in `D.5` and cite `C.28` for causal-use question, causality-ladder rung, estimand, causal evidence support basis, identification, realizability, evidence design, support record, and support verdict.
+
+**Not this pattern when.** If the live question is only measurement construction, use `C.16`; if it is only causal-use support without fairness or ethical audit, use `C.28`; if it is only assurance strength, use `B.3`. Metric disparity alone is not yet causal fairness.
+
+
+**Causal-fairness boundary.** A local `C.28` causal-fairness repair, such as adding a causal-use question, estimand, support basis, support record, or supported/unsupported fairness-use pair, is not by itself the Bias-Audit Cycle. It remains a local support repair until the claim, model, metric, policy, or decision system is in a `D.5` project, release, assurance, or human/group-impact audit condition.
+
 ### D.5:1 - **Problem Frame**
 
-FPF is designed to produce reliable, objective, and trustworthy holons. However, formal correctness (`FV` score) and empirical validation (`EV` score) are not sufficient on their own. Any artifact created by humans or trained on human-generated data is susceptible to hidden cognitive, cultural, and algorithmic biases. A perfectly verified control system can still be unsafe if its requirements were based on a biased assumption about operator behavior. A highly accurate machine learning model can be deeply unfair if its training data was not representative.
+FPF is designed to produce reliable, objective, and trustworthy holons. However, formal correctness (`FV` score) and empirical validation (`EV` score) are not sufficient on their own. Any record, model, metric, policy, or decision system designed by humans or trained on human-generated data is susceptible to hidden cognitive, cultural, and algorithmic biases. A perfectly verified control system can still be unsafe if its requirements were based on a biased assumption about operator behavior. A highly accurate machine learning model can be deeply unfair if its training data was not representative.
+
+A fairness claim can also be unsafe by causal overclaim. "This policy is fair because a metric improved" is not the same claim as causal fairness, counterfactual fairness, or path-specific fairness. `D.5` therefore brings causal fairness into the audit entry surface: the audit must distinguish metric disparity, associative fairness evidence, interventional fairness proxy, and counterfactual fairness claim before the ethical assurance record is treated as supported.
 
 ### D.5:2 - **Problem**
 
@@ -44927,13 +46099,13 @@ Without a formal, repeatable method for surfacing and mitigating these biases, F
 | Force | Tension |
 | :--- | :--- |
 | **Objectivity vs. Inevitable Subjectivity** | How to strive for objective, neutral models while acknowledging that all creation is influenced by the subjective perspectives of the creators. |
-| **Speed of Delivery vs. Depth of Reflection** | How to integrate a thoughtful ethical review process without paralyzing the agile, iterative cycles of development. |
+| **Speed of Delivery vs. Depth of Reflection** | How to integrate a thoughtful ethical review process without paralyzing ordinary iterative work cycles. |
 | **Expertise vs. Inclusivity** | How to leverage specialized ethical expertise without disenfranchising the core engineering team from moral responsibility. |
 | **Process vs. Culture** | Is ethical assurance a bureaucratic checklist to be completed, or a cultural practice of continuous self-critique? |
 
 ### D.5:4 - **Solution**
 
-FPF introduces the **Bias-Audit Cycle (BA-Cycle)**, a lightweight, iterative ceremony designed to integrate ethical reflection directly into the engineering development cycle. It is not a one-time gate but a continuous loop of inquiry.
+FPF introduces the **Bias-Audit Cycle (BA-Cycle)**, a lightweight, iterative review loop designed to integrate ethical reflection directly into the engineering development cycle. It is not a one-time gate but a continuous loop of inquiry.
 
 #### D.5:4.1 - The Bias-Audit Cycle: Four Phases
 
@@ -44943,7 +46115,7 @@ The cycle consists of four distinct phases, aligned with the project's natural r
 | :--- | :--- | :--- | :--- |
 | **BA-0: Kick-off** | Project start or major new feature. | **Framing the ethical scope.** The team identifies potential areas of bias and creates an initial, living document called the **Bias Register**. | A skeleton Bias Register with initial questions. |
 | **BA-1: Rapid Scan**| End of each sprint or design session. | **Continuous lightweight check.** A rotating member of the core team (the *Engineer-Scrutineer*) quickly scans recent changes against a checklist, flagging potential issues in the Bias Register. | Updated Bias Register with new items flagged for discussion. |
-| **BA-2: Panel Review**| Before a major integration or release decision (e.g., before moving to the `Evidence` state). | **Deep, multi-perspective critique.** A small panel, including individuals in roles like **Ethicist**, **Domain Sociologist**, and **UX Design Critic**, reviews the flagged items and proposes concrete mitigations. | A structured, auditable artifact called the **Bias-Audit Report**, documenting findings and required actions. |
+| **BA-2: Panel Review**| Before a major integration or release decision (e.g., before moving to the `Evidence` state). | **Deep, multi-perspective critique.** A small panel, including individuals in roles like **Ethicist**, **Domain Sociologist**, and **UX Design Critic**, reviews the flagged items and proposes concrete mitigations. | A structured, auditable record called the **Bias-Audit Report**, documenting findings and required actions. |
 | **BA-3: Closure** | At the release freeze. | **Ensuring accountability.** The facilitator confirms that all "blocking" issues from the Bias-Audit Report have either been resolved or have a documented, accepted risk. | The final Bias-Audit Report is marked as *resolved* or *risk-accepted* for that release. |
 
 #### D.5:4.2 - The Bias Taxonomy: A Shared Language for Critique
@@ -44968,7 +46140,7 @@ To structure the audit, FPF provides a minimal, extensible taxonomy of common bi
 
 #### D.5:4.3 - Normative Artifacts
 
-The Bias-Audit Cycle produces two key conceptual artifacts that serve as the auditable record of ethical deliberation.
+The Bias-Audit Cycle produces two key records that serve as the auditable record of ethical deliberation.
 
 *   **The Bias Register:**
     *   **Nature:** A living, evolving **episteme** that serves as a repository of questions, concerns, and potential biases identified throughout a holon's evolution.
@@ -44985,12 +46157,63 @@ The Bias-Audit Cycle produces two key conceptual artifacts that serve as the aud
     *   **Conceptual Example:**
         *   `finding-01`: An episteme with `biasCode: REP`, `severity: high`, and a `description` stating that the training data for a recognition holon lacks representation from certain demographics. The `mitigation` would be a `U.Method` for acquiring a balanced dataset, and the `status` would be `blocking` until this method is executed and its outcome validated.
 
+#### D.5:4.4 - Causal fairness use audit
+
+When a fairness claim is causal rather than metric-only, `D.5` records the ethical-audit question and cites `C.28` for causal-use support:
+
+
+```text
+CausalFairnessUseAuditCard {
+  causalUseQuestionRef: U.CausalUseQuestion
+  protectedVariableRef
+  decisionVariableRef
+  outcomeVariableRef
+  fairnessCausalityLadderRung: CausalityLadderRung
+  fairnessEstimandRef: U.CausalEstimand
+  permittedPathSet?
+  prohibitedPathSet?
+  pathSpecificFairnessEstimandRef?
+  pathSpecificExcessLossRef?
+  comparatorOrCounterfactualRef
+  causalEvidenceSupportBasis: CausalEvidenceSupportBasis
+  causalIdentificationProfileRef?
+  counterfactualSamplingRealizabilityProfileRef?
+  causalUseEvidenceDesignRef?
+  causalUseSupportRecordRef?
+  causalUseSupportVerdict: CausalUseSupportVerdict
+  fairnessCausalEthicalConstraintRef?
+  supportedFairnessUse
+  unsupportedFairnessUse
+}
+```
+
+Metric-only fallback: if only a metric disparity is claimed and no causal fairness use is made, record it as metric/evaluation use, not `C.28`-heavy causal fairness.
+
+Local causal-fairness repair does not by itself trigger the full Bias-Audit Cycle, a panel review, or release-cycle duties. It may only downgrade causal wording, add the missing `C.28` support reference, or mark unsupported causal fairness use.
+
+The full `D.5` duties activate under `D.5` project or release conditions: the holon, model, metric, decision system, policy, or authored claim may materially affect people or groups; the fairness/ethical claim is release-bearing; or the local causal-fairness repair becomes an input to audit, assurance, deployment, publication, or risk acceptance.
+
+Fairness escalation rule: interventional-action proxy may support bounded interventional fairness use but cannot be published as counterfactual fairness.
+
+What changes in practice: a fairness audit must say whether the claim is associative, interventional, or counterfactual, and a counterfactual fairness claim must carry the causal-use question, comparator/counterfactual, permitted paths, prohibited paths, causal evidence support basis, causal identification or counterfactual sampling realizability, causal-use support verdict, and supported/unsupported fairness use.
+
+What this does not authorize: `D.5` does not replace `C.28` for causal-use question, causality-ladder rung, estimand, identification, realizability, or `CausalUseSupportVerdict`; it keeps ethical audit and fairness assurance, while `B.3` keeps assurance strength and unsupported-use consequences.
+
+
+
 ### D.5:5 - **Conformance Checklist**
 
 *   **CC-D5.1 (Cycle Mandate):** Any project developing a holon that interacts with or makes decisions about humans **MUST** conduct the Bias-Audit Cycle.
 *   **CC-D5.2 (Artifact Mandate):** The project **MUST** maintain a **Bias Register** and produce a **Bias-Audit Report** before any major release.
 *   **CC-D5.3 (Blocking Issue Mandate):** A release **SHALL NOT** be considered conformant if its latest Bias-Audit Report contains any unresolved findings with `status: blocking`. The issue must either be moved to `resolved` (mitigated) or `risk-accepted` (formally signed off by a designated authority).
 *   **CC-D5.4 (Role Mandate):** The Panel Review (BA-2) **MUST** involve at least three individuals representing distinct perspectives, ideally aligning with the roles of *Ethicist*, *Domain Sociologist*, and *UX Design Critic* from the Intellect Stack.
+*   **CC-D5-CF-1:** A fairness claim MUST declare whether it is associative, interventional, or counterfactual.
+*   **CC-D5-CF-2:** An interventional-action-rung fairness proxy MUST NOT be published as a counterfactual-rung fairness result.
+*   **CC-D5-CF-3:** If a counterfactual fairness estimand is claimed actionable, it MUST cite `CausalIdentificationProfile` or `CounterfactualSamplingRealizabilityProfile`.
+*   **CC-D5-CF-4:** A causal fairness audit MUST cite `C.28` for causal-use question, causality-ladder rung, causal estimand, causal evidence support basis, identification/realizability, evidence design, `causalUseSupportRecordRef` when one is consumed, and `CausalUseSupportVerdict`; `D.5` keeps ethical audit and fairness assurance.
+*   **CC-D5-CF-5:** A local causal-fairness wording repair or support-reference repair does not trigger the full Bias-Audit Cycle unless `D.5` project, release, assurance, or human/group-impact audit conditions are live.
+
+
 
 ### D.5:6 - **Common Anti-Patterns and How to Avoid Them**
 
@@ -45004,7 +46227,7 @@ The Bias-Audit Cycle produces two key conceptual artifacts that serve as the aud
 
 | Benefits | Trade-offs / Mitigations |
 | :--- | :--- |
-| **Proactive Risk Mitigation:** The cycle surfaces and addresses potential ethical and social harms *before* they are deployed, preventing costly failures and reputational damage. | **Additional Ceremony:** The cycle introduces new conceptual steps and artifacts into the workflow. *Mitigation:* The process is designed to be lightweight and to align with existing agile cadences (e.g., the Rapid Scan is a brief conceptual check at the end of a sprint). |
+| **Proactive Risk Mitigation:** The cycle surfaces and addresses potential ethical and social harms *before* they are deployed, preventing costly failures and reputational damage. | **Additional Ceremony:** The cycle introduces extra review steps and records into the work cycle. *Mitigation:* The process is designed to be lightweight and to align with ordinary iteration cadences (e.g., the Rapid Scan is a brief conceptual check at the end of a work cycle). |
 | **Creates an Auditable Ethical Record:** The Bias-Audit Reports provide a transparent, defensible trail demonstrating that the organization has a systematic process for managing ethical risks. | **Finding the Right Expertise:** It may be challenging to find individuals to fill the required roles. *Mitigation:* These roles represent perspectives, not necessarily formal job titles. The key is the diversity of viewpoints. |
 | **Builds a Culture of Responsibility:** By making ethical reflection a routine part of the engineering process, the cycle fosters a culture where every team member is empowered and expected to think critically about the broader impact of their work. | - |
 | **Improves Holon Quality:** Designing for a wider range of users and edge cases, as prompted by the audit, often leads to more robust, user-friendly, and innovative holons. | - |
@@ -45013,24 +46236,17 @@ The Bias-Audit Cycle produces two key conceptual artifacts that serve as the aud
 
 Formal correctness is not a substitute for moral responsibility. This pattern recognizes that bias is not an occasional flaw but a systemic feature of any human-led design process. The Bias-Audit Cycle is FPF's formal mechanism for managing this reality. It is a direct implementation of the **Cross-Disciplinary Bias Audit Guard-Rail (E.5.4)**.
 
-By integrating this cycle into the core reasoning workflow, FPF moves ethical assurance from a peripheral, often-ignored "nice-to-have" into a central, non-negotiable component of engineering excellence. It ensures that the powerful tools of formal reasoning and validation provided by FPF are always directed towards creating holons that are not only correct, but also conscionable.
+By integrating this cycle into the core engineering work cycle, FPF moves ethical assurance from a peripheral, often-ignored "nice-to-have" into a central, non-negotiable component of engineering excellence. It ensures that the powerful tools of formal reasoning and validation provided by FPF are always directed towards creating holons that are not only correct, but also conscionable.
 
 ### D.5:9 - **Relations**
 
 *   **Implements:** The `Cross-Disciplinary Bias Audit` Guard-Rail (E.5.4).
 *   **Complements:** `D.4 Trust-Aware Mediation Calculus` by providing inputs on fairness and value alignment; `B.3.4 Evidence Decay & Epistemic Debt` by questioning the longevity of assumptions about social context.
+*   **Coordinates with:** `C.28` for causal fairness use, causality-ladder rung, causal estimand, causal evidence support basis, identification/realizability, evidence design, causal-use support record, and causal-use support verdict; `B.3` for assurance strength and unsupported-use consequences.
 *   **Operationalizes:** The conceptual roles of `Ethicist`, `Domain Sociologist`, and `UX Design Critic` from the Intellect Stack.
 
 ### D.5:End
 
-
-| D.5.1   | Taxonomy‑Guided Audit Templates      |  Onto / Arch / Prag / Did dimensions; sampling guidance.                        |
-| D.5.2   | Assurance Metrics Roll‑up            | Composite “Ethical Risk Index”, traceable to Evidence Graph Ref.                 |
-
-
-# **Part E - FPF Constitution and Authoring Cluster**
-
-# Section E‑I - The FPF Constitution
 
 ## E.1 - Vision & Mission: “Operating System for Thought”
 
@@ -48517,8 +49733,8 @@ diagnostic vocabulary:
   `burden-critical`;
 - projection-purpose labels: `global-entry orientation role`,
   `catalogue-search support role`, `entry-neighborhood index role`,
-  `worked-entry-reading support role`, `Problem-frame recognition role`,
-  `entry-lexeme support role`, `review-profile role`, `assurance role`.
+  `worked-entry-reading support role`, `Problem-frame recognition surface`,
+  `entry-lexeme support role`, `review-profile role`, `assurance surface`.
 
 These labels are optional reviewer/editor vocabulary. They are not exported
 kind families and are not required authoring dimensions for ordinary pattern
@@ -64500,29 +65716,29 @@ All of these remain method‑specific semantics and therefore belong in `Extensi
 
 **Plain-name.** Multi-method dispatcher and method-family registry.
 
-**Intent.** Govern the dispatcher/registry surfaces for rival method families and publish selector-facing retained-set outcomes without collapsing plurality into one hidden scalar winner.
+**Intent.** Govern the dispatcher/registry object set for rival method families and publish selector-facing retained-set outcomes without collapsing plurality into one hidden scalar winner.
 
 ### G.5:0 - Use this when
 
 - several method families or generator families can lawfully act on the same declared task family or work target
 - you need one selector to return a `Shortlist`, `RankedShortlist`, one `SpecialistHandoff`, one other narrowed handoff plan, or one abstain outcome without pretending that there is always one scalar winner
-- the published result must carry enough basis pins to support later comparison, handoff, or escalation without changing its declared outcome kind or any applicable public set-surface head
+- the published result must carry enough basis pins to support later comparison, handoff, or escalation without changing its declared outcome kind or any applicable public selected-set label
 
 ### G.5:0.1 - What goes wrong if missed
 
 - rival families are compared under silent comparator drift, hidden baseline changes, or unspoken crossing costs
 - the selector hides one dogmatic winner even when only a partial order is lawful
-- selected-set publication gets hidden inside `C.11`, `C.19`, or `C.24`, so the published artifact no longer makes clear whether it carries local choice, pool policy, enactment, or publication
+- selected-set publication gets hidden inside `C.11`, `C.19`, or `C.24`, so the published result no longer makes clear whether it carries local choice, pool policy, enactment, or publication
 - exploration, open-ended, or specialization pressure leaks in as one architecture convenience rather than one explicit policy-bound choice
 
 ### G.5:0.2 - What this buys
 
 - one registry that keeps rival method families disjoint but dispatchable
-- one selector surface that can publish candidate sets, `Shortlist`, `RankedShortlist`, one `SpecialistHandoff`, narrowed handoff plans, or abstain outcomes honestly
+- one selector result form that can publish candidate sets, `Shortlist`, `RankedShortlist`, one `SpecialistHandoff`, narrowed handoff plans, or abstain outcomes honestly
 - one `DRR/SCR`-addressable trace with explicit basis pins instead of one hidden selector rationale
-- one explicit publication closure so the declared outcome kind, any applicable public set-surface head, retained members or handoff content, ordering status, and basis pins are stated directly in the emitted result
+- one explicit publication closure so the declared outcome kind, any applicable public selected-set label, retained members or handoff content, ordering status, and basis pins are stated directly in the emitted result
 
-Registry and dispatch remain the primary owner burden here; selected-set publication is the explicit closure surface of that selector burden, not a replacement for it.
+Registry and dispatch remain the primary governed question here; selected-set publication is the explicit closure record for that selector question, not a replacement for it.
 
 ### G.5:0.3 - First-minute questions
 
@@ -64533,21 +65749,21 @@ Registry and dispatch remain the primary owner burden here; selected-set publica
 
 ### G.5:0.4 - First output
 
-The first useful output from this dispatcher/registry burden is one published selector outcome: one set-surface outcome such as `Shortlist` or `RankedShortlist`, one `SpecialistHandoff` or other narrowed handoff plan, or one abstain/escalation result, with the outcome kind, any public set-surface head, retained members or handoff content, ordering status when relevant, and basis pins stated in one place.
+The first useful output from this dispatcher/registry question is one published selector outcome: one set-surface outcome such as `Shortlist` or `RankedShortlist`, one `SpecialistHandoff` or other narrowed handoff plan, or one abstain/escalation result, with the outcome kind, any public selected-set label, retained members or handoff content, ordering status when relevant, and basis pins stated in one place.
 
 If that first output still cannot be written honestly, the current publication result is not finished `G.5` publication yet.
 
-G.5 keeps the dispatcher/registry surfaces here and leaves universal Part-G invariants to `G.Core`; method- or generator-specific semantics stay in their named source patterns and arrive here only through explicit pins.
+G.5 keeps the dispatcher/registry object set here and leaves universal Part-G invariants to `G.Core`; method- or generator-specific semantics stay in their named source patterns and arrive here only through explicit pins.
 
-When `C.11` has already emitted one local choice result, `C.19` one pool-policy posture, or `C.24` one enactment-facing next move, `G.5` begins where the burden becomes selector-facing publication of the retained set or narrowed handoff result rather than one more explanation of why the result looked reasonable. A conformant `G.5` pass should therefore publish the retained set, narrowed handoff, or abstain result directly, with its declared outcome kind, any applicable public set-surface head, and basis pins explicit in the result itself.
+When `C.11` has already emitted one local choice result, `C.19` one pool-policy posture, or `C.24` one enactment-facing next move, `G.5` begins where the question becomes selector-facing publication of the retained set or narrowed handoff result rather than one more explanation of why the result looked reasonable. A conformant `G.5` pass should therefore publish the retained set, narrowed handoff, or abstain result directly, with its declared outcome kind, any applicable public selected-set label, and basis pins explicit in the result itself.
 
-A publication result remains unfinished if the declared outcome kind, any applicable public set-surface head, retained members or handoff content, ordering status, abstain or escalation condition, or basis pins are still only implicit in upstream notes.
+A publication result remains unfinished if the declared outcome kind, any applicable public selected-set label, retained members or handoff content, ordering status, abstain or escalation condition, or basis pins are still only implicit in upstream notes.
 
 ### G.5:1 - Problem frame
 
 A `CG‑FrameContext` (from **G.1**) and a `SoTA Synthesis Pack@CG‑Frame` (from **G.2**) expose multiple rival, internally coherent **method families** (and sometimes **generator families**) that can plausibly act on the same *describedEntity / ReferencePlane*.
 
-At the same time, the typed slot/scale/coordinate surfaces from **G.3/G.4** yield admissible calculi and acceptance clauses—enough to formulate *eligibility*, *assurance*, and *legality* constraints, but not enough to pick “the method” without collapsing plurality.
+At the same time, the typed slot/scale/coordinate definitions from **G.3/G.4** yield admissible calculi and acceptance clauses—enough to formulate *eligibility*, *assurance*, and *legality* constraints, but not enough to pick “the method” without collapsing plurality.
 
 You need a **notation‑independent** way to:
 
@@ -64566,7 +65782,7 @@ How to design a **general, auditable dispatcher** that:
 * produces **set‑valued outcomes** when only partial orders are lawful;
 * cleanly separates:
 
-  * **selector kit/surfaces** (registry + selector façade + publication surfaces),
+  * **selector object set/components** (registry + selector facade + publication records),
   * **universal Part‑G invariants** (carried by `G.Core`),
   * **method/generator specifics** (wired only via `Extensions` blocks).
 
@@ -64579,6 +65795,40 @@ How to design a **general, auditable dispatcher** that:
 * **Evolvability vs. churn.** Registries evolve (new families, deprecations, edition bumps); continuity must not be broken by “rename by meaning”.
 
 ### G.5:4 - Solution
+#### G.5:4.6a - Causal method dispatch declarations
+
+Method selection involving causal methods must declare whether a compared method is an observational predictor, an intervention optimizer, a counterfactual strategy, a causal fairness estimator, a causal-RL policy, or a simulation-only method.
+
+Optional `MethodFamily.causalUseDispatchSpec?`:
+
+```text
+MethodFamily.causalUseDispatchSpec? {
+  causalUseQuestionRef?: U.CausalUseQuestion
+  targetCausalityLadderRung: CausalityLadderRung
+  causalUseClaimKind: CausalUseClaimKind
+  causalActionPolicyClass?: CausalActionPolicyClass
+  causalEvidenceSupportBasis?: CausalEvidenceSupportBasis
+  causalUseSupportRecordRef?: CausalUseSupportRecordRef
+  causalUseSupportVerdict?: CausalUseSupportVerdict
+  causalMethodComparisonPosture:
+    observationalPredictor |
+    interventionOptimizer |
+    counterfactualStrategy |
+    causalFairnessEstimator |
+    causalRLPolicy |
+    simulationOnlyMethod
+  supportedUse: CausalUseSupportStatement
+  unsupportedUse: CausalUseUnsupportedStatement
+}
+```
+
+`causalMethodComparisonPosture` is a selector-facing method-comparison classification, not a `U.Role`, role assignment, responsibility, or actor position. `simulationOnlyMethod` maps to `CausalEvidenceSupportBasis = simulationOnlyCounterfactualOutputBasis`, bounded simulation-supported use, and unsupported intervention-effect or realized-counterfactual-sample use unless another `C.28` support basis is cited.
+
+What changes in practice: a selector must not compare "methods that improve outcome" unless each causal method declares the causality-ladder rung, causal method comparison posture, and `C.28` support record/verdict when causal-use support is being consumed.
+
+What this does not authorize: `G.5` does not identify causal effects, decide fairness, certify off-policy causal evaluation, or compare cross-rung causal methods as one undifferentiated improvement set; it keeps method dispatch and selected-set publication while `C.28` governs causal-use support.
+
+
 
 #### G.5:4.1 - G.Core linkage (normative)
 
@@ -64604,7 +65854,7 @@ Effective obligations/pins/triggers are computed by union expansion of the refer
   * `GeneratorFamilyId[]?` *(when generator families are in scope)*
   * `PathId[]` *(audit citations for “why” and for evidence)*
   * `PathSliceId[]` *(audit citations for “why” and for evidence)*
-  * `UTSRowId[]` *(published identities for selected/registered families and selector policy surfaces)*
+  * `UTSRowId[]` *(published identities for selected/registered families and selector policy records)*
   * `FailureBehaviorPolicyId?` *(only when degrade/abstain behavior is explicitly policy‑bound)*
   * `SoSLogBranchId?` *(only when degrade/abstain behavior is explicitly policy‑bound)*
 * `DefaultsConsumed :=`
@@ -64617,65 +65867,65 @@ Effective obligations/pins/triggers are computed by union expansion of the refer
   * `GCoreTriggerSetId.RefreshOrchestration`
     *(payload pins: `TaskSignatureRef`, `CGSpecRef.edition`, `CNSpecRef.edition`, `MethodFamilyId[]`, `GeneratorFamilyId[]?`, `AcceptanceClauseId[]?`, `SoSLogBranchId?`, `FailureBehaviorPolicyId?`, `DescriptorMapRef.edition?`, `DistanceDefRef.edition?`, `TransferRulesRef.edition?`, `InsertionPolicyRef?`, `PathId`, `PathSliceId`, `SCRId`, `DRRId`, `RSCRTestId[]`)*
 
-#### G.5:4.2 - Dispatcher & Registry kit (notation‑independent)
+#### G.5:4.2 - Dispatcher & Registry object set (notation‑independent)
 
-G.5 defines the **kit surfaces** below. Their purpose is to make dispatch **possible and auditable** without embedding any method-family semantics in the selector kernel.
+G.5 defines the **object-set components** below. Their purpose is to make dispatch **possible and auditable** without embedding any method-family semantics in the selector kernel.
 
 **S1 — `MethodFamily Registry` (design‑time; per CG‑Frame).**
 A registry row represents *a family*, not a single implementation. Minimal fields (conceptual, notationally independent):
 
 * `Identity`: `MethodFamilyId`, `ContextId`, lineage/Tradition notes, `UTSRowId` (twin labels where applicable).
-* `EligibilityStandardRef`: a typed predicate surface (tri‑state per `G.Core`), expressed in CHR/CAL terms and pinned to the relevant editions.
-* `AssuranceProfileRef`: evidence‑lane expectations and assurance surface pins (SCR‑addressable).
+* `EligibilityStandardRef`: a typed predicate record (tri‑state per `G.Core`), expressed in CHR/CAL terms and pinned to the relevant editions.
+* `AssuranceProfileRef`: evidence‑lane expectations and assurance-lane pins (SCR‑addressable).
 * `LegalityBindings`: explicit references to the **single** governance card and legality gate (`CNSpecRef`, `CGSpecRef`) and to any required legality constraints (e.g., scale/unit legality via CSLC).
 * `EvidencePins`: citations to `G.6` (`PathId/PathSliceId`) for claims/guarantees where such claims are asserted.
 * `CrossingAllowance`: explicit Bridge/CL allowance pins **only** if cross‑Context operation is claimed.
-* `PolicyHooksRef?`: optional pointers to policy surfaces (not defined here; wired via Extensions).
+* `PolicyHooksRef?`: optional pointers to policy records (not defined here; wired via Extensions).
 
 **S1′ — `GeneratorFamily Registry` (design‑time; optional; per CG‑Frame).**
-A registry row for families that generate tasks/environments and/or co‑evolve solver families. G.5 carries the *surface*, not the generator semantics:
+A registry row for families that generate tasks/environments and/or co‑evolve solver families. G.5 carries the registry-entry shape, not the generator semantics:
 
 * `Identity`: `GeneratorFamilyId`, `ContextId`, `UTSRowId`.
 * `GeneratorSignatureRef`: conceptual I/O and budget semantics.
 * `EnvironmentValidityRegionRef?`: pinned constraints for generated environments/tasks.
-* `TransferRulesRef.edition?`: required when the Open-Ended mode is enabled (semantics come from the cited extension surfaces).
+* `TransferRulesRef.edition?`: required when the Open-Ended mode is enabled (semantics come from the cited extension refs).
 * `CouplerRefs?`: which `MethodFamilyId[]` can be coupled with this generator family.
 
 **S2 — `TaskSignature` façade (design‑time + run‑time).**
 A minimal typed record the dispatcher consumes. Its role is **pinning and auditability**, not over‑specification. It must be CHR/CAL‑typed and provenance‑aware.
-G.5 treats `TaskSignatureRef` as an input surface; it does not define CHR/CAL semantics.
+G.5 treats `TaskSignatureRef` as an input record; it does not define CHR/CAL semantics.
 
 **S3 — `Selection kernel façade` (run‑time; policy‑governed).**
 A notation‑independent selector that:
 
-* consumes `TaskSignatureRef` + registry entries + pinned contract surfaces,
+* consumes `TaskSignatureRef` + registry entries + pinned spec refs,
 * applies eligibility/assurance gating (tri‑state),
 * computes a lawful (possibly partial) order,
 * returns one declared selector outcome: most often one set-surface outcome such as `Shortlist` or `RankedShortlist`, but sometimes one `SpecialistHandoff`, one other narrowed handoff, one abstain outcome, or one escalation outcome (per `DefaultId.PortfolioMode` and explicit overrides),
-* emits audit artefacts (DRR/SCR‑addressable pins).
+* emits audit records (DRR/SCR‑addressable pins).
 
 **S3.A — `TaskFamilySpecializationProfile@Context` (run‑time; conditional).**
-When the real selector burden is acquisition of usable specialization on a declared task family, the selector may publish one `TaskFamilySpecializationProfile@Context` for each candidate, one `SpecialistHandoff`, or one narrowed handoff plan. Here `profile` means one selector-time comparison record for bounded specialization, not a new kernel type and not a generic narrative profile. `G.5` consumes this burden over `C.22.1`; it does not re-own the adaptation-signature field vocabulary.
+When the real selector question is acquisition of usable specialization on a declared task family, the selector may publish one `TaskFamilySpecializationProfile@Context` for each candidate, one `SpecialistHandoff`, or one narrowed handoff plan. Here `profile` means one selector-time comparison record for bounded specialization, not a new kernel type and not a generic narrative profile. `G.5` carries this selector-time specialization question here; it does not re-own the adaptation-signature field vocabulary from `C.22.1`.
 
-The profile should therefore cite one `AdaptationSignatureRef` or equivalent pinned field set carrying the declared `TaskFamilyRef` or `TaskSignature`, the work-measure threshold target, prior exposure declaration, time-to-threshold, budget-to-threshold, post-threshold efficiency when relevant, any declared transfer or retention claim, any downside burden, and any specialization-entry baseline, specialization-entry evidence, or stepping-stone evidence item that materially affects comparison.
+The profile should therefore cite one `AdaptationSignatureRef` or equivalent pinned field set carrying the declared `TaskFamilyRef` or `TaskSignature`, the work-measure threshold target, prior exposure declaration, time-to-threshold, budget-to-threshold, post-threshold efficiency when relevant, any declared transfer or retention claim, any downside cost or downside on adjacent tasks, and any specialization-entry baseline, specialization-entry evidence, or stepping-stone evidence item that materially affects comparison.
 
-Admission rule for `SpecialistHandoff`: use that handoff kind only when the truthful published result is one heterogeneous handoff bundle whose members occupy different specialization roles that still need to travel together. Do not use it when one ordinary `Shortlist`, `RankedShortlist`, `ExplorationArchive`, or another narrower named surface already states the result more precisely.
+Admission rule for `SpecialistHandoff`: use that handoff kind only when the truthful published result is one heterogeneous handoff bundle whose members occupy different specialization roles that still need to travel together. Do not use it when one ordinary `Shortlist`, `RankedShortlist`, `ExplorationArchive`, or another narrower named result kind already states the result more precisely.
 
 When the declared task family is heterogeneous, the selector may return one `SpecialistHandoff`, one other narrowed handoff plan, or one small admissible set that preserves rival specialists rather than collapsing them into a fake single winner. Low-human-overlap candidates remain admissible only when the profile, evidence basis, and policy constraints are explicit.
 
 **S4 — `Composition & fallbacks` templates (design‑time).**
-A library of composition shapes (preconditioner → solver → verifier; cascades; meta‑selectors) **as templates**, legality‑checked and pinned. Concrete strategy semantics stay in the referenced method families; G.5 only carries the composition surface.
+A library of composition shapes (preconditioner → solver → verifier; cascades; meta‑selectors) **as templates**, legality‑checked and pinned. Concrete strategy semantics stay in the referenced method families; G.5 only carries the composition template.
 
-**S5 — `Publication & telemetry` surface (run‑time).**
-A standard surface to publish:
+**S5 — `Publication & telemetry` interface (run‑time).**
+A standard publication interface to publish:
 
 * `DRR` (decision rationale) + `SCR` (support/confidence routing) with explicit pins,
-* declared selector / set-surface artefacts,
+* declared selector / selected-set records,
 * telemetry pins to refresh orchestration (`G.11`), without owning orchestration.
 
-When the publication burden is one selected-set surface rather than one generic registry trace, `Shortlist` is the public head, `RankedShortlist` is the ordered specialization when order materially belongs to the published result, `ShortlistId` is the emitted public identity, and `ChoiceSet` stays one mathematical gloss rather than the public head.
+When the current publication question is selected-set publication rather than one generic registry trace, `Shortlist` is the public selected-set label, `RankedShortlist` is the ordered specialization when order materially belongs to the published result, `ShortlistId` is the emitted public identity, and `ChoiceSet` stays one mathematical gloss rather than the public selected-set label.
 
-**S6 — `Governance & evolution` surface (design‑time).**
+**S6 — `Governance & evolution` interface (design‑time).**
 Versioning, deprecation, and registry evolution discipline (UTS publication; continuity), without minting new Part‑G‑wide types.
 
 #### G.5:4.3 - Selector head and narrower selector families
@@ -64684,29 +65934,29 @@ Selection/dispatch stays one generic selector head. Narrower selector families m
 
 Method- and generator-specific pressures such as `QD` archives, open-ended declared sets, explore/exploit lenses, or preference comparators do not become part of the selector head. They arrive only through explicit extension declarations and the pins those extensions require.
 
-#### G.5:4.4 - Interfaces (minimal I/O surface)
+#### G.5:4.4 - Interfaces (minimal I/O record)
 
 | Interface                         | Consumes                                                                                                                                                     | Produces                                                                                                                                                                                                                                                   |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **G.5‑1 RegisterFamily**          | `SoTA` family cards (from `G.2`), CHR/CAL pins (from `G.3/G.4`), `CNSpecRef.edition`, `CGSpecRef.edition`, `ContextId`                                       | A `MethodFamily` registry row (`MethodFamilyId`, `EligibilityStandardRef`, `AssuranceProfileRef`, `UTSRowId`, pinned refs)                                                                                                                                 |
 | **G.5‑2 RegisterGeneratorFamily** | `SoTA` generator family cards (from `G.2`), `ContextId`, pinned refs (including `TransferRulesRef.edition` when applicable)                                  | A `GeneratorFamily` registry row (`GeneratorFamilyId`, `GeneratorSignatureRef`, `UTSRowId`, pinned refs)                                                                                                                                                   |
-| **G.5‑3 Select**                  | `TaskSignatureRef`, `MethodFamilyId[]` (in scope), pinned `CNSpecRef/CGSpecRef` (editions), policy refs (if any), audit citation pins (`PathId/PathSliceId`) | `CandidateSet` (set‑returning), declared selector artefact with `PortfolioMode` recorded, `DRR + SCR` pins; if no admissible candidate exists: return `CandidateSet=∅` plus an escalation hint (`ActionHint`) and the pins required to plan next steps (P2W split applies) |
-| **G.5‑4 Compose**                 | `CandidateSet`, composition template refs, pinned legality constraints                                                                                       | Composite strategy surface (template‑level; legality‑checked; pinned)                                                                                                                                                                                      |
-| **G.5‑5 Telemetry**               | run outcomes + citations + policy/edition pins                                                                                                               | refresh cues (typed RSCR causes + payload pins), parity deltas (if parity harness is in use), telemetry pins (selector‑side; orchestration surface is `G.11`)                                                                                              |
+| **G.5‑3 Select**                  | `TaskSignatureRef`, `MethodFamilyId[]` (in scope), pinned `CNSpecRef/CGSpecRef` (editions), policy refs (if any), audit citation pins (`PathId/PathSliceId`) | `CandidateSet` (set‑returning), declared selector result with `PortfolioMode` recorded, `DRR + SCR` pins; if no admissible candidate exists: return `CandidateSet=∅` plus an escalation hint (`ActionHint`) and the pins required to plan next steps (P2W split applies) |
+| **G.5‑4 Compose**                 | `CandidateSet`, composition template refs, pinned legality constraints                                                                                       | Composite strategy template (template‑level; legality‑checked; pinned)                                                                                                                                                                                      |
+| **G.5‑5 Telemetry**               | run outcomes + citations + policy/edition pins                                                                                                               | refresh cues (typed RSCR causes + payload pins), parity deltas (if parity harness is in use), telemetry pins (selector‑side; orchestration owner is `G.11`)                                                                                              |
 
 #### G.5:4.4a - Worked selector slice
 
 - A catalyst-search team is choosing among three method families for the same declared `TaskSignature` and `C.22.1` adaptation signature.
-- The shared profile pins one work-measure threshold target, one freshness window, one prior-exposure declaration, and one adaptation budget. One family reaches threshold quickly but carries high downside burden on adjacent tasks. One family is slower but transfers cleanly. One family never clears `MinimalEvidence` and must abstain.
+- The shared profile pins one work-measure threshold target, one freshness window, one prior-exposure declaration, and one adaptation budget. One family reaches threshold quickly but carries high downside on adjacent tasks. One family is slower but transfers cleanly. One family never clears `MinimalEvidence` and must abstain.
 - A lawful `G.5` result therefore publishes a set-return shortlist or a narrowed handoff plan, with `DRR/SCR` citing why the third family was excluded and why the first two remain non-dominated. The selector does not invent one scalar winner and does not hide the specialization profile in auxiliary side notes.
-- When one upstream `C.19` pass has already narrowed the live pool to one internal retained subset over registered families, `G.5` may publish that result as one `Shortlist` with one `ShortlistId` and explicit basis pins only when selector-facing publication is now the burden. Until that emission occurs, the internal retained subset is not yet one public shortlist artifact.
-- When one upstream `C.11` pass has already fixed one local choice over one declared source surface, or one `C.24` pass has already produced one enactment-facing narrowed handoff, `G.5` may publish the selected-set or narrowed-handoff artifact only when selector-facing publication is now the burden. Until this `G.5` emission occurs, the `ChoiceResult`, `CallPlan`, or `CheckpointReturn` is not itself one public `Shortlist`, `RankedShortlist`, or `ShortlistId`-bearing artifact.
+- When one upstream `C.19` pass has already narrowed the live pool to one internal retained subset over registered families, `G.5` may publish that result as one `Shortlist` with one `ShortlistId` and explicit basis pins only when selector-facing publication is now the question. Until that emission occurs, the internal retained subset is not yet one public shortlist result.
+- When one upstream `C.11` pass has already fixed one local choice over one declared source surface, or one `C.24` pass has already produced one enactment-facing narrowed handoff, `G.5` may publish the selected-set or narrowed-handoff result only when selector-facing publication is now the question. Until this `G.5` emission occurs, the `ChoiceResult`, `CallPlan`, or `CheckpointReturn` is not itself one public `Shortlist`, `RankedShortlist`, or `ShortlistId`-bearing result.
 
 #### G.5:4.4b - Published selected-set result and closure rule
 
-A finished `G.5` pass should publish one explicit selected-set result from the dispatcher/registry burden rather than one selector trace that leaves the public artifact implicit.
+A finished `G.5` pass should publish one explicit selected-set result from the dispatcher/registry question rather than one selector trace that leaves the public result implicit.
 
-Publication here is the closure surface of selector work over registered families. It does not replace registry maintenance, dispatcher comparison law, or the upstream pool-policy and local-choice owners that supplied the retained members.
+Publication here is the closure record for selector work over registered families. It does not replace registry maintenance, dispatcher comparison law, or the upstream pool-policy and local-choice pattern authorities that supplied the retained members.
 
 The lawful selector outcome families here are:
 
@@ -64715,12 +65965,12 @@ The lawful selector outcome families here are:
 - `SelectorOutcomeKind = AbstainOutcome` when no admissible candidate exists and the truthful result is one abstain;
 - `SelectorOutcomeKind = EscalationOutcome` when no admissible candidate exists and the truthful result is one escalation.
 
-`SetSurfaceKind` belongs only inside `SetSurfaceOutcome`. `Shortlist` and `RankedShortlist` are public selector artifacts over registered rows. They are not merely one upstream internal retained subset copied forward under one prettier head. `G.5` is the owner that turns selector state into one public artifact with one explicit outcome kind, one explicit set-surface head when applicable, one explicit member set or handoff content, and one explicit basis surface.
+`SetSurfaceKind` belongs only inside `SetSurfaceOutcome`. `Shortlist` and `RankedShortlist` are public selector results over registered rows. They are not merely one upstream internal retained subset copied forward under one prettier label. `G.5` is the governing pattern that turns selector state into one public result with one explicit outcome kind, one explicit selected-set label when applicable, one explicit member set or handoff content, and one explicit basis-pin set.
 
 A publication result should state at least these fields:
 
 - the selector outcome kind being emitted;
-- the public set-surface head when the outcome is one set-surface outcome;
+- the public selected-set label when the outcome is one set-surface outcome;
 - retained members, or the narrowed handoff content, or the abstain/escalation condition;
 - ordering status when ordering matters;
 - basis pins and policy pins sufficient to justify the result;
@@ -64754,9 +66004,9 @@ SelectorOutcome(
 )
 ```
 
-Close as `SelectorOutcomeKind = SetSurfaceOutcome` with `SetSurfaceKind = Shortlist` when several retained members survive lawfully but no public internal order belongs to the result. Close as `SelectorOutcomeKind = SetSurfaceOutcome` with `SetSurfaceKind = RankedShortlist` when order materially belongs to the published artifact. Close as `SelectorOutcomeKind = HandoffOutcome` with `HandoffKind = SpecialistHandoff` or one other narrowed handoff when heterogeneity itself is the truthful downstream surface. Close as `SelectorOutcomeKind = AbstainOutcome` or `EscalationOutcome` when no admissible candidate exists under the pinned constraints.
+Close as `SelectorOutcomeKind = SetSurfaceOutcome` with `SetSurfaceKind = Shortlist` when several retained members survive lawfully but no public internal order belongs to the result. Close as `SelectorOutcomeKind = SetSurfaceOutcome` with `SetSurfaceKind = RankedShortlist` when order materially belongs to the published result. Close as `SelectorOutcomeKind = HandoffOutcome` with `HandoffKind = SpecialistHandoff` or one other narrowed handoff when heterogeneity itself is the truthful downstream surface. Close as `SelectorOutcomeKind = AbstainOutcome` or `EscalationOutcome` when no admissible candidate exists under the pinned constraints.
 
-If the publication still does not state what public artifact was emitted, who remained in it, whether order belongs to it, and which pins justify it, then the selector has not yet published one finished `G.5` result.
+If the publication still does not state what public result was emitted, who remained in it, whether order belongs to it, and which pins justify it, then the selector has not yet published one finished `G.5` result.
 
 #### G.5:4.4c - Publication quick card
 
@@ -64788,17 +66038,17 @@ If the card does not already state what was published, who survived, whether ord
 #### G.5:4.4ca - Derived tradition-view publication stays derived over one declared palette
 
 - If selector work consumes one declared source surface such as `Front`, `Archive`, or one source-surface composition through one derived tradition view such as `TraditionFront` or `TraditionArchive`, treat that derived view as one interpretation layer over one declared `SoTAPaletteDescription`, not as the default meaning of `Tradition` or of the palette itself.
-- When `SelectorOutcomeKind = SetSurfaceOutcome`, the public head still closes as `Shortlist` or `RankedShortlist`; when `SelectorOutcomeKind = HandoffOutcome`, the result closes as one `SpecialistHandoff` or one other narrowed handoff. The derived tradition view disciplines the source, not the emitted outcome family.
+- When `SelectorOutcomeKind = SetSurfaceOutcome`, the public selected-set label still closes as `Shortlist` or `RankedShortlist`; when `SelectorOutcomeKind = HandoffOutcome`, the result closes as one `SpecialistHandoff` or one other narrowed handoff. The derived tradition view disciplines the source, not the emitted outcome family.
 - When such a derived tradition view is active, publish `SourceSurfaceKind`, use `DerivedViewKind` when the distinction matters to interpretation or later shipping, use `SourceSurfaceComposition` only when several source-surface families were genuinely composed, and keep `BasePaletteRef=SoTAPaletteDescriptionId` recoverable alongside the emitted result.
 - If the derivation depends on one declared `Q` or one reachability/coverage rule, cite that declared basis directly in `DRR/SCR` or equivalent basis pins rather than leaving the derivation implicit.
-- If no derived tradition view is active, stay with the declared palette, front, archive, or shortlist surfaces already named by the selector burden.
+- If no derived tradition view is active, stay with the declared palette, front, archive, or shortlist families already named by the selector record.
 
 #### G.5:4.4d - Worked publication closure slice
 
 Three short contrasts keep the publication law practical.
 
 **Several survivors, no public order belongs to the result.**
-When the selector has retained more than one lawful family but no downstream public order belongs to the artifact, `G.5` should close as one `Shortlist` over the registered surviving rows:
+When the selector has retained more than one lawful family but no downstream public order belongs to the published result, `G.5` should close as one `Shortlist` over the registered surviving rows:
 
 ```text
 Shortlist(
@@ -64834,7 +66084,7 @@ Abstain(
 )
 ```
 
-The practical distinction is simple: an internal retained subset can remain real upstream without yet being one public selector artifact. `G.5` begins only when that selector-facing publication burden starts, and it closes only after the declared outcome kind, any applicable public set-surface head, surviving members or handoff content, and basis pins are emitted directly.
+The practical distinction is simple: an internal retained subset can remain real upstream without yet being one public selector result. `G.5` begins only when that selector-facing publication question starts, and it closes only after the declared outcome kind, any applicable public selected-set label, surviving members or handoff content, and basis pins are emitted directly.
 
 Most selector-side use can stop after `G.5:4.4d`. The blocks below are extension declarations used only when the corresponding mode is actually active.
 
@@ -64922,7 +66172,7 @@ All blocks below are extension declarations: they declare `Uses` and required pi
   * This block enables declared sets of `{Environment, MethodFamily}` pairs without redefining generator semantics in G.5.
   * Post‑2015 examples typically referenced via `G.2` family cards: POET‑class and later open‑ended/co‑evolutionary regimes, including enhanced variants where transfer policies and validity gates must be edition‑pinned.
 
-#### G.5:4.4e - Selector-facing outcome surfaces
+#### G.5:4.4e - Selector-facing outcome kinds
 
 - `SelectionSlot` returns one selector outcome, not one forced single winner.
 - The emitted result should declare its `SelectorOutcomeKind`.
@@ -64949,7 +66199,7 @@ All blocks below are extension declarations: they declare `Uses` and required pi
 - `PromotionPolicy` is required when tie-break or telemetry signals are promoted into dominance.
 - The selector may consume one declared source surface and one declared choice lens without trying to explain the whole reason why another probe was worth its cost.
 - When `CostToProbe`, `ValueOfInformation`, `ValueOfComputation`, `explore_share`, `backstop_confidence`, or sequencing pressures matter, keep them explicit in the surrounding choice doctrine instead of smuggling them into set-surface labels.
-- Selector-facing surfaces should name the set-surface kind, source-surface kind, derived-view declaration when needed, the emitted shortlist family, and promotion/default routing.
+- Selector-facing results should name the set-surface kind, source-surface kind, derived-view declaration when needed, the emitted shortlist family, and promotion/default routing.
 - Those selector-facing field values should use controlled tokens, cited ids, or already-declared head labels rather than selector-local prose values.
 
 ### G.5:5 - Archetypal Grounding
@@ -64959,7 +66209,7 @@ All blocks below are extension declarations: they declare `Uses` and required pi
 
 **Show 1 (multi-Tradition dispatch; unordered shortlist).**
 A `CG-Frame` includes multiple decision-theoretic families with different admissibility assumptions. Evidence for some CHR traits is incomplete.
-System registers families (S1), then runs `Select` (S3) on a pinned `TaskSignatureRef`. Eligibility is tri-state; some families **abstain** due to missing minimal-evidence pins. Among remaining candidates, only a partial order is lawful, so the selector publishes one `Shortlist` with explicit `basisPins` instead of inventing one scalar winner. No shadow acceptance logic appears in the selector; it consumes pinned acceptance and legality surfaces.
+System registers families (S1), then runs `Select` (S3) on a pinned `TaskSignatureRef`. Eligibility is tri-state; some families **abstain** due to missing minimal-evidence pins. Among remaining candidates, only a partial order is lawful, so the selector publishes one `Shortlist` with explicit `basisPins` instead of inventing one scalar winner. No shadow acceptance logic appears in the selector; it consumes pinned acceptance and legality records.
 
 **Show 2 (specialist handoff; ranked publication).**
 A bounded-specialization comparison keeps two method families live, but downstream handoff now requires one ordered public result rather than one merely unordered retained set.
@@ -64973,7 +66223,7 @@ The truthful `G.5` result is one abstain or escalation publication that names th
 
 Potential biases and failure modes this pattern explicitly guards against:
 
-* **Monoculture bias (single Tradition dominance by default).** Mitigation: registry requires explicit eligibility/assurance surfaces; selection is set‑returning under partial orders; method‑specific policies are explicit pins, not hard‑coded defaults.
+* **Monoculture bias (single Tradition dominance by default).** Mitigation: registry requires explicit eligibility/assurance surfaces; selection is set‑returning under partial orders; method‑specific policies stay explicit pins rather than hard-coded defaults.
 * **Hidden scalarisation bias.** Mitigation: set‑return semantics is core‑routed; dominance regimes are explicit and default routing is singular and declared.
 * **“Tool equals method” bias.** Mitigation: notation independence + prohibition of tool keywords in core registry/eligibility fields; tool choices are outside the core.
 * **Cross‑Context leakage bias.** Mitigation: explicit crossing pins only; Bridges + CL are required when crossings occur; no implicit crossings.
@@ -64986,50 +66236,53 @@ Potential biases and failure modes this pattern explicitly guards against:
 | `CC‑G5‑CoreRef` | **Core conformance bridge.** `G.5` is conformant only if the **effective** `G.Core` obligations referenced by `G.5:4.1 (GCoreLinkageManifest)` are satisfied (after profile/set expansion and explicit deltas). |
 | `CC‑G5.0`       | Core standards **SHALL** remain notation‑independent; vendor/tool keywords are forbidden in registry, eligibility, assurance, or selector‑kernel obligations (E.5.*). |
 | `CC‑G5.1`       | Every `MethodFamily` **SHALL** declare an `EligibilityStandardRef` using CHR/CAL terms (typed; edition‑pinned where applicable). Standards **SHALL NOT** rely on tool‑specific keywords.  |
-| `CC‑G5.2`       | Selection **SHALL** be a pure function of `TaskSignatureRef` + pinned policy/edition refs; side effects are limited to emitting DRR/SCR pins and telemetry/RSCR triggers (no hidden mutation of contract surfaces). |
+| `CC‑G5.2`       | Selection **SHALL** be a pure function of `TaskSignatureRef` + pinned policy/edition refs; side effects are limited to emitting DRR/SCR pins and telemetry/RSCR triggers (no hidden mutation of contract-bearing spec refs). |
 | `CC‑G5.3`       | **Delegated (ID‑continuity).** Cross‑Context use **MUST** follow `G.Core` crossing visibility and penalty routing. **Delegation targets:** `CC‑GCORE‑CROSS‑1`, `CC‑GCORE‑PEN‑1`.  |
 | `CC‑G5.4`       | **Default rule for** `DefaultId.GammaFoldForR_eff`. The selector **MUST** default to the weakest‑link rule for `R_eff` and record contributors in SCR; it **MAY** use an alternative Γ‑fold only when provided by an explicitly pinned policy/profile with proof obligations satisfied (monotonicity; boundary behavior). |
 | `CC‑G5.5`       | Ordinal scales **MUST NOT** be averaged/subtracted; any aggregation/comparison must respect CHR scale typing and legality constraints (incl. CSLC where applicable). |
 | `CC‑G5.6`       | Method and generator family identities **SHALL** be published to UTS with the required naming discipline (twin labels where applicable; deprecations follow lexical continuity rules). *(Core routing applies; G.5 adds the registry‑specific publication obligation.)* |
 | `CC‑G5.7`       | **Conditional.** If `G.5:Ext.EELog` is present, exploration **MUST** be budgeted under the pinned E/E‑LOG policy; probe outcomes **MUST** feed refresh via canonical RSCR trigger kinds. |
 | `CC‑G5.8`       | **CG‑Frame gate enforced.** Selection rejects or abstains from candidates that do not meet the pinned `CG‑Spec.MinimalEvidence` requirements for the characteristics they cite. |
-| `CC‑G5.9`       | **Delegated (ID‑continuity).** Set‑return semantics are routed via `G.Core`. **Delegation target:** `CC‑GCORE‑SET‑1`. Candidate ordering **MUST** be lawful over typed traits and legality constraints. If only a partial order is available, selection **MUST** return one declared selector outcome (for example one `SetSurfaceOutcome` with `Shortlist`/`RankedShortlist`, one `HandoffOutcome` with `SpecialistHandoff`, or another pinned outcome artifact), with no forced totalisation via illegal scalarisation. |
-| `CC‑G5.10`      | **SCR completeness.** SCR **MUST** enumerate Γ‑fold contributors (when used), referenced contract surface editions, the evidence citations (`PathId/PathSliceId`) used in gating/rationale, and `MinimalEvidence` gating verdicts *(by lane & carrier, when such gating is relied upon).* |                                                      
+| `CC‑G5.9`       | **Delegated (ID‑continuity).** Set‑return semantics are routed via `G.Core`. **Delegation target:** `CC‑GCORE‑SET‑1`. Candidate ordering **MUST** be lawful over typed traits and legality constraints. If only a partial order is available, selection **MUST** return one declared selector outcome (for example one `SetSurfaceOutcome` with `Shortlist`/`RankedShortlist`, one `HandoffOutcome` with `SpecialistHandoff`, or another pinned outcome result), with no forced totalisation via illegal scalarisation. |
+| `CC‑G5.10`      | **SCR completeness.** SCR **MUST** enumerate Γ‑fold contributors (when used), referenced contract-bearing spec editions, the evidence citations (`PathId/PathSliceId`) used in gating/rationale, and `MinimalEvidence` gating verdicts *(by lane & carrier, when such gating is relied upon).* |
 | `CC‑G5.11`      | **Delegated (ID‑continuity).** Tri‑state eligibility/acceptance semantics and unknown handling are routed via `G.Core`. **Delegation target:** `CC‑GCORE‑GUARD‑1`. *(Includes the rule that `degrade(...)` is expressed via a pinned FailureBehavior/SoS‑LOG branch id — not as a fourth status.)* |
-| `CC‑G5.12`      | **No “universal” cross‑Tradition scoring.** Cross‑Tradition selection **MUST NOT** rely on a single numeric formula not justified by pinned CHR/CAL constraints and the contract surfaces. If a triad or selected set **claims universality**, it **MUST** satisfy **explicit, pinned** heterogeneity gates (ids/pins), e.g., `FamilyCoverage ≥ k` and `MinInterFamilyDistance ≥ δ_family`, where `k` and `δ_family` are declared by the pinned policy/TaskSignature/SoTA pack, and cite the relevant **Context Card id (F.1)** in DRR/SCR; otherwise treat the outcome as Context‑local.  |
-| `CC‑G5.13`      | **Conditional.** If the selector consumes admissibility/maturity artefacts (e.g., via `G.5:Ext.SoSLOG`), it **MUST NOT** recompute thresholds; it consumes pinned admissibility ledger rows and cites clause/rung ids in audit pins. |
-| `CC‑G5.14`      | **Φ(CL) / Φ_plane discipline.** If crossing or plane penalties are applied, the active penalty policy ids (e.g., `Φ(CL)`, `Φ_plane`) **MUST** be explicit in audit pins, and the pinned policies **MUST** satisfy the monotone & bounded requirements asserted by their cited contract surfaces and be published via those same cited surfaces (e.g., `CG‑Spec`). SCR **MUST** record the policy‑id in use; penalty routing semantics remain routed via `G.Core`. |
+| `CC‑G5.12`      | **No “universal” cross‑Tradition scoring.** Cross‑Tradition selection **MUST NOT** rely on a single numeric formula not justified by pinned CHR/CAL constraints and the contract-bearing spec refs. If a triad or selected set **claims universality**, it **MUST** satisfy **explicit, pinned** heterogeneity gates (ids/pins), e.g., `FamilyCoverage ≥ k` and `MinInterFamilyDistance ≥ δ_family`, where `k` and `δ_family` are declared by the pinned policy/TaskSignature/SoTA pack, and cite the relevant **Context Card id (F.1)** in DRR/SCR; otherwise treat the outcome as Context‑local.  |
+| `CC‑G5.13`      | **Conditional.** If the selector consumes admissibility/maturity records (e.g., via `G.5:Ext.SoSLOG`), it **MUST NOT** recompute thresholds; it consumes pinned admissibility ledger rows and cites clause/rung ids in audit pins. |
+| `CC‑G5.14`      | **Φ(CL) / Φ_plane discipline.** If crossing or plane penalties are applied, the active penalty policy ids (e.g., `Φ(CL)`, `Φ_plane`) **MUST** be explicit in audit pins, and the pinned policies **MUST** satisfy the monotone & bounded requirements asserted by their cited contract-bearing spec refs and be published via those same cited spec refs (e.g., `CG‑Spec`). SCR **MUST** record the policy‑id in use; penalty routing semantics remain routed via `G.Core`. |
 | `CC‑G5.15`      | Units/scale legality **MUST** be established via CSLC (A.18) before any aggregation or Γ‑fold; unit/scale mismatches are a fail‑fast defect. |
-| `CC‑G5.16`      | Hidden thresholds are forbidden. Thresholds live in explicitly pinned acceptance/eligibility policy artefacts, not in selector prose, LOG shells, or code.  |
-| `CC‑G5.17`      | ReferencePlane **MUST** be declared (pinned) for any claim that is used in dispatch, and the selector’s audit artefacts must cite it (including plane‑crossing pins when applicable). |
-| `CC‑G5.18`      | Numeric comparisons/aggregations used by dispatch **MUST** cite a lawful, edition‑pinned comparator/spec surface (as provided by the contract surfaces); illegal mixes of scale types are forbidden. |
+| `CC‑G5.16`      | Hidden thresholds are forbidden. Thresholds live in explicitly pinned acceptance/eligibility policy records, not in selector prose, LOG shells, or code.  |
+| `CC‑G5.17`      | ReferencePlane **MUST** be declared (pinned) for any claim that is used in dispatch, and the selector’s audit records must cite it (including plane‑crossing pins when applicable). |
+| `CC‑G5.18`      | Numeric comparisons/aggregations used by dispatch **MUST** cite a lawful, edition‑pinned comparator/spec surface (as provided by the contract-bearing spec refs); illegal mixes of scale types are forbidden. |
 | `CC‑G5.19`      | **Conditional (QD).** If `G.5:Ext.NQD` is present, the required QD telemetry triple (quality/diversity/QD summary) **MUST** be computable and publishable under the pinned descriptor/distance definitions and archive policy, without redefining their semantics in G.5. |
-| `CC‑G5.20`      | **Conditional (QD).** QD/illumination summaries are treated as telemetry unless explicitly promoted by a pinned acceptance/policy artefact; the selector must record the promoting policy id in audit pins. |
+| `CC‑G5.20`      | **Conditional (QD).** QD/illumination summaries are treated as telemetry unless explicitly promoted by a pinned acceptance/policy record; the selector must record the promoting policy id in audit pins. |
 | `CC‑G5.21`      | **Conditional (Archive/QD).** Any use of archives **MUST** declare `InsertionPolicyRef` and pin the required editions for reproducibility (e.g., descriptor/distance definitions and any method editions they depend on).  |
 | `CC‑G5.22`      | **Conditional (QD).** Twin‑naming discipline for descriptor vs plain space (if used) must be respected (distinct objects; no aliasing).  |
-| `CC‑G5.23`      | **Default rule for** `DefaultId.PortfolioMode`. The selector **MUST** expose `PortfolioMode ∈ {Pareto, Archive}` with **default = `Archive`**, and echo it in DRR/SCR and declared selector artefacts when not explicitly overridden by pinned policy/TaskSignature. The default is a retention/evidence-preservation posture, not a public set-surface head, not a dominance default, and not a substitute for `SetSurfaceKind`. `ε`‑fronts are allowed as *local* decision aids under `CG‑Spec` when explicitly pinned.  |
+| `CC‑G5.23`      | **Default rule for** `DefaultId.PortfolioMode`. The selector **MUST** expose `PortfolioMode ∈ {Pareto, Archive}` with **default = `Archive`**, and echo it in DRR/SCR and declared selector results when not explicitly overridden by pinned policy/TaskSignature. The default is a retention/evidence-preservation posture, not a public selected-set label, not a dominance default, and not a substitute for `SetSurfaceKind`. `ε`‑fronts are allowed as *local* decision aids under `CG‑Spec` when explicitly pinned.  |
 | `CC‑G5.23a`     | **Parity‑run publication.** If parity harness is in use, a selector/generator **MUST** publish a parity run and `ParityCard` to **UTS** (see `G.9`). This obligation remains mandatory irrespective of dominance/`PortfolioMode` policy. |
 | `CC‑G5.24`      | **Conditional (Open‑Ended).** If `G.5:Ext.OpenEndedFamilyWiring` is present, the selector **MUST** support declared sets of `{Environment, MethodFamily}` pairs as set‑valued outcomes under explicit pins. |
 | `CC‑G5.25`      | **Conditional (Open‑Ended).** In Open‑Ended mode, `TransferRulesRef.edition` is mandatory and **MUST** be visible to telemetry and RSCR triggers.  |
 | `CC‑G5.26`      | **Conditional (Archive/QD).** Within any archive niche/cell, ordering and tie‑breaks **MUST** remain lawful over compatible scales; illegal mixed‑scale weighted sums are forbidden. |
 | `CC‑G5.27`      | If the selector cites any `GateCrossing`, the corresponding `CrossingBundle` publication **MUST** be present and conformant; missing/non‑conformant `CrossingBundle` blocks downstream consumption. | 
-| `CC‑G5.28`      | **Default rule for** `DefaultId.DominanceRegime`. `DominanceRegime` **SHALL** default to `ParetoOnly`. Any inclusion of additional telemetry dimensions into dominance (e.g., illumination) requires an explicitly pinned acceptance/policy artefact and must be recorded in audit pins. **Parity‑run publication (CC‑G5.23a) remains mandatory** irrespective of dominance policy. |
+| `CC‑G5.28`      | **Default rule for** `DefaultId.DominanceRegime`. `DominanceRegime` **SHALL** default to `ParetoOnly`. Any inclusion of additional telemetry dimensions into dominance (e.g., illumination) requires an explicitly pinned acceptance/policy record and must be recorded in audit pins. **Parity‑run publication (CC‑G5.23a) remains mandatory** irrespective of dominance policy. |
 | `CC‑G5.29`      | **Conditional (QD/Open‑Ended).** Any telemetry event that materially changes an archive / retained-set state **MUST** log `PathSliceId`, the active policy id, and the active editions of the relevant definition pins (`DescriptorMapRef.edition`, `DistanceDefRef.edition`, and `TransferRulesRef.edition` when applicable) and expose them to RSCR triggers. |
-| `CC‑G5.30`      | **No Strategy minting.** Within `G.5`, “strategy” is a policy‑bound composition surface; the pattern **SHALL NOT** mint a new universal `U.Type` named `Strategy` (E.10 discipline). If a stable reference is needed, publish composition/policy ids (e.g., UTS entries) rather than minting a universal type. |
+| `CC‑G5.30`      | **No Strategy minting.** Within `G.5`, “strategy” is a policy‑bound composition template; the pattern **SHALL NOT** mint a new universal `U.Type` named `Strategy` (E.10 discipline). If a stable reference is needed, publish composition/policy ids (e.g., UTS entries) rather than minting a universal type. |
 | `CC‑G5.31`      | **Strategy hint on non‑admissible sets.** If selection yields `CandidateSet = ∅`, the selector **SHALL** emit an explicit escalation hint (`ActionHint`) that is **DRR/SCR‑compatible** and auditable: include (at minimum) the top‑3 blocking constraints as cited ids/pins, and (where applicable) the relevant edition pins (e.g., `TransferRulesRef.edition` in Open‑Ended mode) to guide exploration under explicitly pinned lenses (e.g., E/E‑LOG). |
 | `CC‑G5.32`      | **Parity‑run publication + lawful roll‑ups.** If parity harness is in use, parity publication is required per `CC‑G5.23a` (ID‑continuity). Any scalar roll‑up or summary view **MUST** be lawful under **CG‑Spec** (no mixed‑scale sums), and published views must preserve set‑return semantics (no single‑score leaderboards as authoritative outputs without an explicit, lawful comparator surface). |
-| `CC‑G5.33`      | **Conditional (bounded specialization).** When the selection burden is acquisition of usable specialization on a declared `TaskFamilyRef` or `TaskSignature`, selector outputs **SHALL** either publish `TaskFamilySpecializationProfile@Context` or cite equivalent pins carrying the `C.22.1` adaptation-signature fields needed for comparison: work-measure threshold target, prior exposure declaration, time-to-threshold, budget-to-threshold, post-threshold efficiency when relevant, and any declared transfer, retention, downside, or specialization-entry notes. |
-| `CC‑G5.34`      | **Selected-set publication head.** When `SelectorOutcomeKind = SetSurfaceOutcome`, the published set-surface head **MUST** be explicit. Use `Shortlist` as the public selected-set head, `RankedShortlist` only when ordering materially belongs to the result, publish `ShortlistId` when one public identifier is emitted, and do not silently let `ChoiceSet` replace that public head. |
-| `CC‑G5.34a`     | **Selector outcome typing.** Published selector results **MUST** declare `SelectorOutcomeKind`. `SetSurfaceKind` is required only when `SelectorOutcomeKind = SetSurfaceOutcome`; `HandoffKind` is required only when `SelectorOutcomeKind = HandoffOutcome`. Non-set outcomes **MUST NOT** masquerade as one public set-surface head. |
-| `CC‑G5.35`      | **Publication closure.** Any published selector result **MUST** state the declared `SelectorOutcomeKind`, any applicable public set-surface head, retained members or narrowed handoff content, ordering status (when applicable), and basis pins directly in the emitted result rather than relying on upstream `C.11`, `C.19`, or `C.24` notes. |
-| `CC‑G5.36`      | **Neighboring-pattern reroutes.** If the burden is still local choice among already-available options, pool policy over still-live candidate lines, or enactment planning after choice, `G.5` **MUST** consume the published result from `C.11`, `C.19`, or `C.24` rather than restating those patterns as if publication itself decided the matter. |
+| `CC‑G5.33`      | **Conditional (bounded specialization).** When the selection question is acquisition of usable specialization on a declared `TaskFamilyRef` or `TaskSignature`, selector outputs **SHALL** either publish `TaskFamilySpecializationProfile@Context` or cite equivalent pins carrying the `C.22.1` adaptation-signature fields needed for comparison: work-measure threshold target, prior exposure declaration, time-to-threshold, budget-to-threshold, post-threshold efficiency when relevant, and any declared transfer, retention, downside, or specialization-entry notes. |
+| `CC‑G5.34`      | **Selected-set publication label.** When `SelectorOutcomeKind = SetSurfaceOutcome`, the published selected-set label **MUST** be explicit. Use `Shortlist` as the public selected-set label, `RankedShortlist` only when ordering materially belongs to the result, publish `ShortlistId` when one public identifier is emitted, and do not silently let `ChoiceSet` replace that public label. |
+| `CC‑G5.34a`     | **Selector outcome typing.** Published selector results **MUST** declare `SelectorOutcomeKind`. `SetSurfaceKind` is required only when `SelectorOutcomeKind = SetSurfaceOutcome`; `HandoffKind` is required only when `SelectorOutcomeKind = HandoffOutcome`. Non-set outcomes **MUST NOT** masquerade as one public selected-set label. |
+| `CC‑G5.35`      | **Publication closure.** Any published selector result **MUST** state the declared `SelectorOutcomeKind`, any applicable public selected-set label, retained members or narrowed handoff content, ordering status (when applicable), and basis pins directly in the emitted result rather than relying on upstream `C.11`, `C.19`, or `C.24` notes. |
+| `CC‑G5.36`      | **Neighboring-pattern reroutes.** If the current question is still local choice among already-available options, pool policy over still-live candidate lines, or enactment planning after choice, `G.5` **MUST** consume the published result from `C.11`, `C.19`, or `C.24` rather than restating those patterns as if publication itself decided the matter. |
 | `CC‑G5.37`      | **Derived tradition-view publication discipline.** If the selector publishes one result through a derived tradition view such as `TraditionFront` or `TraditionArchive`, it **MUST** keep the declared base `SourceSurfaceKind` explicit, keep `SoTAPaletteDescription` recoverable through `BasePaletteRef`, and **MUST NOT** let the derived view become the default meaning of `Tradition`, `TraditionPalette`, or the base palette. |
+| `CC‑G5.38`      | **Causal method dispatch declarations.** If method selection involves causal methods, each compared method **MUST** declare `causalMethodComparisonPosture` as observational predictor, intervention optimizer, counterfactual strategy, causal fairness estimator, causal-RL policy, or simulation-only method, and **MUST** carry `causalUseSupportRecordRef` and `causalUseSupportVerdict` when it consumes `C.28` causal-use support rather than treating method dispatch as causal certification. |
+
+
 
 ### G.5:8 - Common Anti-Patterns and How to Avoid Them
 
 * **Anti‑pattern: “Selector as a shadow spec.”**
   *Symptom:* local acceptance/legality rules appear in selector prose/code, diverging from CN/CG/CAL.
-  *Avoid:* route all contract semantics via `CNSpecRef/CGSpecRef` and pinned CAL artefacts; keep G.5 core as a façade.
+  *Avoid:* route all contract semantics via `CNSpecRef/CGSpecRef` and pinned CAL records; keep G.5 core as a facade.
 
 * **Anti‑pattern: “Implicit crossings.”**
   *Symptom:* cross‑Context reuse is claimed without Bridge/CL pins, or without cited `CrossingBundle`.
@@ -65048,10 +66301,10 @@ Potential biases and failure modes this pattern explicitly guards against:
   *Avoid:* version/deprecate; keep stable ids; use explicit edition pins and deprecation notices.
 
 * **Anti‑pattern: “Publication hidden in upstream reasoning.”**
-  *Symptom:* the retained set exists only as one implication inside `C.11`, `C.19`, or `C.24`, while `G.5` never names the published head.
-  *Avoid:* publish the selected-set artifact directly, with explicit head, members, and basis pins, instead of leaving the shortlist implicit in neighboring doctrine.
+  *Symptom:* the retained set exists only as one implication inside `C.11`, `C.19`, or `C.24`, while `G.5` never names the published selected-set label.
+  *Avoid:* publish the selected-set result directly, with explicit label, members, and basis pins, instead of leaving the shortlist implicit in neighboring doctrine.
 
-* **Anti‑pattern: “Published result without closure surface.”**
+* **Anti‑pattern: “Published result without closure record.”**
   *Symptom:* a `Shortlist`, narrowed handoff, or abstain result is named, but the emitted result still does not state its members, ordering status, or basis pins.
   *Avoid:* publish the head, retained members, ordering status, abstain or escalation condition, and basis pins directly in `G.5`.
 
@@ -65061,25 +66314,27 @@ Potential biases and failure modes this pattern explicitly guards against:
 * **Core stability.** Universal invariants are routed via `G.Core`; method/generator innovation does not churn the selector head.
 * **Evolvability.** Registries support growth, retirement, and refresh with typed RSCR causes and explicit payload pins.
 * **Composability.** Strategy templates and fallbacks remain legality-checked and portable across implementations.
-* **Recoverable publication.** Selected-set results can now travel downstream as explicit shortlist-family, ranked-shortlist, or abstain/escalation artifacts rather than one hidden implication inside upstream reasoning.
+* **Recoverable publication.** Selected-set results can now travel downstream as explicit shortlist-family, ranked-shortlist, or abstain/escalation results rather than one hidden implication inside upstream reasoning.
 
 ### G.5:10 - Rationale
 
-* **Why registries?** Dispatch requires stable, auditable family objects with explicit eligibility and assurance surfaces; otherwise selection collapses into ad-hoc tooling.
+* **Why registries?** Dispatch requires stable, auditable family objects with explicit eligibility and assurance records; otherwise selection collapses into ad-hoc tooling.
 * **Why separation via Extensions?** QD/OEE/preference-learning and similar families are fast-moving and method-specific; making them part of the selector head would force a universal semantics and violate strict distinction.
 * **Why set-return?** Partial orders are common and often the only lawful representation under heterogeneous scales; set-return preserves semantics and makes tie criteria explicit.
 * **Why explicit defaults with one declared source?** Defaults are unavoidable; single-source indexing prevents competing defaults from silently diverging across patterns.
-* **Why selected-set publication here?** Once the burden is to surface one retained set for downstream use, the selector should publish that artifact directly instead of leaving it implicit in local choice, pool-policy, or enactment notes written for other purposes.
+* **Why selected-set publication here?** Once the current question is to publish one retained set for downstream use, the selector should publish that result directly instead of leaving it implicit in local choice, pool-policy, or enactment notes written for other purposes.
 
 ### G.5:11 - SoTA-Echoing
 
 This pattern is designed to **host** (not redefine) post-2015 SoTA families via `Uses` plus edition and policy pins:
 
-* **Quality-Diversity / illumination (post-2015 refinements).** Archive-centric QD families fit naturally as `G.5:Ext.NQD` extension declarations with explicit descriptor, distance, and insertion pins. The practical implication is to keep publication honest about whether the selector is returning one lawful set, one ranked artifact, or no admissible survivor at all.
-* **Open-Endedness (post-2015 wave).** POET-class and later open-ended or co-evolutionary families dock via generator registries plus `TransferRulesRef.edition` pins. The practical implication is to publish pair- or retained-set-shaped results explicitly rather than silently squeezing them into one false single-family winner.
-* **Algorithm selection and meta-selection.** Modern selection under uncertainty, robust evaluation, and policy-driven probing dock via explicit policy surfaces and typed telemetry pins, rather than hard-coded scoring rules. The practical safeguard is that the publication head and basis pins must still remain explicit after those policies have acted.
+* **Quality-Diversity / illumination (post-2015 refinements).** Archive-centric QD families fit naturally as `G.5:Ext.NQD` extension declarations with explicit descriptor, distance, and insertion pins. The practical implication is to keep publication honest about whether the selector is returning one lawful set, one ranked result, or no admissible survivor at all.
+* **Open-Endedness (post-2015 line).** POET-class and later open-ended or co-evolutionary families dock via generator registries plus `TransferRulesRef.edition` pins. The practical implication is to publish pair- or retained-set-shaped results explicitly rather than silently squeezing them into one false single-family winner.
+
+
+* **Algorithm selection and meta-selection.** Modern selection under uncertainty, robust evaluation, and policy-driven probing dock via explicit policy records and typed telemetry pins, rather than hard-coded scoring rules. The practical safeguard is that the publication label and basis pins must still remain explicit after those policies have acted.
 * **Budgeted specialist acquisition.** Current agentic search lines compete on time or budget to threshold plus truthful selected-set return when heterogeneous specialists remain non-dominated, so `G.5` keeps specialization profiles and set-return semantics explicit instead of forcing one static breadth winner.
-* **Preference-learning comparators.** Interactive and learned-preference regimes are treated as comparator or policy artefacts with explicit editions when they are actually declared.
+* **Preference-learning comparators.** Interactive and learned-preference regimes are treated as comparator or policy records with explicit editions when they are actually declared.
 
 SoTA here is treated as **best-known practice for a declared goal and constraint regime**, not whatever is currently popular.
 Evidence-tier clarification: peer-reviewed anchors carry the strongest support for typed comparison, budget-to-threshold, and truthful selected-set return. Faster-moving workshop, poster, or frontier-exploration lines remain explicit support for specialization-entry or open-ended pressure, not silently equal evidence for every selector claim.
@@ -65090,15 +66345,16 @@ Evidence-tier clarification: peer-reviewed anchors carry the strongest support f
 
 **Uses (conceptual dependencies; cited via pins/ids):**
 
-* Contract surfaces: `A.19 (CN‑Spec)`, `G.0 (CG‑Spec)`.
-* Upstream kits: `G.1 (CG‑Frame Card)`, `G.2 (SoTA Pack)`, `G.3 (CHR Pack)`, `G.4 (CAL Pack)`.
+* Contract-bearing spec refs: `A.19 (CN‑Spec)`, `G.0 (CG‑Spec)`.
+* Upstream object sets: `G.1 (CG‑Frame Card)`, `G.2 (SoTA Pack)`, `G.3 (CHR Pack)`, `G.4 (CAL Pack)`.
 * Evidence & crossings: `G.6 (EvidenceGraph; PathId/PathSliceId)`, `G.7 (Bridge/CL calibration)`, `E.18/A.21 (CrossingBundle/GateChecks)`.
 * Planning/enactment boundary: `A.15.3 (SlotFillingsPlanItem)` as the planned baseline anchor (cited, not redefined).
+* Causal-use method dispatch: `C.28` when method selection involves causal effect, counterfactual comparison, causal fairness, causal policy, causal RL, or simulation-only causal-use claims.
 * Optional method/generator extensions via `G.5:Ext.*`: `C.18`, `C.19`, `C.23`, plus any future extension-bearing patterns that add extra selector pins.
 
-**Publishes to:** `UTS` (family ids, selector policy surfaces, and selected-set identities such as `ShortlistId` when one public artifact is emitted), `G.6` (audit citations), RSCR emission surfaces (typed triggers + payload pins), and downstream packs via `G.10` shipping surfaces.
+**Publishes to:** `UTS` (family ids, selector policy records, and selected-set identities such as `ShortlistId` when one public result is emitted), `G.6` (audit citations), RSCR emission records (typed triggers + payload pins), and downstream packs via `G.10` shipping surfaces.
 
-**Coordinates with:** `C.11` for local choice results, `C.19` for pool-policy records, `C.24` for enactment-facing next-move records, and the accepted Q-Front shortlist-family continuity line when the published head is one shortlist-family artifact.
+**Coordinates with:** `C.11` for local choice results, `C.19` for pool-policy records, `C.24` for enactment-facing next-move records, and the accepted Q-Front shortlist-family continuity line when the published selected-set label is one shortlist-family result.
 
 ### G.5:End
 
@@ -66393,6 +67649,90 @@ G.9’s role is to force these to be **pinned and publishable** as a *method of 
 * **Refreshability.** Parity must emit RSCR‑relevant causes as canonical ids, with enough pins to re‑run.
 
 ### G.9:4 — Solution
+#### G.9:4.6a - Causal method rung parity
+
+Parity reports comparing causal methods start with a cheap screen. The screen may stop at degraded parity or abstain when methods plainly answer different causal uses.
+
+```text
+CausalRungParityScreen:
+  comparedMethodsRef: ComparedMethodSetRef
+  targetCausalityLadderRungSet: {CausalityLadderRung...}
+  causalEvidenceSupportBasisSet: {CausalEvidenceSupportBasis...}
+  sameEstimand: yes | no | unclear
+  sameOutcomeWindow: yes | no | unclear
+  cheapParityStop: CausalRungParityScreenOutcome
+```
+
+```text
+CausalRungParityScreenOutcome =
+    comparableEnoughForFullRecord |
+    crossRungDegrade |
+    crossSupportBasisDegrade |
+    differentEstimandAbstain |
+    differentOutcomeWindowAbstain |
+    rerouteToC28
+```
+
+Open the full `CausalMethodRungParityRecord` only when `CausalRungParityScreenOutcome = comparableEnoughForFullRecord`. Other outcomes are admissible cheap stops: degraded parity, abstain, or reroute to `C.28`, without fabricating a full parity record.
+
+`targetCausalityLadderRungSet` is the first parity check. If the set has more than one causality-ladder rung and no declared bridge/loss makes the comparison meaningful, the screen returns `crossRungDegrade` rather than treating the methods as peers.
+
+`causalEvidenceSupportBasisSet` is the second parity check. If methods depend on different causal support bases and no declared support-loss or bridge makes the comparison meaningful, the screen returns `crossSupportBasisDegrade`.
+
+`sameEstimand = no` returns `differentEstimandAbstain` unless the report names a shared estimand, a bridge/loss relation, or a reason the comparison is intentionally non-parity. A scalar parity result is not admissible across different estimands by default.
+
+`sameOutcomeWindow = no` returns `differentOutcomeWindowAbstain` unless the report pins a common follow-up window or declares the window loss. A method that wins at one horizon is not parity-superior at another horizon by default.
+
+Parity reports comparing causal methods then carry a `CausalMethodRungParityRecord`:
+
+```text
+CausalMethodRungParityRecord:
+  comparedMethodsRef
+  causalUseQuestionRef?: U.CausalUseQuestion
+  targetCausalUseClaimKind: CausalUseClaimKind
+  targetCausalityLadderRung: CausalityLadderRung
+  estimandRef: U.CausalEstimand
+  declaredCausalityLadderBridgeOrLossRef?
+  interventionBudgetOrActionSetRef?
+  causalEvidenceSupportBasis: CausalEvidenceSupportBasis
+  declaredCausalEvidenceSupportLossRef?
+  causalUseSupportRecordRef?
+  causalUseSupportVerdict?: CausalUseSupportVerdict
+  causalFollowUpWindowRef
+  outcomeMeasureRef
+  sourcePopulationRef?
+  targetPopulationRef?
+  causalTransportabilityProfileRef?
+  estimationValidityClassRef?
+  causalParameterEstimationProfileRef?
+  parityVerdict: parityEstablished | degraded | abstain
+  supportedParityUse
+  unsupportedParityUse
+```
+
+Parity reports comparing causal methods fill this record so the "same" claims are checkable by fields rather than prose:
+
+- comparedMethodsRef;
+- targetCausalityLadderRung;
+- targetCausalUseClaimKind: CausalUseClaimKind;
+- estimandRef;
+- interventionBudgetOrActionSetRef;
+- causalEvidenceSupportBasis;
+- causalUseSupportRecordRef and causalUseSupportVerdict when a `C.28` support record or verdict is being consumed;
+- causalFollowUpWindowRef;
+- outcomeMeasureRef;
+- declaredCausalityLadderBridgeOrLossRef where causality-ladder rungs differ;
+- causalTransportabilityProfileRef where source/target population, domain, context, or evidence regime differs;
+- causalParameterEstimationProfileRef where estimation validity, uncertainty, nuisance handling, or sensitivity differs;
+- degraded or abstain posture where parity cannot be established.
+
+Causality-ladder parity is a degrade/abstain condition, not a universal comparison ban. Cross-rung method comparisons must name `declaredCausalityLadderBridgeOrLossRef` and cannot become superiority claims by default.
+
+What changes in practice: one benchmark cannot compare a predictive model, an interventional action/effect question optimizer, and a counterfactual comparison question strategy as one undifferentiated "method improvement" set.
+
+What this does not authorize: `G.9` does not decide causal identification, causal fairness, or counterfactual sampling realizability; it keeps parity/benchmark harness authority and sends causal-use support to `C.28`.
+
+
 
 #### G.9:4.0 — G.Core linkage (normative)
 
@@ -66699,6 +68039,10 @@ G.9 conforms only if it satisfies the **effective** set of `CC‑GCORE‑*` decl
 13. **CC‑G9.13 — MOO disclosure for parity (local).**
     `Run_Parity` / `Publish_ParityReport` **SHALL** record the ParityHarness identity (UTS ids) and the active pins required to interpret the outcome (editions + policy‑ids), so parity remains auditable without relying on “decision logs”.
 
+14. **CC-G9-CLP-1 - Causal method rung parity.** If a parity report compares causal methods, it SHALL first run `CausalRungParityScreen`; when full parity remains plausible, it SHALL declare target causality-ladder rung, causal-use claim kind, `estimandRef`, intervention/action basis, causal evidence support basis, source-target transportability basis when needed, estimation-validity basis when needed, bridge/loss where rungs differ, `causalUseSupportRecordRef` and `causalUseSupportVerdict` when relevant `C.28` support is consumed, and degraded or abstain posture where parity cannot be established.
+
+
+
 ### G.9:7 — Anti‑patterns and remedies
 
 * **AP‑1 Hidden edition drift.** Remedy: require edition pins in `ParityPinSet`; treat changes as RSCR‑relevant via canonical trigger kinds.
@@ -66720,6 +68064,9 @@ ParityPlan pins descriptor/distance definitions and archive insertion policy edi
 **Show‑C — Open‑ended parity (POET lineage and modern open‑ended generator families).**
 ParityPlan pins transfer rule editions and exploration policy refs. ParityReport publishes selected-set outcomes plus transfer‑keyed traces (PathSlice), enabling refresh reruns when any pinned policy changes.
 
+**Show-D — Causal method rung parity.**
+A team compares an observational predictor, an intervention optimizer, and a counterfactual policy strategy under one "best causal method" headline. `G.9` first runs `CausalRungParityScreen`: if rungs, support bases, estimands, or outcome windows differ, the screen returns degraded parity or abstain before a full record is fabricated. When full parity remains plausible, `G.9` requires `CausalMethodRungParityRecord`: each method declares `targetCausalUseClaimKind`, target `CausalityLadderRung`, `estimandRef`, intervention/action basis, `CausalEvidenceSupportBasis`, relevant `C.28` support record/verdict when consumed, follow-up window, outcome measure, source/target population basis, and estimation-validity basis. If those fields differ, the parity report names `declaredCausalityLadderBridgeOrLossRef`, transportability or estimation refs where available, and degraded or abstain posture. The lawful output may be a selected set by comparable rung, not one scalar winner.
+
 ### G.9:9 — Payload (what this pattern exports)
 
 **Exports (UTS‑publishable, edition‑pinned):**
@@ -66740,7 +68087,7 @@ ParityPlan pins transfer rule editions and exploration policy refs. ParityReport
 
 **Builds on:** `G.Core`, `G.5`, `G.6`, `G.4`, `F.15`, `E.18`, `A.21`, `A.27`, `E.5.2`, `E.10`.
 **Publishes to:** **UTS** (plan/report ids), **G.11** (refresh wiring), **G.10** (shipping surface; parity artefacts are cited payloads).
-**Uses:** **G.0**, **A.19**, **F.9**.
+**Uses:** **G.0**, **A.19**, **F.9**, and `C.28` when parity compares causal methods or causal-use claims.
 **Uses (optional, via Extensions):** **G.7**, **C.18/C.19** (QD/OEE wiring), **C.23** (SoS‑LOG narration and failure‑policy pins).
 
 ### G.9:11 — Working reading checks
@@ -66750,6 +68097,8 @@ ParityPlan pins transfer rule editions and exploration policy refs. ParityReport
 - If a scalar winner is being claimed where only a selected set or partial order is lawful, parity is overclaiming and should publish the lawful outcome shape instead.
 
 ### G.9:End
+
+
 ## G.10 - SoTA Pack Shipping
 
 **Tag:** Architectural pattern (conceptual; notation‑independent; pack‑boundary owner)
@@ -67164,7 +68513,7 @@ This pattern inherits order/illumination, evidence, and bridge/penalty legality 
 
 **Primary outputs (kit artefacts).** `RefreshQueue`, `RefreshPlan@Context` (WorkPlanning artefact), `RefreshReport@Context` (Work/Audit artefact), `DeprecationNotice@Context`, `EditionBumpLog@Context`.
 
-**Primary hooks.** `G.Core` (RSCR trigger catalogue + alias docking + default ownership index), `G.6` (EvidenceGraph; `PathId`/`PathSliceId`), `G.7` (Bridge Sentinels; CL/Φ/plane policy pins), `G.5` (set-returning selection/dispatch), `G.8` (SoS-LOGBundle telemetry hooks), `G.9` (parity reruns), `G.10` (shipping hooks and pack-level telemetry pins), `G.12` (dashboard telemetry pins), `B.3.4` (freshness/decay), `E.18` (GateCrossing/CrossingBundle visibility), optional `C.18/C.19` (QD/E–E policy pins), `C.23` (SoS-LOG branches / maturity ladders).
+**Primary hooks.** `G.Core` (RSCR trigger catalogue + alias docking + default ownership index), `G.6` (EvidenceGraph; `PathId`/`PathSliceId`), `G.7` (Bridge Sentinels; CL/Φ/plane policy pins), `G.5` (set-returning selection/dispatch), `G.8` (SoS-LOGBundle telemetry hooks), `G.9` (parity reruns), `G.10` (shipping hooks and pack-level telemetry pins), `G.12` (dashboard telemetry pins), `B.3.4` (freshness/decay), `E.18` (GateCrossing/CrossingBundle visibility), optional `C.18/C.19` (QD/E–E policy pins), `C.23` (SoS-LOG branches / maturity ladders), `C.28` (causal-use support records whose SoTA-sensitive fields can change downstream support).
 
 **Non-duplication note (Phase-2).**
 This pattern **does not** (i) define the meaning of RSCR trigger kinds, (ii) introduce “shadow specs” for CN/CG legality, (iii) redefine tri-state guards / penalties / set-return semantics, (iv) re-own shipping or harvesting, or (v) mint new `RSCRTriggerKindId` / default owners (design-time changes live in `G.Core` and are recorded via DRR, `E.9`).
@@ -67323,6 +68672,22 @@ Produce `RefreshPlan@Context` that schedules actions of the form:
 Execute planned actions as Work (or Work-bound audit) and publish `RefreshReport@Context`.
 Gating outcomes (admit / degrade / abstain) follow `G.Core` tri-state semantics and are recorded via policy ids and cited evidence paths, rather than as local bespoke statuses.
 
+#### G.11:4.3a - Causal-use refresh sentinels
+
+When a shipped pack, parity report, evidence path, dashboard slice, fairness audit, policy evaluation, or selector surface consumes `C.28`, refresh planning includes causal-use sentinel causes when they can change supported use, unsupported use, support verdict, or downstream assurance:
+
+| Causal-use sentinel | Typical affected support | Refresh payload pins |
+| --- | --- | --- |
+| counterfactual-realizability shift | `CounterfactualSamplingRealizabilityProfile`, `realizedCounterfactualSampleSupportBasis`, causal evidence design | profile refs, action/work-plan refs, physical/ethical/operational constraint refs, target counterfactual distribution refs, supported/unsupported use refs |
+| counterfactual-data identification/bounding shift | `CausalIdentificationProfile`, `identifiedCounterfactualEstimateSupportBasis`, bounds/partial-identification posture | available data regime set refs, realized counterfactual data refs, counterfactual-data identification method refs, counterfactual-data bound refs, assumption refs |
+| target-trial reporting shift | `TargetTrialProtocolRecord`, `TargetTrialEmulationMappingRecord`, applied intervention-effect support | protocol refs, observational data source refs, eligibility/treatment/time-zero/assignment mappings, follow-up/outcome mappings, emulation-gap refs, residual-confounding and sensitivity/additional-analysis refs |
+| causal-fairness shift | `CausalFairnessUseAuditCard`, causal fairness support verdict, fairness assurance | protected/decision/outcome variable refs, permitted/prohibited path refs, fairness estimand refs, causal-use question refs, support basis refs, support record/verdict refs |
+| causal-representation-validation shift | `CausalVariableRepresentationRecord`, learned causal variable support | intervention-validity, mechanism-invariance, abstraction-fidelity, counterfactual-query-preservation, representation-shift/OOD, and supported/unsupported causal-variable-use refs |
+| off-policy or causal-RL evaluation shift | `OffPolicyCausalEvaluationProfile`, causal action-policy support, policy parity | behavior/evaluation policy refs, sequential horizon refs, adaptive policy class refs, unit-history conditioning refs, overlap/support refs, policy transportability refs, estimator and uncertainty refs |
+| simulation-validation shift | `simulationOnlyCounterfactualOutputBasis`, bounded model-supported counterfactual use | counterfactual model assumption refs, simulation validation refs, `CausalUseSupportStatement` / `CausalUseUnsupportedStatement` refs, sensitivity and rival-cause refs |
+
+These sentinels do not mint new `RSCRTriggerKindId` values. They are domain-facing payload distinctions carried under the canonical trigger kinds owned by `G.Core`, usually evidence-surface edit, edition-pin change, policy-pin change, telemetry delta, freshness/decay event, or tokenization/name change.
+
 #### G.11:4.4 - Extensions (pattern-scoped; non-core)
 
 All discipline-specific refresh strategies, scheduling heuristics, and generator-specific wiring live as `GPatternExtension` blocks.
@@ -67439,11 +68804,12 @@ Lenses tested: **Gov**, **Arch**, **Onto/Epist**, **Prag**, **Did**.
 | **CC‑G11.2 (Edition discipline; QD/OEE wiring).**     | When QD and/or OEE are active, a conforming `RefreshPlan@Context` and `RefreshReport@Context` **SHALL** satisfy the required pin/edition/policy wiring of the applicable extension blocks (`G.11:Ext.QDRefreshWiring` and/or `G.11:Ext.OEERefreshWiring`). **`.edition` SHALL apply only on `…Ref`.** Missing required pins **SHALL** block publication. | Keeps replayability strict while moving method‑specific pin lists into `Extensions` (Phase‑2 modularity).                  |
 | **CC‑G11.3 (Telemetry‑metric legality).**             | If a refresh publishes Illumination/QD/OEE outcomes, it **SHALL** publish **Q/D/QD‑score** (and any coverage/regret) as **telemetry metrics** and **IlluminationSummary** as a **telemetry summary**; these values **SHALL be excluded from dominance** unless a CAL policy explicitly promotes them, and the promoting **policy‑id SHALL be recorded** in SCR‑visible evidence bindings (via the cited owners).                                                                                                      | Prevents covert scalarisation and keeps “telemetry vs order” separation explicit.                                          |
 | **CC‑G11.4 (Bridge penalties).**                      | Any refresh reacting to Bridge/plane changes **SHALL** satisfy `CC‑GCORE‑PEN‑1` (delegation), and **SHALL** publish `CL/CL^k/CL^plane` and the relevant `Φ/Ψ/Φ_plane` policy‑ids with loss notes so penalties route to `R_eff` only (F/G invariant).                                                                                                                                | Keeps penalty routing auditable during refresh.                                                                            |
-| **CC‑G11.5 (Selector invariants).**                   | Any orchestrated re‑selection or selected-set/archive update **SHALL** (i) satisfy `CC‑GCORE‑SET‑1` (delegation), and (ii) call the selector owner (`G.5`) under an unchanged lawful `ComparatorSet` (edition‑pinned where applicable), returning **sets** (Pareto/Archive) and introducing **no scalarisation** inside `G.11`.                                                                                                                       | Prevents refresh from changing order semantics.                                                                            |
+| **CC‑G11.5 (Selector invariants).**                   | Any orchestrated re‑selection or selected-set/archive update **SHALL** (i) satisfy `CC‑GCORE‑SET‑1` (delegation), and (ii) call the selector owner (`G.5`) under an unchanged admissible `ComparatorSet` (edition‑pinned where applicable), returning **sets** (Pareto/Archive) and introducing **no scalarisation** inside `G.11`.                                                                                                                       | Prevents refresh from changing order semantics.                                                                            |
 | **CC‑G11.6 (Crossing visibility).**                   | All refresh actions that touch cross‑context reuse **SHALL** satisfy `CC‑GCORE‑CROSS‑1` (delegation) and the GateCrossing visibility harness (e.g., `E.18`): `CrossingRef` + BridgeCard + UTS + `CL/Φ_plane` policy‑ids. Missing/non‑conformant crossings **SHALL** block publication.                                                                                                                                 | Prevents “silent crossings” under refresh.                                                                                 |
 | **CC‑G11.7 (Decay governance).**                      | When refresh is triggered by freshness/decay events, the refresh outputs **SHALL** choose and record a governance outcome (**Refresh / Deprecate / Waive**) with **budget notes** (policy‑bound), and **SHALL** publish the decision via `DeprecationNotice@Context` (and related pins) and SCR‑visible evidence bindings (via `G.6` / cited owners).                                                                                                                                                | Turns epistemic debt into explicit, comparable governance artefacts.                                                       |
 | **CC‑G11.8 (No default smuggling).**                  | A conforming `G.11` refresh artefact **SHALL NOT** introduce new defaults for `PortfolioMode`/dominance/Γ‑fold/guard behavior. If orchestrated steps rely on defaults, the artefact **SHALL** cite the single owner (via `G.Core.DefaultOwnership` and the invoked owner patterns) rather than restating defaults inside `G.11`.                                                                                                                                            | Protects single‑owner default discipline under orchestration pressure.                                                     |
 | **CC‑G11.9 (Targeted RSCR before republication).**    | Before any refresh result is republished downstream (e.g., parity report updates, pack re‑shipping, dashboard slice updates), the execution **SHALL** run or cite a targeted RSCR/regression check for the affected scope and record `RSCRRefs[]` (or equivalent) in `RefreshReport@Context`; exceptions **SHALL** be expressed as `degrade/abstain` outcomes (policy‑bound) rather than silent skips.                                                                                         | Preserves “refresh ≠ vibes” by making regression gating explicit and slice‑scoped.                                         |
+| **CC-G11.10 (Causal-use refresh sentinels).**          | When a refreshed surface consumes `C.28`, a conforming `RefreshPlan@Context` **SHALL** include causal-use sentinel payload distinctions when counterfactual realizability, counterfactual-data identification/bounding, target-trial reporting, causal fairness, causal representation validation, off-policy/causal-RL evaluation, or simulation validation can change supported use, unsupported use, support verdict, assurance, parity, or downstream selection. | Keeps moving causal SoTA from silently invalidating shipped support while preserving `G.Core` trigger ownership. |
 
 ### G.11:8 - Common Anti-Patterns and How to Avoid Them (informative)
 
@@ -67490,7 +68856,7 @@ Each entry follows: **claim → practice → source → alignment → adoption s
 3. **Quality-Diversity requires archive semantics and comparability under descriptor/distance evolution.**
    Practice: QD methods treat the archive as the primary result and track changes under policy/edition conditions.
    Source: contemporary QD families such as CMA‑ME (post‑2018) and differentiable QD lines (post‑2019).
-   Alignment: QD-specific meaning lives with the owner patterns; `G.11:Ext.QDRefreshWiring` ensures edition pins and scope pins exist so targeted archive refresh is lawful.
+   Alignment: QD-specific meaning lives with the owner patterns; `G.11:Ext.QDRefreshWiring` ensures edition pins and scope pins exist so targeted archive refresh is admissible.
    Adoption: **Adopt** (set/archive preservation; no covert scalarization).
 
 4. **Open-endedness co-evolves environments and agents; transfer rules must be versioned.**
@@ -67508,10 +68874,11 @@ Each entry follows: **claim → practice → source → alignment → adoption s
 ### G.11:12 - Relations
 
 **Builds on:** `G.Core` (Part‑G invariants; RSCR trigger catalogue; alias docking; default ownership index), `G.6` (EvidenceGraph, `PathId/PathSliceId`), `G.7` (Bridge sentinels; CL/Φ/plane pins), `G.5` (selector & set-return), `G.8` (bundle telemetry hooks), `G.9` (parity), `G.10` (shipping hooks), `B.3.4` (freshness/decay), `E.18` (GateCrossing visibility).
-**Coordinates with:** `G.12` (dashboard telemetry pins), optional `C.18/C.19` (QD/E–E pins), `C.23` (SoS-LOG branches and maturity ladders), `F.15` (RSCR harness surfaces, when present).
+**Coordinates with:** `G.12` (dashboard telemetry pins), optional `C.18/C.19` (QD/E–E pins), `C.23` (SoS-LOG branches and maturity ladders), `C.28` (causal-use support records and SoTA-sensitive causal-use sentinel payloads), `F.15` (RSCR harness surfaces, when present).
 **Publishes to:** UTS (refresh plan/report, deprecations, edition bumps), and to the relevant owner patterns’ publication surfaces via delegated actions.
 
 ### G.11:End
+
 
 ## G.12 — DHC Dashboards (Discipline‑Health time‑series; lawful telemetry; generation‑first)
 
@@ -68478,6 +69845,18 @@ Each worked entry reading keeps recoverable:
 - **Lawful entry stop:** ordinary prose, Dyn0, Dyn1/C.16, a local `Dyn2TemporalClaimAdequacyCard`, a boundary-crossing `Dyn2TemporalClaimProfile`, or a named stronger FPF pattern relation.
 - **What not to infer:** faster is not automatically better, a velocity target is not proof of improvement, a dynamic benchmark is not benchmark superiority, and a rhythm or inertia word does not by itself mint a new dynamics object.
 
+### I.2.8 - Causal-use / counterfactual-support repair
+
+- **Case signal:** "This policy would have prevented harm", "this intervention caused the improvement", "this fairness result is causal", "this method is better on counterfactual outcomes", or "these simulated counterfactuals prove the decision".
+- **Initial uncertainty:** the reader may be seeing association, a metric disparity, temporal change, method/work execution, simulation output, deontic boundary language, or a real causal-use claim.
+- **Plausible candidate patterns:** `C.28`, `A.10`, `B.3`, `C.11`, `C.19`, `C.24`, `C.26`, `C.27`, `D.5`, `G.5`, `G.9`, `A.15`, `A.3.2`, `A.6`, `C.16`.
+- **Tempting wrong pattern:** use `D.5` to treat metric fairness as causal fairness; use `G.9` to compare methods across different causal rungs; use `C.26` to hide causal under quantum-like wording; use `C.27` to treat rate change as causal effect; use `A.15` / `A.3.2` to treat a sampling method, intervention procedure, or target-trial recipe as causal support by itself; use `A.6` to turn causal evidence into a duty or release gate.
+- **Disambiguating fact:** the decisive question is not whether a causal-looking word appears. The decisive question is whether the claim is used to publish, choose, deploy, assure, audit, benchmark, or dispatch a stronger causal use: effect, intervention success, counterfactual comparison, causal fairness, policy optimality, causal evidence support, off-policy/causal-RL evaluation, or causal method superiority.
+- **Recognition repair or question reroute:** if only a measured value is live, repair in `C.16`; if only rate/trend/temporal adequacy is live, repair in `C.27`; if only method/work/work-plan structure is live, repair in `A.15` / `A.3.2`; if only boundary duty or agreement language is live, split with `A.6`; if only residual QL modeling language is live, use `C.26` only after ordinary measurement, temporal, work, benchmark, proxy, and dynamics readings are exhausted.
+- **Actual strongest home or projection role:** `C.28` carries causal-use question, causality-ladder rung, claim kind, causal estimand, identification, counterfactual sampling realizability, causal evidence support basis, support record/verdict, supported use, and unsupported use. `A.10` carries evidence/provenance path, `B.3` carries assurance consequence, `D.5` carries ethical/fairness audit, `G.5` carries method dispatch, and `G.9` carries benchmark parity only as consumers of `C.28` support.
+- **Admissible entry stop:** a cheap downgrade sentence, a local `CausalUseTriageRecord`, a local or durable `CausalUseEvidenceDesignRecord`, a `CausalUseSupportVerdict`, or a named neighbor-pattern use that cites `C.28` without claiming stronger authority.
+- **What not to infer:** a randomized procedure is not automatically counterfactual support; a simulation is not realized counterfactual data; a target-trial phrase is not proof of identification; a fairness metric is not causal fairness; a method benchmark is not comparable if methods sit on different causal rungs or estimands; and a causal support record does not by itself create a duty, promise, commitment, release gate, or admissibility predicate.
+
 # **Part J – Indexes & Navigation Aids**
 
 
@@ -68486,7 +69865,7 @@ Each worked entry reading keeps recoverable:
 | J.1 | Concept‑to‑Pattern Index |  Quick jump from idea (“boundary”) to pattern (§, id).   |
 | J.2 | Pattern‑to‑Example Index |  Table listing every archetypal grounding vignette.      |
 | J.3 | Principle‑Trace Index    |  Maps each Pillar / C‑rule / P‑rule to concrete clauses. |
-| J.4 | First Practical Entry Neighborhood Index | Compact six-row entry-neighborhood index matching the public entry families without route/owner/output columns. |
+| J.4 | First Practical Entry Neighborhood Index | Compact entry-neighborhood index matching the public entry families without route/owner/output columns. |
 
 ## J.4 - First Practical Entry Neighborhood Index
 
@@ -68514,6 +69893,7 @@ without pretending there is a workflow.
 | Generator / SoTA / portfolio kit | "The first deliverable is a reusable search, harvest, generator, selector, or portfolio scaffold, not one recommendation." | `A.0`; `G.0`; `G.1`; `G.2`; `G.5` | `B.5.2.1` and `C.17-C.19` when creative search, novelty, or explore/exploit policy is already central; `G.10` / `G.11` when shipping or refresh is live | kit/scaffold burden opened, or portfolio/set publication home identified | not when the burden is only one local comparison or one one-off recommendation | `I.2.5` gives compact-index-only posture unless repeated misclassification makes depth necessary |
 | Same-entity rewrite / explanation / comparative reading | "We need to restate, explain, render, repair, or compare the same object without quietly changing what it is about." | `A.6.3.CR`; `A.6.3.RT`; `E.17.EFP`; `E.17.ID.CR` | `E.17.AUD.LHR` and `E.17.AUD.OOTD` when pressured-head repair or authored-unit stability is live | same-entity rewrite, representation transition, explanation-facing rendering, or bounded comparative reading opened | not when the burden is one new semantic object, new rule track, or independent authored object | `I.2.6` worked reading; ToC cues should include "same object, different audience" |
 | Temporal claim adequacy under effort/window/resistance | "This should speed up, slow down, recover sooner, stabilize, keep cadence, or improve throughput under a changed effort, tool-use, rollout, or policy." | `C.27`; `C.16` when only measurement is live; `A.3.3` when reusable transition law or formal model is live | `B.1.4`/`B.1.6`, `C.18.1`, `C.19`, `C.22.1`, `C.24`, `C.25`, `C.26`, `C.26.3`, `G.9` as the stronger question requires | ordinary prose, Dyn0, Dyn1/C.16, `Dyn2TemporalClaimAdequacyCard`, `Dyn2TemporalClaimProfile`, or a named stronger FPF pattern relation | not when the phrase is only a speed metaphor, one state/snapshot, one measured rate, a service promise, a benchmark harness, or a residual QL cue without an intervention-sensitive temporal claim | `I.2.7` state-to-rate-to-Dyn2 worked reading; lexical cues: speed, velocity, rhythm, cadence, throughput, recovery, braking, stabilization |
+| Causal-use / counterfactual-support repair | "We want to say this caused that, this intervention would work, this policy would have prevented harm, this fairness result is causal, or this method is better on a counterfactual benchmark." | `C.28`; `A.10`; `B.3`; `D.5`; `G.5`; `G.9` | `C.16` when only a metric/score/reading is live; `C.27` when only state/rate/intervention-sensitive temporal adequacy is live; `C.26` when the phrase is only a residual quantum-like modeling cue; `A.15` / `A.3.2` when the question is only method/work/work-plan structure; `A.6` when a mixed causal/deontic boundary sentence must be split | causal-use triage/card names rung, claim kind, estimand, support basis, support verdict, supported use, and unsupported use; or the wording is downgraded to association, metric, temporal, simulation-only, QL, method/work, or boundary-claim support | not when the sentence only records observed association, one measured metric, one process execution, one schedule, one boundary duty, or one simulation trace with no causal-use claim | `I.2.8` worked reading; lexical cues: caused, would have prevented, effect, intervention, counterfactual, target trial, policy optimality, causal fairness, causal evidence, counterfactual data, method improves |
 
 Rows are for likely first practical entries, common wrong first guesses, or
 public/retrieval-facing entry points. A pattern does not need a `J.4` row merely
